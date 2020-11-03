@@ -1,0 +1,51 @@
+ext {
+
+
+    HiFiveVersion = [
+            compileSdkVersion: 28,
+            minSdkVersion    : 21,
+            targetSdkVersion : 28,
+            versionCode      : 1,
+            versionName      : "1.0",
+            appCompat        : "1.0.2",
+            junit            : "4.12",
+            runner           : "1.2.0",
+            espresso         : "3.2.0",
+            sdkName          : "musicSdk"
+    ]
+
+
+    def dependVersion = [
+            rxKotlin_version: "2.3.0",
+            retrofit        : "2.6.0",
+            rxjava          : "2.2.10",
+            rxandroid       : "2.1.1",
+            gson            : "2.8.5",
+            okhttp          : "4.0.0",
+            dagger2         : "2.23.2",
+            rxlifecycle     : "2.2.1",
+            javax           : "1",
+            annotation      : "3.1.1",
+            novoda          : "0.9.1",
+    ]
+
+
+    HifiveDependencies = [
+            "rxKotlin"                  : "io.reactivex.rxjava2:rxkotlin:$dependVersion.rxKotlin_version",
+            "rxjava"                    : "io.reactivex.rxjava2:rxjava:$dependVersion.rxjava",
+            "rxandroid"                 : "io.reactivex.rxjava2:rxandroid:$dependVersion.rxandroid",
+            "retrofit"                  : "com.squareup.retrofit2:retrofit:$dependVersion.retrofit",
+            "retrofit-converter-gson"   : "com.squareup.retrofit2:converter-gson:$dependVersion.retrofit",
+            "retrofit-adapter-rxjava2"  : "com.squareup.retrofit2:adapter-rxjava2:$dependVersion.retrofit",
+            "gson"                      : "com.google.code.gson:gson:$dependVersion.gson",
+            "okhttp"                    : "com.squareup.okhttp3:okhttp:$dependVersion.okhttp",
+            "okhttp-logging-interceptor": "com.squareup.okhttp3:logging-interceptor:$dependVersion.okhttp",
+            "dagger"                    : "com.google.dagger:dagger:$dependVersion.dagger2",
+            "dagger-compiler"           : "com.google.dagger:dagger-compiler:$dependVersion.dagger2",
+            "novoda"                    : "com.novoda:bintray-release:$dependVersion.novoda",
+            "rxlifecycle"               : "com.trello.rxlifecycle2:rxlifecycle-kotlin:$dependVersion.rxlifecycle",
+            "rxlifecycle_components"    : "com.trello.rxlifecycle2:rxlifecycle-components:$dependVersion.rxlifecycle",
+            "javax"                     : "javax.inject:javax.inject:$dependVersion.javax"
+    ]
+
+}

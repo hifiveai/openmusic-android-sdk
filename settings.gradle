@@ -1,0 +1,3 @@
+include ':hifivesdk'
+include ':app'
+rootProject.name = "liveSdkDemo"
