@@ -147,7 +147,7 @@ interface Api {
 
 
     @FormUrlEncoded
-    @POST("/livestream/v1/member/bindingMember")
+    @POST("/livestream/v1/member/deleteMember")
     fun delete(
             @Header("Content-Type") type: String,
             @Header("accessToken") accessToken: String,
@@ -160,7 +160,7 @@ interface Api {
 
 
     @FormUrlEncoded
-    @POST("/livestream/v1/member/bindingMember")
+    @POST("/livestream/v1/member/deleteSociaty")
     fun deleteSociaty(
             @Header("Content-Type") type: String,
             @Header("accessToken") accessToken: String,
