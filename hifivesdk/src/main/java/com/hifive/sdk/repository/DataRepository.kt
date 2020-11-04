@@ -1,6 +1,5 @@
 package com.hifive.sdk.repository
 
-import com.hifive.sdk.common.BaseConstance.Companion.accessTokenMember
 import com.hifive.sdk.entity.*
 import com.hifive.sdk.net.LiveRetrofitFactory
 import com.hifive.sdk.net.RetrofitFactory
@@ -169,6 +168,7 @@ class DataRepository @Inject constructor() {
 
 
     fun unbindingMember(
+            token: String,
             appId: String,
             memberOutId: String?,
             societyOutId: String?,
@@ -178,7 +178,7 @@ class DataRepository @Inject constructor() {
     ): Flowable<BaseResp<Any>> {
         return LiveRetrofitFactory.api().unbendingMember(
                 "application/x-www-form-urlencoded",
-                accessTokenMember,
+                token,
                 appId,
                 memberOutId,
                 societyOutId,
@@ -197,6 +197,8 @@ class DataRepository @Inject constructor() {
             memberId: String,
             societyId: String
     ): Flowable<BaseResp<Any>> {
+
+
         return LiveRetrofitFactory.api().bind(
                 "application/x-www-form-urlencoded",
                 accessToken,

@@ -173,8 +173,6 @@ abstract class BaseController {
     //开放平台
 
     abstract fun memberLogin(context: Context,
-                             secretKey: String,
-                             appId: String,
                              memberName: String,
                              memberId: String,
                              societyName: String?,
@@ -190,8 +188,6 @@ abstract class BaseController {
 
     abstract fun societyLogin(
             context: Context,
-            secretKey: String,
-            appId: String,
             societyName: String,
             societyId: String,
             dataResponse: DataResponse)
@@ -199,10 +195,9 @@ abstract class BaseController {
 
     abstract fun unbindingMember(
             context: Context,
-            appId: String,
+            accessToken: String,
             memberOutId: String?,
             societyOutId: String?,
-            timestamp: String,
             memberId: String,
             societyId: String,
             dataResponse: DataResponse
@@ -212,10 +207,8 @@ abstract class BaseController {
     abstract fun bindingMember(
             context: Context,
             accessToken: String,
-            appId: String,
             memberOutId: String?,
             societyOutId: String?,
-            timestamp: String,
             memberId: String,
             societyId: String,
             dataResponse: DataResponse
@@ -225,10 +218,8 @@ abstract class BaseController {
     abstract fun deleteMember(
             context: Context,
             accessToken: String,
-            appId: String,
             memberOutId: String?,
             societyOutId: String?,
-            timestamp: String,
             memberId: String,
             dataResponse: DataResponse
     )
@@ -236,10 +227,8 @@ abstract class BaseController {
     abstract fun deleteSociety(
             context: Context,
             accessToken: String,
-            appId: String,
             memberOutId: String?,
             societyOutId: String?,
-            timestamp: String,
             societyId: String,
             dataResponse: DataResponse
     )

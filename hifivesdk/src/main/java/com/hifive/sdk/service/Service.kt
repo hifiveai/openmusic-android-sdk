@@ -92,6 +92,7 @@ interface Service {
 
 
     fun unbindMember(
+            token: String,
             appId: String,
             memberOutId: String?,
             societyOutId: String?,

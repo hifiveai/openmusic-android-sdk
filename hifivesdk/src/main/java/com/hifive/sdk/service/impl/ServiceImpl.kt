@@ -115,12 +115,14 @@ class ServiceImpl @Inject constructor() : Service {
 
     }
 
-    override fun unbindMember(appId: String,
-                              memberOutId: String?,
-                              societyOutId: String?,
-                              timestamp: String,
-                              memberId: String, societyId: String): Flowable<Any> {
-        return dataRepository.unbindingMember(appId, memberOutId, societyOutId, timestamp, memberId, societyId).convert()
+    override fun unbindMember(
+            token: String,
+            appId: String,
+            memberOutId: String?,
+            societyOutId: String?,
+            timestamp: String,
+            memberId: String, societyId: String): Flowable<Any> {
+        return dataRepository.unbindingMember(token, appId, memberOutId, societyOutId, timestamp, memberId, societyId).convert()
 
     }
 

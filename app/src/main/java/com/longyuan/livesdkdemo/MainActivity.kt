@@ -28,11 +28,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        HiFiveManager.start(application, "8365eb6054eeaed261ae526c46ebf58f", "6cd6f71004344acbb478a7f2f3b44bc5")
+        HiFiveManager.start(application, appId, secretKey)
         findViewById<View>(R.id.button).setOnClickListener {
 
-            HiFiveManager.getInstance()?.memberLogin(this, secretKey,
-                    appId,
+            HiFiveManager.getInstance()?.memberLogin(this,
                     userId,
                     userId,
                     null,
@@ -45,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                     null, object : DataResponse {
                 override fun errorMsg(string: String, code: Int?) {}
                 override fun data(any: Any) {
-                    BaseConstance.accessTokenMember = (any as Token).accessToken
+                    BaseConstance.accessToken = (any as Token).accessToken
                     (findViewById<View>(R.id.textView) as AppCompatTextView).text = any.accessToken
                 }
             })
@@ -53,26 +52,22 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.button1).setOnClickListener {
             HiFiveManager.getInstance()?.societyLogin(
                     this,
-                    secretKey,
-                    appId,
                     userId,
                     userId,
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {}
                         override fun data(any: Any) {
-                            BaseConstance.accessTokenSociety = (any as Token).accessToken
+                            BaseConstance.accessToken = (any as Token).accessToken
                             (findViewById<View>(R.id.textView) as AppCompatTextView).text = any.accessToken
                         }
                     })
         }
         findViewById<View>(R.id.button2).setOnClickListener {
-            val time = System.currentTimeMillis().toString()
             HiFiveManager.getInstance()?.unbindingMember(
                     this,
-                    appId,
+                    BaseConstance.accessToken,
                     userId,
                     null,
-                    time,
                     userId,
                     userId
                     , object : DataResponse {
@@ -83,14 +78,11 @@ class MainActivity : AppCompatActivity() {
             })
         }
         findViewById<View>(R.id.button3).setOnClickListener {
-            val time = System.currentTimeMillis().toString()
             HiFiveManager.getInstance()?.bindingMember(
                     this,
-                    BaseConstance.accessTokenMember,
-                    appId,
+                    BaseConstance.accessToken,
                     userId,
                     null,
-                    time,
                     userId,
                     userId
                     , object : DataResponse {
@@ -101,14 +93,11 @@ class MainActivity : AppCompatActivity() {
             })
         }
         findViewById<View>(R.id.button4).setOnClickListener {
-            val time = System.currentTimeMillis().toString()
             HiFiveManager.getInstance()?.deleteMember(
                     this,
-                    BaseConstance.accessTokenMember,
-                    appId,
+                    BaseConstance.accessToken,
                     userId,
                     null,
-                    time,
                     userId,
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {}
@@ -118,14 +107,11 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button5).setOnClickListener {
-            val time = System.currentTimeMillis().toString()
             HiFiveManager.getInstance()?.deleteSociety(
                     this,
-                    BaseConstance.accessTokenMember,
-                    appId,
+                    BaseConstance.accessToken,
                     userId,
                     null,
-                    time,
                     userId,
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {}
