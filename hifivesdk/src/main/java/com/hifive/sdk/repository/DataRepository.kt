@@ -1,5 +1,6 @@
 package com.hifive.sdk.repository
 
+import com.hifive.sdk.common.BaseConstance.Companion.accessTokenMember
 import com.hifive.sdk.entity.*
 import com.hifive.sdk.net.LiveRetrofitFactory
 import com.hifive.sdk.net.RetrofitFactory
@@ -114,26 +115,138 @@ class DataRepository @Inject constructor() {
     }
 
 
-
     /**
      * 获取歌曲统计
      */
-    fun token( sign: String,
-               appId: String,
-               memberName: String,
-               memberId: String,
-               sociatyName: String?,
-               sociatyId: String?,
-               deviceId: String,
-               timestamp: String,
-               headerUrl: String?,
-               gender: String?,
-               birthday: String?,
-               location: String?,
-               favoriteSinger: String?,
-               phone: String?): Flowable<BaseResp<Token>> {
-        return LiveRetrofitFactory.api().token(sign, appId, memberName, memberId, sociatyName, sociatyId, deviceId, timestamp, headerUrl, gender, birthday, location, favoriteSinger, phone)
+    fun token(
+            sign: String,
+            appId: String,
+            memberName: String,
+            memberId: String,
+            societyName: String?,
+            societyId: String?,
+            deviceId: String,
+            timestamp: String,
+            headerUrl: String?,
+            gender: String?,
+            birthday: String?,
+            location: String?,
+            favoriteSinger: String?,
+            phone: String?
+    ): Flowable<BaseResp<Token>> {
+        return LiveRetrofitFactory.api().token(
+                sign,
+                appId,
+                memberName,
+                memberId,
+                societyName,
+                societyId,
+                deviceId,
+                timestamp,
+                headerUrl,
+                gender,
+                birthday,
+                location,
+                favoriteSinger,
+                phone
+        )
 
+    }
+
+
+    fun societyLogin(
+            sign: String,
+            appId: String,
+            societyName: String,
+            societyId: String,
+            deviceId: String,
+            timestamp: String
+    ):
+            Flowable<BaseResp<Token>> {
+        return LiveRetrofitFactory.api()
+                .societyLogin(sign, appId, societyName, societyId, deviceId, timestamp)
+    }
+
+
+    fun unbindingMember(
+            appId: String,
+            memberOutId: String?,
+            societyOutId: String?,
+            timestamp: String,
+            memberId: String,
+            societyId: String
+    ): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().unbendingMember(
+                "application/x-www-form-urlencoded",
+                accessTokenMember,
+                appId,
+                memberOutId,
+                societyOutId,
+                timestamp
+                , memberId, societyId
+        )
+    }
+
+
+    fun bind(
+            accessToken: String,
+            appId: String,
+            memberOutId: String?,
+            societyOutId: String?,
+            timestamp: String,
+            memberId: String,
+            societyId: String
+    ): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().bind(
+                "application/x-www-form-urlencoded",
+                accessToken,
+                appId,
+                memberOutId,
+                societyOutId,
+                timestamp,
+                memberId,
+                societyId
+        )
+    }
+
+
+    fun delete(
+            accessToken: String,
+            appId: String,
+            memberOutId: String?,
+            societyOutId: String?,
+            timestamp: String,
+            memberId: String
+    ): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().delete(
+                "application/x-www-form-urlencoded",
+                accessToken,
+                appId,
+                memberOutId,
+                societyOutId,
+                timestamp,
+                memberId
+        )
+    }
+
+
+    fun deleteSociety(
+            accessToken: String,
+            appId: String,
+            memberOutId: String?,
+            societyOutId: String?,
+            timestamp: String,
+            societyId: String
+    ): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().deleteSociaty(
+                "application/x-www-form-urlencoded",
+                accessToken,
+                appId,
+                memberOutId,
+                societyOutId,
+                timestamp,
+                societyId
+        )
     }
 
 

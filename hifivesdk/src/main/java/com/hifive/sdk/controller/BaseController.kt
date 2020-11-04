@@ -172,21 +172,75 @@ abstract class BaseController {
 
     //开放平台
 
-    abstract fun token(context: Context,
-                       sign: String,
-                       appId: String,
-                       memberName: String,
-                       memberId: String,
-                       sociatyName: String?,
-                       sociatyId: String?,
-                       deviceId: String,
-                       timestamp: String,
-                       headerUrl: String?,
-                       gender: String?,
-                       birthday: String?,
-                       location: String?,
-                       favoriteSinger: String?,
-                       phone: String?,
-                       dataResponse: DataResponse);
+    abstract fun memberLogin(context: Context,
+                             secretKey: String,
+                             appId: String,
+                             memberName: String,
+                             memberId: String,
+                             societyName: String?,
+                             societyId: String?,
+                             headerUrl: String?,
+                             gender: String?,
+                             birthday: String?,
+                             location: String?,
+                             favoriteSinger: String?,
+                             phone: String?,
+                             dataResponse: DataResponse)
 
+
+    abstract fun societyLogin(
+            context: Context,
+            secretKey: String,
+            appId: String,
+            societyName: String,
+            societyId: String,
+            dataResponse: DataResponse)
+
+
+    abstract fun unbindingMember(
+            context: Context,
+            appId: String,
+            memberOutId: String?,
+            societyOutId: String?,
+            timestamp: String,
+            memberId: String,
+            societyId: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun bindingMember(
+            context: Context,
+            accessToken: String,
+            appId: String,
+            memberOutId: String?,
+            societyOutId: String?,
+            timestamp: String,
+            memberId: String,
+            societyId: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun deleteMember(
+            context: Context,
+            accessToken: String,
+            appId: String,
+            memberOutId: String?,
+            societyOutId: String?,
+            timestamp: String,
+            memberId: String,
+            dataResponse: DataResponse
+    )
+
+    abstract fun deleteSociety(
+            context: Context,
+            accessToken: String,
+            appId: String,
+            memberOutId: String?,
+            societyOutId: String?,
+            timestamp: String,
+            societyId: String,
+            dataResponse: DataResponse
+    )
 }

@@ -83,29 +83,92 @@ interface Api {
     ): Flowable<BaseResp<DeleteSongBean>>
 
 
-
     //开放平台
-
 
 
     @FormUrlEncoded
     @POST("/livestream/v1/member/memberLogin")
     fun token(
-            @Field("sign") sign:String,
-            @Field("appId") appId:String,
-            @Field("memberName") memberName:String,
-            @Field("memberId") memberId:String,
-            @Field("sociatyName") sociatyName:String?,
-            @Field("sociatyId") sociatyId:String?,
-            @Field("deviceId") deviceId:String,
-            @Field("timestamp") timestamp:String,
-            @Field("headerUrl") headerUrl:String?,
-            @Field("gender") gender:String?,
-            @Field("birthday") birthday:String?,
-            @Field("location") location:String?,
-            @Field("favoriteSinger") favoriteSinger:String?,
-            @Field("phone") phone:String?
+            @Field("sign") sign: String,
+            @Field("appId") appId: String,
+            @Field("memberName") memberName: String,
+            @Field("memberId") memberId: String,
+            @Field("sociatyName") sociatyName: String?,
+            @Field("sociatyId") sociatyId: String?,
+            @Field("deviceId") deviceId: String,
+            @Field("timestamp") timestamp: String,
+            @Field("headerUrl") headerUrl: String?,
+            @Field("gender") gender: String?,
+            @Field("birthday") birthday: String?,
+            @Field("location") location: String?,
+            @Field("favoriteSinger") favoriteSinger: String?,
+            @Field("phone") phone: String?
     ): Flowable<BaseResp<Token>>
 
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/member/sociatyLogin")
+    fun societyLogin(
+            @Field("sign") sign: String,
+            @Field("appId") appId: String,
+            @Field("sociatyName") sociatyName: String,
+            @Field("sociatyId") sociatyId: String,
+            @Field("deviceId") deviceId: String?,
+            @Field("timestamp") timestamp: String?
+    ): Flowable<BaseResp<Token>>
+
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/member/unbundlingMember")
+    fun unbendingMember(
+            @Header("Content-Type") type: String,
+            @Header("accessToken") accessToken: String,
+            @Header("appId") appIdInfo: String,
+            @Header("memberOutId") memberOutId: String?,
+            @Header("sociatyOutId") sociatyOutId: String?,
+            @Header("timestamp") timestamp: String,
+            @Field("memberId") sign: String,
+            @Field("sociatyId") appId: String
+    ): Flowable<BaseResp<Any>>
+
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/member/bindingMember")
+    fun bind(
+            @Header("Content-Type") type: String,
+            @Header("accessToken") accessToken: String,
+            @Header("appId") appIdInfo: String,
+            @Header("memberOutId") memberOutId: String?,
+            @Header("sociatyOutId") sociatyOutId: String?,
+            @Header("timestamp") timestamp: String,
+            @Field("memberId") sign: String,
+            @Field("sociatyId") appId: String
+    ): Flowable<BaseResp<Any>>
+
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/member/bindingMember")
+    fun delete(
+            @Header("Content-Type") type: String,
+            @Header("accessToken") accessToken: String,
+            @Header("appId") appIdInfo: String,
+            @Header("memberOutId") memberOutId: String?,
+            @Header("sociatyOutId") sociatyOutId: String?,
+            @Header("timestamp") timestamp: String,
+            @Field("memberId") sign: String
+    ): Flowable<BaseResp<Any>>
+
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/member/bindingMember")
+    fun deleteSociaty(
+            @Header("Content-Type") type: String,
+            @Header("accessToken") accessToken: String,
+            @Header("appId") appIdInfo: String,
+            @Header("memberOutId") memberOutId: String?,
+            @Header("sociatyOutId") sociatyOutId: String?,
+            @Header("timestamp") timestamp: String,
+            @Field("sociatyId") sign: String
+    ): Flowable<BaseResp<Any>>
 
 }

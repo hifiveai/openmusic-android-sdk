@@ -58,26 +58,75 @@ interface Service {
 
 
     fun recommended(
-        current: Int?,
-        size: Int?
+            current: Int?,
+            size: Int?
     ): Flowable<List<RecommendMusic>>
 
     fun queryCount(userId: String): Flowable<MusicCount>
 
 
+    fun token(sign: String,
+              appId: String,
+              memberName: String,
+              memberId: String,
+              societyName: String?,
+              societyId: String?,
+              deviceId: String,
+              timestamp: String,
+              headerUrl: String?,
+              gender: String?,
+              birthday: String?,
+              location: String?,
+              favoriteSinger: String?,
+              phone: String?): Flowable<Token>
 
-    fun token( sign: String,
-               appId: String,
-               memberName: String,
-               memberId: String,
-               sociatyName: String?,
-               sociatyId: String?,
-               deviceId: String,
-               timestamp: String,
-               headerUrl: String?,
-               gender: String?,
-               birthday: String?,
-               location: String?,
-               favoriteSinger: String?,
-               phone: String?):Flowable<Token>
+
+    fun societyLogin(
+            sign: String,
+            appId: String,
+            societyName: String,
+            societyId: String,
+            deviceId: String,
+            timestamp: String
+    ): Flowable<Token>
+
+
+    fun unbindMember(
+            appId: String,
+            memberOutId: String?,
+            societyOutId: String?,
+            timestamp: String,
+            memberId: String, societyId: String
+    ): Flowable<Any>
+
+
+    fun bind(accessToken: String,
+             appId: String,
+             memberOutId: String?,
+             societyOutId: String?,
+             timestamp: String,
+             memberId: String,
+             societyId: String): Flowable<Any>
+
+
+    fun delete(
+            accessToken: String,
+            appId: String,
+            memberOutId: String?,
+            societyOutId: String?,
+            timestamp: String,
+            memberId: String
+    ): Flowable<Any>
+
+
+    fun deleteSociaty(
+            accessToken: String,
+            appId: String,
+            memberOutId: String?,
+            societyOutId: String?,
+            timestamp: String,
+            societyId: String
+    ): Flowable<Any>
+
+
 }
