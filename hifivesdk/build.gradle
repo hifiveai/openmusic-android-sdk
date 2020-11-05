@@ -36,7 +36,9 @@ dependencies {
     //打包进sdk的库
     implementation files('libs/dagger-2.23.2.jar')
     implementation files('libs/downFile.jar')
-
+    implementation group: 'com.github.bumptech.glide', name: 'glide', version: '4.9.0'
+    implementation 'com.github.hackware1993:MagicIndicator:1.7.0'
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-11'
 
 
     //开发者必须导入的包
@@ -49,6 +51,8 @@ dependencies {
     api HifiveDependencies["retrofit-adapter-rxjava2"]
     api HifiveDependencies["okhttp"]
     api HifiveDependencies["okhttp-logging-interceptor"]
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
 //    kapt HifiveDependencies["dagger-compiler"]
 //    api HifiveDependencies["dagger"]
 }

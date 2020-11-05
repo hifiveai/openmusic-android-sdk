@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">HifiveSdk</string>
+
+
+
+    <string name="hifivesdk_music_current_play">当前播放</string>
+    <string name="hifivesdk_music_like">我喜欢</string>
+    <string name="hifivesdk_music_karaoke">K歌</string>
+    <string name="hifivesdk_music_all_play">全部播放(%1$d)</string>
+    <string name="hifivesdk_music_search_hint">搜索歌曲名/歌手</string>
+    <string name="hifivesdk_music_search_cancel">取消</string>
+    <string name="hifivesdk_music_search_history">搜索历史</string>
+    <string name="hifivesdk_music_search_history_empty">未找到与“%1$s”相关的内容，向您推荐</string>
+    <string name="hifivesdk_music_search_toast">请输入歌曲名/歌手</string>
+
 </resources>

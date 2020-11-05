@@ -4,16 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.hifive.sdk.common.BaseConstance;
-import com.hifive.sdk.controller.MusicManager;
 import com.hifive.sdk.entity.Token;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HiFiveManager;
 import com.hifive.sdk.net.Encryption;
-import com.hifive.sdk.net.LiveRetrofitFactory;
+import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
+import com.hifive.sdk.demo.ui.HifiveMusicListDialogFragment;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,16 +21,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-
+    private Button tv_miusic;
+    private HifiveMusicListDialogFragment dialogFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tv_miusic = findViewById(R.id.tv_miusic);
         initView();
     }
-
     private void initView() {
-       HiFiveManager. Companion.start(getApplication(), "8365eb6054eeaed261ae526c46ebf58f", "6cd6f71004344acbb478a7f2f3b44bc5");
+        HiFiveManager. Companion.start(getApplication(), "8365eb6054eeaed261ae526c46ebf58f", "6cd6f71004344acbb478a7f2f3b44bc5");
 
         findViewById(R.id.button).setOnClickListener(view -> {
             String secretKey="f653ca0d989340708a";
@@ -70,6 +71,19 @@ public class MainActivity extends AppCompatActivity {
                             ((TextView)findViewById(R.id.textView)).setText(((Token)any).getAccessToken());
                         }
                     });
+        });
+
+        tv_miusic.setOnClickListener(view -> {
+            if(dialogFragment != null && dialogFragment.getDialog() != null){
+                if(dialogFragment.getDialog().isShowing()){
+                    HifiveDialogManageUtil.StopDialog();
+                }else{
+                    dialogFragment.show(getSupportFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
+                }
+            }else{
+                dialogFragment = new HifiveMusicListDialogFragment();
+                dialogFragment.show(getSupportFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
+            }
         });
     }
 }
