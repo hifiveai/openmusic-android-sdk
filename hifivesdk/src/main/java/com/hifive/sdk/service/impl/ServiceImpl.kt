@@ -17,80 +17,33 @@ class ServiceImpl @Inject constructor() : Service {
     @Inject
     lateinit var dataRepository: DataRepository
 
-
-    override fun queryPlayList(
-            num: Int?,
-            size: Int?,
-            userId: String,
-            roomId: String?,
-            mediaAction: String,
-            sort: String?
-    ): Flowable<List<MusicInfo>> {
-        return dataRepository.queryPlayList(num, size, userId, roomId, mediaAction, sort).convert()
+    override fun getCompanySheetTagList(): Flowable<ArrayList<SheetTagListItem>> {
+        return dataRepository.getCompanySheetTagList().convert()
     }
 
-    override fun queryCount(userId: String): Flowable<MusicCount> {
-        return dataRepository.queryCount(userId).convert()
+    override fun getCompanySheetList(groupId: String?,
+                                     language: String?,
+                                     recoNum: String?,
+                                     type: String?,
+                                     tagIdList: String?,
+                                     field: String?,
+                                     pageSize: String?,
+                                     page: String?): Flowable<CompanySheetList> {
+        return dataRepository.getCompanySheetList(groupId, language, recoNum, type, tagIdList, field, pageSize, page).convert()
     }
 
-
-    override fun initSdk(isAnchor: Boolean, userId: String, userName: String): Flowable<SdkInfo> {
-        return dataRepository.initSDK(isAnchor, userId, userName).convert()
+    override fun getCompanySheetMusicList(sheetId: String?,
+                                          language: String?,
+                                          field: String?,
+                                          pageSize: String?,
+                                          page: String?): Flowable<CompanySheetMusicList> {
+        return dataRepository.getCompanySheetMusicList(sheetId, language, field, pageSize, page).convert()
     }
 
-
-    override fun addSong(
-            userId: String,
-            roomId: String?,
-            musicNo: String,
-            mediaAction: String
-    ): Flowable<AddSongBean> {
-        return dataRepository.addSong(userId, roomId, musicNo, mediaAction).convert()
+    override fun getCompanyChannelList(): Flowable<ArrayList<CompanyChannelList>> {
+        return dataRepository.getCompanyChannelList().convert()
     }
 
-    override fun deleteSong(
-            musicNo: String,
-            userId: String,
-            roomId: String?,
-            mediaAction: String?
-    ): Flowable<DeleteSongBean> {
-        return dataRepository.deleteSong(musicNo, userId, roomId, mediaAction).convert()
-    }
-
-    override fun label(current: Int?, size: Int?): Flowable<List<MusicTag>> {
-        return dataRepository.label(current, size).convert()
-    }
-
-    override fun searchSong(
-            current: Int?,
-            size: Int?,
-            tag: String,
-            keyword: String
-    ): Flowable<List<SearchMusicInfo>> {
-        return dataRepository.searchSong(current, size, tag, keyword).convert()
-
-    }
-
-    override fun resourceAcquisition(
-            musicNo: String,
-            userId: String,
-            userName: String,
-            roomId: String?,
-            mediaAction: String
-    ): Flowable<MusicResource> {
-        return dataRepository.resourceAcquisition(musicNo, userId, userName, roomId, mediaAction)
-                .convert()
-
-    }
-
-
-    override fun recommended(current: Int?, size: Int?): Flowable<List<RecommendMusic>> {
-        return dataRepository.recommend(current, size).convert()
-
-    }
-
-
-    //开放平台
     override fun token(sign: String,
                        appId: String,
                        memberName: String,

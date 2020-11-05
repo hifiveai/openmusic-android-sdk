@@ -2,6 +2,7 @@ package com.longyuan.livesdkdemo
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import com.hifive.sdk.entity.Token
@@ -104,5 +105,74 @@ class MainActivity : AppCompatActivity() {
                         }
                     })
         }
+        findViewById<View>(R.id.button6).setOnClickListener {
+            HiFiveManager.getInstance()?.getCompanySheetTagList(
+                    this,
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button7).setOnClickListener {
+            HiFiveManager.getInstance()?.getCompanySheetList(
+                    this,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button8).setOnClickListener {
+            HiFiveManager.getInstance()?.getCompanySheetMusicList(
+                    this,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button9).setOnClickListener {
+            HiFiveManager.getInstance()?.getCompanyChannelList(
+                    this,
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+
+
     }
 }

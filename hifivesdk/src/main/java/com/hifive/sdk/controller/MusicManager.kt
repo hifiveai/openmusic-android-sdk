@@ -1,9 +1,7 @@
 package com.hifive.sdk.controller
 
-import android.app.Application
 import android.content.Context
 import com.hifive.sdk.common.BaseConstance
-import com.hifive.sdk.common.BaseConstance.Companion.SUCCEED
 import com.hifive.sdk.common.BaseConstance.Companion.memberOutId
 import com.hifive.sdk.common.BaseConstance.Companion.societyOutId
 import com.hifive.sdk.dagger.DaggerServiceComponent
@@ -14,14 +12,7 @@ import com.hifive.sdk.injection.module.ServiceModule
 import com.hifive.sdk.manager.HiFiveManager.Companion.APP_ID
 import com.hifive.sdk.manager.HiFiveManager.Companion.SECRET
 import com.hifive.sdk.net.Encryption
-import com.hifive.sdk.rx.BaseException
 import com.hifive.sdk.rx.BaseSubscribe
-import com.hifive.sdk.widget.CircleProgressDialog
-import com.tsy.sdk.myokhttp.MyOkHttp
-import com.tsy.sdk.myokhttp.response.DownloadResponseHandler
-import okhttp3.OkHttpClient
-import java.io.File
-import java.util.concurrent.TimeUnit
 
 
 /**
@@ -35,329 +26,84 @@ class MusicManager(val context: Context) : BaseController() {
         DaggerServiceComponent.builder().serviceModule(ServiceModule()).build().inject(this)
     }
 
-    override fun creditUser(
+
+    override fun getCompanySheetTagList(
             context: Context,
-            isAnchor: Boolean,
-            userId: String,
-            userName: String,
             response: DataResponse
     ) {
         if (!checkNetWork(context, response)) {
             return
         }
-        mService.initSdk(isAnchor, userId, userName)
-                .request(object : BaseSubscribe<SdkInfo>(response) {
-                    override fun onNext(t: SdkInfo) {
+        mService.getCompanySheetTagList()
+                .request(object : BaseSubscribe<ArrayList<SheetTagListItem>>(response) {
+                    override fun onNext(t: ArrayList<SheetTagListItem>) {
                         super.onNext(t)
                         response.data(t)
                     }
-
-
                 })
     }
 
 
-    override fun musicSmallerThan(
+    override fun getCompanySheetMusicList(
             context: Context,
-            num: Int?,
-            size: Int?,
-            userId: String,
-            roomId: String?,
-            mediaAction: String,
+            sheetId: String?,
+            language: String?,
+            field: String?,
+            pageSize: String?,
+            page: String?,
             response: DataResponse
     ) {
         if (!checkNetWork(context, response)) {
             return
         }
-        mService.queryPlayList(num, size, userId, roomId, mediaAction, "ASC")
-                .request(object : BaseSubscribe<List<MusicInfo>>(response) {
-                    override fun onNext(t: List<MusicInfo>) {
+        mService.getCompanySheetMusicList(sheetId, language, field, pageSize, page)
+                .request(object : BaseSubscribe<CompanySheetMusicList>(response) {
+                    override fun onNext(t: CompanySheetMusicList) {
                         super.onNext(t)
                         response.data(t)
                     }
                 })
     }
 
-    override fun musicBiggerThan(
+    override fun getCompanyChannelList(
             context: Context,
-            num: Int?,
-            size: Int?,
-            userId: String,
-            roomId: String?,
-            mediaAction: String,
-            sort: String?,
             response: DataResponse
     ) {
         if (!checkNetWork(context, response)) {
             return
         }
-        mService.queryPlayList(num, size, userId, roomId, mediaAction, "DESC")
-                .request(object : BaseSubscribe<List<MusicInfo>>(response) {
-                    override fun onNext(t: List<MusicInfo>) {
+
+        mService.getCompanyChannelList()
+                .request(object : BaseSubscribe<ArrayList<CompanyChannelList>>(response) {
+                    override fun onNext(t: ArrayList<CompanyChannelList>) {
                         super.onNext(t)
                         response.data(t)
                     }
                 })
+
     }
 
 
-    override fun queryPlayList(
+    override fun getCompanySheetList(
             context: Context,
-            num: Int?,
-            size: Int?,
-            userId: String,
-            roomId: String?,
-            mediaAction: String,
-            sort: String?,
+            groupId: String?,
+            language: String?,
+            recoNum: String?,
+            type: String?,
+            tagIdList: String?,
+            field: String?,
+            pageSize: String?,
+            page: String?,
             response: DataResponse
     ) {
         if (!checkNetWork(context, response)) {
             return
         }
-        mService.queryPlayList(num, size, userId, roomId, mediaAction, sort)
-                .request(object : BaseSubscribe<List<MusicInfo>>(response) {
-                    override fun onNext(t: List<MusicInfo>) {
+        mService.getCompanySheetList(groupId, language, recoNum, type, tagIdList, field, pageSize, page)
+                .request(object : BaseSubscribe<CompanySheetList>(response) {
+                    override fun onNext(t: CompanySheetList) {
                         super.onNext(t)
                         response.data(t)
-                    }
-                })
-    }
-
-
-    override fun addToPlayList(
-            context: Context,
-            userId: String,
-            roomId: String?,
-            musicNo: String,
-            mediaAction: String,
-            response: DataResponse
-    ) {
-        val dialog = CircleProgressDialog(context)
-        dialog.showDialog()
-        if (!checkNetWork(context, response)) {
-            if (dialog.isShowing) dialog.dismiss()
-            return
-        }
-        mService.addSong(userId, roomId, musicNo, mediaAction)
-                .request(object : BaseSubscribe<AddSongBean>(response) {
-                    override fun onNext(t: AddSongBean) {
-                        super.onNext(t)
-                        response.data(t)
-                    }
-
-                    override fun onError(t: Throwable?) {
-                        super.onError(t)
-                        if (dialog.isShowing) dialog.dismiss()
-                        when (t) {
-                            is BaseException -> when (SUCCEED) {
-                                t.status -> response.data(t)
-                            }
-                        }
-                    }
-
-
-                    override fun onComplete() {
-                        super.onComplete()
-                        if (dialog.isShowing) dialog.dismiss()
-                    }
-                })
-    }
-
-
-    override fun deleteFromPlayList(
-            context: Context,
-            musicNo: String,
-            userId: String,
-            roomId: String?,
-            mediaAction: String?,
-            response: DataResponse
-    ) {
-        val dialog = CircleProgressDialog(context)
-
-        dialog.showDialog()
-        if (!checkNetWork(context, response)) {
-            if (dialog.isShowing) dialog.dismiss()
-            return
-        }
-
-        mService.deleteSong(musicNo, userId, roomId, mediaAction)
-                .request(object : BaseSubscribe<DeleteSongBean>(response) {
-                    override fun onNext(t: DeleteSongBean) {
-                        super.onNext(t)
-                        response.data(t)
-
-                    }
-
-
-                    override fun onError(t: Throwable?) {
-                        super.onError(t)
-                        if (dialog.isShowing) dialog.dismiss()
-                        when (t) {
-                            is BaseException -> when (SUCCEED) {
-                                t.status -> response.data(t)
-                            }
-                        }
-                    }
-
-                    override fun onComplete() {
-                        super.onComplete()
-                        if (dialog.isShowing) dialog.dismiss()
-                    }
-                })
-    }
-
-    override fun musicTags(context: Context, current: Int?, size: Int?, response: DataResponse) {
-        if (!checkNetWork(context, response)) {
-            return
-        }
-        mService.label(current, size)
-                .request(object : BaseSubscribe<List<MusicTag>>(response) {
-                    override fun onNext(t: List<MusicTag>) {
-                        super.onNext(t)
-                        response.data(t)
-                    }
-                })
-    }
-
-    override fun searchMusicByTag(
-            context: Context,
-            current: Int?,
-            size: Int?,
-            tag: String,
-            keyword: String,
-            response: DataResponse
-    ) {
-
-        if (!checkNetWork(context, response)) {
-            return
-        }
-        mService.searchSong(current, size, tag, keyword)
-                .request(object : BaseSubscribe<List<SearchMusicInfo>>(response) {
-                    override fun onNext(t: List<SearchMusicInfo>) {
-                        super.onNext(t)
-                        response.data(t)
-                    }
-                })
-    }
-
-
-    override fun resource(
-            context: Context,
-            musicNo: String,
-            userId: String,
-            userName: String,
-            roomId: String?,
-            mediaAction: String,
-            response: DataResponse
-    ) {
-        val dialog = CircleProgressDialog(context)
-
-        dialog.showDialog()
-        if (!checkNetWork(context, response)) {
-            if (dialog.isShowing) dialog.dismiss()
-            return
-        }
-        mService.resourceAcquisition(musicNo, userId, userName, roomId, mediaAction)
-                .request(object : BaseSubscribe<MusicResource>(response) {
-                    override fun onNext(t: MusicResource) {
-                        super.onNext(t)
-                        response.data(t)
-                    }
-
-                    override fun onError(t: Throwable?) {
-                        super.onError(t)
-                        if (dialog.isShowing) dialog.dismiss()
-                    }
-
-
-                    override fun onComplete() {
-                        super.onComplete()
-                        if (dialog.isShowing) dialog.dismiss()
-                    }
-                })
-
-    }
-
-    override fun recommendMusic(
-            context: Context,
-            current: Int?,
-            size: Int?,
-            response: DataResponse
-    ) {
-        val dialog = CircleProgressDialog(context)
-
-        dialog.showDialog()
-        if (!checkNetWork(context, response)) {
-            if (dialog.isShowing) dialog.dismiss()
-            return
-        }
-        mService.recommended(current, size)
-                .request(object : BaseSubscribe<List<RecommendMusic>>(response) {
-                    override fun onNext(t: List<RecommendMusic>) {
-                        super.onNext(t)
-                        response.data(t)
-                    }
-
-                    override fun onError(t: Throwable?) {
-                        super.onError(t)
-                        if (dialog.isShowing) dialog.dismiss()
-                    }
-
-                    override fun onComplete() {
-                        super.onComplete()
-                        if (dialog.isShowing) dialog.dismiss()
-                    }
-                })
-    }
-
-
-    override fun downLoadLRC(
-            context: Application,
-            lrc: String,
-            path: String,
-            dataResponse: DataResponse
-    ) {
-        val down by lazy {
-            val okHttpClient = OkHttpClient.Builder()
-                    .connectTimeout(10000L, TimeUnit.MILLISECONDS)
-                    .readTimeout(10000L, TimeUnit.MILLISECONDS)
-                    //其他配置
-                    .build()
-            MyOkHttp(okHttpClient)
-        }
-
-        down.download()
-                .url(lrc)
-                .filePath(path)
-                .tag(this)
-                .enqueue(object : DownloadResponseHandler() {
-                    override fun onStart(totalBytes: Long) {
-                    }
-
-                    override fun onFinish(downloadFile: File) {
-                        dataResponse.data(downloadFile)
-                    }
-
-                    override fun onProgress(currentBytes: Long, totalBytes: Long) {
-
-                    }
-
-                    override fun onFailure(error_msg: String) {
-                        dataResponse.errorMsg(error_msg, null)
-                    }
-                })
-    }
-
-
-    override fun musicCount(context: Context, userId: String, dataResponse: DataResponse) {
-        if (!checkNetWork(context, dataResponse)) {
-            return
-        }
-        mService.queryCount(userId)
-                .request(object : BaseSubscribe<MusicCount>(dataResponse) {
-                    override fun onNext(t: MusicCount) {
-                        super.onNext(t)
-                        dataResponse.data(t)
                     }
                 })
     }
