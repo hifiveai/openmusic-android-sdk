@@ -4,7 +4,8 @@ import android.app.Application
 import android.content.Context
 import com.hifive.sdk.common.BaseConstance
 import com.hifive.sdk.common.BaseConstance.Companion.SUCCEED
-import com.hifive.sdk.common.BaseConstance.Companion.getSignToken
+import com.hifive.sdk.common.BaseConstance.Companion.memberOutId
+import com.hifive.sdk.common.BaseConstance.Companion.societyOutId
 import com.hifive.sdk.dagger.DaggerServiceComponent
 import com.hifive.sdk.entity.*
 import com.hifive.sdk.ext.request
@@ -377,6 +378,10 @@ class MusicManager(val context: Context) : BaseController() {
                 .request(object : BaseSubscribe<Token>(dataResponse) {
                     override fun onNext(t: Token) {
                         super.onNext(t)
+                        memberOutId = memberId
+                        societyOutId = societyId
+                        BaseConstance.accessTokenMember = t.accessToken
+                        BaseConstance.accessTokenUnion = null
                         dataResponse.data(t)
                     }
                 })
@@ -396,22 +401,21 @@ class MusicManager(val context: Context) : BaseController() {
                 .request(object : BaseSubscribe<Token>(dataResponse) {
                     override fun onNext(t: Token) {
                         super.onNext(t)
+                        memberOutId = null
+                        societyOutId = societyId
+                        BaseConstance.accessTokenMember = null
+                        BaseConstance.accessTokenUnion = t.accessToken
                         dataResponse.data(t)
                     }
                 })
     }
 
     override fun unbindingMember(context: Context,
-                                 accessToken: String,
-                                 memberOutId: String?,
-                                 societyOutId: String?,
                                  memberId: String, societyId: String, dataResponse: DataResponse) {
         if (!checkNetWork(context, dataResponse)) {
             return
         }
-        val time = System.currentTimeMillis().toString()
-        mService.unbindMember(getSignToken(SECRET!!, accessToken, time)
-                ?: "", APP_ID!!, memberOutId, societyOutId, time, memberId, societyId)
+        mService.unbindMember(memberId, societyId)
                 .request(object : BaseSubscribe<Any>(dataResponse) {
                     override fun onNext(t: Any) {
                         super.onNext(t)
@@ -422,9 +426,6 @@ class MusicManager(val context: Context) : BaseController() {
 
     override fun bindingMember(
             context: Context,
-            accessToken: String,
-            memberOutId: String?,
-            societyOutId: String?,
             memberId: String,
             societyId: String,
             dataResponse: DataResponse
@@ -432,11 +433,7 @@ class MusicManager(val context: Context) : BaseController() {
         if (!checkNetWork(context, dataResponse)) {
             return
         }
-
-        val time = System.currentTimeMillis().toString()
-
-        mService.bind(getSignToken(SECRET!!, accessToken, time)
-                ?: "", APP_ID!!, memberOutId, societyOutId, time, memberId, societyId)
+        mService.bind(memberId, societyId)
                 .request(object : BaseSubscribe<Any>(dataResponse) {
                     override fun onNext(t: Any) {
                         super.onNext(t)
@@ -447,19 +444,13 @@ class MusicManager(val context: Context) : BaseController() {
 
     override fun deleteMember(
             context: Context,
-            accessToken: String,
-            memberOutId: String?,
-            societyOutId: String?,
             memberId: String,
             dataResponse: DataResponse
     ) {
         if (!checkNetWork(context, dataResponse)) {
             return
         }
-        val time = System.currentTimeMillis().toString()
-
-        mService.delete(getSignToken(SECRET!!, accessToken, time) ?: "", APP_ID
-                ?: "", memberOutId, societyOutId, time, memberId)
+        mService.delete(memberId)
                 .request(object : BaseSubscribe<Any>(dataResponse) {
                     override fun onNext(t: Any) {
                         super.onNext(t)
@@ -470,19 +461,13 @@ class MusicManager(val context: Context) : BaseController() {
 
     override fun deleteSociety(
             context: Context,
-            accessToken: String,
-            memberOutId: String?,
-            societyOutId: String?,
             societyId: String,
             dataResponse: DataResponse
     ) {
         if (!checkNetWork(context, dataResponse)) {
             return
         }
-        val time = System.currentTimeMillis().toString()
-
-        mService.deleteSociaty(getSignToken(SECRET!!, accessToken, time) ?: "", APP_ID
-                ?: "", memberOutId, societyOutId, time, societyId)
+        mService.deleteSociety(societyId)
                 .request(object : BaseSubscribe<Any>(dataResponse) {
                     override fun onNext(t: Any) {
                         super.onNext(t)

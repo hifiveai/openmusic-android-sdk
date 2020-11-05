@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
-import com.hifive.sdk.common.BaseConstance
 import com.hifive.sdk.entity.Token
 import com.hifive.sdk.hInterface.DataResponse
 import com.hifive.sdk.manager.HiFiveManager
@@ -30,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     private fun initView() {
         HiFiveManager.start(application, appId, secretKey)
         findViewById<View>(R.id.button).setOnClickListener {
-
             HiFiveManager.getInstance()?.memberLogin(this,
                     userId,
                     userId,
@@ -44,8 +42,7 @@ class MainActivity : AppCompatActivity() {
                     null, object : DataResponse {
                 override fun errorMsg(string: String, code: Int?) {}
                 override fun data(any: Any) {
-                    BaseConstance.accessToken = (any as Token).accessToken
-                    (findViewById<View>(R.id.textView) as AppCompatTextView).text = any.accessToken
+                    (findViewById<View>(R.id.textView) as AppCompatTextView).text = (any as Token).accessToken
                 }
             })
         }
@@ -57,17 +54,13 @@ class MainActivity : AppCompatActivity() {
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {}
                         override fun data(any: Any) {
-                            BaseConstance.accessToken = (any as Token).accessToken
-                            (findViewById<View>(R.id.textView) as AppCompatTextView).text = any.accessToken
+                            (findViewById<View>(R.id.textView) as AppCompatTextView).text = (any as Token).accessToken
                         }
                     })
         }
         findViewById<View>(R.id.button2).setOnClickListener {
             HiFiveManager.getInstance()?.unbindingMember(
                     this,
-                    BaseConstance.accessToken,
-                    userId,
-                    null,
                     userId,
                     userId
                     , object : DataResponse {
@@ -80,9 +73,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.button3).setOnClickListener {
             HiFiveManager.getInstance()?.bindingMember(
                     this,
-                    BaseConstance.accessToken,
-                    userId,
-                    null,
                     userId,
                     userId
                     , object : DataResponse {
@@ -95,9 +85,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.button4).setOnClickListener {
             HiFiveManager.getInstance()?.deleteMember(
                     this,
-                    BaseConstance.accessToken,
-                    userId,
-                    null,
                     userId,
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {}
@@ -109,9 +96,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.button5).setOnClickListener {
             HiFiveManager.getInstance()?.deleteSociety(
                     this,
-                    BaseConstance.accessToken,
-                    userId,
-                    null,
                     userId,
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {}

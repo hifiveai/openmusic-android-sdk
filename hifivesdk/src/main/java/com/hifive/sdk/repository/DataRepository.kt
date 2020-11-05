@@ -168,44 +168,23 @@ class DataRepository @Inject constructor() {
 
 
     fun unbindingMember(
-            token: String,
-            appId: String,
-            memberOutId: String?,
-            societyOutId: String?,
-            timestamp: String,
             memberId: String,
             societyId: String
     ): Flowable<BaseResp<Any>> {
         return LiveRetrofitFactory.api().unbendingMember(
-                "application/x-www-form-urlencoded",
-                token,
-                appId,
-                memberOutId,
-                societyOutId,
-                timestamp
-                , memberId, societyId
+                memberId, societyId
         )
     }
 
 
     fun bind(
-            accessToken: String,
-            appId: String,
-            memberOutId: String?,
-            societyOutId: String?,
-            timestamp: String,
+
             memberId: String,
             societyId: String
     ): Flowable<BaseResp<Any>> {
 
 
         return LiveRetrofitFactory.api().bind(
-                "application/x-www-form-urlencoded",
-                accessToken,
-                appId,
-                memberOutId,
-                societyOutId,
-                timestamp,
                 memberId,
                 societyId
         )
@@ -213,40 +192,20 @@ class DataRepository @Inject constructor() {
 
 
     fun delete(
-            accessToken: String,
-            appId: String,
-            memberOutId: String?,
-            societyOutId: String?,
-            timestamp: String,
+
             memberId: String
     ): Flowable<BaseResp<Any>> {
         return LiveRetrofitFactory.api().delete(
-                "application/x-www-form-urlencoded",
-                accessToken,
-                appId,
-                memberOutId,
-                societyOutId,
-                timestamp,
                 memberId
         )
     }
 
 
     fun deleteSociety(
-            accessToken: String,
-            appId: String,
-            memberOutId: String?,
-            societyOutId: String?,
-            timestamp: String,
+
             societyId: String
     ): Flowable<BaseResp<Any>> {
         return LiveRetrofitFactory.api().deleteSociaty(
-                "application/x-www-form-urlencoded",
-                accessToken,
-                appId,
-                memberOutId,
-                societyOutId,
-                timestamp,
                 societyId
         )
     }

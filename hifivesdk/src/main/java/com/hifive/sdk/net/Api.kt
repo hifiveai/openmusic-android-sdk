@@ -121,12 +121,6 @@ interface Api {
     @FormUrlEncoded
     @POST("/livestream/v1/member/unbundlingMember")
     fun unbendingMember(
-            @Header("Content-Type") type: String,
-            @Header("accessToken") accessToken: String,
-            @Header("appId") appIdInfo: String,
-            @Header("memberOutId") memberOutId: String?,
-            @Header("sociatyOutId") sociatyOutId: String?,
-            @Header("timestamp") timestamp: String,
             @Field("memberId") sign: String,
             @Field("sociatyId") appId: String
     ): Flowable<BaseResp<Any>>
@@ -135,12 +129,6 @@ interface Api {
     @FormUrlEncoded
     @POST("/livestream/v1/member/bindingMember")
     fun bind(
-            @Header("Content-Type") type: String,
-            @Header("accessToken") accessToken: String,
-            @Header("appId") appIdInfo: String,
-            @Header("memberOutId") memberOutId: String?,
-            @Header("sociatyOutId") sociatyOutId: String?,
-            @Header("timestamp") timestamp: String,
             @Field("memberId") sign: String,
             @Field("sociatyId") appId: String
     ): Flowable<BaseResp<Any>>
@@ -149,12 +137,6 @@ interface Api {
     @FormUrlEncoded
     @POST("/livestream/v1/member/deleteMember")
     fun delete(
-            @Header("Content-Type") type: String,
-            @Header("accessToken") accessToken: String,
-            @Header("appId") appIdInfo: String,
-            @Header("memberOutId") memberOutId: String?,
-            @Header("sociatyOutId") sociatyOutId: String?,
-            @Header("timestamp") timestamp: String,
             @Field("memberId") sign: String
     ): Flowable<BaseResp<Any>>
 
@@ -162,12 +144,6 @@ interface Api {
     @FormUrlEncoded
     @POST("/livestream/v1/member/deleteSociaty")
     fun deleteSociaty(
-            @Header("Content-Type") type: String,
-            @Header("accessToken") accessToken: String,
-            @Header("appId") appIdInfo: String,
-            @Header("memberOutId") memberOutId: String?,
-            @Header("sociatyOutId") sociatyOutId: String?,
-            @Header("timestamp") timestamp: String,
             @Field("sociatyId") sign: String
     ): Flowable<BaseResp<Any>>
 

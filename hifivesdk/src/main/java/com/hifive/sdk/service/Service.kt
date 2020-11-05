@@ -13,47 +13,47 @@ interface Service {
     fun initSdk(isAnchor: Boolean, userId: String, userName: String): Flowable<SdkInfo>
 
     fun queryPlayList(
-        num: Int?,
-        size: Int?,
-        userId: String,
-        roomId: String?,
-        mediaAction: String,
-        sort: String?
+            num: Int?,
+            size: Int?,
+            userId: String,
+            roomId: String?,
+            mediaAction: String,
+            sort: String?
     ): Flowable<List<MusicInfo>>
 
 
     fun addSong(
-        userId: String,
-        roomId: String?,
-        musicNo: String,
-        mediaAction: String
+            userId: String,
+            roomId: String?,
+            musicNo: String,
+            mediaAction: String
     ): Flowable<AddSongBean>
 
 
     fun deleteSong(
-        musicNo: String,
-        userId: String,
-        roomId: String?,
-        mediaAction: String?
+            musicNo: String,
+            userId: String,
+            roomId: String?,
+            mediaAction: String?
     ): Flowable<DeleteSongBean>
 
     fun label(current: Int?, size: Int?): Flowable<List<MusicTag>>
 
 
     fun searchSong(
-        current: Int?,
-        size: Int?,
-        tag: String,
-        keyword: String
+            current: Int?,
+            size: Int?,
+            tag: String,
+            keyword: String
     ): Flowable<List<SearchMusicInfo>>
 
 
     fun resourceAcquisition(
-        musicNo: String,
-        userId: String,
-        userName: String,
-        roomId: String?,
-        mediaAction: String
+            musicNo: String,
+            userId: String,
+            userName: String,
+            roomId: String?,
+            mediaAction: String
     ): Flowable<MusicResource>
 
 
@@ -91,43 +91,16 @@ interface Service {
     ): Flowable<Token>
 
 
-    fun unbindMember(
-            token: String,
-            appId: String,
-            memberOutId: String?,
-            societyOutId: String?,
-            timestamp: String,
-            memberId: String, societyId: String
-    ): Flowable<Any>
+    fun unbindMember(memberId: String, societyId: String): Flowable<Any>
 
 
-    fun bind(accessToken: String,
-             appId: String,
-             memberOutId: String?,
-             societyOutId: String?,
-             timestamp: String,
-             memberId: String,
-             societyId: String): Flowable<Any>
+    fun bind(memberId: String, societyId: String): Flowable<Any>
 
 
-    fun delete(
-            accessToken: String,
-            appId: String,
-            memberOutId: String?,
-            societyOutId: String?,
-            timestamp: String,
-            memberId: String
-    ): Flowable<Any>
+    fun delete(memberId: String): Flowable<Any>
 
 
-    fun deleteSociaty(
-            accessToken: String,
-            appId: String,
-            memberOutId: String?,
-            societyOutId: String?,
-            timestamp: String,
-            societyId: String
-    ): Flowable<Any>
+    fun deleteSociety(societyId: String): Flowable<Any>
 
 
 }

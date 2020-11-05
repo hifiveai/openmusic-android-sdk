@@ -195,9 +195,6 @@ abstract class BaseController {
 
     abstract fun unbindingMember(
             context: Context,
-            accessToken: String,
-            memberOutId: String?,
-            societyOutId: String?,
             memberId: String,
             societyId: String,
             dataResponse: DataResponse
@@ -206,9 +203,6 @@ abstract class BaseController {
 
     abstract fun bindingMember(
             context: Context,
-            accessToken: String,
-            memberOutId: String?,
-            societyOutId: String?,
             memberId: String,
             societyId: String,
             dataResponse: DataResponse
@@ -217,18 +211,12 @@ abstract class BaseController {
 
     abstract fun deleteMember(
             context: Context,
-            accessToken: String,
-            memberOutId: String?,
-            societyOutId: String?,
             memberId: String,
             dataResponse: DataResponse
     )
 
     abstract fun deleteSociety(
             context: Context,
-            accessToken: String,
-            memberOutId: String?,
-            societyOutId: String?,
             societyId: String,
             dataResponse: DataResponse
     )

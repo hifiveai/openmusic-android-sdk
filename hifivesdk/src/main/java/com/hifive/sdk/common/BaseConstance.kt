@@ -13,7 +13,10 @@ class BaseConstance {
         const val TIME_OUT: Long = 30
         const val BASE_URL: String = "http://openmusic-api.hifiveai.com"
         const val BASE_URL_MUSIC: String = "https://hifive-gateway-test.hifiveai.com"
-        var accessToken: String = ""
+        var accessTokenMember: String? = null
+        var accessTokenUnion: String? = null
+        var memberOutId: String? = null
+        var societyOutId: String? = null
         const val SUCCEED = 200
 
         fun getSign(secret: String, message: String): String? {

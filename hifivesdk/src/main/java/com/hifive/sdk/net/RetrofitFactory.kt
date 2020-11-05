@@ -55,6 +55,8 @@ class RetrofitFactory private constructor() {
             override fun intercept(chain: Interceptor.Chain): Response {
                 stamp = System.currentTimeMillis().toString()
                 NONCE = getNum().toString()
+
+
                 val request = chain.request().newBuilder()
                     .addHeader("appId", APP_ID ?: "")
                     .addHeader("deviceId", DEVICE_ID ?: "")

@@ -19,12 +19,12 @@ class ServiceImpl @Inject constructor() : Service {
 
 
     override fun queryPlayList(
-        num: Int?,
-        size: Int?,
-        userId: String,
-        roomId: String?,
-        mediaAction: String,
-        sort: String?
+            num: Int?,
+            size: Int?,
+            userId: String,
+            roomId: String?,
+            mediaAction: String,
+            sort: String?
     ): Flowable<List<MusicInfo>> {
         return dataRepository.queryPlayList(num, size, userId, roomId, mediaAction, sort).convert()
     }
@@ -34,26 +34,25 @@ class ServiceImpl @Inject constructor() : Service {
     }
 
 
-
     override fun initSdk(isAnchor: Boolean, userId: String, userName: String): Flowable<SdkInfo> {
         return dataRepository.initSDK(isAnchor, userId, userName).convert()
     }
 
 
     override fun addSong(
-        userId: String,
-        roomId: String?,
-        musicNo: String,
-        mediaAction: String
+            userId: String,
+            roomId: String?,
+            musicNo: String,
+            mediaAction: String
     ): Flowable<AddSongBean> {
         return dataRepository.addSong(userId, roomId, musicNo, mediaAction).convert()
     }
 
     override fun deleteSong(
-        musicNo: String,
-        userId: String,
-        roomId: String?,
-        mediaAction: String?
+            musicNo: String,
+            userId: String,
+            roomId: String?,
+            mediaAction: String?
     ): Flowable<DeleteSongBean> {
         return dataRepository.deleteSong(musicNo, userId, roomId, mediaAction).convert()
     }
@@ -63,21 +62,21 @@ class ServiceImpl @Inject constructor() : Service {
     }
 
     override fun searchSong(
-        current: Int?,
-        size: Int?,
-        tag: String,
-        keyword: String
+            current: Int?,
+            size: Int?,
+            tag: String,
+            keyword: String
     ): Flowable<List<SearchMusicInfo>> {
         return dataRepository.searchSong(current, size, tag, keyword).convert()
 
     }
 
     override fun resourceAcquisition(
-        musicNo: String,
-        userId: String,
-        userName: String,
-        roomId: String?,
-        mediaAction: String
+            musicNo: String,
+            userId: String,
+            userName: String,
+            roomId: String?,
+            mediaAction: String
     ): Flowable<MusicResource> {
         return dataRepository.resourceAcquisition(musicNo, userId, userName, roomId, mediaAction)
                 .convert()
@@ -116,49 +115,31 @@ class ServiceImpl @Inject constructor() : Service {
     }
 
     override fun unbindMember(
-            token: String,
-            appId: String,
-            memberOutId: String?,
-            societyOutId: String?,
-            timestamp: String,
             memberId: String, societyId: String): Flowable<Any> {
-        return dataRepository.unbindingMember(token, appId, memberOutId, societyOutId, timestamp, memberId, societyId).convert()
+        return dataRepository.unbindingMember(memberId, societyId).convert()
 
     }
 
     override fun bind(
-            accessToken: String,
-            appId: String,
-            memberOutId: String?,
-            societyOutId: String?,
-            timestamp: String,
+
             memberId: String,
             societyId: String
     ): Flowable<Any> {
-        return dataRepository.bind(accessToken, appId, memberOutId, societyOutId, timestamp, memberId, societyId).convert()
+        return dataRepository.bind(memberId, societyId).convert()
     }
 
     override fun delete(
-            accessToken: String,
-            appId: String,
-            memberOutId: String?,
-            societyOutId: String?,
-            timestamp: String,
+
             memberId: String
     ): Flowable<Any> {
-        return dataRepository.delete(accessToken, appId, memberOutId, societyOutId, timestamp, memberId).convert()
+        return dataRepository.delete(memberId).convert()
     }
 
 
-    override fun deleteSociaty(
-            accessToken: String,
-            appId: String,
-            memberOutId: String?,
-            societyOutId: String?,
-            timestamp: String,
+    override fun deleteSociety(
             societyId: String
     ): Flowable<Any> {
-        return dataRepository.deleteSociety(accessToken, appId, memberOutId, societyOutId, timestamp, societyId).convert()
+        return dataRepository.deleteSociety(societyId).convert()
     }
 
 }

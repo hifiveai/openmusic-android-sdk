@@ -36,10 +36,11 @@ class LiveRetrofitFactory private constructor() {
 
     init {
         encryptionInterceptor = object : Interceptor {
+
             override fun intercept(chain: Interceptor.Chain): Response {
                 val request = chain.request().newBuilder()
-                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                    .build()
+                        .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .build()
                 return chain.proceed(request)
             }
 
@@ -47,27 +48,28 @@ class LiveRetrofitFactory private constructor() {
 
 
         retrofit = Retrofit
-            .Builder()
-            .baseUrl(BaseConstance.BASE_URL_MUSIC)
-            .client(initClient())
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
+                .Builder()
+                .baseUrl(BaseConstance.BASE_URL_MUSIC)
+                .client(initClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
     }
 
     private fun initClient(): OkHttpClient {
         return OkHttpClient
-            .Builder()
-            .addInterceptor(encryptionInterceptor)
-            .addInterceptor(initLogInterceptor())
-            .retryOnConnectionFailure(true)
-            .connectTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
-            .writeTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
-            .readTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
-                .hostnameVerifier( RxUtils.TrustAllHostnameVerifier())
+                .Builder()
+                .addInterceptor(DefaultHeaderInterceptor())
+                .addInterceptor(encryptionInterceptor)
+                .addInterceptor(initLogInterceptor())
+                .retryOnConnectionFailure(true)
+                .connectTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
+                .writeTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
+                .readTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
+                .hostnameVerifier(RxUtils.TrustAllHostnameVerifier())
                 .sslSocketFactory(RxUtils.createSSLSocketFactory(), TrustAllCerts())
                 .retryOnConnectionFailure(true)
-            .build()
+                .build()
     }
 
 
