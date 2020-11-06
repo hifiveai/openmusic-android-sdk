@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,6 +54,8 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
     public static final int RequstFail= 2;//请求失败
     public static final int LoadMore= 12;//加载
     public static final int Refresh =11;//刷新
+    public static final int AddLike= 14;//添加喜欢的回调
+    public static final int Addkaraoke =15;//添加K歌的回调
     public boolean isLoadMore = false;
     private long  sheetId;
     private HifiveMusicSheetModel musicSheetModel;
@@ -69,6 +72,8 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
     private final int pageSize = 10;
     private List<HifiveMusicModel> musicModels;
     private Context mContext;
+    private boolean isAddLike;//保存是否正在添加喜欢状态，防止重复点击
+    private boolean isAddkaraoke;//保存是否正在添加K歌状态，防止重复点击
     private final Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -99,6 +104,20 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                         isLoadMore = false;
                         refreshLayout.finishLoadMore();
                     }
+                    break;
+                case AddLike:
+                    isAddLike = false;
+                    if(mContext != null)
+                        Toast.makeText(mContext,mContext.getString(R.string.hifivesdk_music_add_like_msg),Toast.LENGTH_SHORT).show();
+                    HifiveDialogManageUtil.getInstance().addLikeSingle((HifiveMusicModel) msg.obj);
+                    adapter.notifyItemChanged(msg.arg1);
+                    break;
+                case Addkaraoke:
+                    isAddkaraoke = false;
+                    if(mContext != null)
+                        Toast.makeText(mContext,mContext.getString(R.string.hifivesdk_music_add_karaoke_msg),Toast.LENGTH_SHORT).show();
+                    HifiveDialogManageUtil.getInstance().addKaraokeSingle((HifiveMusicModel) msg.obj);
+                    adapter.notifyItemChanged(msg.arg1);
                     break;
             }
             return false;
@@ -143,7 +162,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
         updateSheetView();
         ininReclyView();
         getData(Refresh);
-        HifiveDialogManageUtil.addDialog(this);
+        HifiveDialogManageUtil.getInstance().addDialog(this);
         return view;
     }
     //初始化view
@@ -152,7 +171,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dismiss();
-                HifiveDialogManageUtil.removeDialog(2);
+                HifiveDialogManageUtil.getInstance().removeDialog(2);
             }
         });
         iv_image = view.findViewById(R.id.iv_image);
@@ -165,26 +184,39 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
         ll_playall = view.findViewById(R.id.ll_playall);
         tv_number = view.findViewById(R.id.tv_number);
         mRecyclerView = view.findViewById(R.id.rv_music);
+        ll_playall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(adapter != null){
+                    HifiveDialogManageUtil.getInstance().updateCurrentList(adapter.getDatas());
+                }
+            }
+        });
     }
     //初始化ReclyView
     private void ininReclyView() {
         adapter = new HifiveMusicSearchAdapter(getContext(),new ArrayList<HifiveMusicModel>(),true);
         adapter.setOnAddkaraokeClickListener(new HifiveMusicSearchAdapter.OnAddkaraokeClickListener() {
             @Override
-            public void onClick(View v, long musicId) {
-
+            public void onClick(View v, int position) {
+                if(!isAddkaraoke){
+                    addkaraoke(position);
+                }
             }
         });
         adapter.setOnAddLikeClickListener(new HifiveMusicSearchAdapter.OnAddLikeClickListener() {
             @Override
-            public void onClick(View v, long musicId) {
-
+            public void onClick(View v, int position) {
+                if(!isAddLike){
+                    addLike(position);
+                }
             }
         });
         adapter.setOnItemClickListener(new HifiveMusicSearchAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-
+                if(HifiveDialogManageUtil.getInstance().playId != adapter.getDatas().get(position).getId())
+                    HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
             }
         });
         mRecyclerView.setAdapter(adapter);
@@ -199,6 +231,22 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                 }
             }
         });
+    }
+    //添加到我的K歌请求
+    private void addkaraoke(int position) {
+        Message message = mHandler.obtainMessage();
+        message.what = Addkaraoke;
+        message.arg1= position;
+        message.obj = adapter.getDatas().get(position);
+        mHandler.sendMessageDelayed(message,500);
+    }
+    //添加到我的喜欢请求
+    private void addLike(int position) {
+        Message message = mHandler.obtainMessage();
+        message.what = AddLike;
+        message.arg1= position;
+        message.obj = adapter.getDatas().get(position);
+        mHandler.sendMessageDelayed(message,500);
     }
     //更新ui
     private void updateSheetView() {
@@ -240,7 +288,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
         musicModels = new ArrayList<>();
         for(int i= pageSize*(page-1); i < pageSize*page ;i++){
             HifiveMusicModel musicModel = new HifiveMusicModel();
-            musicModel.setId(i);
+            musicModel.setId(200+i);
             musicModel.setName("木偶人"+(i+1));
             musicModel.setAuthor("薛之谦");
             musicModel.setAlbum("悔恨的泪");

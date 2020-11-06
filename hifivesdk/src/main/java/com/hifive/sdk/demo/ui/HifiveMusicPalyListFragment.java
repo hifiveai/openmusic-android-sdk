@@ -1,7 +1,6 @@
 package com.hifive.sdk.demo.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +18,15 @@ import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * 音乐列表-当前播放的fragment
  *
  * @author huchao
  */
-public class HifiveMusicPalyListFragment extends Fragment {
+public class HifiveMusicPalyListFragment extends Fragment implements Observer {
     private RecyclerView mRecyclerView;
     private HifiveMusicListAdapter adapter;
     @Override
@@ -39,7 +40,12 @@ public class HifiveMusicPalyListFragment extends Fragment {
         View view = inflater.inflate(R.layout.hifive_fragment_music_list_current, container, false);
         mRecyclerView =  view.findViewById(R.id.rv_music);
         initRecyclerView();
-        getdata();
+        if(HifiveDialogManageUtil.getInstance().getCurrentList() !=null
+                && HifiveDialogManageUtil.getInstance().getCurrentList().size() >0){
+            adapter.updateDatas(HifiveDialogManageUtil.getInstance().getCurrentList());
+        }else{
+            getdata();
+        }
         return view;
     }
     //初始化view
@@ -48,20 +54,36 @@ public class HifiveMusicPalyListFragment extends Fragment {
         adapter.setOnItemClickListener(new HifiveMusicListAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-
-
+                if(HifiveDialogManageUtil.getInstance().playId != adapter.getDatas().get(position).getId()){
+                    HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
+                }
             }
         });
         adapter.setOnItemDeleteClickListener(new HifiveMusicListAdapter.OnItemDeleteClickListener() {
             @Override
             public void onClick(View v, int position) {
-
-
+                showConfirmDialog(position);
             }
         });
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));//调整RecyclerView的排列方向
     }
+    //弹窗删除二次确认框
+    private void showConfirmDialog(final int position) {
+        HifiveComfirmDialogFragment dialog = new HifiveComfirmDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(HifiveComfirmDialogFragment.ContentTx, getString(R.string.hifivesdk_comfirm_delete_music));
+        dialog.setArguments(bundle);
+        dialog.setOnSureClick(new HifiveComfirmDialogFragment.OnSureClick() {
+            @Override
+            public void sureClick() {
+                HifiveDialogManageUtil.getInstance().getCurrentList().remove(position);
+                adapter.notifyDataSetChanged();
+            }
+        });
+        dialog.show(getFragmentManager(), HifiveComfirmDialogFragment.class.getSimpleName());
+    }
+
     //获取当前播放的列表
     private void getdata() {
         List<HifiveMusicModel> musicModels = new ArrayList<>();
@@ -74,19 +96,33 @@ public class HifiveMusicPalyListFragment extends Fragment {
             musicModel.setIntroduce("这是一段浪漫的故事！");
             musicModels.add(musicModel);
         }
-        HifiveDialogManageUtil.currentList = musicModels;
-        HifiveDialogManageUtil.playId = 0;
-        adapter.updateDatas(HifiveDialogManageUtil.currentList);
+        HifiveDialogManageUtil.getInstance().setCurrentList(musicModels);
+        adapter.updateDatas(HifiveDialogManageUtil.getInstance().getCurrentList());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.e(HifiveMusicPalyListFragment.class.getSimpleName(),"onResume");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        try{
+            int type = (int) arg;
+            if(adapter != null){
+                if(type == HifiveDialogManageUtil.UPDATEPALY){
+                    adapter.notifyDataSetChanged();
+                }else  if(type == HifiveDialogManageUtil.UPDATEPALYLIST){
+                    adapter.updateDatas(HifiveDialogManageUtil.getInstance().getCurrentList());
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

@@ -54,4 +54,11 @@ public class HifiveMusicModel {
     public void setLyric(String lyric) {
         this.lyric = lyric;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == null || o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        HifiveMusicModel musicModel = (HifiveMusicModel) o;
+        return id== musicModel.getId();
+    }
 }

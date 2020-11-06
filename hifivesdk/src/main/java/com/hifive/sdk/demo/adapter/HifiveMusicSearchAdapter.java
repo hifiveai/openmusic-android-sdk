@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.model.HifiveMusicModel;
+import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 
 import java.util.List;
 
@@ -32,11 +33,11 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
     }
     //添加喜欢点击回调
     public interface OnAddLikeClickListener {
-        void onClick(View v, long musicId);
+        void onClick(View v, int position);
     }
     //添加K歌点击回调
     public interface OnAddkaraokeClickListener {
-        void onClick(View v, long musicId);
+        void onClick(View v, int position);
     }
     //ty
     public HifiveMusicSearchAdapter(Context ctx, List<HifiveMusicModel> news,boolean showNumber) {
@@ -52,7 +53,7 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
     @NonNull
     @Override
     public MusicSearchHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-       View view = LayoutInflater.from(mContext).inflate(R.layout.hifive_item_music_sheet_detail, viewGroup, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.hifive_item_music_sheet_detail, viewGroup, false);
         return new MusicSearchHolder(view);
     }
 
@@ -65,6 +66,18 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
             holder.tv_num.setVisibility(View.VISIBLE);
         }else{
             holder.tv_num.setVisibility(View.GONE);
+        }
+        if(HifiveDialogManageUtil.getInstance().getKaraokeList() != null
+                && HifiveDialogManageUtil.getInstance().getKaraokeList().contains(model)){
+            holder.iv_add_karaoke.setImageResource(R.mipmap.hifivesdk_icon_add_karaoke_select);
+        }else{
+            holder.iv_add_karaoke.setImageResource(R.mipmap.hifivesdk_icon_add_karaoke);
+        }
+        if(HifiveDialogManageUtil.getInstance().getLikeList() != null
+                && HifiveDialogManageUtil.getInstance().getLikeList().contains(model)){
+            holder.iv_add_like.setImageResource(R.mipmap.hifivesdk_icon_add_like_select);
+        }else{
+            holder.iv_add_like.setImageResource(R.mipmap.hifivesdk_icon_add_like);
         }
         holder.tv_name.setText(model.getName());
         holder.tv_detail.setText(model.getAuthor()+"-"+model.getAlbum()+"-"+model.getIntroduce());
@@ -81,7 +94,7 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
             @Override
             public void onClick(View v) {
                 if(OnAddLikeClickListener != null){
-                    OnAddLikeClickListener.onClick(v,model.getId());
+                    OnAddLikeClickListener.onClick(v,position);
                 }
             }
         });
@@ -89,7 +102,7 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
             @Override
             public void onClick(View v) {
                 if(onAddkaraokeClickListener != null){
-                    onAddkaraokeClickListener.onClick(v,model.getId());
+                    onAddkaraokeClickListener.onClick(v,position);
                 }
             }
         });

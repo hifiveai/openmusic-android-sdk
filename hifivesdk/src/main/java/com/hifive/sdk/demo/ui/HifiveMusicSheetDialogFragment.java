@@ -88,7 +88,7 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
         initView(view);
         initMagicIndicator();
         initPage();
-        HifiveDialogManageUtil.addDialog(this);
+        HifiveDialogManageUtil.getInstance().addDialog(this);
         return view;
     }
     //初始化view
@@ -97,7 +97,7 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dismiss();
-                HifiveDialogManageUtil.removeDialog(1);
+                HifiveDialogManageUtil.getInstance().removeDialog(1);
             }
         });
         magicIndicator = view.findViewById(R.id.magic_indicator);

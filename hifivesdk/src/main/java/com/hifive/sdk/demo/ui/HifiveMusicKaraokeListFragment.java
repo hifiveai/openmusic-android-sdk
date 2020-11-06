@@ -3,6 +3,7 @@ package com.hifive.sdk.demo.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,71 +19,53 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveMusicListAdapter;
 import com.hifive.sdk.demo.model.HifiveMusicModel;
-import com.hifive.sdk.demo.view.HifiveLoadMoreFooter;
+import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 import com.hifive.sdk.demo.view.HifiveRefreshHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.tsy.sdk.myokhttp.util.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * 音乐列表-K歌的fragment
  *
  * @author huchao
  */
-public class HifiveMusicKaraokeListFragment extends Fragment {
-    protected static final int Refresh =11;//刷新
-    protected static final int LoadMore= 12;//加载
-    protected static final int RequstFail= 15;//请求失败
+public class HifiveMusicKaraokeListFragment extends Fragment implements Observer {
+    protected static final int RequstSuccess =11;//请求成功
+    protected static final int RequstFail= 12;//请求失败
     public boolean isRefresh= false;
-    public boolean isLoadMore = false;
     private SmartRefreshLayout refreshLayout;
     private LinearLayout ll_playall;
     private TextView tv_number;
     private RecyclerView mRecyclerView;
     private HifiveMusicListAdapter adapter;
     private  List<HifiveMusicModel> hifiveMusicModels;
-    private int page = 1;
-    private final int pageSize = 10;
     protected Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
-                case Refresh:
+                case RequstSuccess:
                     isRefresh = false;
                     refreshLayout.finishRefresh();
                     adapter.updateDatas(hifiveMusicModels);
                     tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
                     if( hifiveMusicModels != null && hifiveMusicModels.size() > 0){
                         ll_playall.setVisibility(View.VISIBLE);
-                        refreshLayout.setEnableLoadMore(hifiveMusicModels.size() >= pageSize);
                     }else{
-                        refreshLayout.setEnableLoadMore(false);
                         ll_playall.setVisibility(View.GONE);
                     }
-                    break;
-                case LoadMore:
-                    isLoadMore = false;
-                    adapter.addDatas(hifiveMusicModels);
-                    tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
-                    if(hifiveMusicModels.size() < pageSize){//返回的数据小于每页条数表示没有更多数据了不允许上拉加载
-                        refreshLayout.finishLoadMoreWithNoMoreData();
-                    }else{
-                        refreshLayout.finishLoadMore();
-                    }
+                    HifiveDialogManageUtil.getInstance().setKaraokeList(adapter.getDatas());
                     break;
                 case RequstFail:
                     if (isRefresh) {
                         isRefresh = false;
                         refreshLayout.finishRefresh();
-                    }
-                    if (isLoadMore) {
-                        isLoadMore = false;
-                        refreshLayout.finishLoadMore();
                     }
                     break;
             }
@@ -100,7 +83,13 @@ public class HifiveMusicKaraokeListFragment extends Fragment {
         View view = inflater.inflate(R.layout.hifive_fragment_music_list, container, false);
         initView(view);
         initRecyclerView();
-        refreshLayout.autoRefresh();
+        if(HifiveDialogManageUtil.getInstance().getKaraokeList() !=null
+                && HifiveDialogManageUtil.getInstance().getKaraokeList().size() >0){
+            hifiveMusicModels = HifiveDialogManageUtil.getInstance().getKaraokeList();
+            mHandler.sendEmptyMessageDelayed(RequstSuccess,1000);
+        }else{
+            refreshLayout.autoRefresh();
+        }
         return view;
     }
     //初始化view
@@ -110,7 +99,15 @@ public class HifiveMusicKaraokeListFragment extends Fragment {
         tv_number = view.findViewById(R.id.tv_number);
         mRecyclerView = view.findViewById(R.id.rv_music);
         refreshLayout.setRefreshHeader(new HifiveRefreshHeader(getContext()));
-        refreshLayout.setRefreshFooter(new HifiveLoadMoreFooter(getContext()));
+        refreshLayout.setEnableLoadMore(false);
+        ll_playall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(adapter != null){
+                    HifiveDialogManageUtil.getInstance().updateCurrentList(adapter.getDatas());
+                }
+            }
+        });
     }
     //初始化RecyclerView
     private void initRecyclerView() {
@@ -118,15 +115,15 @@ public class HifiveMusicKaraokeListFragment extends Fragment {
         adapter.setOnItemClickListener(new HifiveMusicListAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-
-
+                if(HifiveDialogManageUtil.getInstance().playId != adapter.getDatas().get(position).getId()){
+                    HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
+                }
             }
         });
         adapter.setOnItemDeleteClickListener(new HifiveMusicListAdapter.OnItemDeleteClickListener() {
             @Override
             public void onClick(View v, int position) {
-
-
+                showConfirmDialog(position);
             }
         });
         mRecyclerView.setAdapter(adapter);
@@ -136,28 +133,32 @@ public class HifiveMusicKaraokeListFragment extends Fragment {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 LogUtils.e( "onRefresh");
                 if(!isRefresh){
-                    page = 1;
                     isRefresh=true;
-                    getData(Refresh);
-                }
-            }
-        });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                LogUtils.e( "onLoadMore");
-                if (!isLoadMore) {
-                    page++;
-                    isLoadMore = true;
-                    getData(LoadMore);
+                    getData();
                 }
             }
         });
     }
+    //弹窗删除二次确认框
+    private void showConfirmDialog(final int position) {
+        HifiveComfirmDialogFragment dialog = new HifiveComfirmDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(HifiveComfirmDialogFragment.ContentTx, getString(R.string.hifivesdk_comfirm_delete_music));
+        dialog.setArguments(bundle);
+        dialog.setOnSureClick(new HifiveComfirmDialogFragment.OnSureClick() {
+            @Override
+            public void sureClick() {
+                adapter.getDatas().remove(position);
+                HifiveDialogManageUtil.getInstance().setKaraokeList(adapter.getDatas());
+                adapter.notifyDataSetChanged();
+            }
+        });
+        dialog.show(getFragmentManager(), HifiveComfirmDialogFragment.class.getSimpleName());
+    }
     //根据电台获取歌单数据
-    private void getData(int ty) {
+    private void getData() {
         hifiveMusicModels = new ArrayList<>();
-        for(int i= pageSize*(page-1); i < pageSize*page ;i++){
+        for(int i= 0; i < 100 ;i++){
             HifiveMusicModel musicModel = new HifiveMusicModel();
             musicModel.setId(i);
             musicModel.setName("告白气球"+(i+1));
@@ -166,12 +167,32 @@ public class HifiveMusicKaraokeListFragment extends Fragment {
             musicModel.setIntroduce("这是一段浪漫的故事！");
             hifiveMusicModels.add(musicModel);
         }
-        mHandler.sendEmptyMessageDelayed(ty,1000);
+        mHandler.sendEmptyMessageDelayed(RequstSuccess,1000);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        try{
+            int type = (int) arg;
+            if(adapter != null){
+                if(type == HifiveDialogManageUtil.UPDATEPALY){
+                    adapter.notifyDataSetChanged();
+                }else if(type == HifiveDialogManageUtil.UPDATEKARAOKLIST){
+                    adapter.updateDatas(HifiveDialogManageUtil.getInstance().getKaraokeList());
+                    if(tv_number != null && getContext()!= null)
+                        tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

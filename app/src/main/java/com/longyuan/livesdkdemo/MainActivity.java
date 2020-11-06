@@ -30,6 +30,19 @@ public class MainActivity extends AppCompatActivity {
         tv_miusic = findViewById(R.id.tv_miusic);
         initView();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e(MainActivity.class.getSimpleName(),"==onPause==");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e(MainActivity.class.getSimpleName(),"==onResume==");
+    }
+
     private void initView() {
         HiFiveManager. Companion.start(getApplication(), "8365eb6054eeaed261ae526c46ebf58f", "6cd6f71004344acbb478a7f2f3b44bc5");
 
@@ -76,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         tv_miusic.setOnClickListener(view -> {
             if(dialogFragment != null && dialogFragment.getDialog() != null){
                 if(dialogFragment.getDialog().isShowing()){
-                    HifiveDialogManageUtil.StopDialog();
+                    HifiveDialogManageUtil.getInstance().CloseDialog();
                 }else{
                     dialogFragment.show(getSupportFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
                 }

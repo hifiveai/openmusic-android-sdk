@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -82,10 +81,13 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
                     WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
         }
         View view = inflater.inflate(R.layout.hifive_dialog_music_list, container);
+        if(HifiveDialogManageUtil.getInstance().updateObservable == null){
+            HifiveDialogManageUtil.getInstance().updateObservable = new HifiveUpdateObservable();
+        }
         initView(view);
         initMagicIndicator();
         initPage();
-        HifiveDialogManageUtil.addDialog(this);
+        HifiveDialogManageUtil.getInstance().addDialog(this);
         return view;
     }
     //初始化view
@@ -94,7 +96,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dismiss();
-                HifiveDialogManageUtil.removeDialog(0);
+                HifiveDialogManageUtil.getInstance().removeDialog(0);
             }
         });
         view.findViewById(R.id.iv_sheet).setOnClickListener(new View.OnClickListener() {
@@ -197,6 +199,10 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
         HifiveMusicLikeListFragment likeListFragment = new HifiveMusicLikeListFragment();
         //3.K歌
         HifiveMusicKaraokeListFragment karaokeListFragment = new HifiveMusicKaraokeListFragment();
+        //为被观察者添加观察者
+        HifiveDialogManageUtil.getInstance().updateObservable.addObserver(currentPalyListFragment);
+        HifiveDialogManageUtil.getInstance().updateObservable.addObserver(likeListFragment);
+        HifiveDialogManageUtil.getInstance().updateObservable.addObserver(karaokeListFragment);
         fragments.add(currentPalyListFragment);
         fragments.add(likeListFragment);
         fragments.add(karaokeListFragment);
@@ -223,6 +229,5 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e(HifiveMusicListDialogFragment.class.getSimpleName(),"onResume");
     }
 }
