@@ -221,6 +221,149 @@ class MusicManager(val context: Context) : BaseController() {
                     }
                 })
     }
+
+    override fun getMemberSheetList(context: Context, language: String, reconNumb: String, field: String, dataResponse: DataResponse) {
+        if (!checkNetWork(context, dataResponse)) {
+            return
+        }
+        mService.getMemberSheetList(language, reconNumb, field)
+                .request(object : BaseSubscribe<Any>(dataResponse) {
+                    override fun onNext(t: Any) {
+                        super.onNext(t)
+                        dataResponse.data(t)
+                    }
+                })
+    }
+
+    override fun getMemberSheetMusicList(context: Context, sheetId: String, language: String, field: String, pageSize: String, page: String, dataResponse: DataResponse) {
+        if (!checkNetWork(context, dataResponse)) {
+            return
+        }
+        mService.getMemberSheetMusicList(sheetId, language, field, pageSize, page)
+                .request(object : BaseSubscribe<Any>(dataResponse) {
+                    override fun onNext(t: Any) {
+                        super.onNext(t)
+                        dataResponse.data(t)
+                    }
+                })
+    }
+
+    override fun getMusicDetail(context: Context, musicId: String, language: String, mediaType: String, field: String, dataResponse: DataResponse) {
+        if (!checkNetWork(context, dataResponse)) {
+            return
+        }
+        mService.getMusicDetail(musicId, language, mediaType, field)
+                .request(object : BaseSubscribe<Any>(dataResponse) {
+                    override fun onNext(t: Any) {
+                        super.onNext(t)
+                        dataResponse.data(t)
+                    }
+                })
+    }
+
+    override fun saveMemberSheet(context: Context, sheetName: String, dataResponse: DataResponse) {
+        if (!checkNetWork(context, dataResponse)) {
+            return
+        }
+        mService.saveMemberSheet(sheetName)
+                .request(object : BaseSubscribe<Any>(dataResponse) {
+                    override fun onNext(t: Any) {
+                        super.onNext(t)
+                        dataResponse.data(t)
+                    }
+                })
+    }
+
+    override fun saveMemberSheetMusic(context: Context, sheetId: String, musicId: String, dataResponse: DataResponse) {
+        if (!checkNetWork(context, dataResponse)) {
+            return
+        }
+        mService.saveMemberSheetMusic(sheetId, musicId)
+                .request(object : BaseSubscribe<Any>(dataResponse) {
+                    override fun onNext(t: Any) {
+                        super.onNext(t)
+                        dataResponse.data(t)
+                    }
+                })
+    }
+
+    override fun deleteMemberSheetMusic(context: Context, sheetId: String, musicId: String, dataResponse: DataResponse) {
+        if (!checkNetWork(context, dataResponse)) {
+            return
+        }
+        mService.deleteMemberSheetMusic(sheetId, musicId)
+                .request(object : BaseSubscribe<Any>(dataResponse) {
+                    override fun onNext(t: Any) {
+                        super.onNext(t)
+                        dataResponse.data(t)
+                    }
+                })
+    }
+
+    override fun updateMusicRecord(context: Context, recordId: String, duration: String, mediaType: String, dataResponse: DataResponse) {
+        if (!checkNetWork(context, dataResponse)) {
+            return
+        }
+        mService.updateMusicRecord(recordId, duration, mediaType)
+                .request(object : BaseSubscribe<Any>(dataResponse) {
+                    override fun onNext(t: Any) {
+                        super.onNext(t)
+                        dataResponse.data(t)
+                    }
+                })
+    }
+
+    override fun getConfigList(context: Context, dataResponse: DataResponse) {
+        if (!checkNetWork(context, dataResponse)) {
+            return
+        }
+        mService.getConfigList()
+                .request(object : BaseSubscribe<Any>(dataResponse) {
+                    override fun onNext(t: Any) {
+                        super.onNext(t)
+                        dataResponse.data(t)
+                    }
+                })
+    }
+
+    override fun getMusicList(context: Context, searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?, dataResponse: DataResponse) {
+        if (!checkNetWork(context, dataResponse)) {
+            return
+        }
+        mService.getMusicList(searchId, keyword, language, field, pageSize, page)
+                .request(object : BaseSubscribe<Any>(dataResponse) {
+                    override fun onNext(t: Any) {
+                        super.onNext(t)
+                        dataResponse.data(t)
+                    }
+                })
+    }
+
+    override fun getSearchRecordList(context: Context, pageSize: String?, page: String?, dataResponse: DataResponse) {
+        if (!checkNetWork(context, dataResponse)) {
+            return
+        }
+        mService.getSearchRecordList(pageSize, page)
+                .request(object : BaseSubscribe<Any>(dataResponse) {
+                    override fun onNext(t: Any) {
+                        super.onNext(t)
+                        dataResponse.data(t)
+                    }
+                })
+    }
+
+    override fun deleteSearchRecord(context: Context, dataResponse: DataResponse) {
+        if (!checkNetWork(context, dataResponse)) {
+            return
+        }
+        mService.deleteSearchRecord()
+                .request(object : BaseSubscribe<Any>(dataResponse) {
+                    override fun onNext(t: Any) {
+                        super.onNext(t)
+                        dataResponse.data(t)
+                    }
+                })
+    }
 }
 
 

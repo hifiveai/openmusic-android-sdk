@@ -112,4 +112,95 @@ interface Api {
             @Field("sociatyId") sign: String
     ): Flowable<BaseResp<Any>>
 
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/member/music/getMemberSheetList")
+    fun getMemberSheetList(
+            @Field("language") language: String,
+            @Field("recoNum") recoNum: String,
+            @Field("field") field: String
+    ): Flowable<BaseResp<Any>>
+
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/member/music/getMemberSheetMusicList")
+    fun getMemberSheetMusicList(
+            @Field("sheetId") sheetId: String,
+            @Field("language") language: String,
+            @Field("field") field: String,
+            @Field("pageSize") pageSize: String,
+            @Field("page") page: String
+
+    ): Flowable<BaseResp<Any>>
+
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/member/music/getMusicDetail")
+    fun getMusicDetail(
+            @Field("musicId") musicId: String,
+            @Field("language") language: String,
+            @Field("mediaType") mediaType: String,
+            @Field("field") field: String
+    ): Flowable<BaseResp<Any>>
+
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/member/music/saveMemberSheet")
+    fun saveMemberSheet(
+            @Field("sheetName") musicId: String
+    ): Flowable<BaseResp<Any>>
+
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/member/music/saveMemberSheetMusic")
+    fun saveMemberSheetMusic(
+            @Field("sheetId") sheetId: String,
+            @Field("musicId") musicId: String
+    ): Flowable<BaseResp<Any>>
+
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/member/music/deleteMemberSheetMusic")
+    fun deleteMemberSheetMusic(
+            @Field("sheetId") sheetId: String,
+            @Field("musicId") musicId: String
+    ): Flowable<BaseResp<Any>>
+
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/member/record/updateMusicRecord")
+    fun updateMusicRecord(
+            @Field("recordId") recordId: String,
+            @Field("duration") duration: String,
+            @Field("mediaType") mediaType: String
+    ): Flowable<BaseResp<Any>>
+
+
+    @GET("/livestream/v1/search/getConfigList")
+    fun getConfigList(): Flowable<BaseResp<Any>>
+
+
+    @FormUrlEncoded
+    @POST("/livestream/v1/search/getMusicList")
+    fun getMusicList(
+            @Field("searchId") searchId: String,
+            @Field("keyword") keyword: String?,
+            @Field("language") language: String?,
+            @Field("field") field: String?,
+            @Field("pageSize") pageSize: String?,
+            @Field("page") page: String?
+    ): Flowable<BaseResp<Any>>
+
+
+    @GET("/livestream/v1/search/getSearchRecordList")
+    fun getSearchRecordList(
+            @Field("pageSize") pageSize: String?,
+            @Field("page") page: String?
+    ): Flowable<BaseResp<Any>>
+
+
+    @GET("/livestream/v1/search/deleteSearchRecord")
+    fun deleteSearchRecord(): Flowable<BaseResp<Any>>
+
+
 }

@@ -95,4 +95,58 @@ class ServiceImpl @Inject constructor() : Service {
         return dataRepository.deleteSociety(societyId).convert()
     }
 
+    override fun getMemberSheetList(language: String, reconNumb: String, field: String): Flowable<Any> {
+        return dataRepository.getMemberSheetList(language, reconNumb, field).convert()
+
+    }
+
+    override fun getMemberSheetMusicList(sheetId: String, language: String, field: String, pageSize: String, page: String): Flowable<Any> {
+        return dataRepository.getMemberSheetMusicList(sheetId, language, field, pageSize, page).convert()
+
+    }
+
+    override fun getMusicDetail(musicId: String, language: String, mediaType: String, field: String): Flowable<Any> {
+        return dataRepository.getMusicDetail(musicId, language, mediaType, field).convert()
+
+    }
+
+    override fun saveMemberSheet(sheetName: String): Flowable<Any> {
+        return dataRepository.saveMemberSheet(sheetName).convert()
+
+    }
+
+    override fun saveMemberSheetMusic(sheetId: String, musicId: String): Flowable<Any> {
+        return dataRepository.saveMemberSheetMusic(sheetId, musicId).convert()
+
+    }
+
+    override fun deleteMemberSheetMusic(sheetId: String, musicId: String): Flowable<Any> {
+        return dataRepository.deleteMemberSheetMusic(sheetId, musicId).convert()
+
+    }
+
+    override fun updateMusicRecord(recordId: String, duration: String, mediaType: String): Flowable<Any> {
+        return dataRepository.updateMusicRecord(recordId, duration, mediaType).convert()
+
+    }
+
+    override fun getConfigList(): Flowable<Any> {
+        return dataRepository.getConfigList().convert()
+    }
+
+    override fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<Any> {
+        return dataRepository.getMusicList(searchId, keyword, language, field, pageSize, page).convert()
+    }
+
+    override fun getSearchRecordList(pageSize: String?, page: String?): Flowable<Any> {
+        return dataRepository.getSearchRecordList(pageSize, page).convert()
+
+    }
+
+    override fun deleteSearchRecord(): Flowable<Any> {
+        return dataRepository.deleteSearchRecord().convert()
+
+    }
+
+
 }

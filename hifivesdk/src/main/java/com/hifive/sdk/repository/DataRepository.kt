@@ -146,6 +146,68 @@ class DataRepository @Inject constructor() {
         )
     }
 
+    fun getMemberSheetList(
+            language: String, reconNumb: String, field: String
+    ): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().getMemberSheetList(language, reconNumb, field)
+    }
+
+    fun getMemberSheetMusicList(
+            sheetId: String, language: String, field: String, pageSize: String, page: String
+    ): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().getMemberSheetMusicList(sheetId, language, field, pageSize, page)
+    }
+
+
+    fun getMusicDetail(
+            musicId: String, language: String, mediaType: String, field: String
+    ): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().getMusicDetail(musicId, language, mediaType, field)
+    }
+
+
+    fun saveMemberSheet(
+            sheetName: String
+    ): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().saveMemberSheet(sheetName)
+    }
+
+
+    fun saveMemberSheetMusic(
+            sheetId: String, musicId: String
+    ): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().saveMemberSheetMusic(sheetId, musicId)
+    }
+
+
+    fun deleteMemberSheetMusic(
+            sheetId: String, musicId: String
+    ): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().deleteMemberSheetMusic(sheetId, musicId)
+    }
+
+
+    fun updateMusicRecord(
+            recordId: String, duration: String, mediaType: String
+    ): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().updateMusicRecord(recordId, duration, mediaType)
+    }
+
+    fun getConfigList(): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().getConfigList()
+    }
+
+    fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().getMusicList(searchId, keyword, language, field, pageSize, page)
+    }
+
+    fun getSearchRecordList(pageSize: String?, page: String?): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().getSearchRecordList(pageSize, page)
+    }
+
+    fun deleteSearchRecord(): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().deleteSearchRecord()
+    }
 
 }
 

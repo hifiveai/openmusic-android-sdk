@@ -127,4 +127,97 @@ abstract class BaseController {
             societyId: String,
             dataResponse: DataResponse
     )
+
+    abstract fun getMemberSheetList(
+            context: Context,
+            language: String,
+            reconNumb: String,
+            field: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun getMemberSheetMusicList(
+            context: Context,
+            sheetId: String,
+            language: String,
+            field: String,
+            pageSize: String,
+            page: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun getMusicDetail(
+            context: Context,
+            musicId: String,
+            language: String,
+            mediaType: String,
+            field: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun saveMemberSheet(
+            context: Context,
+            sheetName: String,
+            dataResponse: DataResponse
+    )
+
+    abstract fun saveMemberSheetMusic(
+            context: Context,
+            sheetId: String,
+            musicId: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun deleteMemberSheetMusic(
+            context: Context,
+            sheetId: String,
+            musicId: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun updateMusicRecord(
+            context: Context,
+            recordId: String,
+            duration: String,
+            mediaType: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun getConfigList(
+            context: Context,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun getMusicList(
+            context: Context,
+            searchId: String,
+            keyword: String?,
+            language: String?,
+            field: String?,
+            pageSize: String?,
+            page: String?,
+            dataResponse: DataResponse
+    )
+
+    abstract fun getSearchRecordList(
+            context: Context,
+            pageSize: String?,
+            page: String?,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun deleteSearchRecord(
+            context: Context,
+            dataResponse: DataResponse
+    )
+
+
 }
