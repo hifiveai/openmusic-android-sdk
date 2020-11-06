@@ -22,7 +22,7 @@ interface Api {
     @FormUrlEncoded
     @POST("/livestream/v1/company/getCompanySheetList")
     fun getCompanySheetList(
-            @Field("groupId") groupId: String?,
+            @Field("channelId") groupId: String?,
             @Field("language") language: String?,
             @Field("recoNum") recoNum: String?,
             @Field("type") type: String?,
