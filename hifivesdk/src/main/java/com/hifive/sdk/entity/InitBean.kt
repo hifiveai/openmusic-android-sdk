@@ -83,20 +83,94 @@ data class RecommendMusic(
 ) : Serializable
 
 data class AddSongJson(
-    val userId: String,
-    val roomId: String?,
-    val musicNo: String,
-    val mediaAction: String
+        val userId: String,
+        val roomId: String?,
+        val musicNo: String,
+        val mediaAction: String
 ) : Serializable
 
 data class MusicCount(
-    val total: Int,
-    val pnum: Int,
-    val knum: Int
+        val total: Int,
+        val pnum: Int,
+        val knum: Int
 )
 
 
+data class SheetTagListItem(
+        val child: List<Child1>,
+        val coverUrl: String,
+        val pid: Int,
+        val tagId: Int,
+        val tagName: String
+)
+
+data class Child(
+        val child: List<Any>,
+        val coverUrl: String,
+        val pid: Int,
+        val tagId: Int,
+        val tagName: String
+)
+
 
 data class Token(
-    val accessToken: String
+        val accessToken: String
+)
+
+
+data class CompanySheetList(
+        val currentPage: Int,
+        val pageSize: Int,
+        val records: List<Record>,
+        val totalCount: Int,
+        val totalPage: Int
+)
+
+data class Record(
+        val cover: Cover,
+        val describe: String,
+        val free: Int,
+        val music: List<Any>,
+        val musicTotal: Int,
+        val price: Int,
+        val sheetId: Int,
+        val sheetName: String,
+        val tag: List<Tag>,
+        val type: Int
+)
+
+data class Cover(
+        val size: String,
+        val url: String
+)
+
+data class Tag(
+        val child: List<Child1>,
+        val coverUrl: Any,
+        val pid: Int,
+        val tagId: Int,
+        val tagName: String
+)
+
+data class Child1(
+        val child: List<Any>,
+        val coverUrl: Any,
+        val pid: Int,
+        val tagId: Int,
+        val tagName: String
+)
+
+
+data class CompanySheetMusicList(
+        val currentPage: Int,
+        val pageSize: Int,
+        val records: List<Any>,
+        val totalCount: Int,
+        val totalPage: Int
+)
+
+data class CompanyChannelList(
+        val channelId: String,
+        val channelName: String,
+        val channelUrl: String
 )

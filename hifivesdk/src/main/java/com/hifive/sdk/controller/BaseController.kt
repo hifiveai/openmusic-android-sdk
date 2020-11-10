@@ -1,6 +1,5 @@
 package com.hifive.sdk.controller
 
-import android.app.Application
 import android.content.Context
 import com.hifive.sdk.hInterface.DataResponse
 import com.hifive.sdk.service.Service
@@ -27,166 +26,198 @@ abstract class BaseController {
 
 
     /**
-     * 获取授权信息/ SDK初始化信息
+     * 获取商户歌单标签列表
      */
-    abstract fun creditUser(
+    abstract fun getCompanySheetTagList(
             context: Context,
-            isAnchor: Boolean,
-            userId: String,
-            userName: String,
             response: DataResponse
     )
 
     /**
-     * 查询主播歌单
+     * 获取商户歌单列表
      */
-    abstract fun queryPlayList(
+    abstract fun getCompanySheetList(
             context: Context,
-            num: Int?,
-            size: Int?,
-            userId: String,
-            roomId: String?,
-            mediaAction: String,
-            sort: String?,
+            groupId: String?,
+            language: String?,
+            recoNum: String?,
+            type: String?,
+            tagIdList: String?,
+            field: String?,
+            pageSize: String?,
+            page: String?,
             response: DataResponse
     )
 
     /**
-     * 查询主播歌单升序
+     * 获取商户歌单歌曲列表
      */
-    abstract fun musicSmallerThan(
+    abstract fun getCompanySheetMusicList(
             context: Context,
-            musicId: Int?,
-            size: Int?,
-            userId: String,
-            roomId: String?,
-            mediaAction: String,
-            response: DataResponse
-    )
-
-    /**
-     * 查询主播歌单降序
-     */
-    abstract fun musicBiggerThan(
-            context: Context,
-            musicId: Int?,
-            size: Int?,
-            userId: String,
-            roomId: String?,
-            mediaAction: String,
-            sort: String?,
+            sheetId: String?,
+            language: String?,
+            field: String?,
+            pageSize: String?,
+            page: String?,
             response: DataResponse
     )
 
 
     /**
-     * 添加歌单，k歌/听歌
+     * 获取商户电台列表
      */
-    abstract fun addToPlayList(
+    abstract fun getCompanyChannelList(
             context: Context,
-            userId: String,
-            roomId: String?,
-            musicNo: String,
-            mediaAction: String,
             response: DataResponse
     )
 
 
-    /**
-     * 歌单删除
-     */
-    abstract fun deleteFromPlayList(
+
+
+
+
+
+
+
+    abstract fun memberLogin(context: Context,
+                             memberName: String,
+                             memberId: String,
+                             societyName: String?,
+                             societyId: String?,
+                             headerUrl: String?,
+                             gender: String?,
+                             birthday: String?,
+                             location: String?,
+                             favoriteSinger: String?,
+                             phone: String?,
+                             dataResponse: DataResponse)
+
+
+    abstract fun societyLogin(
             context: Context,
-            musicNo: String,
-            userId: String,
-            roomId: String?,
-            mediaAction: String?,
-            response: DataResponse
-    )
+            societyName: String,
+            societyId: String,
+            dataResponse: DataResponse)
 
 
-    /**
-     * 歌曲标签
-     */
-    abstract fun musicTags(
+    abstract fun unbindingMember(
             context: Context,
-            current: Int?,
-            size: Int?,
-            response: DataResponse
-    )
-
-    /**
-     * 歌曲搜索
-     */
-    abstract fun searchMusicByTag(
-            context: Context,
-            current: Int?,
-            size: Int?,
-            tag: String,
-            keyword: String,
-            response: DataResponse
-    )
-
-
-    /**
-     * 音乐点播/音乐播放资源获取
-     */
-    abstract fun resource(
-            context: Context,
-            musicNo: String,
-            userId: String,
-            userName: String,
-            roomId: String?,
-            mediaAction: String,
-            response: DataResponse
-    )
-
-
-    /**
-     * 歌曲推荐
-     */
-    abstract fun recommendMusic(
-
-            context: Context,
-            current: Int?,
-            size: Int?,
-            response: DataResponse
-    )
-
-    /**
-     * 下载歌词
-     */
-    abstract fun downLoadLRC(
-            context: Application,
-            lrc: String,
-            path: String,
+            memberId: String,
+            societyId: String,
             dataResponse: DataResponse
     )
 
 
-    /**
-     * 获取歌单等统计数量
-     */
-    abstract fun musicCount(context: Context, userId: String, dataResponse: DataResponse);
+    abstract fun bindingMember(
+            context: Context,
+            memberId: String,
+            societyId: String,
+            dataResponse: DataResponse
+    )
 
 
-    //开放平台
+    abstract fun deleteMember(
+            context: Context,
+            memberId: String,
+            dataResponse: DataResponse
+    )
 
-    abstract fun token(context: Context,
-                       sign: String,
-                       appId: String,
-                       memberName: String,
-                       memberId: String,
-                       sociatyName: String?,
-                       sociatyId: String?,
-                       deviceId: String,
-                       timestamp: String,
-                       headerUrl: String?,
-                       gender: String?,
-                       birthday: String?,
-                       location: String?,
-                       favoriteSinger: String?,
-                       phone: String?,
-                       dataResponse: DataResponse);
+    abstract fun deleteSociety(
+            context: Context,
+            societyId: String,
+            dataResponse: DataResponse
+    )
+
+    abstract fun getMemberSheetList(
+            context: Context,
+            language: String,
+            reconNumb: String,
+            field: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun getMemberSheetMusicList(
+            context: Context,
+            sheetId: String,
+            language: String,
+            field: String,
+            pageSize: String,
+            page: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun getMusicDetail(
+            context: Context,
+            musicId: String,
+            language: String,
+            mediaType: String,
+            field: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun saveMemberSheet(
+            context: Context,
+            sheetName: String,
+            dataResponse: DataResponse
+    )
+
+    abstract fun saveMemberSheetMusic(
+            context: Context,
+            sheetId: String,
+            musicId: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun deleteMemberSheetMusic(
+            context: Context,
+            sheetId: String,
+            musicId: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun updateMusicRecord(
+            context: Context,
+            recordId: String,
+            duration: String,
+            mediaType: String,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun getConfigList(
+            context: Context,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun getMusicList(
+            context: Context,
+            searchId: String,
+            keyword: String?,
+            language: String?,
+            field: String?,
+            pageSize: String?,
+            page: String?,
+            dataResponse: DataResponse
+    )
+
+    abstract fun getSearchRecordList(
+            context: Context,
+            pageSize: String?,
+            page: String?,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun deleteSearchRecord(
+            context: Context,
+            dataResponse: DataResponse
+    )
+
 
 }
