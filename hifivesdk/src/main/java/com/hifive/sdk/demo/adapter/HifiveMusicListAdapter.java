@@ -54,7 +54,8 @@ public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicList
     @Override
     public void onBindViewHolder(@NonNull HifiveMusicListAdapter.MusicListHolder holder, final int position) {
         final HifiveMusicModel model = dataList.get(position);
-        if(model.getId() == HifiveDialogManageUtil.getInstance().playId){
+        if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null
+                && HifiveDialogManageUtil.getInstance().getPlayMusic().getId() == model.getId()){
             holder.tv_num.setVisibility(View.GONE);
             holder.iv_play.setVisibility(View.VISIBLE);
         }else{

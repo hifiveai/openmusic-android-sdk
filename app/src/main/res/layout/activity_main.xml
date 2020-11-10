@@ -26,11 +26,11 @@
             android:layout_height="wrap_content"
             android:text="Button" />
         <Button
-            android:id="@+id/tv_miusic"
-            android:layout_marginTop="20dp"
+            android:id="@+id/btn_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="音乐播放器"/>
+            android:layout_marginTop="20dp"
+            android:text="开始直播"/>
 
 
     </LinearLayout>

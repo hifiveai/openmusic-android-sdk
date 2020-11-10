@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:id="@+id/fl_lyric"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="184dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/hifive_player_lyric_detail_bg"
+            android:alpha="0.15" />
+
+        <TextView
+            android:id="@+id/tv_lyric_detail"
+            android:layout_width="match_parent"
+            android:layout_height="184dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡"
+            android:textColor="#FFFFFFFF"
+            android:scrollbars="vertical"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_lyric_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡"
+        android:textColor="#FFFFFFFF"
+        android:visibility="gone"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/hifive_player_bg">
+        <ImageView
+            android:id="@+id/iv_music"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/hifivesdk_icon_music_play"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp">
+            <TextView
+                android:id="@+id/tv_music_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:text="告白气球-周杰伦"/>
+
+            <TextView
+                android:id="@+id/tv_accompany"
+                android:layout_width="32dp"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:layout_below="@id/tv_music_info"
+                android:layout_alignLeft="@id/tv_music_info"
+                android:background="@drawable/hifive_player_accompany_bg"
+                android:layout_marginTop="4dp"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="10sp"
+                android:text="伴奏"/>
+
+            <TextView
+                android:id="@+id/tv_lyric"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:layout_below="@id/tv_music_info"
+                android:layout_toEndOf="@id/tv_accompany"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/hifive_player_lyric_bg"
+                android:layout_marginTop="4dp"
+                android:textColor="#FFD34747"
+                android:textStyle="bold"
+                android:textSize="10sp"
+                android:text="词"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_last"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/hifivesdk_icon_player_last"/>
+
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/hifivesdk_icon_player_suspend"/>
+
+        <ImageView
+            android:id="@+id/iv_next"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/hifivesdk_icon_player_next"/>
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:src="@mipmap/hifivesdk_icon_player_back"/>
+
+    </LinearLayout>
+
+</LinearLayout>

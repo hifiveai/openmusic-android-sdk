@@ -2,6 +2,7 @@ package com.hifive.sdk.demo.util;
 
 
 import androidx.fragment.app.DialogFragment;
+
 import com.hifive.sdk.demo.model.HifiveMusicModel;
 import com.hifive.sdk.demo.ui.HifiveUpdateObservable;
 
@@ -61,7 +62,16 @@ public class HifiveDialogManageUtil {
             }
         }
     }
-    public  long playId = -1;//维护当前所播放的音乐id
+    public  HifiveMusicModel playMusic;//维护当前所播放的音乐
+
+    public HifiveMusicModel getPlayMusic() {
+        return playMusic;
+    }
+
+    public void setPlayMusic(HifiveMusicModel playMusic) {
+        this.playMusic = playMusic;
+    }
+
     public  List<HifiveMusicModel> currentList;//维护当前播放的音乐列表
     public List<HifiveMusicModel> getCurrentList() {
         return currentList;
@@ -83,7 +93,10 @@ public class HifiveDialogManageUtil {
         if(musicModel == null ){
             return;
         }
-        playId = musicModel.getId();
+        if(playMusic != null && playMusic.getId()== musicModel.getId()){//播放的同一首=歌
+            return;
+        }
+        playMusic = musicModel;
         if(currentList != null && currentList.size() >0){
             if(!currentList.contains(musicModel)){
                 currentList.add(0,musicModel);
@@ -92,6 +105,18 @@ public class HifiveDialogManageUtil {
             currentList = new ArrayList<>();
             currentList.add(musicModel);
         }
+        updateObservable.postNewPublication(UPDATEPALY);
+    }
+    //按顺序播放某一首歌
+    public void setCurrentSingle(HifiveMusicModel musicModel){
+        if(musicModel == null ){
+            return;
+        }
+        if(playMusic != null
+                && playMusic.getId() == musicModel.getId()){//播放的同一首=歌
+            return;
+        }
+        playMusic = musicModel;
         updateObservable.postNewPublication(UPDATEPALY);
     }
     private  List<HifiveMusicModel> likeList;//维护喜欢的音乐列表

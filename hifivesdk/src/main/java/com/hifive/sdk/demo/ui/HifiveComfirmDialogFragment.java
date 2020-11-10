@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +31,9 @@ public class HifiveComfirmDialogFragment extends DialogFragment {
         Window window = getDialog().getWindow();
         if(window != null && mContext!= null) {
             WindowManager.LayoutParams params = window.getAttributes();
-            params.width = HifiveDisplayUtils.dip2px(mContext, 315);
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            params.gravity = Gravity.BOTTOM;
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
             window.setAttributes(params);
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
@@ -66,14 +68,6 @@ public class HifiveComfirmDialogFragment extends DialogFragment {
     }
 
     private void initDialog(View view) {
-        view.findViewById(R.id.iv_dialog_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-                if (cancelClick != null)
-                    cancelClick.cancelClick();
-            }
-        });
         TextView dialog_content = view.findViewById(R.id.dialog_content);
         if (getArguments().getString(ContentTx) != null) {
             dialog_content.setText(getArguments().getString(ContentTx));

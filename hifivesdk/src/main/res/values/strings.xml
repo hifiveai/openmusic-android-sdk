@@ -15,9 +15,8 @@
     <string name="hifivesdk_music_add_like_msg">加入喜欢列表成功</string>
     <string name="hifivesdk_music_add_karaoke_msg">加入K歌列表成功</string>
     <string name="hifivesdk_comfirm_dialog_cancel">取消</string>
-    <string name="hifivesdk_comfirm_dialog_comfirm">确认</string>
-
+    <string name="hifivesdk_comfirm_dialog_comfirm">确认删除</string>
     <string name="hifivesdk_comfirm_delete_music">确定将所选音乐从列表中删除？</string>
-    <string name="hifivesdk_comfirm_delete_history">确定清空搜索历史？</string>
+    <string name="hifivesdk_comfirm_delete_history">确定删除搜索历史？</string>
 
 </resources>

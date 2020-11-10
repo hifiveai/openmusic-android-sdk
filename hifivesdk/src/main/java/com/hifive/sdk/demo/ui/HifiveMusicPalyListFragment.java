@@ -54,9 +54,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         adapter.setOnItemClickListener(new HifiveMusicListAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                if(HifiveDialogManageUtil.getInstance().playId != adapter.getDatas().get(position).getId()){
-                    HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
-                }
+                HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
             }
         });
         adapter.setOnItemDeleteClickListener(new HifiveMusicListAdapter.OnItemDeleteClickListener() {

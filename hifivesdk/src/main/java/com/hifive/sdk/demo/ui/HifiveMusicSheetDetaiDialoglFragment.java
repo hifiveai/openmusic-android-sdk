@@ -74,6 +74,8 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
     private Context mContext;
     private boolean isAddLike;//保存是否正在添加喜欢状态，防止重复点击
     private boolean isAddkaraoke;//保存是否正在添加K歌状态，防止重复点击
+    private Toast toast;
+    private TextView toastTextview;
     private final Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -107,15 +109,13 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                     break;
                 case AddLike:
                     isAddLike = false;
-                    if(mContext != null)
-                        Toast.makeText(mContext,mContext.getString(R.string.hifivesdk_music_add_like_msg),Toast.LENGTH_SHORT).show();
+                    showToast(R.string.hifivesdk_music_add_like_msg);
                     HifiveDialogManageUtil.getInstance().addLikeSingle((HifiveMusicModel) msg.obj);
                     adapter.notifyItemChanged(msg.arg1);
                     break;
                 case Addkaraoke:
                     isAddkaraoke = false;
-                    if(mContext != null)
-                        Toast.makeText(mContext,mContext.getString(R.string.hifivesdk_music_add_karaoke_msg),Toast.LENGTH_SHORT).show();
+                    showToast(R.string.hifivesdk_music_add_karaoke_msg);
                     HifiveDialogManageUtil.getInstance().addKaraokeSingle((HifiveMusicModel) msg.obj);
                     adapter.notifyItemChanged(msg.arg1);
                     break;
@@ -215,8 +215,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
         adapter.setOnItemClickListener(new HifiveMusicSearchAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                if(HifiveDialogManageUtil.getInstance().playId != adapter.getDatas().get(position).getId())
-                    HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
+                HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
             }
         });
         mRecyclerView.setAdapter(adapter);
@@ -276,6 +275,23 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
             } else {
                 tv_tips.setVisibility(View.GONE);
             }
+        }
+    }
+    //显示自定义toast信息
+    private void showToast(int msgId){
+        if(mContext != null){
+            if(toast == null){
+                toast = new Toast(mContext);
+                View layout = View.inflate(mContext, R.layout.hifive_layout_toast, null);
+                toastTextview = layout.findViewById(R.id.tv_content);
+                toastTextview.setText(mContext.getString(msgId));
+                toast.setView(layout);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+            }else {
+                toastTextview.setText(mContext.getString(msgId));
+            }
+            toast.show();
         }
     }
     //根据歌单id获取歌曲信息

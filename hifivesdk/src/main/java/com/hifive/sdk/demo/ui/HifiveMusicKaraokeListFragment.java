@@ -3,7 +3,6 @@ package com.hifive.sdk.demo.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,9 +114,7 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
         adapter.setOnItemClickListener(new HifiveMusicListAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                if(HifiveDialogManageUtil.getInstance().playId != adapter.getDatas().get(position).getId()){
-                    HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
-                }
+                HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
             }
         });
         adapter.setOnItemDeleteClickListener(new HifiveMusicListAdapter.OnItemDeleteClickListener() {
