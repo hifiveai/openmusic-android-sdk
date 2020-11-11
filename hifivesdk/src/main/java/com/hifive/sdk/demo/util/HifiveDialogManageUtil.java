@@ -30,7 +30,7 @@ public class HifiveDialogManageUtil {
         }
         return singleManage;
     }
-    private  List<DialogFragment> dialogFragments; //维护当前所打开的dialog
+    public  List<DialogFragment> dialogFragments; //维护当前所打开的dialog
     //关闭所有dialog
     public  void CloseDialog(){
         if(dialogFragments != null && dialogFragments.size() >0){
@@ -42,6 +42,7 @@ public class HifiveDialogManageUtil {
                         e.printStackTrace();
                     }
             }
+            dialogFragments = null;
         }
     }
     //添加dialog

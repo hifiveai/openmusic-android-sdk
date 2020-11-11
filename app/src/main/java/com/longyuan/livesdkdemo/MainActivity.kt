@@ -1,6 +1,7 @@
 package com.longyuan.livesdkdemo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import com.hifive.sdk.manager.HiFiveManager
  * @date 2020/11/4
  */
 class MainActivity : AppCompatActivity() {
+    private var flag: Boolean = false
     companion object {
         const val userId = "dongshihong"
         const val secretKey = "f653ca0d989340708a"
@@ -25,11 +27,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initView()
-        HifivePlayerManger.getInstance().add(this)
     }
 
     private fun initView() {
         HiFiveManager.start(application, appId, secretKey)
+        findViewById<View>(R.id.play).setOnClickListener {
+            if(!flag){
+                HifivePlayerManger.getInstance().add(this)
+                flag = true
+            }else{
+                HifivePlayerManger.getInstance().remove()
+                flag = false
+            }
+        }
         findViewById<View>(R.id.button).setOnClickListener {
             HiFiveManager.getInstance()?.memberLogin(this,
                     userId,
@@ -136,6 +146,8 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         override fun data(any: Any) {
+                            Log.e("TAG","any=="+any);
+
                             Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
 
                         }
@@ -169,6 +181,7 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         override fun data(any: Any) {
+                            Log.e("TAG","any=="+any);
                             Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
                         }
                     })

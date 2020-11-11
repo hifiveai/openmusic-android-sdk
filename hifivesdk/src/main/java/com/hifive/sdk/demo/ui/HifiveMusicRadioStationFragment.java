@@ -43,7 +43,7 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     protected static final int RequstFail= 15;//请求失败
     public boolean isRefresh= false;
     public boolean isLoadMore = false;
-    private long id;//电台id
+    private String id;//电台id
     private SmartRefreshLayout refreshLayout;
     private RecyclerView mRecyclerView;
     private HifiveMusicSheetAdapter adapter;
@@ -99,7 +99,7 @@ public class HifiveMusicRadioStationFragment extends Fragment {
         mContext = this.getContext();
         View view = inflater.inflate(R.layout.hifive_fragment_radio_station, container, false);
         if(getArguments() != null)
-            id = getArguments().getLong(TYPE_ID);
+            id = getArguments().getString(TYPE_ID);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setRefreshHeader(new HifiveRefreshHeader(getContext()));
         refreshLayout.setRefreshFooter(new HifiveLoadMoreFooter(getContext()));

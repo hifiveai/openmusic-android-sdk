@@ -13,10 +13,14 @@ import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.hifive.sdk.demo.ui.HifiveMusicListDialogFragment;
+import com.hifive.sdk.demo.ui.HifiveUpdateObservable;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 import com.hifive.sdk.demo.util.HifiveDisplayUtils;
 
 import java.lang.ref.WeakReference;
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * @ClassName HifivePlayerManger
  * @Description 播放器悬浮窗管理器
@@ -53,6 +57,7 @@ public class HifivePlayerManger implements IFloatingView,MagnetViewListener {
                     getContainer().removeView(mPlayerView);
                 }
                 mPlayerView = null;
+                closeDialog();
             }
         });
         return this;
@@ -63,6 +68,9 @@ public class HifivePlayerManger implements IFloatingView,MagnetViewListener {
             if (mPlayerView != null) {
                 return;
             }
+            if(HifiveDialogManageUtil.getInstance().updateObservable == null){
+                HifiveDialogManageUtil.getInstance().updateObservable = new HifiveUpdateObservable();
+            }
             mPlayerView = new HifivePlayerView(activity);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -71,6 +79,7 @@ public class HifivePlayerManger implements IFloatingView,MagnetViewListener {
             params.setMargins(0, params.topMargin, params.rightMargin, HifiveDisplayUtils.dip2px(activity,470));
             mPlayerView.setLayoutParams(params);
             mPlayerView.setMagnetViewListener(this);
+            HifiveDialogManageUtil.getInstance().updateObservable.addObserver(mPlayerView);
             addViewToWindow(mPlayerView);
         }
     }
@@ -119,6 +128,7 @@ public class HifivePlayerManger implements IFloatingView,MagnetViewListener {
         if (getContainer() == container) {
             mContainer = null;
         }
+        closeDialog();
         return this;
     }
     private void addViewToWindow(final View view) {
@@ -152,13 +162,25 @@ public class HifivePlayerManger implements IFloatingView,MagnetViewListener {
                 HifiveDialogManageUtil.getInstance().CloseDialog();
             }else{
                 dialogFragment.show(activity.getSupportFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
+                if(mPlayerView != null) {
+                    mPlayerView.updateViewY();
+                }
             }
         }else{
             dialogFragment = new HifiveMusicListDialogFragment();
             dialogFragment.show(activity.getSupportFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
+            if (mPlayerView != null) {
+                mPlayerView.updateViewY();
+            }
+
         }
-
-
-
+    }
+    //当播放器关闭时关闭音乐选择相关弹窗
+    private void closeDialog() {
+        if(dialogFragment != null && dialogFragment.getDialog() != null){
+            if(dialogFragment.getDialog().isShowing()){
+                HifiveDialogManageUtil.getInstance().CloseDialog();
+            }
+        }
     }
 }

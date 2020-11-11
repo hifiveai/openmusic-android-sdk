@@ -15,6 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -23,9 +24,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveViewPagerAdapter;
-import com.hifive.sdk.demo.model.HifiveRadioStationModel;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 import com.hifive.sdk.demo.util.HifiveDisplayUtils;
+import com.hifive.sdk.entity.CompanyChannelList;
+import com.hifive.sdk.hInterface.DataResponse;
+import com.hifive.sdk.manager.HiFiveManager;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -49,7 +52,7 @@ import java.util.List;
 public class HifiveMusicSheetDialogFragment extends DialogFragment {
     private MagicIndicator magicIndicator;
     private ViewPager viewPager;
-    private List<HifiveRadioStationModel> radioStationModels = new ArrayList<>();
+    private List<CompanyChannelList> companyChannelLists = new ArrayList<>();
     private  Context mContext;
     @Override
     public void onStart() {
@@ -84,10 +87,10 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
                     WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
         }
         View view = inflater.inflate(R.layout.hifive_dialog_music_sheet, container);
-        getRadioStationData();
+
         initView(view);
-        initMagicIndicator();
-        initPage();
+        getRadioStationData();
+
         HifiveDialogManageUtil.getInstance().addDialog(this);
         return view;
     }
@@ -110,7 +113,7 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
-                return radioStationModels == null ? 0 : radioStationModels.size();
+                return companyChannelLists == null ? 0 : companyChannelLists.size();
             }
 
             @Override
@@ -122,8 +125,8 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
                 // 初始化
                 final TextView titleText = cptv.findViewById(R.id.tv_indicator);
                 final View vvDown = cptv.findViewById(R.id.vv_line);
-                if(radioStationModels.get(index) != null && !TextUtils.isEmpty(radioStationModels.get(index).getName()))
-                    titleText.setText(radioStationModels.get(index).getName());
+                if(companyChannelLists.get(index) != null && !TextUtils.isEmpty(companyChannelLists.get(index).getChannelName()))
+                    titleText.setText(companyChannelLists.get(index).getChannelName());
                 cptv.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
                     @Override
                     public void onSelected(int index, int totalCount) {
@@ -177,11 +180,11 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
     //初始化viewpager页卡
     private void initPage() {
         List<Fragment> fragments = new ArrayList<>();
-        for (HifiveRadioStationModel model : radioStationModels) {
+        for (CompanyChannelList model : companyChannelLists) {
             if(model != null) {
                 HifiveMusicRadioStationFragment radioStationFragment = new HifiveMusicRadioStationFragment();
                 Bundle recommendBundle = new Bundle();
-                recommendBundle.putLong(HifiveMusicRadioStationFragment.TYPE_ID, model.getId());
+                recommendBundle.putString(HifiveMusicRadioStationFragment.TYPE_ID, model.getChannelId());
                 radioStationFragment.setArguments(recommendBundle);
                 fragments.add(radioStationFragment);
             }
@@ -207,13 +210,19 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
     }
     //获取电台列表
     private  void  getRadioStationData(){
-        radioStationModels = new ArrayList<>();
-        for(int i = 1; i <6;i++){
-            HifiveRadioStationModel musicRadioStationModel = new HifiveRadioStationModel();
-            musicRadioStationModel.setId(i);
-            musicRadioStationModel.setName("电台"+i);
-            radioStationModels.add(musicRadioStationModel);
-        }
+        HiFiveManager.Companion.getInstance().getCompanyChannelList(mContext, new DataResponse() {
+            @Override
+            public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                Toast.makeText(mContext, "请求失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void data(@NotNull Object any) {
+                companyChannelLists = (List<CompanyChannelList>) any;
+                initMagicIndicator();
+                initPage();
+            }
+        });
     }
 
 }

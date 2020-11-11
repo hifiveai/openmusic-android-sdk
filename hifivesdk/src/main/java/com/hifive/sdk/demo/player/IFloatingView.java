@@ -5,10 +5,6 @@ import android.widget.FrameLayout;
 
 import androidx.fragment.app.FragmentActivity;
 
-/**
- * Created by Yunpeng Li on 2018/3/15.
- */
-
 public interface IFloatingView {
 
     HifivePlayerManger remove();

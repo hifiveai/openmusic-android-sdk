@@ -19,4 +19,8 @@
     <string name="hifivesdk_comfirm_delete_music">确定将所选音乐从列表中删除？</string>
     <string name="hifivesdk_comfirm_delete_history">确定删除搜索历史？</string>
 
+    <string name="hifivesdk_music_player_lyric">词</string>
+    <string name="hifivesdk_music_player_accompany">伴奏</string>
+    <string name="hifivesdk_music_player_sound">原声</string>
+
 </resources>
