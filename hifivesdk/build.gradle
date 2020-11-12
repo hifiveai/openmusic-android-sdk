@@ -37,7 +37,6 @@ dependencies {
     implementation files('libs/dagger-2.23.2.jar')
     implementation files('libs/downFile.jar')
     implementation group: 'com.github.bumptech.glide', name: 'glide', version: '4.9.0'
-    implementation 'com.github.hackware1993:MagicIndicator:1.7.0'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-11'
 
     implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'

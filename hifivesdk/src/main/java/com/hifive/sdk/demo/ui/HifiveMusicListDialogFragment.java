@@ -20,23 +20,25 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveViewPagerAdapter;
+import com.hifive.sdk.demo.view.magicindicator.CommonPagerTitleView;
+import com.hifive.sdk.demo.view.magicindicator.MagicIndicator;
+import com.hifive.sdk.demo.view.magicindicator.ViewPagerHelper;
+import com.hifive.sdk.demo.view.magicindicator.CommonNavigator;
+import com.hifive.sdk.demo.view.magicindicator.CommonNavigatorAdapter;
+import com.hifive.sdk.demo.view.magicindicator.abs.IPagerIndicator;
+import com.hifive.sdk.demo.view.magicindicator.abs.IPagerTitleView;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 import com.hifive.sdk.demo.util.HifiveDisplayUtils;
 
-import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.CommonPagerTitleView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -209,26 +211,8 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
         fragments.add(karaokeListFragment);
         HifiveViewPagerAdapter adapter = new HifiveViewPagerAdapter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         int firstPageIndex = 0;
         viewPager.setCurrentItem(firstPageIndex);
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
+    
 }

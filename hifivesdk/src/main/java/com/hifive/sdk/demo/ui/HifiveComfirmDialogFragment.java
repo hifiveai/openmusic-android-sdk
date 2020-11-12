@@ -14,9 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 import com.hifive.sdk.R;
-import com.hifive.sdk.demo.util.HifiveDisplayUtils;
 
 
 public class HifiveComfirmDialogFragment extends DialogFragment {

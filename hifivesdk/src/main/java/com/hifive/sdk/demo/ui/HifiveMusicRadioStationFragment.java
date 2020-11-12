@@ -26,8 +26,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.tsy.sdk.myokhttp.util.LogUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,7 +135,6 @@ public class HifiveMusicRadioStationFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                LogUtils.e( "onRefresh");
                 if(!isRefresh){
                     page = 1;
                     isRefresh=true;
@@ -148,7 +145,6 @@ public class HifiveMusicRadioStationFragment extends Fragment {
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                LogUtils.e( "onLoadMore");
                 if (!isLoadMore) {
                     page++;
                     isLoadMore = true;

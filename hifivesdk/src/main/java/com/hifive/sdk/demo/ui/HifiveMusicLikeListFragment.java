@@ -23,7 +23,6 @@ import com.hifive.sdk.demo.view.HifiveRefreshHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.tsy.sdk.myokhttp.util.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +128,6 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                LogUtils.e( "onRefresh");
                 if(!isRefresh){
                     isRefresh=true;
                     getData();
@@ -163,6 +161,68 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
             musicModel.setAuthor("永彬Ryan.B");
             musicModel.setAlbum("杀破狼");
             musicModel.setIntroduce("这是一段凄惨的故事！");
+            if(i%6 == 0){
+                musicModel.setUrl("http://music.cytus2.dragonest.com/tune/robo001_001.mp3");
+                musicModel.setLyric("塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡");
+            }else if(i%6 == 1){
+                musicModel.setUrl("http://music.cytus2.dragonest.com/tune/robo001_002.mp3");
+                musicModel.setLyric("我是歌曲1的歌词\\n我是歌曲1的歌词\\n我是歌曲1的歌词\\n我是歌曲1的歌词\\n我是歌曲1的歌词\\n我是歌曲1的歌词\\n\n" +
+                        "我是歌曲1的歌词\\n我是歌曲1的歌词\\n我是歌曲1的歌词\\n\n" +
+                        "我是歌曲1的歌词\\n我是歌曲1的歌词\\n我是歌曲1的歌词\\n\n" +
+                        "我是歌曲1的歌词\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "我是歌曲1的歌词\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "我是歌曲1的歌词\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "我是歌曲1的歌词\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "我是歌曲1的歌词\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡");
+            }else if(i%6 == 2){
+                musicModel.setUrl("http://music.cytus2.dragonest.com/tune/robo001_003.mp3");
+                musicModel.setLyric("我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气");
+            }else if(i%6 == 3){
+                musicModel.setUrl("http://music.cytus2.dragonest.com/tune/robo001_004.mp3");
+                musicModel.setLyric("我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气");
+            }
+            else if(i%6 == 4){
+                musicModel.setUrl("http://music.cytus2.dragonest.com/tune/robo001_005.mp3");
+                musicModel.setLyric("我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气");
+            }else if(i%6 == 5){
+                musicModel.setUrl("http://music.cytus2.dragonest.com/tune/robo001_006.mp3");
+                musicModel.setLyric("我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
+                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气");
+            }
             hifiveMusicModels.add(musicModel);
         }
         mHandler.sendEmptyMessageDelayed(RequstSuccess,1000);

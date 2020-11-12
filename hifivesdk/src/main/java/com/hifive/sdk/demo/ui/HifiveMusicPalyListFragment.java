@@ -43,8 +43,6 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         if(HifiveDialogManageUtil.getInstance().getCurrentList() !=null
                 && HifiveDialogManageUtil.getInstance().getCurrentList().size() >0){
             adapter.updateDatas(HifiveDialogManageUtil.getInstance().getCurrentList());
-        }else{
-            getdata();
         }
         return view;
     }
@@ -81,23 +79,6 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         });
         dialog.show(getFragmentManager(), HifiveComfirmDialogFragment.class.getSimpleName());
     }
-
-    //获取当前播放的列表
-    private void getdata() {
-        List<HifiveMusicModel> musicModels = new ArrayList<>();
-        for(int i= 0 ; i < 15 ;i++){
-            HifiveMusicModel musicModel = new HifiveMusicModel();
-            musicModel.setId(i);
-            musicModel.setName("告白气球"+(i+1));
-            musicModel.setAuthor("周杰伦");
-            musicModel.setAlbum("东风破");
-            musicModel.setIntroduce("这是一段浪漫的故事！");
-            musicModels.add(musicModel);
-        }
-        HifiveDialogManageUtil.getInstance().setCurrentList(musicModels);
-        adapter.updateDatas(HifiveDialogManageUtil.getInstance().getCurrentList());
-    }
-
     @Override
     public void onResume() {
         super.onResume();

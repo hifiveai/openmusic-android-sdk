@@ -21,6 +21,7 @@ public class HifiveDialogManageUtil {
     public static final int UPDATELIKELIST = 3;//通知相关页面更新喜欢列表
     public static final int UPDATEKARAOKLIST = 4;//通知相关页面更新k歌列表
     private static HifiveDialogManageUtil singleManage;
+    public boolean isShow;//判断是否打开弹窗
     private HifiveDialogManageUtil(){
 
     }
@@ -30,19 +31,20 @@ public class HifiveDialogManageUtil {
         }
         return singleManage;
     }
-    public  List<DialogFragment> dialogFragments; //维护当前所打开的dialog
+    public List<DialogFragment> dialogFragments;//维护当前所打开的dialog
     //关闭所有dialog
-    public  void CloseDialog(){
-        if(dialogFragments != null && dialogFragments.size() >0){
-            for(DialogFragment dialogFragment:dialogFragments){
-                if(dialogFragment != null)
-                    try {
+    public void CloseDialog(){
+        try {
+            if(dialogFragments != null && dialogFragments.size() >0){
+                for(DialogFragment dialogFragment:dialogFragments){
+                    if(dialogFragment != null)
                         dialogFragment.dismiss();
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
+                }
+                dialogFragments = null;
             }
-            dialogFragments = null;
+            isShow = false;
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
     //添加dialog
@@ -50,20 +52,26 @@ public class HifiveDialogManageUtil {
         if(dialogFragments == null ){
             dialogFragments = new ArrayList<>();
         }
-        if(dialogFragment != null)
+        if(dialogFragment != null){
             dialogFragments.add(dialogFragment);
+            isShow = true;
+        }
     }
     //移除dialog
     public  void removeDialog(int position){
-        if(dialogFragments != null && dialogFragments.size() > position){
-            try {
+        try {
+            if(dialogFragments != null && dialogFragments.size() > position){
                 dialogFragments.remove(position);
-            }catch (Exception e){
-                e.printStackTrace();
             }
+            if(dialogFragments.size() == 0){
+                dialogFragments = null;
+                isShow = false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
-    public  HifiveMusicModel playMusic;//维护当前所播放的音乐
+    public HifiveMusicModel playMusic;//维护当前所播放的音乐
 
     public HifiveMusicModel getPlayMusic() {
         return playMusic;
@@ -101,10 +109,12 @@ public class HifiveDialogManageUtil {
         if(currentList != null && currentList.size() >0){
             if(!currentList.contains(musicModel)){
                 currentList.add(0,musicModel);
+                updateObservable.postNewPublication(UPDATEPALYLIST);
             }
         }else{
             currentList = new ArrayList<>();
             currentList.add(musicModel);
+            updateObservable.postNewPublication(UPDATEPALYLIST);
         }
         updateObservable.postNewPublication(UPDATEPALY);
     }
@@ -113,8 +123,7 @@ public class HifiveDialogManageUtil {
         if(musicModel == null ){
             return;
         }
-        if(playMusic != null
-                && playMusic.getId() == musicModel.getId()){//播放的同一首=歌
+        if(playMusic != null && playMusic.getId() == musicModel.getId()){//播放的同一首=歌
             return;
         }
         playMusic = musicModel;

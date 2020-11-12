@@ -1,4 +1,4 @@
-package com.hifive.sdk.demo.player;
+package com.hifive.sdk.demo.ui.player;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
 import android.widget.CheckBox;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.hifive.music.utils.AudioUtils;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.model.HifiveMusicModel;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
@@ -31,18 +34,20 @@ import com.hifive.sdk.demo.util.HifiveDisplayUtils;
 import java.util.Observable;
 import java.util.Observer;
 
+import tv.danmaku.ijk.media.player.IMediaPlayer;
+
 /**
- * @ClassName HifivePlayerView
- * @Description 播放器悬浮窗view
+ * @ClassName  HifivePlayerView
+ * 播放器悬浮窗view
  * Created by huchao on 20/11/10.
  */
-public class HifivePlayerView extends FrameLayout implements Observer{
+public class HifivePlayerView extends FrameLayout implements Observer, HifivePlayListener {
     public static final int MARGIN_EDGE = 13;
     private float mOriginalRawX;
     private float mOriginalRawY;
     private float mOriginalX;
     private float mOriginalY;
-    private MagnetViewListener mMagnetViewListener;
+    private HifiveDialogListener showDialogListener;
     private static final int TOUCH_TIME_THRESHOLD = 150;//点击事件的时长，
     private static final int LONG_TOUCH_TIME_THRESHOLD = 300;//长按事件的时长
     private long mLastTouchDownTime;
@@ -65,11 +70,13 @@ public class HifivePlayerView extends FrameLayout implements Observer{
     private ImageView iv_back;
     private boolean isShowAccompany;//是否是伴奏模式
     private boolean isPlay;//是否正在播放
-    private Context mContext;
-    public void setMagnetViewListener(MagnetViewListener magnetViewListener) {
-        this.mMagnetViewListener = magnetViewListener;
-    }
+    private final Context mContext;
+    private Animation rotateAnimation;//音乐图片旋转的动画
+    public   AudioUtils audioUtils;
 
+    public void setShowDialogListener(HifiveDialogListener showDialogListener) {
+        this.showDialogListener = showDialogListener;
+    }
     public HifivePlayerView(@NonNull Context context) {
         this(context, null);
     }
@@ -88,6 +95,10 @@ public class HifivePlayerView extends FrameLayout implements Observer{
     }
     //初始化view
     private void initView() {
+        if(audioUtils == null){
+            audioUtils = new AudioUtils();
+            audioUtils.setPlayCompletionListener(this);
+        }
         fl_lyric =  findViewById(R.id.fl_lyric);
         tv_lyric_detail =  findViewById(R.id.tv_lyric_detail);
         tv_lyric_detail.setMovementMethod(new ScrollingMovementMethod());
@@ -118,19 +129,23 @@ public class HifivePlayerView extends FrameLayout implements Observer{
                         mMoveAnimator.stop();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        if(isOnLongClickEvent()) {
+                        if(isOnLongClickEvent()) {//长按时执行滑动
                             updateViewPosition(event);
                         }
                         break;
                     case MotionEvent.ACTION_UP:
-                        if(isOnLongClickEvent()) {
+                        if(isOnLongClickEvent()) {//长按结束执行滑动
                             clearPortraitY();
                             moveToEdge();
                         }else{
-                            if(isOnClickEvent()){
+                            if(isOnClickEvent()){//短按结束执行点击事件
                                 AnimationOpen();
-                                if(mMagnetViewListener != null){
-                                    mMagnetViewListener.onClick();
+                                if(showDialogListener != null){
+                                    if(HifiveDialogManageUtil.getInstance().isShow){
+                                        showDialogListener.onDismissDialog();
+                                    }else{
+                                        showDialogListener.onShowDialog();
+                                    }
                                 }
                             }
                         }
@@ -194,7 +209,7 @@ public class HifivePlayerView extends FrameLayout implements Observer{
                     stopPlay();
                 }else{//暂停点击就是播放
                     if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null){
-                        startPlay();
+                        startPlay(false);
                     }
                 }
             }
@@ -217,16 +232,42 @@ public class HifivePlayerView extends FrameLayout implements Observer{
         tv_accompany.setText(mContext.getString(R.string.hifivesdk_music_player_accompany));
         isShowAccompany = true;
     }
-    //开始播放
-    private void startPlay() {
+    /**
+     * 开始播放
+     * @param isStart 是否播放新歌曲，true表示切歌播放新歌曲，false表示暂停后继续播放
+     */
+    private void startPlay(boolean isStart) {
         iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_play);
         isPlay = true;
+        if(isStart){
+            audioUtils.prepareAndPlay(HifiveDialogManageUtil.getInstance().getPlayMusic().getUrl(), new IMediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(IMediaPlayer iMediaPlayer) {
+
+                }
+            });
+        }else{
+            audioUtils.play();
+        }
+        StartAnimationPlay();
+    }
+    //开始播放动画
+    private void StartAnimationPlay() {
+        if(rotateAnimation == null) {
+            rotateAnimation = AnimationUtils.loadAnimation(mContext, R.anim.hifive_anim_rotate);
+            LinearInterpolator lin = new LinearInterpolator();
+            rotateAnimation.setInterpolator(lin);
+        }
+        iv_music.startAnimation(rotateAnimation);
     }
     //暂停播放
     private void stopPlay() {
         iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_suspend);
         isPlay = false;
+        audioUtils.onPause();
+        iv_music.clearAnimation();
     }
+
     //判断是否执行事件
     protected boolean isOnClickEvent() {
         return System.currentTimeMillis() - mLastTouchDownTime < TOUCH_TIME_THRESHOLD;
@@ -235,6 +276,7 @@ public class HifivePlayerView extends FrameLayout implements Observer{
     protected boolean isOnLongClickEvent() {
         return System.currentTimeMillis() - mLastTouchDownTime > LONG_TOUCH_TIME_THRESHOLD;
     }
+    //滑动更新view位置
     private void updateViewPosition(MotionEvent event) {
         // setX(mOriginalX + event.getRawX() - mOriginalRawX);
         // 限制不可超出屏幕高度
@@ -245,16 +287,16 @@ public class HifivePlayerView extends FrameLayout implements Observer{
         }
         setY(desY);
     }
-    //更新最大可滑动距离
+    //获取最大可滑动距离
     public int getMaxScrollY() {
-        if(HifiveDialogManageUtil.getInstance().dialogFragments != null
-                && HifiveDialogManageUtil.getInstance().dialogFragments.size() >0){
+        //判断歌曲选择相关的弹窗是否打开
+        if(HifiveDialogManageUtil.getInstance().isShow){
             return mScreenHeight - getHeight()- HifiveDisplayUtils.dip2px(mContext,470);
         }else{
             return mScreenHeight - getHeight();
         }
     }
-    //更新最大可滑动距离
+    //歌曲弹窗显示时更新最大可滑动距离
     public void updateViewY() {
         final int   maxScrollY = mScreenHeight - getHeight()-HifiveDisplayUtils.dip2px(mContext,470);
         if(getY() > maxScrollY){
@@ -320,9 +362,21 @@ public class HifivePlayerView extends FrameLayout implements Observer{
         isNearestLeft = getX() < middle;
         return isNearestLeft;
     }
+    //当前歌曲播放错误回调
+    @Override
+    public void playError() {
+        stopPlay();
+    }
+    //当前歌曲播放完成回调
+    @Override
+    public void playCompletion() {
+        audioUtils.onPause();
+        iv_next.performClick();//播放完成自动播放下一首，执行切歌逻辑
+    }
+
     protected class MoveAnimator implements Runnable {
 
-        private Handler handler = new Handler(Looper.getMainLooper());
+        private final Handler handler = new Handler(Looper.getMainLooper());
         private float destinationX;
         private float destinationY;
         private long startingTime;
@@ -360,17 +414,17 @@ public class HifivePlayerView extends FrameLayout implements Observer{
     //播放器展开动画
     protected void AnimationOpen() {
         Animation animation = new ViewSizeChangeAnimation(ll_player, HifiveDisplayUtils.getScreenWidth(mContext)
-                -HifiveDisplayUtils.dip2px(mContext,40));
+                - HifiveDisplayUtils.dip2px(mContext, 40));
         animation.setDuration(500);
         ll_player.startAnimation(animation);
     }
     //播放器收起动画
     protected void AnimationOFF() {
-        Animation animation = new ViewSizeChangeAnimation(ll_player, HifiveDisplayUtils.dip2px(mContext,50));
+        Animation animation = new ViewSizeChangeAnimation(ll_player, HifiveDisplayUtils.dip2px(mContext, 50));
         animation.setDuration(500);
         ll_player.startAnimation(animation);
     }
-    public class ViewSizeChangeAnimation extends Animation {
+    public static class ViewSizeChangeAnimation extends Animation {
         int initialHeight;
         int initialWidth;
         int targetWidth;
@@ -416,6 +470,7 @@ public class HifivePlayerView extends FrameLayout implements Observer{
             });
         }
     }
+    //收到被观察者发出的更新通知
     @Override
     public void update(Observable o, Object arg) {
         try{
@@ -432,7 +487,7 @@ public class HifivePlayerView extends FrameLayout implements Observer{
     private void updateView() {
         HifiveMusicModel playMusic = HifiveDialogManageUtil.getInstance().getPlayMusic();
         if(playMusic != null){
-            StringBuffer info = new StringBuffer();
+            StringBuilder info = new StringBuilder();
             if(!TextUtils.isEmpty(playMusic.getName())){
                 info.append(playMusic.getName());
             }
@@ -451,7 +506,7 @@ public class HifivePlayerView extends FrameLayout implements Observer{
             }else{
                 fl_lyric.setVisibility(GONE);
             }
-            startPlay();
+            startPlay(true);//开始播放新歌曲
         }
     }
 }

@@ -7,6 +7,7 @@ public class HifiveMusicModel {
     private String album;//歌曲专辑名
     private String introduce;//歌曲介绍
     private String lyric;//歌词
+    private String url;
     public long getId() {
         return id;
     }
@@ -60,5 +61,13 @@ public class HifiveMusicModel {
         if (this == o) return true;
         HifiveMusicModel musicModel = (HifiveMusicModel) o;
         return id== musicModel.getId();
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

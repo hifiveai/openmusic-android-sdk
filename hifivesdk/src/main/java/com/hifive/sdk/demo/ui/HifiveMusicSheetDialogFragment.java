@@ -24,19 +24,19 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveViewPagerAdapter;
+import com.hifive.sdk.demo.view.magicindicator.CommonPagerTitleView;
+import com.hifive.sdk.demo.view.magicindicator.MagicIndicator;
+import com.hifive.sdk.demo.view.magicindicator.ViewPagerHelper;
+import com.hifive.sdk.demo.view.magicindicator.CommonNavigator;
+import com.hifive.sdk.demo.view.magicindicator.CommonNavigatorAdapter;
+import com.hifive.sdk.demo.view.magicindicator.abs.IPagerIndicator;
+import com.hifive.sdk.demo.view.magicindicator.abs.IPagerTitleView;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 import com.hifive.sdk.demo.util.HifiveDisplayUtils;
 import com.hifive.sdk.entity.CompanyChannelList;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HiFiveManager;
 
-import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.CommonPagerTitleView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -87,10 +87,8 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
                     WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
         }
         View view = inflater.inflate(R.layout.hifive_dialog_music_sheet, container);
-
         initView(view);
         getRadioStationData();
-
         HifiveDialogManageUtil.getInstance().addDialog(this);
         return view;
     }
@@ -191,20 +189,6 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
         }
         HifiveViewPagerAdapter adapter = new HifiveViewPagerAdapter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         int firstPageIndex = 0;
         viewPager.setCurrentItem(firstPageIndex);
     }
@@ -224,5 +208,4 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
             }
         });
     }
-
 }

@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
-import com.hifive.sdk.demo.player.HifivePlayerManger
+import com.hifive.sdk.demo.ui.player.HifivePlayerManger
 import com.hifive.sdk.entity.Token
 import com.hifive.sdk.hInterface.DataResponse
 import com.hifive.sdk.manager.HiFiveManager
@@ -191,12 +191,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onStart() {
-        super.onStart()
         HifivePlayerManger.getInstance().attach(this);
+        super.onStart()
     }
 
     override fun onStop() {
-        super.onStop()
         HifivePlayerManger.getInstance().detach(this);
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        HifivePlayerManger.getInstance().remove();
+        super.onDestroy()
     }
 }
