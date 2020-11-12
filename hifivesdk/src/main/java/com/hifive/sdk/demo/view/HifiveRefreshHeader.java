@@ -94,15 +94,12 @@ public class HifiveRefreshHeader extends LinearLayout implements RefreshHeader {
         switch (newState) {
             case None:
             case PullDownToRefresh:
-                Log.e("TAG","111111111111111111");
                 iv_header.setImageResource(R.drawable.hifive_refresh);
                 break;
             case Refreshing:
-                Log.e("TAG","2222222222222222222");
                 Glide.with(mContext).asGif().load(R.drawable.hifive_refresh).into(iv_header);
                 break;
             case ReleaseToRefresh:
-                Log.e("TAG","333333333333333333");
                 iv_header.setImageResource(R.drawable.hifive_refresh);
                 break;
         }

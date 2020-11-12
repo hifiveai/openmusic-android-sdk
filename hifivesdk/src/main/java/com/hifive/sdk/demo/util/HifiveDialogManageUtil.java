@@ -21,7 +21,6 @@ public class HifiveDialogManageUtil {
     public static final int UPDATELIKELIST = 3;//通知相关页面更新喜欢列表
     public static final int UPDATEKARAOKLIST = 4;//通知相关页面更新k歌列表
     private static HifiveDialogManageUtil singleManage;
-    public boolean isShow;//判断是否打开弹窗
     private HifiveDialogManageUtil(){
 
     }
@@ -42,7 +41,6 @@ public class HifiveDialogManageUtil {
                 }
                 dialogFragments = null;
             }
-            isShow = false;
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -52,20 +50,15 @@ public class HifiveDialogManageUtil {
         if(dialogFragments == null ){
             dialogFragments = new ArrayList<>();
         }
-        if(dialogFragment != null){
+        if(dialogFragment != null)
             dialogFragments.add(dialogFragment);
-            isShow = true;
-        }
+
     }
     //移除dialog
     public  void removeDialog(int position){
         try {
             if(dialogFragments != null && dialogFragments.size() > position){
                 dialogFragments.remove(position);
-            }
-            if(dialogFragments.size() == 0){
-                dialogFragments = null;
-                isShow = false;
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -118,12 +111,29 @@ public class HifiveDialogManageUtil {
         }
         updateObservable.postNewPublication(UPDATEPALY);
     }
-    //按顺序播放某一首歌
-    public void setCurrentSingle(HifiveMusicModel musicModel){
-        if(musicModel == null ){
-            return;
+    //按顺序播放上一首歌
+    public void playLastMusic(){
+        if(currentList!= null){
+            int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
+            if(positon != 0){//不是第一首
+                setCurrentPlay(currentList.get(positon-1));
+            }
         }
-        if(playMusic != null && playMusic.getId() == musicModel.getId()){//播放的同一首=歌
+    }
+    //按顺序播放下一首歌
+    public void playNextMusic(){
+        if(currentList != null){
+            int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
+            if(positon != (currentList.size()-1)){//不是最后一首
+                setCurrentPlay(currentList.get(positon+1));
+            }else{
+                setCurrentPlay(currentList.get(0));
+            }
+        }
+    }
+    //设置当前播放的歌曲
+    public void setCurrentPlay(HifiveMusicModel musicModel){
+        if(musicModel == null ){
             return;
         }
         playMusic = musicModel;
@@ -175,7 +185,4 @@ public class HifiveDialogManageUtil {
         }
         updateObservable.postNewPublication(UPDATEKARAOKLIST);
     }
-
-
-
 }

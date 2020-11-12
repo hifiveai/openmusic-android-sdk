@@ -70,7 +70,12 @@ class AudioUtils {
         }
     }
 
+    /**
+     * 设置播放进度的回调
+     */
+    private fun playProgress() {
 
+    }
     /**
      * 开始缓冲播放
      */
@@ -196,8 +201,8 @@ class AudioUtils {
         this.playCompletionListener = PlayCompletionListener
         playCompletion()
         playError()
-
     }
+
 
 
 }

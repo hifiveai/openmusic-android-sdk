@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
+import java.math.BigDecimal;
+
 /**
  * @author huchao
  * @date 2020/11/04
@@ -48,5 +50,19 @@ public class HifiveDisplayUtils {
         return (int) (dpVale * scale + 0.5f);
     }
 
-
+    /**
+     * 提供精确的除法运算方法div
+     *
+     * @param value1 除数
+     * @param value2 被除数
+     * @param scale  精确范围
+     * @return 两个参数的商
+     * @throws IllegalAccessException
+     */
+    public static float div(double value1, double value2, int scale) {
+        BigDecimal b1 = new BigDecimal(Double.toString(value1));
+        BigDecimal b2 = new BigDecimal(Double.toString(value2));
+        //默认保留两位会有错误，这里设置保留小数点后4位
+        return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).floatValue();
+    }
 }

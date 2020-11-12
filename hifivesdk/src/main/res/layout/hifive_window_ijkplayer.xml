@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingStart="20dp"
@@ -49,9 +50,11 @@
         android:layout_marginBottom="20dp"
         android:textStyle="bold"
         android:textSize="20sp"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="50dp">
+
         <LinearLayout
             android:id="@+id/ll_player"
             android:layout_width="50dp"
@@ -110,15 +113,28 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@mipmap/hifivesdk_icon_player_last"/>
-
-            <ImageView
-                android:id="@+id/iv_play"
+            <FrameLayout
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:src="@mipmap/hifivesdk_icon_player_suspend"/>
+                android:layout_marginEnd="10dp">
 
+
+                <ImageView
+                    android:id="@+id/iv_play"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/hifivesdk_icon_player_suspend"/>
+                <com.hifive.sdk.demo.view.HifiveRoundProgressBar
+                    android:id="@+id/circleProgressbar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:roundColor="#00000000"
+                    app:roundProgressColor="#FFFFFF"
+                    app:roundWidth="2dip" />
+            </FrameLayout>
             <ImageView
                 android:id="@+id/iv_next"
                 android:layout_width="30dp"

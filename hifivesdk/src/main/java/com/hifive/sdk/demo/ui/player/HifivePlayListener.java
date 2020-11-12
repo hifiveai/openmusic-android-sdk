@@ -6,5 +6,4 @@ package com.hifive.sdk.demo.ui.player;
 public interface HifivePlayListener {
     void playError();//播放出错
     void playCompletion();//播放完成
-
 }
