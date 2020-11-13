@@ -79,10 +79,9 @@ public class HifiveRoundProgressBar extends View {
      * @param max
      */
     public synchronized void setMax(int max) {
-        if (max < 0) {
-            throw new IllegalArgumentException("max not less than 0");
+        if (max > 0) {
+            this.max = max;
         }
-        this.max = max;
     }
     /**
      * 设置进度，此为线程安全控件，由于考虑多线的问题，需要同步 刷新界面调用postInvalidate()能在非UI线程刷新
@@ -91,7 +90,7 @@ public class HifiveRoundProgressBar extends View {
      */
     public synchronized void setProgress(int progress) {
         if (progress < 0) {
-            throw new IllegalArgumentException("progress not less than 0");
+            progress = 0;
         }
         if (progress > max) {
             progress = max;

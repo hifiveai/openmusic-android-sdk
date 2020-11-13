@@ -1,11 +1,9 @@
-package com.hifive.music.utils
+package com.hifive.sdk.demo.ui.player;
 
 import android.media.AudioManager
+import android.media.MediaPlayer
 import android.util.Log
 import android.widget.SeekBar
-import com.hifive.sdk.demo.ui.player.HifivePlayListener
-import tv.danmaku.ijk.media.player.IMediaPlayer
-import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.io.IOException
 
 /**
@@ -13,18 +11,18 @@ import java.io.IOException
  * @date 2020/5/19
  */
 
-class AudioUtils {
+@Suppress("DEPRECATION")
+class HifivePlayerUtils {
 
 
     private var playCompletionListener: HifivePlayListener? = null
-    private var mediaPlayer: IjkMediaPlayer? = null
+    private var mediaPlayer: MediaPlayer? = null
 
 
     companion object {
-        val instance by lazy { AudioUtils() }
+        val instance by lazy { HifivePlayerUtils() }
         var isPause = false
         var isMute = false
-
         var soundA: Float = 1f
         var soundB: Float = 1f
     }
@@ -33,9 +31,9 @@ class AudioUtils {
     /**
      * 获取播放器
      */
-    private fun getMediaPlayer(): IjkMediaPlayer {
+    private fun getMediaPlayer(): MediaPlayer {
         if (mediaPlayer == null) {
-            val mediaPlayer by lazy { IjkMediaPlayer() }
+            val mediaPlayer by lazy { MediaPlayer() }
             this.mediaPlayer = mediaPlayer
         }
         return mediaPlayer!!
@@ -81,23 +79,18 @@ class AudioUtils {
      */
     fun prepareAndPlay(
         url: String,
-        onPreparedListener: IMediaPlayer.OnPreparedListener
-    ): AudioUtils {
+        onPreparedListener: MediaPlayer.OnPreparedListener
+    ): HifivePlayerUtils {
         try {
             val play = getMediaPlayer()
             play.reset()
+            play.setDataSource(url)
             play.setAudioStreamType(AudioManager.STREAM_MUSIC)
-            play.dataSource = url
-//            play.setOnPreparedListener {
-//                it.start()
-//            }
-            play.setOnPreparedListener(onPreparedListener!!)
             play.prepareAsync()
-
+            play.setOnPreparedListener(onPreparedListener!!)
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
         return this
     }
 
@@ -114,7 +107,7 @@ class AudioUtils {
     /**
      * 暂停
      */
-    fun onPause(): AudioUtils {
+    fun onPause(): HifivePlayerUtils {
         getMediaPlayer().pause()
         Log.d("暂停情况", "已经暂停")
         return this
@@ -124,7 +117,7 @@ class AudioUtils {
     /**
      * 停止
      */
-    fun onStop(seekBar: SeekBar): AudioUtils {
+    fun onStop(seekBar: SeekBar): HifivePlayerUtils {
         seekBar.progress = 0
         getMediaPlayer().stop()
         return this
@@ -132,7 +125,7 @@ class AudioUtils {
     /**
      * 停止
      */
-    fun onStop(): AudioUtils {
+    fun onStop(): HifivePlayerUtils {
         getMediaPlayer().stop()
         return this
     }
@@ -140,7 +133,7 @@ class AudioUtils {
     /**
      * 从进度开始播放
      */
-    fun seekTo(progress: Long): AudioUtils {
+    fun seekTo(progress: Int): HifivePlayerUtils {
         getMediaPlayer().seekTo(progress)
         return this
     }
@@ -148,13 +141,13 @@ class AudioUtils {
     /**
      * 取得总时长
      */
-    fun duration(): Long = getMediaPlayer().duration
+    fun duration(): Int = getMediaPlayer().duration
 
 
     /**
      * 获取当前进度
      */
-    fun progress(): Long = getMediaPlayer().currentPosition
+    fun progress(): Int = getMediaPlayer().currentPosition
 
     /**
      * 判断是否在循环播放

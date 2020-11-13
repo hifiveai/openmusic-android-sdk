@@ -74,25 +74,31 @@ public class HifivePlayerManger{
                 if (ViewCompat.isAttachedToWindow(mPlayerView) && getContainer() != null) {
                     getContainer().removeView(mPlayerView);
                 }
-                if(mPlayerView.audioUtils != null){
-                    mPlayerView.audioUtils.onStop();
-                    mPlayerView.audioUtils.release();
-                    mPlayerView.audioUtils = null;
-                }
-                if(mPlayerView.mTimerTask != null){
-                    mPlayerView.mTimerTask.cancel();
-                    mPlayerView.mTimerTask = null;
-                }
-                if(mPlayerView.mTimer != null){
-                    mPlayerView.mTimer.cancel();
-                    mPlayerView.mTimer= null;
-                }
+                recyclePlayer();
                 mPlayerView = null;
                 HifiveDialogManageUtil.getInstance().setPlayMusic(null);//清空当前播放的歌曲
                 HifiveDialogManageUtil.getInstance().CloseDialog();
             }
         });
         return this;
+    }
+    //播放器资源回收
+    private void recyclePlayer() {
+        //回收定时器资源
+        if(mPlayerView.mTimerTask != null){
+            mPlayerView.mTimerTask.cancel();
+            mPlayerView.mTimerTask = null;
+        }
+        if(mPlayerView.mTimer != null){
+            mPlayerView.mTimer.cancel();
+            mPlayerView.mTimer= null;
+        }
+        //回收播放器资源
+        if(mPlayerView.playerUtils != null){
+            mPlayerView.playerUtils.onStop();
+            mPlayerView.playerUtils.release();
+            mPlayerView.playerUtils = null;
+        }
     }
     //初始化一个container容器装载播放器view
     private FrameLayout getActivityRoot(FragmentActivity activity) {

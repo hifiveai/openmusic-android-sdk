@@ -32,22 +32,12 @@ dependencies {
     api "androidx.test:runner:$HiFiveVersion.runner"
     api "androidx.test.espresso:espresso-core:$HiFiveVersion.espresso"
 
-
     //打包进sdk的库
     implementation files('libs/dagger-2.23.2.jar')
     implementation files('libs/downFile.jar')
     implementation group: 'com.github.bumptech.glide', name: 'glide', version: '4.9.0'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-11'
 
-    implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
-    implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
-    // Other ABIs: optional
-    implementation 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.8'
-    implementation 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.8'
-    implementation 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.8'
-    implementation 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.8'
-    // ExoPlayer as IMediaPlayer: optional, experimental
-    implementation 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
     //开发者必须导入的包
     api HifiveDependencies["javax"]
     api HifiveDependencies["rxKotlin"]

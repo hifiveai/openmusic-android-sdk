@@ -2,6 +2,7 @@ package com.hifive.sdk.demo.ui.player;
 
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -14,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -26,7 +26,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import com.hifive.music.utils.AudioUtils;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.model.HifiveMusicModel;
 import com.hifive.sdk.demo.ui.HifiveMusicListDialogFragment;
@@ -38,9 +37,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import tv.danmaku.ijk.media.player.IMediaPlayer;
-
 /**
  * @ClassName  HifivePlayerView
  * 播放器悬浮窗view
@@ -78,7 +74,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private boolean isPlay;//是否正在播放
     private final FragmentActivity mContext;
     private Animation rotateAnimation;//音乐图片旋转的动画
-    public  AudioUtils audioUtils;
+    public HifivePlayerUtils playerUtils;
     private HifiveMusicListDialogFragment dialogFragment;
     public Timer mTimer;
     public TimerTask mTimerTask;
@@ -100,9 +96,9 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     }
     //初始化view
     private void initView() {
-        if(audioUtils == null){
-            audioUtils = new AudioUtils();
-            audioUtils.setPlayCompletionListener(this);
+        if(playerUtils == null){
+            playerUtils = new HifivePlayerUtils();
+            playerUtils.setPlayCompletionListener(this);
         }
         fl_lyric =  findViewById(R.id.fl_lyric);
         tv_lyric_detail =  findViewById(R.id.tv_lyric_detail);
@@ -227,25 +223,28 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private void startPlay(boolean isStart) {
         iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_play);
         isPlay = true;
-        if(isStart){
-            audioUtils.prepareAndPlay(HifiveDialogManageUtil.getInstance().getPlayMusic().getUrl(), new IMediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(IMediaPlayer iMediaPlayer) {
-                    circleProgressbar.setProgress(0);
-                    circleProgressbar.setMax((int)audioUtils.duration());
-                    if(mTimerTask != null){
-                        mTimerTask.cancel();
-                        mTimerTask = null;
+        if(playerUtils!= null) {
+            if (isStart) {
+                playerUtils.prepareAndPlay(HifiveDialogManageUtil.getInstance().getPlayMusic().getUrl(), new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        playerUtils.play();
+                        circleProgressbar.setMax(playerUtils.duration());
+                        circleProgressbar.setProgress(0);
+                        if (mTimerTask != null) {
+                            mTimerTask.cancel();
+                            mTimerTask = null;
+                        }
+                        if (mTimer != null) {
+                            mTimer.cancel();
+                            mTimer = null;
+                        }
+                        setPlayProgress();
                     }
-                    if(mTimer != null){
-                        mTimer.cancel();
-                        mTimer = null;
-                    }
-                    setPlayProgress();
-                }
-            });
-        }else{
-            audioUtils.play();
+                });
+            } else {
+                playerUtils.play();
+            }
         }
         StartAnimationPlay();
     }
@@ -255,8 +254,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         mTimerTask = new TimerTask() {
             @Override
             public void run() {
-                if(audioUtils.isPlaying()) {
-                    circleProgressbar.setProgress((int)audioUtils.progress());
+                if(playerUtils!= null && playerUtils.isPlaying()) {
+                    circleProgressbar.setProgress(playerUtils.progress());
                 }
             }
         };
@@ -276,7 +275,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private void stopPlay() {
         iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_suspend);
         isPlay = false;
-        audioUtils.onPause();
+        if(playerUtils!= null)
+            playerUtils.onPause();
         iv_music.clearAnimation();
     }
 
@@ -377,15 +377,17 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     //当前歌曲播放错误回调
     @Override
     public void playError() {
+        Log.e("TAG","playError");
         stopPlay();
     }
     //当前歌曲播放完成回调
     @Override
     public void playCompletion() {
-        audioUtils.onPause();
+        if(playerUtils!= null)
+            playerUtils.onPause();
         HifiveDialogManageUtil.getInstance().playNextMusic();//播放完成自动播放下一首
     }
-
+    //移动view的动画
     protected class MoveAnimator implements Runnable {
 
         private final Handler handler = new Handler(Looper.getMainLooper());
@@ -426,46 +428,16 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     }
     //播放器展开动画
     protected void AnimationOpen() {
-        Animation animation = new ViewSizeChangeAnimation(ll_player, HifiveDisplayUtils.getScreenWidth(mContext)
+        Animation animation = new HifiveViewChangeAnimation(ll_player, HifiveDisplayUtils.getScreenWidth(mContext)
                 - HifiveDisplayUtils.dip2px(mContext, 40));
         animation.setDuration(500);
         ll_player.startAnimation(animation);
     }
     //播放器收起动画
     protected void AnimationOFF() {
-        Animation animation = new ViewSizeChangeAnimation(ll_player, HifiveDisplayUtils.dip2px(mContext, 50));
+        Animation animation = new HifiveViewChangeAnimation(ll_player, HifiveDisplayUtils.dip2px(mContext, 50));
         animation.setDuration(500);
         ll_player.startAnimation(animation);
-    }
-    public static class ViewSizeChangeAnimation extends Animation {
-        int initialHeight;
-        int initialWidth;
-        int targetWidth;
-        View view;
-
-        public ViewSizeChangeAnimation(View view,int targetWidth) {
-            this.view = view;
-            this.targetWidth = targetWidth;
-        }
-
-        @Override
-        protected void applyTransformation(float interpolatedTime, Transformation t) {
-            view.getLayoutParams().height = initialHeight;
-            view.getLayoutParams().width = initialWidth + (int) ((targetWidth - initialWidth) * interpolatedTime);
-            view.requestLayout();
-        }
-
-        @Override
-        public void initialize(int width, int height, int parentWidth, int parentHeight) {
-            this.initialHeight = height;
-            this.initialWidth = width;
-            super.initialize(width, height, parentWidth, parentHeight);
-        }
-
-        @Override
-        public boolean willChangeBounds() {
-            return true;
-        }
     }
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
