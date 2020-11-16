@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:id="@+id/fl_lyric"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_marginBottom="20dp"
+        android:layout_height="184dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/hifive_player_lyric_detail_bg"
+            android:alpha="0.15" />
+
+        <TextView
+            android:id="@+id/tv_lyric_detail"
+            android:layout_width="match_parent"
+            android:layout_height="184dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
+塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡"
+            android:textColor="#FFFFFFFF"
+            android:scrollbars="vertical"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_lyric_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡"
+        android:textColor="#FFFFFFFF"
+        android:visibility="gone"
+        android:layout_marginBottom="20dp"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <LinearLayout
+            android:id="@+id/ll_player"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/hifive_player_bg">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp">
+                <TextView
+                    android:id="@+id/tv_music_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/tv_accompany"
+                    android:layout_width="32dp"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:layout_below="@id/tv_music_info"
+                    android:layout_alignLeft="@id/tv_music_info"
+                    android:background="@drawable/hifive_player_accompany_bg"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:textSize="10sp"
+                    android:text="@string/hifivesdk_music_player_sound"/>
+
+                <CheckBox
+                    android:id="@+id/cb_lyric"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:layout_below="@id/tv_music_info"
+                    android:layout_toEndOf="@id/tv_accompany"
+                    android:layout_marginStart="15dp"
+                    android:background="@drawable/hifive_music_player_lyric_checkbox_bg"
+                    android:checked="false"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@drawable/hifive_music_player_lyric_checkbox_textcolor"
+                    android:textStyle="bold"
+                    android:textSize="10sp"
+                    android:text="@string/hifivesdk_music_player_lyric"/>
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/iv_last"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/hifivesdk_icon_player_last"/>
+            <FrameLayout
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+
+
+                <ImageView
+                    android:id="@+id/iv_play"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/hifivesdk_icon_player_suspend"/>
+                <com.hifive.sdk.demo.view.HifiveRoundProgressBar
+                    android:id="@+id/circleProgressbar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:roundColor="#00000000"
+                    app:roundProgressColor="#FFFFFF"
+                    app:roundWidth="2dip" />
+            </FrameLayout>
+            <ImageView
+                android:id="@+id/iv_next"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/hifivesdk_icon_player_next"/>
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:src="@mipmap/hifivesdk_icon_player_back"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_music"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/hifivesdk_icon_music_player_defaut"/>
+    </FrameLayout>
+
+
+</LinearLayout>
