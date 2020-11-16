@@ -172,7 +172,188 @@ class MainActivity : AppCompatActivity() {
                         }
                     })
         }
+        findViewById<View>(R.id.button10).setOnClickListener {
+            HiFiveManager.getInstance()?.getMemberSheetList(
+                    this,
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
 
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button11).setOnClickListener {
+            HiFiveManager.getInstance()?.getMemberSheetMusicList(
+                    this,
+                    "167",
+                    null,
+                    null,
+                    null,
+                    null,
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
 
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button12).setOnClickListener {
+            HiFiveManager.getInstance()?.getMusicDetail(
+                    this,
+                    "167",
+                    null,
+                    "2",
+                    null,
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button13).setOnClickListener {
+            HiFiveManager.getInstance()?.saveMemberSheet(
+                    this,
+                    "167",
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button14).setOnClickListener {
+            HiFiveManager.getInstance()?.saveMemberSheetMusic(
+                    this,
+                    "167",
+                    "100",
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button15).setOnClickListener {
+            HiFiveManager.getInstance()?.deleteMemberSheetMusic(
+                    this,
+                    "167",
+                    "100",
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button16).setOnClickListener {
+            HiFiveManager.getInstance()?.getMemberSheetMusicAll(
+                    this,
+                    "167",
+                    null,
+                    null,
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button17).setOnClickListener {
+            HiFiveManager.getInstance()?.updateMusicRecord(
+                    this,
+                    "167",
+                    "100",
+                    "2",
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button18).setOnClickListener {
+            HiFiveManager.getInstance()?.getConfigList(
+                    this,
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button19).setOnClickListener {
+            HiFiveManager.getInstance()?.getMusicList(
+                    this,
+                    "167", null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button20).setOnClickListener {
+            HiFiveManager.getInstance()?.getSearchRecordList(
+                    this,
+                    "1",
+                    "10",
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
+        findViewById<View>(R.id.button21).setOnClickListener {
+            HiFiveManager.getInstance()?.deleteSearchRecord(
+                    this,
+                    object : DataResponse {
+                        override fun errorMsg(string: String, code: Int?) {
+                            Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun data(any: Any) {
+                            Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
     }
 }

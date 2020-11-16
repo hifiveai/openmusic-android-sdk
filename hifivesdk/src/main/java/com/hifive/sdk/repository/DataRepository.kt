@@ -1,6 +1,5 @@
 package com.hifive.sdk.repository
 
-import com.hifive.sdk.entity.*
 import com.hifive.sdk.net.LiveRetrofitFactory
 import com.hifive.sdk.protocol.BaseResp
 import io.reactivex.Flowable
@@ -14,7 +13,7 @@ import javax.inject.Inject
 class DataRepository @Inject constructor() {
 
 
-    fun getCompanySheetTagList(): Flowable<BaseResp<ArrayList<SheetTagListItem>>> {
+    fun getCompanySheetTagList(): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().getCompanySheetTagList()
     }
 
@@ -28,7 +27,7 @@ class DataRepository @Inject constructor() {
             field: String?,
             pageSize: String?,
             page: String?
-    ): Flowable<BaseResp<CompanySheetList>> {
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api()
                 .getCompanySheetList(groupId, language, recoNum, type, tagIdList, field, pageSize, page)
     }
@@ -40,14 +39,14 @@ class DataRepository @Inject constructor() {
             field: String?,
             pageSize: String?,
             page: String?
-    ): Flowable<BaseResp<CompanySheetMusicList>> {
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api()
                 .getCompanySheetMusicList(sheetId, language, field, pageSize, page)
     }
 
 
     fun getCompanyChannelList(
-    ): Flowable<BaseResp<ArrayList<CompanyChannelList>>> {
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api()
                 .getCompanyChannelList()
     }
@@ -68,7 +67,7 @@ class DataRepository @Inject constructor() {
             location: String?,
             favoriteSinger: String?,
             phone: String?
-    ): Flowable<BaseResp<Token>> {
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().token(
                 sign,
                 appId,
@@ -97,7 +96,7 @@ class DataRepository @Inject constructor() {
             deviceId: String,
             timestamp: String
     ):
-            Flowable<BaseResp<Token>> {
+            Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api()
                 .societyLogin(sign, appId, societyName, societyId, deviceId, timestamp)
     }
@@ -106,7 +105,7 @@ class DataRepository @Inject constructor() {
     fun unbindingMember(
             memberId: String,
             societyId: String
-    ): Flowable<BaseResp<Any>> {
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().unbendingMember(
                 memberId, societyId
         )
@@ -117,7 +116,7 @@ class DataRepository @Inject constructor() {
 
             memberId: String,
             societyId: String
-    ): Flowable<BaseResp<Any>> {
+    ): Flowable<BaseResp<String>> {
 
 
         return LiveRetrofitFactory.api().bind(
@@ -130,7 +129,7 @@ class DataRepository @Inject constructor() {
     fun delete(
 
             memberId: String
-    ): Flowable<BaseResp<Any>> {
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().delete(
                 memberId
         )
@@ -138,76 +137,79 @@ class DataRepository @Inject constructor() {
 
 
     fun deleteSociety(
-
             societyId: String
-    ): Flowable<BaseResp<Any>> {
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().deleteSociaty(
                 societyId
         )
     }
 
-    fun getMemberSheetList(
-            language: String, reconNumb: String, field: String
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().getMemberSheetList(language, reconNumb, field)
+    fun getMemberSheetList(): Flowable<BaseResp<String>> {
+        return LiveRetrofitFactory.api().getMemberSheetList()
     }
 
     fun getMemberSheetMusicList(
-            sheetId: String, language: String, field: String, pageSize: String, page: String
-    ): Flowable<BaseResp<Any>> {
+            sheetId: String, language: String?, field: String?, pageSize: String?, page: String?
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().getMemberSheetMusicList(sheetId, language, field, pageSize, page)
     }
 
 
     fun getMusicDetail(
-            musicId: String, language: String, mediaType: String, field: String
-    ): Flowable<BaseResp<Any>> {
+            musicId: String, language: String?, mediaType: String, field: String?
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().getMusicDetail(musicId, language, mediaType, field)
     }
 
 
     fun saveMemberSheet(
             sheetName: String
-    ): Flowable<BaseResp<Any>> {
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().saveMemberSheet(sheetName)
     }
 
 
     fun saveMemberSheetMusic(
             sheetId: String, musicId: String
-    ): Flowable<BaseResp<Any>> {
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().saveMemberSheetMusic(sheetId, musicId)
     }
 
 
     fun deleteMemberSheetMusic(
             sheetId: String, musicId: String
-    ): Flowable<BaseResp<Any>> {
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().deleteMemberSheetMusic(sheetId, musicId)
     }
 
 
     fun updateMusicRecord(
             recordId: String, duration: String, mediaType: String
-    ): Flowable<BaseResp<Any>> {
+    ): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().updateMusicRecord(recordId, duration, mediaType)
     }
 
-    fun getConfigList(): Flowable<BaseResp<Any>> {
+    fun getConfigList(): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().getConfigList()
     }
 
-    fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<BaseResp<Any>> {
+    fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().getMusicList(searchId, keyword, language, field, pageSize, page)
     }
 
-    fun getSearchRecordList(pageSize: String?, page: String?): Flowable<BaseResp<Any>> {
+    fun getSearchRecordList(pageSize: String?, page: String?): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().getSearchRecordList(pageSize, page)
     }
 
-    fun deleteSearchRecord(): Flowable<BaseResp<Any>> {
+    fun deleteSearchRecord(): Flowable<BaseResp<String>> {
         return LiveRetrofitFactory.api().deleteSearchRecord()
     }
+
+
+    fun getMemberSheetMusicAll(sheetId: String, language: String?, field: String?): Flowable<BaseResp<String>> {
+        return LiveRetrofitFactory.api().getMemberSheetMusicAll(sheetId, language, field)
+    }
+
 
 }
 

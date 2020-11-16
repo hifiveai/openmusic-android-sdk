@@ -130,9 +130,6 @@ abstract class BaseController {
 
     abstract fun getMemberSheetList(
             context: Context,
-            language: String,
-            reconNumb: String,
-            field: String,
             dataResponse: DataResponse
     )
 
@@ -140,20 +137,17 @@ abstract class BaseController {
     abstract fun getMemberSheetMusicList(
             context: Context,
             sheetId: String,
-            language: String,
-            field: String,
-            pageSize: String,
-            page: String,
+            language: String?,
+            field: String?,
+            pageSize: String?,
+            page: String?,
             dataResponse: DataResponse
     )
 
 
     abstract fun getMusicDetail(
             context: Context,
-            musicId: String,
-            language: String,
-            mediaType: String,
-            field: String,
+            musicId: String, language: String?, mediaType: String, field: String?,
             dataResponse: DataResponse
     )
 
@@ -216,6 +210,15 @@ abstract class BaseController {
 
     abstract fun deleteSearchRecord(
             context: Context,
+            dataResponse: DataResponse
+    )
+
+
+    abstract fun getMemberSheetMusicAll(
+            context: Context,
+            sheetId: String,
+            language: String?,
+            field: String?,
             dataResponse: DataResponse
     )
 

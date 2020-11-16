@@ -174,3 +174,87 @@ data class CompanyChannelList(
         val channelName: String,
         val channelUrl: String
 )
+
+
+data class SheetList(
+        val currentPage: Int,
+        val pageSize: Int,
+        val records: List<RecordInfo>,
+        val totalCount: Int,
+        val totalPage: Int
+)
+
+data class RecordInfo(
+        val createTime: String,
+        val sheetId: Int,
+        val sheetName: String,
+        val type: Int
+)
+
+
+data class SheetMusicList(
+        val currentPage: Int,
+        val pageSize: Int,
+        val records: List<RecordInformation>,
+        val totalCount: Int,
+        val totalPage: Int
+)
+
+data class RecordInformation(
+        val album: Album,
+        val arranger: List<Any>,
+        val artist: List<Artist>,
+        val auditionBegin: Int,
+        val auditionEnd: Int,
+        val authType: Int,
+        val author: List<Any>,
+        val bpm: Int,
+        val composer: List<Composer>,
+        val cover: CoverInfo,
+        val duration: Int,
+        val forSale: Int,
+        val majorVersion: String,
+        val maker: List<Any>,
+        val mastery: List<Any>,
+        val musicId: String,
+        val musicName: String,
+        val price: Int,
+        val tag: List<Any>,
+        val version: List<Version>,
+        val versionName: String,
+        val waveUrl: Any
+)
+
+data class Album(
+        val code: String,
+        val id: Int,
+        val name: String
+)
+
+data class Artist(
+        val code: String,
+        val icon: String,
+        val id: Int,
+        val name: String
+)
+
+data class Composer(
+        val code: String,
+        val icon: String,
+        val id: Int,
+        val name: String
+)
+
+data class CoverInfo(
+        val size: String,
+        val url: String
+)
+
+data class Version(
+        val duration: Int,
+        val free: Int,
+        val majorVersion: Int,
+        val musicId: String,
+        val name: String,
+        val price: Int
+)

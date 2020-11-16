@@ -1,6 +1,5 @@
 package com.hifive.sdk.service
 
-import com.hifive.sdk.entity.*
 import io.reactivex.Flowable
 
 /**
@@ -10,18 +9,18 @@ import io.reactivex.Flowable
  * 数据交互接口
  */
 interface Service {
-    fun getCompanySheetTagList(): Flowable<ArrayList<SheetTagListItem>>
+    fun getCompanySheetTagList(): Flowable<String>
 
     fun getCompanySheetList(
             groupId: String?,
             language: String?,
-            recoNum: String?,
+            recNam: String?,
             type: String?,
             tagIdList: String?,
             field: String?,
             pageSize: String?,
             page: String?
-    ): Flowable<CompanySheetList>
+    ): Flowable<String>
 
 
     fun getCompanySheetMusicList(
@@ -30,13 +29,9 @@ interface Service {
             field: String?,
             pageSize: String?,
             page: String?
-    ): Flowable<CompanySheetMusicList>
+    ): Flowable<String>
 
-
-    fun getCompanyChannelList(
-    ): Flowable<ArrayList<CompanyChannelList>>
-
-
+    fun getCompanyChannelList(): Flowable<String>
     fun token(sign: String,
               appId: String,
               memberName: String,
@@ -50,8 +45,7 @@ interface Service {
               birthday: String?,
               location: String?,
               favoriteSinger: String?,
-              phone: String?): Flowable<Token>
-
+              phone: String?): Flowable<String>
 
     fun societyLogin(
             sign: String,
@@ -60,37 +54,23 @@ interface Service {
             societyId: String,
             deviceId: String,
             timestamp: String
-    ): Flowable<Token>
+    ): Flowable<String>
 
-
-    fun unbindMember(memberId: String, societyId: String): Flowable<Any>
-
-
-    fun bind(memberId: String, societyId: String): Flowable<Any>
-
-
-    fun delete(memberId: String): Flowable<Any>
-
-
-    fun deleteSociety(societyId: String): Flowable<Any>
-
-    fun getMemberSheetList(language: String, reconNumb: String, field: String): Flowable<Any>
-
-
-    fun getMemberSheetMusicList(sheetId: String,
-                                language: String,
-                                field: String,
-                                pageSize: String,
-                                page: String): Flowable<Any>
-
-    fun getMusicDetail(musicId: String, language: String, mediaType: String, field: String): Flowable<Any>
-    fun saveMemberSheet(sheetName: String): Flowable<Any>
-    fun saveMemberSheetMusic(sheetId: String, musicId: String): Flowable<Any>
-    fun deleteMemberSheetMusic(sheetId: String, musicId: String): Flowable<Any>
-    fun updateMusicRecord(recordId: String, duration: String, mediaType: String): Flowable<Any>
-    fun getConfigList(): Flowable<Any>
-    fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<Any>
-    fun getSearchRecordList(pageSize: String?, page: String?): Flowable<Any>
-    fun deleteSearchRecord(): Flowable<Any>
+    fun unbindMember(memberId: String, societyId: String): Flowable<String>
+    fun bind(memberId: String, societyId: String): Flowable<String>
+    fun delete(memberId: String): Flowable<String>
+    fun deleteSociety(societyId: String): Flowable<String>
+    fun getMemberSheetList(): Flowable<String>
+    fun getMemberSheetMusicList(sheetId: String, language: String?, field: String?, pageSize: String?, page: String?): Flowable<String>
+    fun getMusicDetail(musicId: String, language: String?, mediaType: String, field: String?): Flowable<String>
+    fun saveMemberSheet(sheetName: String): Flowable<String>
+    fun saveMemberSheetMusic(sheetId: String, musicId: String): Flowable<String>
+    fun deleteMemberSheetMusic(sheetId: String, musicId: String): Flowable<String>
+    fun updateMusicRecord(recordId: String, duration: String, mediaType: String): Flowable<String>
+    fun getConfigList(): Flowable<String>
+    fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<String>
+    fun getSearchRecordList(pageSize: String?, page: String?): Flowable<String>
+    fun deleteSearchRecord(): Flowable<String>
+    fun getMemberSheetMusicAll(sheetId: String, language: String?, field: String?): Flowable<String>
 
 }

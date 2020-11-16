@@ -5,7 +5,6 @@ import com.hifive.sdk.common.BaseConstance
 import com.hifive.sdk.common.BaseConstance.Companion.memberOutId
 import com.hifive.sdk.common.BaseConstance.Companion.societyOutId
 import com.hifive.sdk.dagger.DaggerServiceComponent
-import com.hifive.sdk.entity.*
 import com.hifive.sdk.ext.request
 import com.hifive.sdk.hInterface.DataResponse
 import com.hifive.sdk.injection.module.ServiceModule
@@ -13,6 +12,7 @@ import com.hifive.sdk.manager.HiFiveManager.Companion.APP_ID
 import com.hifive.sdk.manager.HiFiveManager.Companion.SECRET
 import com.hifive.sdk.net.Encryption
 import com.hifive.sdk.rx.BaseSubscribe
+import org.json.JSONObject
 
 
 /**
@@ -35,8 +35,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.getCompanySheetTagList()
-                .request(object : BaseSubscribe<ArrayList<SheetTagListItem>>(response) {
-                    override fun onNext(t: ArrayList<SheetTagListItem>) {
+                .request(object : BaseSubscribe<String>(response) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         response.data(t)
                     }
@@ -57,8 +57,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.getCompanySheetMusicList(sheetId, language, field, pageSize, page)
-                .request(object : BaseSubscribe<CompanySheetMusicList>(response) {
-                    override fun onNext(t: CompanySheetMusicList) {
+                .request(object : BaseSubscribe<String>(response) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         response.data(t)
                     }
@@ -74,8 +74,8 @@ class MusicManager(val context: Context) : BaseController() {
         }
 
         mService.getCompanyChannelList()
-                .request(object : BaseSubscribe<ArrayList<CompanyChannelList>>(response) {
-                    override fun onNext(t: ArrayList<CompanyChannelList>) {
+                .request(object : BaseSubscribe<String>(response) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         response.data(t)
                     }
@@ -100,8 +100,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.getCompanySheetList(groupId, language, recoNum, type, tagIdList, field, pageSize, page)
-                .request(object : BaseSubscribe<CompanySheetList>(response) {
-                    override fun onNext(t: CompanySheetList) {
+                .request(object : BaseSubscribe<String>(response) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         response.data(t)
                     }
@@ -121,12 +121,14 @@ class MusicManager(val context: Context) : BaseController() {
         mService.token(sign
                 ?: "", APP_ID
                 ?: "", memberName, memberId, societyName, societyId, deviceId, time, headerUrl, gender, birthday, location, favoriteSinger, phone)
-                .request(object : BaseSubscribe<Token>(dataResponse) {
-                    override fun onNext(t: Token) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         memberOutId = memberId
                         societyOutId = societyId
-                        BaseConstance.accessTokenMember = t.accessToken
+                        val json = JSONObject(t)
+                        val token = json.getString("accessToken")
+                        BaseConstance.accessTokenMember = token ?: ""
                         BaseConstance.accessTokenUnion = null
                         dataResponse.data(t)
                     }
@@ -144,13 +146,15 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.societyLogin(sign ?: "", APP_ID!!, societyName, societyId, deviceId, time)
-                .request(object : BaseSubscribe<Token>(dataResponse) {
-                    override fun onNext(t: Token) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         memberOutId = null
                         societyOutId = societyId
                         BaseConstance.accessTokenMember = null
-                        BaseConstance.accessTokenUnion = t.accessToken
+                        val json = JSONObject(t)
+                        val token = json.getString("accessToken")
+                        BaseConstance.accessTokenUnion = token ?: ""
                         dataResponse.data(t)
                     }
                 })
@@ -162,8 +166,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.unbindMember(memberId, societyId)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
@@ -180,8 +184,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.bind(memberId, societyId)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
@@ -197,8 +201,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.delete(memberId)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
@@ -214,47 +218,47 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.deleteSociety(societyId)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
                 })
     }
 
-    override fun getMemberSheetList(context: Context, language: String, reconNumb: String, field: String, dataResponse: DataResponse) {
+    override fun getMemberSheetList(context: Context, dataResponse: DataResponse) {
         if (!checkNetWork(context, dataResponse)) {
             return
         }
-        mService.getMemberSheetList(language, reconNumb, field)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+        mService.getMemberSheetList()
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
                 })
     }
 
-    override fun getMemberSheetMusicList(context: Context, sheetId: String, language: String, field: String, pageSize: String, page: String, dataResponse: DataResponse) {
+    override fun getMemberSheetMusicList(context: Context, sheetId: String, language: String?, field: String?, pageSize: String?, page: String?, dataResponse: DataResponse) {
         if (!checkNetWork(context, dataResponse)) {
             return
         }
         mService.getMemberSheetMusicList(sheetId, language, field, pageSize, page)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
                 })
     }
 
-    override fun getMusicDetail(context: Context, musicId: String, language: String, mediaType: String, field: String, dataResponse: DataResponse) {
+    override fun getMusicDetail(context: Context, musicId: String, language: String?, mediaType: String, field: String?, dataResponse: DataResponse) {
         if (!checkNetWork(context, dataResponse)) {
             return
         }
         mService.getMusicDetail(musicId, language, mediaType, field)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
@@ -266,8 +270,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.saveMemberSheet(sheetName)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
@@ -279,8 +283,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.saveMemberSheetMusic(sheetId, musicId)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
@@ -292,8 +296,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.deleteMemberSheetMusic(sheetId, musicId)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
@@ -305,8 +309,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.updateMusicRecord(recordId, duration, mediaType)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
@@ -318,8 +322,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.getConfigList()
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
@@ -331,8 +335,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.getMusicList(searchId, keyword, language, field, pageSize, page)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
@@ -344,8 +348,8 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.getSearchRecordList(pageSize, page)
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
@@ -357,8 +361,21 @@ class MusicManager(val context: Context) : BaseController() {
             return
         }
         mService.deleteSearchRecord()
-                .request(object : BaseSubscribe<Any>(dataResponse) {
-                    override fun onNext(t: Any) {
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
+                        super.onNext(t)
+                        dataResponse.data(t)
+                    }
+                })
+    }
+
+    override fun getMemberSheetMusicAll(context: Context, sheetId: String, language: String?, field: String?, dataResponse: DataResponse) {
+        if (!checkNetWork(context, dataResponse)) {
+            return
+        }
+        mService.getMemberSheetMusicAll(sheetId, language, field)
+                .request(object : BaseSubscribe<String>(dataResponse) {
+                    override fun onNext(t: String) {
                         super.onNext(t)
                         dataResponse.data(t)
                     }
