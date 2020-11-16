@@ -3,6 +3,7 @@ package com.longyuan.livesdkdemo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                     null, object : DataResponse {
                 override fun errorMsg(string: String, code: Int?) {}
                 override fun data(any: Any) {
-                    (findViewById<View>(R.id.textView) as AppCompatTextView).text = accessTokenMember
+                    (findViewById<View>(R.id.textView) as TextView).text = accessTokenMember
                             ?: ""
                 }
             })
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {}
                         override fun data(any: Any) {
-                            (findViewById<View>(R.id.textView) as AppCompatTextView).text = accessTokenUnion
+                            (findViewById<View>(R.id.textView) as TextView).text = accessTokenUnion
                                     ?: ""
                         }
                     })
@@ -149,7 +150,7 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         override fun data(any: Any) {
-                            Log.e("TAG","any=="+any);
+                            Log.e("TAG", "any==$any");
 
                             Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
 
@@ -184,7 +185,7 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         override fun data(any: Any) {
-                            Log.e("TAG","any=="+any);
+                            val e = Log.e("TAG", "any==$any");
                             Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
                         }
                     })
