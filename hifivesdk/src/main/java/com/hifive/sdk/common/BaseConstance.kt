@@ -34,6 +34,7 @@ class BaseConstance {
 
 
         fun getSignToken(secret: String, token: String, time: String): String? {
+            if (token.isBlank()) return null
             val message = token + time
             return getSign(secret, message)?.trim()
         }

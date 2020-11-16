@@ -15,7 +15,7 @@ interface Api {
 
 
     @GET("/livestream/v1/company/getCompanySheetTagList")
-    fun getCompanySheetTagList(): Flowable<BaseResp<String>>
+    fun getCompanySheetTagList(): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
@@ -29,7 +29,7 @@ interface Api {
             @Field("field") field: String?,
             @Field("pageSize") pageSize: String?,
             @Field("page") page: String?
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
     @FormUrlEncoded
     @POST("/livestream/v1/company/getCompanySheetMusicList")
@@ -39,12 +39,12 @@ interface Api {
             @Field("field") field: String?,
             @Field("pageSize") pageSize: String?,
             @Field("page") page: String?
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @GET("/livestream/v1/company/getCompanyChannelList")
     fun getCompanyChannelList(
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     //开放平台
@@ -67,7 +67,7 @@ interface Api {
             @Field("location") location: String?,
             @Field("favoriteSinger") favoriteSinger: String?,
             @Field("phone") phone: String?
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
@@ -79,7 +79,7 @@ interface Api {
             @Field("sociatyId") sociatyId: String,
             @Field("deviceId") deviceId: String?,
             @Field("timestamp") timestamp: String?
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
@@ -87,7 +87,7 @@ interface Api {
     fun unbendingMember(
             @Field("memberId") sign: String,
             @Field("sociatyId") appId: String
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
@@ -95,25 +95,25 @@ interface Api {
     fun bind(
             @Field("memberId") sign: String,
             @Field("sociatyId") appId: String
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
     @POST("/livestream/v1/member/deleteMember")
     fun delete(
             @Field("memberId") sign: String
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
     @POST("/livestream/v1/member/deleteSociaty")
     fun deleteSociaty(
             @Field("sociatyId") sign: String
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @POST("/livestream/v1/member/music/getMemberSheetList")
-    fun getMemberSheetList(): Flowable<BaseResp<String>>
+    fun getMemberSheetList(): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
@@ -124,7 +124,7 @@ interface Api {
             @Field("field") field: String?,
             @Field("pageSize") pageSize: String?,
             @Field("page") page: String?
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
@@ -134,14 +134,14 @@ interface Api {
             @Field("language") language: String?,
             @Field("mediaType") mediaType: String,
             @Field("field") field: String?
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
     @POST("/livestream/v1/member/music/saveMemberSheet")
     fun saveMemberSheet(
             @Field("sheetName") musicId: String
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
@@ -149,7 +149,7 @@ interface Api {
     fun saveMemberSheetMusic(
             @Field("sheetId") sheetId: String,
             @Field("musicId") musicId: String
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
@@ -157,7 +157,7 @@ interface Api {
     fun deleteMemberSheetMusic(
             @Field("sheetId") sheetId: String,
             @Field("musicId") musicId: String
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
@@ -166,11 +166,11 @@ interface Api {
             @Field("recordId") recordId: String,
             @Field("duration") duration: String,
             @Field("mediaType") mediaType: String
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @GET("/livestream/v1/search/getConfigList")
-    fun getConfigList(): Flowable<BaseResp<String>>
+    fun getConfigList(): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
@@ -182,18 +182,18 @@ interface Api {
             @Field("field") field: String?,
             @Field("pageSize") pageSize: String?,
             @Field("page") page: String?
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @GET("/livestream/v1/search/getSearchRecordList")
     fun getSearchRecordList(
             @Field("pageSize") pageSize: String?,
             @Field("page") page: String?
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
     @GET("/livestream/v1/search/deleteSearchRecord")
-    fun deleteSearchRecord(): Flowable<BaseResp<String>>
+    fun deleteSearchRecord(): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
@@ -202,7 +202,7 @@ interface Api {
             @Field("sheetId") sheetId: String,
             @Field("language") language: String?,
             @Field("field") field: String?
-    ): Flowable<BaseResp<String>>
+    ): Flowable<BaseResp<Any>>
 
 
 }

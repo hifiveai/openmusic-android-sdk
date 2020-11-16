@@ -16,7 +16,7 @@ class ServiceImpl @Inject constructor() : Service {
     @Inject
     lateinit var dataRepository: DataRepository
 
-    override fun getCompanySheetTagList(): Flowable<String> {
+    override fun getCompanySheetTagList(): Flowable<Any> {
         return dataRepository.getCompanySheetTagList().convert()
     }
 
@@ -27,7 +27,7 @@ class ServiceImpl @Inject constructor() : Service {
                                      tagIdList: String?,
                                      field: String?,
                                      pageSize: String?,
-                                     page: String?): Flowable<String> {
+                                     page: String?): Flowable<Any> {
         return dataRepository.getCompanySheetList(groupId, language, recNam, type, tagIdList, field, pageSize, page).convert()
     }
 
@@ -35,11 +35,11 @@ class ServiceImpl @Inject constructor() : Service {
                                           language: String?,
                                           field: String?,
                                           pageSize: String?,
-                                          page: String?): Flowable<String> {
+                                          page: String?): Flowable<Any> {
         return dataRepository.getCompanySheetMusicList(sheetId, language, field, pageSize, page).convert()
     }
 
-    override fun getCompanyChannelList(): Flowable<String> {
+    override fun getCompanyChannelList(): Flowable<Any> {
         return dataRepository.getCompanyChannelList().convert()
     }
 
@@ -56,18 +56,18 @@ class ServiceImpl @Inject constructor() : Service {
                        birthday: String?,
                        location: String?,
                        favoriteSinger: String?,
-                       phone: String?): Flowable<String> {
+                       phone: String?): Flowable<Any> {
         return dataRepository.token(sign, appId, memberName, memberId, societyName, societyId, deviceId, timestamp, headerUrl, gender, birthday, location, favoriteSinger, phone).convert()
     }
 
 
-    override fun societyLogin(sign: String, appId: String, societyName: String, societyId: String, deviceId: String, timestamp: String): Flowable<String> {
+    override fun societyLogin(sign: String, appId: String, societyName: String, societyId: String, deviceId: String, timestamp: String): Flowable<Any> {
         return dataRepository.societyLogin(sign, appId, societyName, societyId, deviceId, timestamp).convert()
 
     }
 
     override fun unbindMember(
-            memberId: String, societyId: String): Flowable<String> {
+            memberId: String, societyId: String): Flowable<Any> {
         return dataRepository.unbindingMember(memberId, societyId).convert()
 
     }
@@ -76,78 +76,78 @@ class ServiceImpl @Inject constructor() : Service {
 
             memberId: String,
             societyId: String
-    ): Flowable<String> {
+    ): Flowable<Any> {
         return dataRepository.bind(memberId, societyId).convert()
     }
 
     override fun delete(
 
             memberId: String
-    ): Flowable<String> {
+    ): Flowable<Any> {
         return dataRepository.delete(memberId).convert()
     }
 
 
     override fun deleteSociety(
             societyId: String
-    ): Flowable<String> {
+    ): Flowable<Any> {
         return dataRepository.deleteSociety(societyId).convert()
     }
 
-    override fun getMemberSheetList(): Flowable<String> {
+    override fun getMemberSheetList(): Flowable<Any> {
         return dataRepository.getMemberSheetList().convert()
 
     }
 
-    override fun getMemberSheetMusicList(sheetId: String, language: String?, field: String?, pageSize: String?, page: String?): Flowable<String> {
+    override fun getMemberSheetMusicList(sheetId: String, language: String?, field: String?, pageSize: String?, page: String?): Flowable<Any> {
         return dataRepository.getMemberSheetMusicList(sheetId, language, field, pageSize, page).convert()
 
     }
 
-    override fun getMusicDetail(musicId: String, language: String?, mediaType: String, field: String?): Flowable<String> {
+    override fun getMusicDetail(musicId: String, language: String?, mediaType: String, field: String?): Flowable<Any> {
         return dataRepository.getMusicDetail(musicId, language, mediaType, field).convert()
 
     }
 
-    override fun saveMemberSheet(sheetName: String): Flowable<String> {
+    override fun saveMemberSheet(sheetName: String): Flowable<Any> {
         return dataRepository.saveMemberSheet(sheetName).convert()
 
     }
 
-    override fun saveMemberSheetMusic(sheetId: String, musicId: String): Flowable<String> {
+    override fun saveMemberSheetMusic(sheetId: String, musicId: String): Flowable<Any> {
         return dataRepository.saveMemberSheetMusic(sheetId, musicId).convert()
 
     }
 
-    override fun deleteMemberSheetMusic(sheetId: String, musicId: String): Flowable<String> {
+    override fun deleteMemberSheetMusic(sheetId: String, musicId: String): Flowable<Any> {
         return dataRepository.deleteMemberSheetMusic(sheetId, musicId).convert()
 
     }
 
-    override fun updateMusicRecord(recordId: String, duration: String, mediaType: String): Flowable<String> {
+    override fun updateMusicRecord(recordId: String, duration: String, mediaType: String): Flowable<Any> {
         return dataRepository.updateMusicRecord(recordId, duration, mediaType).convert()
 
     }
 
-    override fun getConfigList(): Flowable<String> {
+    override fun getConfigList(): Flowable<Any> {
         return dataRepository.getConfigList().convert()
     }
 
-    override fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<String> {
+    override fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<Any> {
         return dataRepository.getMusicList(searchId, keyword, language, field, pageSize, page).convert()
     }
 
-    override fun getSearchRecordList(pageSize: String?, page: String?): Flowable<String> {
+    override fun getSearchRecordList(pageSize: String?, page: String?): Flowable<Any> {
         return dataRepository.getSearchRecordList(pageSize, page).convert()
 
     }
 
-    override fun deleteSearchRecord(): Flowable<String> {
+    override fun deleteSearchRecord(): Flowable<Any> {
         return dataRepository.deleteSearchRecord().convert()
 
     }
 
-    override fun getMemberSheetMusicAll(sheetId: String, language: String?, field: String?): Flowable<String> {
+    override fun getMemberSheetMusicAll(sheetId: String, language: String?, field: String?): Flowable<Any> {
         return dataRepository.getMemberSheetMusicAll(sheetId, language, field).convert()
     }
 

@@ -6,8 +6,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
+import com.hifive.sdk.common.BaseConstance.Companion.accessTokenMember
+import com.hifive.sdk.common.BaseConstance.Companion.accessTokenUnion
 import com.hifive.sdk.demo.ui.player.HifivePlayerManger
-import com.hifive.sdk.entity.Token
 import com.hifive.sdk.hInterface.DataResponse
 import com.hifive.sdk.manager.HiFiveManager
 
@@ -54,7 +55,8 @@ class MainActivity : AppCompatActivity() {
                     null, object : DataResponse {
                 override fun errorMsg(string: String, code: Int?) {}
                 override fun data(any: Any) {
-                    (findViewById<View>(R.id.textView) as AppCompatTextView).text = (any as Token).accessToken
+                    (findViewById<View>(R.id.textView) as AppCompatTextView).text = accessTokenMember
+                            ?: ""
                 }
             })
         }
@@ -66,7 +68,8 @@ class MainActivity : AppCompatActivity() {
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {}
                         override fun data(any: Any) {
-                            (findViewById<View>(R.id.textView) as AppCompatTextView).text = (any as Token).accessToken
+                            (findViewById<View>(R.id.textView) as AppCompatTextView).text = accessTokenUnion
+                                    ?: ""
                         }
                     })
         }
