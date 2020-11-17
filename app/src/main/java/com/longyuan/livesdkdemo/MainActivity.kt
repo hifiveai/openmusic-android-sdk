@@ -35,8 +35,7 @@ class MainActivity : AppCompatActivity() {
         HiFiveManager.start(application, appId, secretKey)
         findViewById<View>(R.id.play).setOnClickListener {
             if(!flag){
-                HifivePlayerManger.getInstance().add(this)
-                flag = true
+                Login()
             }else{
                 HifivePlayerManger.getInstance().remove()
                 flag = false
@@ -200,6 +199,7 @@ class MainActivity : AppCompatActivity() {
 
                         override fun data(any: Any) {
                             Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                            Log.e("TAG","data=="+any)
                         }
                     })
         }
@@ -218,6 +218,7 @@ class MainActivity : AppCompatActivity() {
 
                         override fun data(any: Any) {
                             Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
+                            Log.e("TAG","SheetMusicList=="+any)
                         }
                     })
         }
@@ -374,7 +375,33 @@ class MainActivity : AppCompatActivity() {
                     })
         }
     }
+    private fun Login() {
+        HiFiveManager.getInstance()?.memberLogin(this,
+                userId,
+                userId,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null, object : DataResponse {
+            override fun errorMsg(string: String, code: Int?) {
+                Toast.makeText(this@MainActivity, string, Toast.LENGTH_SHORT).show()
+            }
+            override fun data(any: Any) {
+                (findViewById<View>(R.id.textView) as TextView).text = accessTokenMember
+                        ?: ""
+                runOnUiThread(Runnable {
+                    HifivePlayerManger.getInstance().add(this@MainActivity)
+                    flag = true
+                })
+            }
+        })
 
+
+    }
     override fun onStart() {
         HifivePlayerManger.getInstance().attach(this);
         super.onStart()

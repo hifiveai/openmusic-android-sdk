@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hifive.sdk.R;
+import com.hifive.sdk.demo.model.HifiveMusicAuthorModel;
 import com.hifive.sdk.demo.model.HifiveMusicModel;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 
@@ -79,8 +80,30 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
         }else{
             holder.iv_add_like.setImageResource(R.mipmap.hifivesdk_icon_add_like);
         }
-        holder.tv_name.setText(model.getName());
-        holder.tv_detail.setText(model.getAuthor()+"-"+model.getAlbum()+"-"+model.getIntroduce());
+        holder.tv_name.setText(model.getMusicName());
+        StringBuffer stringBuffer = new StringBuffer();
+        if(model.getArtist() != null && model.getArtist().size() >0){
+            for(HifiveMusicAuthorModel authorModel:model.getArtist()){
+                if(stringBuffer.length() >0){
+                    stringBuffer.append("-");
+                }
+                stringBuffer.append(authorModel.getName());
+            }
+        }else{
+            if(model.getComposer()!= null && model.getComposer().size() >0){
+                for(HifiveMusicAuthorModel authorModel:model.getComposer()){
+                    if(stringBuffer.length() >0){
+                        stringBuffer.append("-");
+                    }
+                    stringBuffer.append(authorModel.getName());
+                }
+            }
+        }
+        if(stringBuffer.length() >0){
+            stringBuffer.append("-");
+        }
+        stringBuffer.append(model.getAlbumName());
+        holder.tv_detail.setText(stringBuffer.toString());
         //点击事件
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

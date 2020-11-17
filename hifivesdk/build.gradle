@@ -37,7 +37,7 @@ dependencies {
     implementation files('libs/downFile.jar')
     implementation group: 'com.github.bumptech.glide', name: 'glide', version: '4.9.0'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-11'
-
+    implementation 'com.alibaba:fastjson:1.2.51'
     //开发者必须导入的包
     api HifiveDependencies["javax"]
     api HifiveDependencies["rxKotlin"]

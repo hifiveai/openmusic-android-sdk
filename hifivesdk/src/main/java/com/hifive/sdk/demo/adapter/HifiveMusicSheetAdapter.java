@@ -52,16 +52,19 @@ public class HifiveMusicSheetAdapter extends RecyclerView.Adapter<HifiveMusicShe
     @Override
     public void onBindViewHolder(@NonNull MusicSheetHolder holder, final int position) {
         HifiveMusicSheetModel model = dataList.get(position);
-        holder.tv_name.setText(model.getName());
+        holder.tv_name.setText(model.getSheetName());
         if(position < 3){
             holder.vv_line.setVisibility(View.VISIBLE);
         }else{
             holder.vv_line.setVisibility(View.GONE);
         }
-        if(!TextUtils.isEmpty(model.getImageUrl())){
-            Glide.with(mContext).load(model.getImageUrl())
-                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(HifiveDisplayUtils.dip2px(mContext, 6))))
-                    .into(holder.iv_image);//四周都是圆角的圆角矩形图片。
+        if(model.getCover() != null && model.getCover().size() > 0){
+            String url = model.getCover().get(0).getUrl();
+            if(!TextUtils.isEmpty(url)){
+                Glide.with(mContext).load(url)
+                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(HifiveDisplayUtils.dip2px(mContext, 6))))
+                        .into(holder.iv_image);//四周都是圆角的圆角矩形图片。
+            }
         }else{
             Glide.with(mContext).load(R.drawable.hifve_sheet_default)
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners(HifiveDisplayUtils.dip2px(mContext, 6))))
@@ -76,8 +79,6 @@ public class HifiveMusicSheetAdapter extends RecyclerView.Adapter<HifiveMusicShe
                 }
             }
         });
-
-
     }
 
     @Override

@@ -164,10 +164,10 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null
+                    /*if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null
                             && !TextUtils.isEmpty(HifiveDialogManageUtil.getInstance().getPlayMusic().getLyric())) {
                         fl_lyric.setVisibility(VISIBLE);
-                    }
+                    }*/
                 }else{
                     fl_lyric.setVisibility(GONE);
                 }
@@ -225,7 +225,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         isPlay = true;
         if(playerUtils!= null) {
             if (isStart) {
-                playerUtils.prepareAndPlay(HifiveDialogManageUtil.getInstance().getPlayMusic().getUrl(), new MediaPlayer.OnPreparedListener() {
+                /*playerUtils.prepareAndPlay(HifiveDialogManageUtil.getInstance().getPlayMusic().getUrl(), new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         playerUtils.play();
@@ -241,7 +241,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                         }
                         setPlayProgress();
                     }
-                });
+                });*/
             } else {
                 playerUtils.play();
             }
@@ -471,7 +471,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     //更新view
     private void updateView() {
         HifiveMusicModel playMusic = HifiveDialogManageUtil.getInstance().getPlayMusic();
-        if(playMusic != null){
+       /* if(playMusic != null){
             StringBuilder info = new StringBuilder();
             if(!TextUtils.isEmpty(playMusic.getName())){
                 info.append(playMusic.getName());
@@ -492,7 +492,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 fl_lyric.setVisibility(GONE);
             }
             startPlay(true);//开始播放新歌曲
-        }
+        }*/
     }
     //显示歌曲列表弹窗
     public void showDialog() {

@@ -433,7 +433,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
         }else{
             page++;
         }
-        musicModels = new ArrayList<>();
+        /*musicModels = new ArrayList<>();
         if(TestSearch){
             for(int i= pageSize*(page-1); i < pageSize*page ;i++){
                 HifiveMusicModel musicModel = new HifiveMusicModel();
@@ -475,7 +475,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                 }
                 musicModels.add(musicModel);
             }
-        }
+        }*/
         mHandler.sendEmptyMessage(ty);
     }
     //搜索歌曲为空时，查找推荐歌曲列表
@@ -485,7 +485,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
         }else{
             page++;
         }
-        musicModels = new ArrayList<>();
+       /* musicModels = new ArrayList<>();
         for(int i= pageSize*(page-1); i < pageSize*page ;i++){
             HifiveMusicModel musicModel = new HifiveMusicModel();
             musicModel.setId(1132+i);
@@ -556,7 +556,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                         "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气");
             }
             musicModels.add(musicModel);
-        }
+        }*/
         mHandler.sendEmptyMessage(ty);
     }
     //显示自定义toast信息

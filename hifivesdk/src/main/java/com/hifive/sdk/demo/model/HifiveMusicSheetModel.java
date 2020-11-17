@@ -4,55 +4,90 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 音乐歌单的实体类
+ * 商户歌单的实体类
  *
  * @author huchao
  */
 public class HifiveMusicSheetModel implements Serializable {
-    private long id;//歌单id
-    private String name;//歌单名称
-    private List<HifiveMusicSheetTipsModel> tips;//歌单标签
-    private String imageUrl;//歌单背景图
-    private String introduce;//歌单介绍
+    private long sheetId;//歌单id
+    private String sheetName;//歌单名称
+    private long musicTotal;//音乐总数
+    private String describe;//歌单描述
+    private int free;//是否免费
+    private int price;//歌单价格（分）
+    private int type;//歌单类型， 1：自定义歌单，0：系统歌单
+    private List<HifiveMusicTagModel> tag;//标签
+    private List<HifiveMusicImageModel> cover;//编曲曲者
 
-    public long getId() {
-        return id;
+    public long getSheetId() {
+        return sheetId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setSheetId(long sheetId) {
+        this.sheetId = sheetId;
     }
 
-    public String getName() {
-        return name;
+    public String getSheetName() {
+        return sheetName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSheetName(String sheetName) {
+        this.sheetName = sheetName;
     }
 
-    public List<HifiveMusicSheetTipsModel> getTips() {
-        return tips;
+    public long getMusicTotal() {
+        return musicTotal;
     }
 
-    public void setTips(List<HifiveMusicSheetTipsModel> tips) {
-        this.tips = tips;
+    public void setMusicTotal(long musicTotal) {
+        this.musicTotal = musicTotal;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getDescribe() {
+        return describe;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 
-    public String getIntroduce() {
-        return introduce;
+    public int getFree() {
+        return free;
     }
 
-    public void setIntroduce(String introduce) {
-        this.introduce = introduce;
+    public void setFree(int free) {
+        this.free = free;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public List<HifiveMusicTagModel> getTag() {
+        return tag;
+    }
+
+    public void setTag(List<HifiveMusicTagModel> tag) {
+        this.tag = tag;
+    }
+
+    public List<HifiveMusicImageModel> getCover() {
+        return cover;
+    }
+
+    public void setCover(List<HifiveMusicImageModel> cover) {
+        this.cover = cover;
+    }
 }

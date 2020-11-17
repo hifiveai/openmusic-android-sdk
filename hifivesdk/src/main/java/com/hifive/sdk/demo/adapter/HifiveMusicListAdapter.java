@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hifive.sdk.R;
+import com.hifive.sdk.demo.model.HifiveMusicAuthorModel;
 import com.hifive.sdk.demo.model.HifiveMusicModel;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 
@@ -55,7 +56,7 @@ public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicList
     public void onBindViewHolder(@NonNull HifiveMusicListAdapter.MusicListHolder holder, final int position) {
         final HifiveMusicModel model = dataList.get(position);
         if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null
-                && HifiveDialogManageUtil.getInstance().getPlayMusic().getId() == model.getId()){
+                && HifiveDialogManageUtil.getInstance().getPlayMusic().getMusicId().equals(model.getMusicId())){
             holder.tv_num.setVisibility(View.GONE);
             holder.iv_play.setVisibility(View.VISIBLE);
         }else{
@@ -64,8 +65,30 @@ public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicList
         }
         Glide.with(mContext).asGif().load(R.drawable.hifive_music_play).into(holder.iv_play);
         holder.tv_num.setText(String.valueOf(position+1));
-        holder.tv_name.setText(model.getName());
-        holder.tv_detail.setText(model.getAuthor()+"-"+model.getAlbum()+"-"+model.getIntroduce());
+        holder.tv_name.setText(model.getMusicName());
+        StringBuffer stringBuffer = new StringBuffer();
+        if(model.getArtist() != null && model.getArtist().size() >0){
+            for(HifiveMusicAuthorModel authorModel:model.getArtist()){
+                if(stringBuffer.length() >0){
+                    stringBuffer.append("-");
+                }
+                stringBuffer.append(authorModel.getName());
+            }
+        }else{
+            if(model.getComposer()!= null && model.getComposer().size() >0){
+                for(HifiveMusicAuthorModel authorModel:model.getComposer()){
+                    if(stringBuffer.length() >0){
+                        stringBuffer.append("-");
+                    }
+                    stringBuffer.append(authorModel.getName());
+                }
+            }
+        }
+        if(stringBuffer.length() >0){
+            stringBuffer.append("-");
+        }
+        stringBuffer.append(model.getAlbumName());
+        holder.tv_detail.setText(stringBuffer.toString());
         //点击事件
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

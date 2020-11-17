@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,21 +23,22 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveViewPagerAdapter;
+import com.hifive.sdk.demo.model.HifiveMusicChannelModel;
+import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
+import com.hifive.sdk.demo.util.HifiveDisplayUtils;
+import com.hifive.sdk.demo.view.magicindicator.CommonNavigator;
+import com.hifive.sdk.demo.view.magicindicator.CommonNavigatorAdapter;
 import com.hifive.sdk.demo.view.magicindicator.CommonPagerTitleView;
 import com.hifive.sdk.demo.view.magicindicator.MagicIndicator;
 import com.hifive.sdk.demo.view.magicindicator.ViewPagerHelper;
-import com.hifive.sdk.demo.view.magicindicator.CommonNavigator;
-import com.hifive.sdk.demo.view.magicindicator.CommonNavigatorAdapter;
 import com.hifive.sdk.demo.view.magicindicator.abs.IPagerIndicator;
 import com.hifive.sdk.demo.view.magicindicator.abs.IPagerTitleView;
-import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
-import com.hifive.sdk.demo.util.HifiveDisplayUtils;
-import com.hifive.sdk.entity.CompanyChannelList;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HiFiveManager;
-
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,8 +54,10 @@ import java.util.List;
 public class HifiveMusicSheetDialogFragment extends DialogFragment {
     private MagicIndicator magicIndicator;
     private ViewPager viewPager;
-    private List<CompanyChannelList> companyChannelLists = new ArrayList<>();
+    private List<HifiveMusicChannelModel> companyChannelLists = new ArrayList<>();
     private  Context mContext;
+    private Toast toast;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -123,8 +127,8 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
                 // 初始化
                 final TextView titleText = cptv.findViewById(R.id.tv_indicator);
                 final View vvDown = cptv.findViewById(R.id.vv_line);
-                if(companyChannelLists.get(index) != null && !TextUtils.isEmpty(companyChannelLists.get(index).getChannelName()))
-                    titleText.setText(companyChannelLists.get(index).getChannelName());
+                if(companyChannelLists.get(index) != null && !TextUtils.isEmpty(companyChannelLists.get(index).getGroupName()))
+                    titleText.setText(companyChannelLists.get(index).getGroupName());
                 cptv.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
                     @Override
                     public void onSelected(int index, int totalCount) {
@@ -178,11 +182,11 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
     //初始化viewpager页卡
     private void initPage() {
         List<Fragment> fragments = new ArrayList<>();
-        for (CompanyChannelList model : companyChannelLists) {
+        for (HifiveMusicChannelModel model : companyChannelLists) {
             if(model != null) {
                 HifiveMusicRadioStationFragment radioStationFragment = new HifiveMusicRadioStationFragment();
                 Bundle recommendBundle = new Bundle();
-                recommendBundle.putString(HifiveMusicRadioStationFragment.TYPE_ID, model.getChannelId());
+                recommendBundle.putString(HifiveMusicRadioStationFragment.TYPE_ID, model.getGroupId());
                 radioStationFragment.setArguments(recommendBundle);
                 fragments.add(radioStationFragment);
             }
@@ -197,15 +201,32 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
         HiFiveManager.Companion.getInstance().getCompanyChannelList(mContext, new DataResponse() {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                Toast.makeText(mContext, "请求失败", Toast.LENGTH_SHORT).show();
+                showToast(string);
             }
 
             @Override
             public void data(@NotNull Object any) {
-                companyChannelLists = (List<CompanyChannelList>) any;
+                Log.e("TAG","电台数据=="+any);
+                companyChannelLists = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("data"), HifiveMusicChannelModel.class);
                 initMagicIndicator();
                 initPage();
             }
         });
+    }
+    //显示自定义toast信息
+    private void showToast(String msg){
+        if(getActivity() != null){
+            if(toast == null){
+                toast = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
+            }else {
+                toast.setText(msg);
+            }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    toast.show();
+                }
+            });
+        }
     }
 }

@@ -4,10 +4,13 @@ package com.hifive.sdk.demo.util;
 import androidx.fragment.app.DialogFragment;
 
 import com.hifive.sdk.demo.model.HifiveMusicModel;
+import com.hifive.sdk.demo.model.HifiveMusicUserSheetModel;
 import com.hifive.sdk.demo.ui.HifiveUpdateObservable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 弹窗管理工具
@@ -95,7 +98,7 @@ public class HifiveDialogManageUtil {
         if(musicModel == null ){
             return;
         }
-        if(playMusic != null && playMusic.getId()== musicModel.getId()){//播放的同一首=歌
+        if(playMusic != null && playMusic.getMusicId().equals(musicModel.getMusicId())){//播放的同一首=歌
             return;
         }
         playMusic = musicModel;
@@ -139,6 +142,17 @@ public class HifiveDialogManageUtil {
         playMusic = musicModel;
         updateObservable.postNewPublication(UPDATEPALY);
     }
+
+    private  List<HifiveMusicUserSheetModel> userSheetModels;//维护用户歌单列表
+
+    public List<HifiveMusicUserSheetModel> getUserSheetModels() {
+        return userSheetModels;
+    }
+
+    public void setUserSheetModels(List<HifiveMusicUserSheetModel> userSheetModels) {
+        this.userSheetModels = userSheetModels;
+    }
+
     private  List<HifiveMusicModel> likeList;//维护喜欢的音乐列表
     public List<HifiveMusicModel> getLikeList() {
         return likeList;

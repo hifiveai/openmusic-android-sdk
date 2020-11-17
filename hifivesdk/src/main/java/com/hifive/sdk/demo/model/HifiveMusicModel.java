@@ -1,43 +1,77 @@
 package com.hifive.sdk.demo.model;
 
-public class HifiveMusicModel {
-    private long id;//歌曲名称
-    private String name;//歌曲id
-    private String author;//歌曲作者
-    private String album;//歌曲专辑名
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * 音乐歌曲的实体类
+ *
+ * @author huchao
+ */
+public class HifiveMusicModel implements Serializable {
+    private String musicId;//歌曲id
+    private String musicName;//歌曲名称
+    private String albumId;//专辑id
+    private String albumName;//专辑名
+    private int duration;//时长
+    private List<HifiveMusicAuthorModel> artist;//表演者
+    private List<HifiveMusicAuthorModel> author;//作词者
+    private List<HifiveMusicAuthorModel> composer;//作曲者
+    private List<HifiveMusicAuthorModel> arranger;//编曲者
+    private List<HifiveMusicImageModel> cover;//编曲曲者
+
+    private List<HifiveMusicTagModel> tag;//标签
     private String introduce;//歌曲介绍
-    private String lyric;//歌词
-    private String url;
-    public long getId() {
-        return id;
+    private int auditionBegin;//推荐试听开始时间
+    private int auditionEnd;//推荐试听结束时间
+    private int bpm;
+    private List<HifiveMusicVersionModel> version;
+    public String getMusicId() {
+        return musicId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setMusicId(String musicId) {
+        this.musicId = musicId;
     }
 
-    public String getName() {
-        return name;
+    public String getMusicName() {
+        return musicName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMusicName(String musicName) {
+        this.musicName = musicName;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getAlbumId() {
+        return albumId;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAlbumId(String albumId) {
+        this.albumId = albumId;
     }
 
-    public String getAlbum() {
-        return album;
+    public String getAlbumName() {
+        return albumName;
     }
 
-    public void setAlbum(String album) {
-        this.album = album;
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public List<HifiveMusicTagModel> getTag() {
+        return tag;
+    }
+
+    public void setTag(List<HifiveMusicTagModel> tag) {
+        this.tag = tag;
     }
 
     public String getIntroduce() {
@@ -48,26 +82,85 @@ public class HifiveMusicModel {
         this.introduce = introduce;
     }
 
-    public String getLyric() {
-        return lyric;
+    public long getAuditionBegin() {
+        return auditionBegin;
     }
 
-    public void setLyric(String lyric) {
-        this.lyric = lyric;
+    public void setAuditionBegin(int auditionBegin) {
+        this.auditionBegin = auditionBegin;
     }
+
+    public long getAuditionEnd() {
+        return auditionEnd;
+    }
+
+    public void setAuditionEnd(int auditionEnd) {
+        this.auditionEnd = auditionEnd;
+    }
+
+    public List<HifiveMusicVersionModel> getVersion() {
+        return version;
+    }
+
+    public void setVersion(List<HifiveMusicVersionModel> version) {
+        this.version = version;
+    }
+
+    public int getBpm() {
+        return bpm;
+    }
+
+    public void setBpm(int bpm) {
+        this.bpm = bpm;
+    }
+
+    public List<HifiveMusicAuthorModel> getArtist() {
+        return artist;
+    }
+
+    public void setArtist(List<HifiveMusicAuthorModel> artist) {
+        this.artist = artist;
+    }
+
+    public List<HifiveMusicAuthorModel> getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(List<HifiveMusicAuthorModel> author) {
+        this.author = author;
+    }
+
+    public List<HifiveMusicAuthorModel> getComposer() {
+        return composer;
+    }
+
+    public void setComposer(List<HifiveMusicAuthorModel> composer) {
+        this.composer = composer;
+    }
+
+    public List<HifiveMusicAuthorModel> getArranger() {
+        return arranger;
+    }
+
+    public void setArranger(List<HifiveMusicAuthorModel> arranger) {
+        this.arranger = arranger;
+    }
+
+    public List<HifiveMusicImageModel> getCover() {
+        return cover;
+    }
+
+    public void setCover(List<HifiveMusicImageModel> cover) {
+        this.cover = cover;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == null || o == null || getClass() != o.getClass()) return false;
         if (this == o) return true;
         HifiveMusicModel musicModel = (HifiveMusicModel) o;
-        return id== musicModel.getId();
+        return musicId.equals(musicModel.getMusicId());
     }
 
-    public String getUrl() {
-        return url;
-    }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }
