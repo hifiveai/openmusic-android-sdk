@@ -34,11 +34,14 @@ class MainActivity : AppCompatActivity() {
     private fun initView() {
         HiFiveManager.start(application, appId, secretKey)
         findViewById<View>(R.id.play).setOnClickListener {
-            if(!flag){
-                Login()
-            }else{
-                HifivePlayerManger.getInstance().remove()
-                flag = false
+            when {
+                !flag -> {
+                    Login()
+                }
+                else -> {
+                    HifivePlayerManger.getInstance().remove()
+                    flag = false
+                }
             }
         }
         findViewById<View>(R.id.button).setOnClickListener {
@@ -375,7 +378,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
     }
-    private fun Login() {
+    private  fun Login() {
         HiFiveManager.getInstance()?.memberLogin(this,
                 userId,
                 userId,
@@ -399,8 +402,6 @@ class MainActivity : AppCompatActivity() {
                 })
             }
         })
-
-
     }
     override fun onStart() {
         HifivePlayerManger.getInstance().attach(this);

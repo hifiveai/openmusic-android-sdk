@@ -472,8 +472,8 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
 
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG","搜索歌曲=="+ JSON.toJSONString(any));
-                        JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(any));
+                        Log.e("TAG","搜索歌曲=="+ any);
+                        JSONObject jsonObject = JSONObject.parseObject(String.valueOf(any));
                         musicModels = JSON.parseArray(jsonObject.getString("records"), HifiveMusicModel.class);
                         if(ty == Refresh)
                             isRecommand = jsonObject.getBoolean("isRecommand");

@@ -344,8 +344,8 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
 
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG","歌曲=="+JSON.toJSONString(any));
-                        musicModels = JSON.parseArray(JSONObject.parseObject(JSON.toJSONString(any)).getString("records"), HifiveMusicModel.class);
+                        Log.e("TAG","歌曲=="+any);
+                        musicModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("records"), HifiveMusicModel.class);
                         mHandler.sendEmptyMessage(ty);
                     }
                 });

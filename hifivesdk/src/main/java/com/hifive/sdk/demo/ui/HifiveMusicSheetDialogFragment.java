@@ -205,8 +205,8 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
 
             @Override
             public void data(@NotNull Object any) {
-                Log.e("TAG","电台数据=="+JSON.toJSONString(any));
-                companyChannelLists = JSON.parseArray(JSON.toJSONString(any),HifiveMusicChannelModel.class);
+                Log.e("TAG","电台数据=="+any);
+                companyChannelLists = JSON.parseArray(String.valueOf(any),HifiveMusicChannelModel.class);
                 initMagicIndicator();
                 initPage();
             }

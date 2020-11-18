@@ -201,8 +201,8 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
 
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG","喜欢数据=="+JSON.toJSONString(any));
-                        hifiveMusicModels = JSON.parseArray(JSONObject.parseObject(JSON.toJSONString(any)).getString("records"), HifiveMusicModel.class);
+                        Log.e("TAG","喜欢数据=="+any);
+                        hifiveMusicModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("records"), HifiveMusicModel.class);
                         mHandler.sendEmptyMessage(RequstSuccess);
                     }
                 });

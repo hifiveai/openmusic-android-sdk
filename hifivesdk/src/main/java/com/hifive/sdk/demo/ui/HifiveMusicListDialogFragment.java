@@ -137,8 +137,8 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
 
             @Override
             public void data(@NotNull Object any) {
-                Log.e("TAG","我的歌单=="+ JSON.toJSONString(any));
-                List<HifiveMusicUserSheetModel> sheetModels = JSON.parseArray(JSON.parseObject(JSON.toJSONString(any)).getString("records"), HifiveMusicUserSheetModel.class);
+                Log.e("TAG","我的歌单=="+any);
+                List<HifiveMusicUserSheetModel> sheetModels = JSON.parseArray(JSON.parseObject(String.valueOf(any)).getString("records"), HifiveMusicUserSheetModel.class);
                 HifiveDialogManageUtil.getInstance().setUserSheetModels(sheetModels);
                 initMagicIndicator();
                 initPage();

@@ -176,8 +176,8 @@ public class HifiveMusicRadioStationFragment extends Fragment {
 
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG","歌单数据=="+JSON.toJSONString(any));
-                        sheetModels = JSON.parseArray(JSONObject.parseObject(JSON.toJSONString(any)).getString("records"), HifiveMusicSheetModel.class);
+                        Log.e("TAG","歌单数据=="+any);
+                        sheetModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("records"), HifiveMusicSheetModel.class);
                         mHandler.sendEmptyMessage(ty);
                     }
                 });
