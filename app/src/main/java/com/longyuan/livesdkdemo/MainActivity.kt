@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatTextView
 import com.hifive.sdk.common.BaseConstance.Companion.accessTokenMember
 import com.hifive.sdk.common.BaseConstance.Companion.accessTokenUnion
 import com.hifive.sdk.demo.ui.player.HifivePlayerManger
@@ -84,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                     , object : DataResponse {
                 override fun errorMsg(string: String, code: Int?) {}
                 override fun data(any: Any) {
-                    (findViewById<View>(R.id.textView) as AppCompatTextView).text = "会员解绑成功"
+                    (findViewById<View>(R.id.textView) as TextView).text = "会员解绑成功"
                 }
             })
         }
@@ -96,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                     , object : DataResponse {
                 override fun errorMsg(string: String, code: Int?) {}
                 override fun data(any: Any) {
-                    (findViewById<View>(R.id.textView) as AppCompatTextView).text = "绑定会员成功"
+                    (findViewById<View>(R.id.textView) as TextView).text = "绑定会员成功"
                 }
             })
         }
@@ -107,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {}
                         override fun data(any: Any) {
-                            (findViewById<View>(R.id.textView) as AppCompatTextView).text = "注销会员成功"
+                            (findViewById<View>(R.id.textView) as TextView).text = "注销会员成功"
                         }
                     })
         }
@@ -118,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {}
                         override fun data(any: Any) {
-                            (findViewById<View>(R.id.textView) as AppCompatTextView).text = "注销公会成功"
+                            (findViewById<View>(R.id.textView) as TextView).text = "注销公会成功"
                         }
                     })
         }
