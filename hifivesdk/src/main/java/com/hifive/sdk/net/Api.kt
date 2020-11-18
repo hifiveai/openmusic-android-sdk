@@ -2,10 +2,7 @@ package com.hifive.sdk.net
 
 import com.hifive.sdk.protocol.BaseResp
 import io.reactivex.Flowable
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * @author Dsh  imkobedroid@gmail.com
@@ -43,8 +40,7 @@ interface Api {
 
 
     @GET("/livestream/v1/company/getCompanyChannelList")
-    fun getCompanyChannelList(
-    ): Flowable<BaseResp<Any>>
+    fun getCompanyChannelList(): Flowable<BaseResp<Any>>
 
 
     //开放平台
@@ -187,12 +183,12 @@ interface Api {
 
     @GET("/livestream/v1/search/getSearchRecordList")
     fun getSearchRecordList(
-            @Field("pageSize") pageSize: String?,
-            @Field("page") page: String?
+            @Query("pageSize") pageSize: String?,
+            @Query("page") page: String?
     ): Flowable<BaseResp<Any>>
 
 
-    @GET("/livestream/v1/search/deleteSearchRecord")
+    @POST("/livestream/v1/search/deleteSearchRecord")
     fun deleteSearchRecord(): Flowable<BaseResp<Any>>
 
 
