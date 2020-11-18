@@ -3,9 +3,8 @@ package com.hifive.sdk.manager
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import com.google.gson.Gson
 import com.hifive.sdk.controller.MusicManager
-import com.hifive.sdk.net.Encryption
-import java.lang.IllegalArgumentException
 
 /**
  * @author Dsh  imkobedroid@gmail.com
@@ -14,22 +13,17 @@ import java.lang.IllegalArgumentException
 class HiFiveManager {
 
     companion object {
-        var DEBUG = true
+        val gson by lazy { Gson() }
+
         //上下文
         @SuppressLint("StaticFieldLeak")
         var hiFiveContext: Context? = null
+
         //应用id
         var APP_ID: String? = null
-        //平台:(PLATFORM_IOS、PLATFORM_ANDORID、PLATFORM_WEB)
-        val PLATFFORM = "PLATFORM_ANDORID"
-        //包路径
-        var PG: String? = null
-        //随机数
-        var NONCE: String? = null
+
         //密钥
         var SECRET: String? = null
-        //设备id
-        var DEVICE_ID: String? = null
 
         fun getInstance(): MusicManager? {
             return when {
@@ -49,20 +43,10 @@ class HiFiveManager {
         }
 
 
-        /**
-         * 三方开发者初始化需要的参数
-         * 1. 上下文
-         * 2. hiFive平台申请的应用id
-         * 3. 应用包名
-         * 4. 直播平台的secret
-         * 5. 设备id
-         */
         fun start(context: Application, APP_ID: String, SECRET: String) {
             HiFiveManager.APP_ID = APP_ID
             HiFiveManager.SECRET = SECRET
             hiFiveContext = context
-            DEVICE_ID = Encryption.requestDeviceId(context)
-            PG = context.packageName
         }
     }
 

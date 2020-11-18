@@ -34,12 +34,15 @@ class MainActivity : AppCompatActivity() {
     private fun initView() {
         HiFiveManager.start(application, appId, secretKey)
         findViewById<View>(R.id.play).setOnClickListener {
-            if(!flag){
-                HifivePlayerManger.getInstance().add(this)
-                flag = true
-            }else{
-                HifivePlayerManger.getInstance().remove()
-                flag = false
+            when {
+                !flag -> {
+                    HifivePlayerManger.getInstance().add(this)
+                    flag = true
+                }
+                else -> {
+                    HifivePlayerManger.getInstance().remove()
+                    flag = false
+                }
             }
         }
         findViewById<View>(R.id.button).setOnClickListener {
