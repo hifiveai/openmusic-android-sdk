@@ -11,7 +11,8 @@ import java.util.List;
 public class HifiveMusicAuthorModel implements Serializable {
     private String name;//名称
     private String code;//编号
-    private String avatar;//头像
+    private int id;//id
+    private String icon;//头像
 
     public String getName() {
         return name;
@@ -29,11 +30,19 @@ public class HifiveMusicAuthorModel implements Serializable {
         this.code = code;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public int getId() {
+        return id;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

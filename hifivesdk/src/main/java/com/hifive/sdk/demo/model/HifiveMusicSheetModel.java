@@ -17,7 +17,7 @@ public class HifiveMusicSheetModel implements Serializable {
     private int price;//歌单价格（分）
     private int type;//歌单类型， 1：自定义歌单，0：系统歌单
     private List<HifiveMusicTagModel> tag;//标签
-    private List<HifiveMusicImageModel> cover;//编曲曲者
+    private HifiveMusicImageModel cover;//封面
 
     public long getSheetId() {
         return sheetId;
@@ -83,11 +83,11 @@ public class HifiveMusicSheetModel implements Serializable {
         this.tag = tag;
     }
 
-    public List<HifiveMusicImageModel> getCover() {
+    public HifiveMusicImageModel getCover() {
         return cover;
     }
 
-    public void setCover(List<HifiveMusicImageModel> cover) {
+    public void setCover(HifiveMusicImageModel cover) {
         this.cover = cover;
     }
 }

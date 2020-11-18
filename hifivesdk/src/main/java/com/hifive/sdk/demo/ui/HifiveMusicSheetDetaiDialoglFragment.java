@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveMusicSearchAdapter;
@@ -38,6 +37,7 @@ import com.hifive.sdk.demo.model.HifiveMusicTagModel;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 import com.hifive.sdk.demo.util.HifiveDisplayUtils;
 import com.hifive.sdk.demo.view.HifiveLoadMoreFooter;
+import com.hifive.sdk.demo.view.RoundedCornersTransform;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HiFiveManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -79,7 +79,8 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
     private Context mContext;
     private boolean isAddLike;//保存是否正在添加喜欢状态，防止重复点击
     private boolean isAddkaraoke;//保存是否正在添加K歌状态，防止重复点击
-    private Toast toast;
+    private Toast toastStyle;//自定义样式的toast
+    private Toast toast;//系统自带样式的toast
     private TextView toastTextview;
     private final Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -114,15 +115,13 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                     break;
                 case AddLike:
                     isAddLike = false;
-                    if(mContext!= null)
-                        showToast(mContext.getString(R.string.hifivesdk_music_add_like_msg));
+                    showToast(R.string.hifivesdk_music_add_like_msg);
                     HifiveDialogManageUtil.getInstance().addLikeSingle((HifiveMusicModel) msg.obj);
                     adapter.notifyItemChanged(msg.arg1);
                     break;
                 case Addkaraoke:
                     isAddkaraoke = false;
-                    if(mContext!= null)
-                        showToast(mContext.getString(R.string.hifivesdk_music_add_karaoke_msg));
+                    showToast(R.string.hifivesdk_music_add_karaoke_msg);
                     HifiveDialogManageUtil.getInstance().addKaraokeSingle((HifiveMusicModel) msg.obj);
                     adapter.notifyItemChanged(msg.arg1);
                     break;
@@ -207,7 +206,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
             @Override
             public void onClick(View v, int position) {
                 if(!isAddkaraoke){
-                    addkaraoke(position);
+                    addUserSheet(position,Addkaraoke);
                 }
             }
         });
@@ -215,7 +214,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
             @Override
             public void onClick(View v, int position) {
                 if(!isAddLike){
-                    addLike(position);
+                    addUserSheet(position,AddLike);
                 }
             }
         });
@@ -237,36 +236,45 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
             }
         });
     }
-    //添加到我的K歌请求
-    private void addkaraoke(int position) {
-        Message message = mHandler.obtainMessage();
-        message.what = Addkaraoke;
-        message.arg1= position;
-        message.obj = adapter.getDatas().get(position);
-        mHandler.sendMessageDelayed(message,500);
-    }
-    //添加到我的喜欢请求
-    private void addLike(int position) {
-        Message message = mHandler.obtainMessage();
-        message.what = AddLike;
-        message.arg1= position;
-        message.obj = adapter.getDatas().get(position);
-        mHandler.sendMessageDelayed(message,500);
+    //添加歌曲到会员歌单列表
+    private void addUserSheet(final int position, final int type) {
+        long sheetId;
+        if(type == Addkaraoke){//加入到我的K歌
+            sheetId = HifiveDialogManageUtil.getInstance().getUserSheetIdByName(getActivity().getString(R.string.hifivesdk_music_karaoke));
+        }else{//加入到我的喜欢
+            sheetId = HifiveDialogManageUtil.getInstance().getUserSheetIdByName(getActivity().getString(R.string.hifivesdk_music_like));
+        }
+        HiFiveManager.Companion.getInstance().saveMemberSheetMusic(mContext,String.valueOf(sheetId),
+                adapter.getDatas().get(position).getMusicId(),new DataResponse() {
+                    @Override
+                    public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                        isAddLike = false;
+                        isAddkaraoke = false;
+                        showToast(string);
+                    }
+                    @Override
+                    public void data(@NotNull Object any) {
+                        Log.e("TAG","加入成功=="+JSON.toJSONString(any));
+                        Message message = mHandler.obtainMessage();
+                        message.what = type;
+                        message.arg1 = position;
+                        message.obj = adapter.getDatas().get(position);
+                        mHandler.sendMessage(message);
+                    }
+                });
     }
     //更新ui
     private void updateSheetView() {
         if(musicSheetModel != null && mContext != null) {
             sheetId = musicSheetModel.getSheetId();
-            if(musicSheetModel.getCover() != null && musicSheetModel.getCover().size() > 0){
-                String url = musicSheetModel.getCover().get(0).getUrl();
-                if(!TextUtils.isEmpty(url)){
-                    Glide.with(mContext).load(url)
-                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(HifiveDisplayUtils.dip2px(mContext, 6))))
-                            .into(iv_image);//四周都是圆角的圆角矩形图片。
-                }
+            RoundedCornersTransform transform = new RoundedCornersTransform(mContext,HifiveDisplayUtils.dip2px(mContext, 6));
+            if(musicSheetModel.getCover() != null && !TextUtils.isEmpty(musicSheetModel.getCover().getUrl())){
+                Glide.with(mContext).asBitmap().load(musicSheetModel.getCover().getUrl())
+                        .apply(new RequestOptions().transform(transform))
+                        .into(iv_image);//四周都是圆角的圆角矩形图片。
             }else{
                 Glide.with(mContext).load(R.drawable.hifve_sheet_default)
-                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(HifiveDisplayUtils.dip2px(mContext, 6))))
+                        .apply(new RequestOptions().transform(transform))
                         .into(iv_image);//四周都是圆角的圆角矩形图片。
             }
             tv_name.setText(musicSheetModel.getSheetName());
@@ -287,20 +295,36 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
         }
     }
     //显示自定义toast信息
-    private void showToast(String msg){
+    private void showToast(int msgId){
         if(mContext != null){
-            if(toast == null){
-                toast = new Toast(mContext);
+            if(toastStyle == null){
+                toastStyle = new Toast(mContext);
                 View layout = View.inflate(mContext, R.layout.hifive_layout_toast, null);
                 toastTextview = layout.findViewById(R.id.tv_content);
-                toastTextview.setText(msg);
-                toast.setView(layout);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
+                toastTextview.setText(mContext.getString(msgId));
+                toastStyle.setView(layout);
+                toastStyle.setGravity(Gravity.CENTER, 0, 0);
+                toastStyle.setDuration(Toast.LENGTH_LONG);
             }else {
-                toastTextview.setText(msg);
+                toastTextview.setText(mContext.getString(msgId));
             }
-            toast.show();
+            toastStyle.show();
+        }
+    }
+    //显示自定义toast信息
+    private void showToast(String msg){
+        if(getActivity() != null){
+            if(toast == null){
+                toast = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
+            }else {
+                toast.setText(msg);
+            }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    toast.show();
+                }
+            });
         }
     }
     //根据歌单id获取歌曲信息
@@ -310,17 +334,18 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
         }else{
             page++;
         }
-        HiFiveManager.Companion.getInstance().getCompanySheetMusicList(getContext(), String.valueOf(sheetId), null, null,
+        HiFiveManager.Companion.getInstance().getCompanySheetMusicList(mContext, String.valueOf(sheetId), null, null,
                 String.valueOf(pageSize),  String.valueOf(page), new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                         showToast(string);
+                        mHandler.sendEmptyMessage(RequstFail);
                     }
 
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG","K歌数据=="+any);
-                        musicModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("record"), HifiveMusicModel.class);
+                        Log.e("TAG","歌曲=="+JSON.toJSONString(any));
+                        musicModels = JSON.parseArray(JSONObject.parseObject(JSON.toJSONString(any)).getString("records"), HifiveMusicModel.class);
                         mHandler.sendEmptyMessage(ty);
                     }
                 });

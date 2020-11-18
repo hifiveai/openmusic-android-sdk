@@ -1,6 +1,7 @@
 package com.hifive.sdk.demo.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,10 +85,12 @@ public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicList
                 }
             }
         }
-        if(stringBuffer.length() >0){
-            stringBuffer.append("-");
+        if(model.getAlbum()!= null && !TextUtils.isEmpty(model.getAlbum().getName())){
+            if(stringBuffer.length() >0){
+                stringBuffer.append("-");
+            }
+            stringBuffer.append(model.getAlbum().getName());
         }
-        stringBuffer.append(model.getAlbumName());
         holder.tv_detail.setText(stringBuffer.toString());
         //点击事件
         holder.view.setOnClickListener(new View.OnClickListener() {

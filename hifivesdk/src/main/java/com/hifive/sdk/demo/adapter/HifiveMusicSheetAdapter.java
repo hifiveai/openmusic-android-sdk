@@ -13,11 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.model.HifiveMusicSheetModel;
 import com.hifive.sdk.demo.util.HifiveDisplayUtils;
+import com.hifive.sdk.demo.view.RoundedCornersTransform;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class HifiveMusicSheetAdapter extends RecyclerView.Adapter<HifiveMusicShe
     @NonNull
     @Override
     public MusicSheetHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-       View view = LayoutInflater.from(mContext).inflate(R.layout.hifive_item_music_sheet, viewGroup, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.hifive_item_music_sheet, viewGroup, false);
         return new MusicSheetHolder(view);
     }
 
@@ -58,16 +58,14 @@ public class HifiveMusicSheetAdapter extends RecyclerView.Adapter<HifiveMusicShe
         }else{
             holder.vv_line.setVisibility(View.GONE);
         }
-        if(model.getCover() != null && model.getCover().size() > 0){
-            String url = model.getCover().get(0).getUrl();
-            if(!TextUtils.isEmpty(url)){
-                Glide.with(mContext).load(url)
-                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(HifiveDisplayUtils.dip2px(mContext, 6))))
-                        .into(holder.iv_image);//四周都是圆角的圆角矩形图片。
-            }
+        RoundedCornersTransform transform = new RoundedCornersTransform(mContext,HifiveDisplayUtils.dip2px(mContext, 6));
+        if(model.getCover() != null && !TextUtils.isEmpty(model.getCover().getUrl())){
+            Glide.with(mContext).asBitmap().load(model.getCover().getUrl())
+                    .apply(new RequestOptions().transform(transform))
+                    .into(holder.iv_image);//四周都是圆角的圆角矩形图片。
         }else{
-            Glide.with(mContext).load(R.drawable.hifve_sheet_default)
-                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(HifiveDisplayUtils.dip2px(mContext, 6))))
+            Glide.with(mContext).asBitmap().load(R.drawable.hifve_sheet_default)
+                    .apply(new RequestOptions().transform(transform))
                     .into(holder.iv_image);//四周都是圆角的圆角矩形图片。
         }
         //点击事件

@@ -21,7 +21,7 @@
             android:alpha="0.15" />
 
         <TextView
-            android:id="@+id/tv_lyric_detail"
+            android:id="@+id/tv_lyric_static"
             android:layout_width="match_parent"
             android:layout_height="184dp"
             android:gravity="center"
@@ -41,7 +41,7 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/tv_lyric_time"
+        android:id="@+id/tv_lyric_dynamic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡"

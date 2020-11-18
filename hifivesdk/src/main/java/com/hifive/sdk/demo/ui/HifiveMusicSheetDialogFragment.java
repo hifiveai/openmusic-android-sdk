@@ -24,7 +24,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveViewPagerAdapter;
 import com.hifive.sdk.demo.model.HifiveMusicChannelModel;
@@ -127,8 +126,8 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
                 // 初始化
                 final TextView titleText = cptv.findViewById(R.id.tv_indicator);
                 final View vvDown = cptv.findViewById(R.id.vv_line);
-                if(companyChannelLists.get(index) != null && !TextUtils.isEmpty(companyChannelLists.get(index).getGroupName()))
-                    titleText.setText(companyChannelLists.get(index).getGroupName());
+                if(companyChannelLists.get(index) != null && !TextUtils.isEmpty(companyChannelLists.get(index).getChannelName()))
+                    titleText.setText(companyChannelLists.get(index).getChannelName());
                 cptv.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
                     @Override
                     public void onSelected(int index, int totalCount) {
@@ -186,7 +185,7 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
             if(model != null) {
                 HifiveMusicRadioStationFragment radioStationFragment = new HifiveMusicRadioStationFragment();
                 Bundle recommendBundle = new Bundle();
-                recommendBundle.putString(HifiveMusicRadioStationFragment.TYPE_ID, model.getGroupId());
+                recommendBundle.putString(HifiveMusicRadioStationFragment.TYPE_ID, model.getChannelId());
                 radioStationFragment.setArguments(recommendBundle);
                 fragments.add(radioStationFragment);
             }
@@ -206,8 +205,8 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
 
             @Override
             public void data(@NotNull Object any) {
-                Log.e("TAG","电台数据=="+any);
-                companyChannelLists = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("data"), HifiveMusicChannelModel.class);
+                Log.e("TAG","电台数据=="+JSON.toJSONString(any));
+                companyChannelLists = JSON.parseArray(JSON.toJSONString(any),HifiveMusicChannelModel.class);
                 initMagicIndicator();
                 initPage();
             }

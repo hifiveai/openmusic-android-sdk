@@ -24,7 +24,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveViewPagerAdapter;
 import com.hifive.sdk.demo.model.HifiveMusicUserSheetModel;
@@ -91,17 +90,17 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
         if(HifiveDialogManageUtil.getInstance().updateObservable == null){
             HifiveDialogManageUtil.getInstance().updateObservable = new HifiveUpdateObservable();
         }
-        if(HifiveDialogManageUtil.getInstance().getUserSheetModels() == null
-                || HifiveDialogManageUtil.getInstance().getUserSheetModels().size() ==0)
-            getData();
         initView(view);
+        if(HifiveDialogManageUtil.getInstance().getUserSheetModels() != null
+                && HifiveDialogManageUtil.getInstance().getUserSheetModels().size() >0){
+            initMagicIndicator();
+            initPage();
+        }else{
+            getData();
+        }
         HifiveDialogManageUtil.getInstance().addDialog(this);
-        initMagicIndicator();
-        initPage();
         return view;
     }
-
-
     //初始化view
     private void initView(View view) {
         view.findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
@@ -138,9 +137,11 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
 
             @Override
             public void data(@NotNull Object any) {
-                Log.e("TAG","我的歌单=="+ any.toString());
-                List<HifiveMusicUserSheetModel> sheetModels = JSON.parseArray(JSON.parseObject(any.toString()).getString("record"), HifiveMusicUserSheetModel.class);
+                Log.e("TAG","我的歌单=="+ JSON.toJSONString(any));
+                List<HifiveMusicUserSheetModel> sheetModels = JSON.parseArray(JSON.parseObject(JSON.toJSONString(any)).getString("records"), HifiveMusicUserSheetModel.class);
                 HifiveDialogManageUtil.getInstance().setUserSheetModels(sheetModels);
+                initMagicIndicator();
+                initPage();
             }
         });
     }

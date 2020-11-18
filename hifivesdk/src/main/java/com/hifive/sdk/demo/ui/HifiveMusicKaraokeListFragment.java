@@ -46,6 +46,7 @@ import java.util.Observer;
 public class HifiveMusicKaraokeListFragment extends Fragment implements Observer {
     protected static final int RequstSuccess =11;//请求成功
     protected static final int RequstFail= 12;//请求失败
+    protected static final int deleteSuccess= 13;//删除成功
     public boolean isRefresh= false;
     private SmartRefreshLayout refreshLayout;
     private LinearLayout ll_playall;
@@ -53,7 +54,7 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
     private RecyclerView mRecyclerView;
     private HifiveMusicListAdapter adapter;
     private List<HifiveMusicModel> hifiveMusicModels;
-    private String sheetId = "";
+    private long sheetId ;
     private Toast toast;
     protected Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -79,6 +80,12 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
                         refreshLayout.finishRefresh();
                     }
                     break;
+                case deleteSuccess:
+                    adapter.getDatas().remove(msg.arg1);
+                    adapter.notifyDataSetChanged();
+                    HifiveDialogManageUtil.getInstance().setKaraokeList(adapter.getDatas());
+                    tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
+                    break;
             }
             return false;
         }
@@ -92,7 +99,8 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.hifive_fragment_music_list, container, false);
-        getSheetId();
+        if(getActivity() != null)
+            sheetId = HifiveDialogManageUtil.getInstance().getUserSheetIdByName(getActivity().getString(R.string.hifivesdk_music_karaoke));
         initView(view);
         initRecyclerView();
         if(HifiveDialogManageUtil.getInstance().getKaraokeList() !=null
@@ -104,22 +112,6 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
         }
         return view;
     }
-
-    private void getSheetId() {
-        try {
-            if(HifiveDialogManageUtil.getInstance().getUserSheetModels() != null
-                    && HifiveDialogManageUtil.getInstance().getUserSheetModels().size() >0){
-                for(HifiveMusicUserSheetModel musicUserSheetModel : HifiveDialogManageUtil.getInstance().getUserSheetModels()){
-                    if(musicUserSheetModel.getSheetName().contains(getActivity().getString(R.string.hifivesdk_music_karaoke))){
-                        sheetId = musicUserSheetModel.getSheetId();
-                    }
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
     //初始化view
     private void initView(View view) {
         refreshLayout = view.findViewById(R.id.refreshLayout);
@@ -143,7 +135,7 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
         adapter.setOnItemClickListener(new HifiveMusicListAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
+                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),adapter.getDatas().get(position));
             }
         });
         adapter.setOnItemDeleteClickListener(new HifiveMusicListAdapter.OnItemDeleteClickListener() {
@@ -173,29 +165,48 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
         dialog.setOnSureClick(new HifiveComfirmDialogFragment.OnSureClick() {
             @Override
             public void sureClick() {
-                adapter.getDatas().remove(position);
-                HifiveDialogManageUtil.getInstance().setKaraokeList(adapter.getDatas());
-                adapter.notifyDataSetChanged();
+                deleteMusic(position);
             }
         });
         dialog.show(getFragmentManager(), HifiveComfirmDialogFragment.class.getSimpleName());
     }
+    //删除会员歌单歌曲
+    private void deleteMusic(final int position) {
+        HiFiveManager.Companion.getInstance().deleteMemberSheetMusic(getContext(), String.valueOf(sheetId),
+                adapter.getDatas().get(position).getMusicId(), new DataResponse() {
+                    @Override
+                    public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                        showToast(string);
+                    }
+
+                    @Override
+                    public void data(@NotNull Object any) {
+                        Log.e("TAG","==删除成功==");
+                        Message message = mHandler.obtainMessage();
+                        message.arg1 = position;
+                        message.what = deleteSuccess;
+                        mHandler.sendMessage(message);
+                    }
+                });
+    }
+
     //根据用户歌单id获取歌曲数据
     private void getData() {
-        HiFiveManager.Companion.getInstance().getMemberSheetMusicList(getContext(), sheetId, null, null,
+        HiFiveManager.Companion.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, null,
                 "100", "1", new DataResponse() {
-            @Override
-            public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                showToast(string);
-            }
+                    @Override
+                    public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                        showToast(string);
+                        mHandler.sendEmptyMessage(RequstFail);
+                    }
 
-            @Override
-            public void data(@NotNull Object any) {
-                Log.e("TAG","K歌数据=="+any);
-                hifiveMusicModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("record"), HifiveMusicModel.class);
-                mHandler.sendEmptyMessage(RequstSuccess);
-            }
-        });
+                    @Override
+                    public void data(@NotNull Object any) {
+                        Log.e("TAG","K歌数据=="+JSON.toJSONString(any));
+                        hifiveMusicModels = JSON.parseArray(JSONObject.parseObject(JSON.toJSONString(any)).getString("records"), HifiveMusicModel.class);
+                        mHandler.sendEmptyMessage(RequstSuccess);
+                    }
+                });
     }
     //显示自定义toast信息
     private void showToast(String msg){

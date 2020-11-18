@@ -11,21 +11,32 @@ import java.util.List;
 public class HifiveMusicModel implements Serializable {
     private String musicId;//歌曲id
     private String musicName;//歌曲名称
-    private String albumId;//专辑id
-    private String albumName;//专辑名
-    private int duration;//时长
+    private HifiveMusicAlbumModel album;
+    private HifiveMusicImageModel cover;//封面图
     private List<HifiveMusicAuthorModel> artist;//表演者
     private List<HifiveMusicAuthorModel> author;//作词者
     private List<HifiveMusicAuthorModel> composer;//作曲者
     private List<HifiveMusicAuthorModel> arranger;//编曲者
-    private List<HifiveMusicImageModel> cover;//编曲曲者
-
+    private List<HifiveMusicAuthorModel> mastery;//制作人
+    private List<HifiveMusicAuthorModel> maker;//MV制作人
     private List<HifiveMusicTagModel> tag;//标签
+    private int price;//价格
+    private String waveUrl;//波形图
+    private int forSale;//是否销售，1：是 0：否
     private String introduce;//歌曲介绍
+    private int duration;//时长
     private int auditionBegin;//推荐试听开始时间
     private int auditionEnd;//推荐试听结束时间
     private int bpm;
+    private int authType;//音乐授权类型0:K歌、1:播放、2:自定义
+    private int status;//音乐上下架状态0:下架、1:上架
     private List<HifiveMusicVersionModel> version;
+    //音乐详情相关字段
+    private int recordId;//播放记录ID
+    private HifiveMusiclyricModel lyric;
+    private String mvUrl;
+    private int isMajor;//是否是主版本1：是，0：不是
+    private HifiveMusicFileModel file;
     public String getMusicId() {
         return musicId;
     }
@@ -42,21 +53,6 @@ public class HifiveMusicModel implements Serializable {
         this.musicName = musicName;
     }
 
-    public String getAlbumId() {
-        return albumId;
-    }
-
-    public void setAlbumId(String albumId) {
-        this.albumId = albumId;
-    }
-
-    public String getAlbumName() {
-        return albumName;
-    }
-
-    public void setAlbumName(String albumName) {
-        this.albumName = albumName;
-    }
 
     public long getDuration() {
         return duration;
@@ -146,12 +142,116 @@ public class HifiveMusicModel implements Serializable {
         this.arranger = arranger;
     }
 
-    public List<HifiveMusicImageModel> getCover() {
+    public HifiveMusicImageModel getCover() {
         return cover;
     }
 
-    public void setCover(List<HifiveMusicImageModel> cover) {
+    public void setCover(HifiveMusicImageModel cover) {
         this.cover = cover;
+    }
+
+    public HifiveMusicAlbumModel getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(HifiveMusicAlbumModel album) {
+        this.album = album;
+    }
+
+    public List<HifiveMusicAuthorModel> getMastery() {
+        return mastery;
+    }
+
+    public void setMastery(List<HifiveMusicAuthorModel> mastery) {
+        this.mastery = mastery;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getWaveUrl() {
+        return waveUrl;
+    }
+
+    public void setWaveUrl(String waveUrl) {
+        this.waveUrl = waveUrl;
+    }
+
+    public int getForSale() {
+        return forSale;
+    }
+
+    public void setForSale(int forSale) {
+        this.forSale = forSale;
+    }
+
+    public int getAuthType() {
+        return authType;
+    }
+
+    public void setAuthType(int authType) {
+        this.authType = authType;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(int recordId) {
+        this.recordId = recordId;
+    }
+
+    public HifiveMusiclyricModel getLyric() {
+        return lyric;
+    }
+
+    public void setLyric(HifiveMusiclyricModel lyric) {
+        this.lyric = lyric;
+    }
+
+    public String getMvUrl() {
+        return mvUrl;
+    }
+
+    public void setMvUrl(String mvUrl) {
+        this.mvUrl = mvUrl;
+    }
+
+    public int getIsMajor() {
+        return isMajor;
+    }
+
+    public void setIsMajor(int isMajor) {
+        this.isMajor = isMajor;
+    }
+
+    public HifiveMusicFileModel getFile() {
+        return file;
+    }
+
+    public void setFile(HifiveMusicFileModel file) {
+        this.file = file;
+    }
+
+    public List<HifiveMusicAuthorModel> getMaker() {
+        return maker;
+    }
+
+    public void setMaker(List<HifiveMusicAuthorModel> maker) {
+        this.maker = maker;
     }
 
     @Override

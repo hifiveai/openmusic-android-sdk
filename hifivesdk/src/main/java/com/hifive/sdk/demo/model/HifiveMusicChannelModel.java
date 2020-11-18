@@ -9,24 +9,24 @@ import java.util.List;
  * @author huchao
  */
 public class HifiveMusicChannelModel implements Serializable {
-    private String groupId;
-    private String groupName;
+    private String channelId;
+    private String channelName;
     private String coverUrl;
 
-    public String getGroupId() {
-        return groupId;
+    public String getChannelId() {
+        return channelId;
     }
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getChannelName() {
+        return channelName;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 
     public String getCoverUrl() {

@@ -9,23 +9,23 @@ import java.util.List;
  * @author huchao
  */
 public class HifiveMusicUserSheetModel implements Serializable {
-    private String sheetId;//歌单id
+    private long sheetId;//歌单id
     private String type;//歌单名称
     private String sheetName;//歌单背景图
     private String createTime;//歌单介绍
 
-    public HifiveMusicUserSheetModel(String sheetId, String sheetName) {
+    public HifiveMusicUserSheetModel(long sheetId, String sheetName) {
         this.sheetId = sheetId;
         this.sheetName = sheetName;
     }
     public HifiveMusicUserSheetModel() {
 
     }
-    public String getSheetId() {
+    public long getSheetId() {
         return sheetId;
     }
 
-    public void setSheetId(String sheetId) {
+    public void setSheetId(long sheetId) {
         this.sheetId = sheetId;
     }
 

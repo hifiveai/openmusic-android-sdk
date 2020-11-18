@@ -13,8 +13,6 @@ public class HifiveMusicVersionModel implements Serializable {
     private int free;//1：免费0：收费
     private int price;//价格
     private int duration;//时长（秒）
-    private int auditionBegin;//推荐试听开始时间
-    private int auditionEnd;//推荐试听结束时间
 
     public String getMusicId() {
         return musicId;
@@ -64,19 +62,4 @@ public class HifiveMusicVersionModel implements Serializable {
         this.duration = duration;
     }
 
-    public long getAuditionBegin() {
-        return auditionBegin;
-    }
-
-    public void setAuditionBegin(int auditionBegin) {
-        this.auditionBegin = auditionBegin;
-    }
-
-    public long getAuditionEnd() {
-        return auditionEnd;
-    }
-
-    public void setAuditionEnd(int auditionEnd) {
-        this.auditionEnd = auditionEnd;
-    }
 }

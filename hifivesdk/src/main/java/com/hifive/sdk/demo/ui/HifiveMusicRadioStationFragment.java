@@ -171,12 +171,13 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                         showToast(string);
+                        mHandler.sendEmptyMessage(RequstFail);
                     }
 
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG","K歌数据=="+any);
-                        sheetModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("record"), HifiveMusicSheetModel.class);
+                        Log.e("TAG","歌单数据=="+JSON.toJSONString(any));
+                        sheetModels = JSON.parseArray(JSONObject.parseObject(JSON.toJSONString(any)).getString("records"), HifiveMusicSheetModel.class);
                         mHandler.sendEmptyMessage(ty);
                     }
                 });
