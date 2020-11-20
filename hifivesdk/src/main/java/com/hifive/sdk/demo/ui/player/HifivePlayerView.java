@@ -349,7 +349,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     playProgress = playerUtils.progress();
                     if(!isStatic)
                         updateLyricDetail(playProgress);
-                    HifiveDialogManageUtil.getInstance().updatePlayProgress(playProgress);
                     pb_play.setProgress(playProgress);
                 }
             }
