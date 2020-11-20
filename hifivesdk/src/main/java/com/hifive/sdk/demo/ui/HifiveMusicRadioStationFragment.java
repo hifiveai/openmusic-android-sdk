@@ -60,6 +60,7 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     private final int pageSize = 10;
     private Context mContext;
     private Toast toast;
+    private int totalPage =1;//总页卡
     protected Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -67,20 +68,18 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                 case Refresh:
                     isRefresh = false;
                     refreshLayout.finishRefresh();
-                    adapter.updateDatas(sheetModels);
-                    if( sheetModels != null && sheetModels.size() > 0){
-                        refreshLayout.setEnableLoadMore(sheetModels.size() >= pageSize);
-                    }else{
-                        refreshLayout.setEnableLoadMore(false);
-                    }
+                    if(sheetModels != null)
+                        adapter.updateDatas(sheetModels);
+                    refreshLayout.setEnableLoadMore(page<totalPage);
                     break;
                 case LoadMore:
                     isLoadMore = false;
-                    adapter.addDatas(sheetModels);
-                    if(sheetModels.size() < pageSize){//返回的数据小于每页条数表示没有更多数据了不允许上拉加载
-                        refreshLayout.finishLoadMoreWithNoMoreData();
-                    }else{
+                    if(sheetModels != null)
+                        adapter.addDatas(sheetModels);
+                    if(page < totalPage){
                         refreshLayout.finishLoadMore();
+                    }else{
+                        refreshLayout.finishLoadMoreWithNoMoreData();
                     }
                     break;
                 case RequstFail:
@@ -170,6 +169,9 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                 null,null,null,String.valueOf(pageSize), String.valueOf(page), new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                        if(ty != Refresh){//上拉加载请求失败后，还原页卡
+                            page--;
+                        }
                         showToast(string);
                         mHandler.sendEmptyMessage(RequstFail);
                     }
@@ -177,7 +179,9 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                     @Override
                     public void data(@NotNull Object any) {
                         Log.e("TAG","歌单数据=="+any);
-                        sheetModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("records"), HifiveMusicSheetModel.class);
+                        JSONObject jsonObject = JSONObject.parseObject(String.valueOf(any));
+                        sheetModels = JSON.parseArray(jsonObject.getString("records"), HifiveMusicSheetModel.class);
+                        totalPage = jsonObject.getInteger("totalPage");
                         mHandler.sendEmptyMessage(ty);
                     }
                 });

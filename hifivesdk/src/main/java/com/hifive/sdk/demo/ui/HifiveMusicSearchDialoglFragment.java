@@ -37,6 +37,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveMusicSearchAdapter;
 import com.hifive.sdk.demo.model.HifiveMusicModel;
+import com.hifive.sdk.demo.model.HifiveMusicSearchrModel;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 import com.hifive.sdk.demo.util.HifiveDisplayUtils;
 import com.hifive.sdk.demo.view.HifiveFlowLayout;
@@ -82,7 +83,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
 
     private int page = 1;
     private final int pageSize = 15;
-    private List<String>  historyData;//搜索历史的数据
+    private List<HifiveMusicSearchrModel>  historyData;//搜索历史的数据
     private HifiveMusicSearchAdapter adapter;
     private List<HifiveMusicModel> musicModels;
     private String content= "";//搜索的内容
@@ -93,6 +94,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
     private Toast toast;//系统自带样式的toast
     private TextView toastTextview;
     private boolean isRecommand;//是否为无结果时推荐
+    private int totalPage =1;//总页卡
     private final Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -125,21 +127,18 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                     }else{
                         ll_empty.setVisibility(View.GONE);
                     }
-                    if(musicModels != null && musicModels.size() > 0){
-                        //搜索结果小于每页数据时说明数据已获取完毕，关闭上拉加载
-                        refreshLayout.setEnableLoadMore(musicModels.size() >= pageSize);
+                    if(musicModels != null)
                         adapter.updateDatas(musicModels);
-                    }else{
-                        refreshLayout.setEnableLoadMore(false);
-                    }
+                    refreshLayout.setEnableLoadMore(page<totalPage);
                     break;
                 case LoadMore:
                     isLoadMore = false;
-                    adapter.addDatas(musicModels);
-                    if(musicModels.size() < pageSize){//返回的数据小于每页条数表示没有更多数据了不允许上拉加载
-                        refreshLayout.finishLoadMoreWithNoMoreData();
-                    }else{
+                    if(musicModels != null)
+                        adapter.addDatas(musicModels);
+                    if(page < totalPage){
                         refreshLayout.finishLoadMore();
+                    }else{
+                        refreshLayout.finishLoadMoreWithNoMoreData();
                     }
                     break;
                 case RequstFail:
@@ -201,7 +200,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
         initView(view);
         ininReclyView();
         initEvent();
-        getHistoryData();
+        getHistoryData(false);
         HifiveDialogManageUtil.getInstance().addDialog(this);
         return view;
     }
@@ -248,7 +247,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
         adapter.setOnItemClickListener(new HifiveMusicSearchAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
+                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),adapter.getDatas().get(position),"2");
             }
         });
         mRecyclerView.setAdapter(adapter);
@@ -281,7 +280,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                     }
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG","加入成功=="+JSON.toJSONString(any));
+                        Log.e("TAG","==加入成功==");
                         Message message = mHandler.obtainMessage();
                         message.what = type;
                         message.arg1 = position;
@@ -378,31 +377,23 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
     }
 
     //获取搜索历史数据
-    private void getHistoryData() {
-       /* HiFiveManager.Companion.getInstance().getSearchRecordList(getContext(), "10", "1", new DataResponse() {
+    private void getHistoryData(final boolean isUpdate) {
+        HiFiveManager.Companion.getInstance().getSearchRecordList(getContext(), "10", "1", new DataResponse() {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                showToast(string);
-                mHandler.sendEmptyMessage(HistorySuccess);
+                if(!isUpdate) {
+                    showToast(string);
+                    mHandler.sendEmptyMessage(HistorySuccess);
+                }
             }
 
             @Override
             public void data(@NotNull Object any) {
-                Log.e("TAG","搜索历史=="+ JSON.toJSONString(any));
-               // hifiveMusicModels = JSON.parseArray(JSONObject.parseObject(JSON.toJSONString(any)).getString("records"), HifiveMusicModel.class);
+                Log.e("TAG","==搜索历史=="+any);
+                historyData = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("records"), HifiveMusicSearchrModel.class);
                 mHandler.sendEmptyMessage(HistorySuccess);
             }
-        });*/
-
-        historyData = new ArrayList<>();
-        historyData.add("告白气球");
-        historyData.add("丑八怪");
-        historyData.add("喜欢你");
-        historyData.add("我好想你");
-        historyData.add("兄弟");
-        historyData.add("新鸳鸯蝴蝶梦");
-        historyData.add("on my god");
-        mHandler.sendEmptyMessage(HistorySuccess);
+        });
     }
     //设置搜索历史信息
     private void initFlowLayout() {
@@ -417,7 +408,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
             final TextView tv = new TextView(mContext);
             tv.setPadding(HifiveDisplayUtils.dip2px(mContext, 10), 0,
                     HifiveDisplayUtils.dip2px(mContext, 10), 0);
-            tv.setText(historyData.get(i));
+            tv.setText(historyData.get(i).getKeyword());
             tv.setMaxEms(10);
             tv.setSingleLine();
             tv.setGravity(Gravity.CENTER_VERTICAL);
@@ -445,16 +436,8 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
         }
         et_content.clearFocus();
         refreshLayout.resetNoMoreData();
-        updateHistoryData();
         getData(Refresh);
     }
-    //更新搜索历史
-    private void updateHistoryData() {
-        historyData.remove(content);
-        historyData.add(0,content);
-        mHandler.sendEmptyMessage(HistorySuccess);
-    }
-
     //根据名称搜索歌曲
     private void getData(final int ty) {
         if(ty == Refresh){
@@ -466,6 +449,11 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                 String.valueOf(pageSize),String.valueOf(page),new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                        if(ty != Refresh){//上拉加载请求失败后，还原页卡
+                            page--;
+                        }else{
+                            getHistoryData(true);
+                        }
                         showToast(string);
                         mHandler.sendEmptyMessage(RequstFail);
                     }
@@ -475,8 +463,11 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                         Log.e("TAG","搜索歌曲=="+ any);
                         JSONObject jsonObject = JSONObject.parseObject(String.valueOf(any));
                         musicModels = JSON.parseArray(jsonObject.getString("records"), HifiveMusicModel.class);
-                        if(ty == Refresh)
+                        totalPage = jsonObject.getInteger("totalPage");
+                        if(ty == Refresh){
                             isRecommand = jsonObject.getBoolean("isRecommand");
+                            getHistoryData(true);
+                        }
                         mHandler.sendEmptyMessage(ty);
                     }
                 });

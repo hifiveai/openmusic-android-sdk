@@ -82,29 +82,30 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
     private Toast toastStyle;//自定义样式的toast
     private Toast toast;//系统自带样式的toast
     private TextView toastTextview;
+    private int totalPage =1;//总页卡
     private final Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case Refresh:
-                    adapter.updateDatas(musicModels);
-                    tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
                     if(musicModels != null && musicModels.size() > 0){
+                        adapter.updateDatas(musicModels);
                         ll_playall.setVisibility(View.VISIBLE);
-                        refreshLayout.setEnableLoadMore(musicModels.size() >= pageSize);
                     }else{
-                        refreshLayout.setEnableLoadMore(false);
                         ll_playall.setVisibility(View.GONE);
                     }
+                    tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
+                    refreshLayout.setEnableLoadMore(page < totalPage);
                     break;
                 case LoadMore:
                     isLoadMore = false;
-                    adapter.addDatas(musicModels);
+                    if(musicModels != null)
+                        adapter.addDatas(musicModels);
                     tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
-                    if(musicModels.size() < pageSize){//返回的数据小于每页条数表示没有更多数据了不允许上拉加载
-                        refreshLayout.finishLoadMoreWithNoMoreData();
-                    }else{
+                    if(page < totalPage){
                         refreshLayout.finishLoadMore();
+                    }else{
+                        refreshLayout.finishLoadMoreWithNoMoreData();
                     }
                     break;
                 case RequstFail:
@@ -221,7 +222,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
         adapter.setOnItemClickListener(new HifiveMusicSearchAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
+                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),adapter.getDatas().get(position),"2");
             }
         });
         mRecyclerView.setAdapter(adapter);
@@ -254,7 +255,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                     }
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG","加入成功=="+JSON.toJSONString(any));
+                        Log.e("TAG","==加入成功==");
                         Message message = mHandler.obtainMessage();
                         message.what = type;
                         message.arg1 = position;
@@ -338,6 +339,9 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                 String.valueOf(pageSize),  String.valueOf(page), new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                        if(ty != Refresh){//上拉加载请求失败后，还原页卡
+                            page--;
+                        }
                         showToast(string);
                         mHandler.sendEmptyMessage(RequstFail);
                     }
@@ -345,7 +349,9 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                     @Override
                     public void data(@NotNull Object any) {
                         Log.e("TAG","歌曲=="+any);
-                        musicModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("records"), HifiveMusicModel.class);
+                        JSONObject jsonObject = JSONObject.parseObject(String.valueOf(any));
+                        musicModels = JSON.parseArray(jsonObject.getString("records"), HifiveMusicModel.class);
+                        totalPage =jsonObject.getInteger("totalPage");
                         mHandler.sendEmptyMessage(ty);
                     }
                 });

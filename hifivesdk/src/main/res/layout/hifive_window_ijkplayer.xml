@@ -26,30 +26,45 @@
             android:layout_height="184dp"
             android:gravity="center"
             android:padding="10dp"
-            android:text="塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
-塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
-塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
-塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
-塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
-塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
-塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n
-塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡"
             android:textColor="#FFFFFFFF"
             android:scrollbars="vertical"
             android:textStyle="bold"
             android:textSize="16sp"/>
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/tv_lyric_dynamic"
+    <RelativeLayout
+        android:id="@+id/rl_lyric_dynamic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="塞纳河畔 左岸的咖啡\n塞纳河畔 左岸的咖啡"
-        android:textColor="#FFFFFFFF"
         android:visibility="gone"
-        android:layout_marginBottom="20dp"
-        android:textStyle="bold"
-        android:textSize="20sp"/>
+        android:layout_marginBottom="20dp" >
+        <TextView
+            android:id="@+id/tv_lyric_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textColor="#FFF69643"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/tv_lyric_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:textColor="#FFF69643"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/tv_lyric_left"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+    </RelativeLayout>
+
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -73,6 +88,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#ffffff"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:marqueeRepeatLimit="marquee_forever"
                     android:textStyle="bold"
                     android:textSize="12sp"/>
 
@@ -114,11 +133,11 @@
                 android:layout_height="30dp"
                 android:src="@mipmap/hifivesdk_icon_player_last"/>
             <FrameLayout
+                android:id="@+id/fl_play"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp">
-
 
                 <ImageView
                     android:id="@+id/iv_play"
@@ -128,12 +147,50 @@
                     android:scaleType="fitXY"
                     android:src="@mipmap/hifivesdk_icon_player_suspend"/>
                 <com.hifive.sdk.demo.view.HifiveRoundProgressBar
-                    android:id="@+id/circleProgressbar"
+                    android:id="@+id/pb_play"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     app:roundColor="#00000000"
                     app:roundProgressColor="#FFFFFF"
                     app:roundWidth="2dip" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_download"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="gone"
+                android:background="@drawable/hifive_player_download_bg">
+
+                <TextView
+                    android:id="@+id/tv_download"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:alpha="0.85"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:textSize="9sp"/>
+
+
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/fl_loading"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:background="@drawable/hifive_player_download_bg">
+
+                <ImageView
+                    android:id="@+id/iv_loading"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/hifive_loading_anim"/>
             </FrameLayout>
             <ImageView
                 android:id="@+id/iv_next"

@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 音乐歌曲的实体类
+ * 音乐歌曲详情的实体类
  *
  * @author huchao
  */
-public class HifiveMusicModel implements Serializable {
+public class HifiveMusicDetailModel implements Serializable {
     private String musicId;//歌曲id
     private String musicName;//歌曲名称
     private HifiveMusicAlbumModel album;
@@ -20,19 +20,22 @@ public class HifiveMusicModel implements Serializable {
     private List<HifiveMusicAuthorModel> mastery;//制作人
     private List<HifiveMusicAuthorModel> maker;//MV制作人
     private List<HifiveMusicTagModel> tag;//标签
-    private int price;//价格
-    private String waveUrl;//波形图
-    private int forSale;//是否销售，1：是 0：否
-    private String introduce;//歌曲介绍
+    private int isMajor;//是否是主版本1：是，0：不是
     private int duration;//时长
     private int auditionBegin;//推荐试听开始时间
     private int auditionEnd;//推荐试听结束时间
-    private int bpm;
+    private int bpm;//节拍数
+    private int price;//价格
+    private String waveUrl;//波形图
+    private int forSale;//是否销售，1：是 0：否
     private int authType;//音乐授权类型0:K歌、1:播放、2:自定义
+    private HifiveMusicFileModel file;
+    private int recordId;//播放记录ID
+    private HifiveMusiclyricModel lyric;
+    private String mvUrl;
+    private String intro;
     private int status;//音乐上下架状态0:下架、1:上架
-    private String intro;//介绍
     private List<HifiveMusicVersionModel> version;
-
     public String getMusicId() {
         return musicId;
     }
@@ -121,36 +124,12 @@ public class HifiveMusicModel implements Serializable {
         this.tag = tag;
     }
 
-    public int getPrice() {
-        return price;
+    public int getIsMajor() {
+        return isMajor;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getWaveUrl() {
-        return waveUrl;
-    }
-
-    public void setWaveUrl(String waveUrl) {
-        this.waveUrl = waveUrl;
-    }
-
-    public int getForSale() {
-        return forSale;
-    }
-
-    public void setForSale(int forSale) {
-        this.forSale = forSale;
-    }
-
-    public String getIntroduce() {
-        return introduce;
-    }
-
-    public void setIntroduce(String introduce) {
-        this.introduce = introduce;
+    public void setIsMajor(int isMajor) {
+        this.isMajor = isMajor;
     }
 
     public int getDuration() {
@@ -185,6 +164,30 @@ public class HifiveMusicModel implements Serializable {
         this.bpm = bpm;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getWaveUrl() {
+        return waveUrl;
+    }
+
+    public void setWaveUrl(String waveUrl) {
+        this.waveUrl = waveUrl;
+    }
+
+    public int getForSale() {
+        return forSale;
+    }
+
+    public void setForSale(int forSale) {
+        this.forSale = forSale;
+    }
+
     public int getAuthType() {
         return authType;
     }
@@ -193,12 +196,36 @@ public class HifiveMusicModel implements Serializable {
         this.authType = authType;
     }
 
-    public int getStatus() {
-        return status;
+    public HifiveMusicFileModel getFile() {
+        return file;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setFile(HifiveMusicFileModel file) {
+        this.file = file;
+    }
+
+    public int getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(int recordId) {
+        this.recordId = recordId;
+    }
+
+    public HifiveMusiclyricModel getLyric() {
+        return lyric;
+    }
+
+    public void setLyric(HifiveMusiclyricModel lyric) {
+        this.lyric = lyric;
+    }
+
+    public String getMvUrl() {
+        return mvUrl;
+    }
+
+    public void setMvUrl(String mvUrl) {
+        this.mvUrl = mvUrl;
     }
 
     public String getIntro() {
@@ -207,6 +234,14 @@ public class HifiveMusicModel implements Serializable {
 
     public void setIntro(String intro) {
         this.intro = intro;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public List<HifiveMusicVersionModel> getVersion() {
@@ -221,7 +256,7 @@ public class HifiveMusicModel implements Serializable {
     public boolean equals(Object o) {
         if (this == null || o == null || getClass() != o.getClass()) return false;
         if (this == o) return true;
-        HifiveMusicModel musicModel = (HifiveMusicModel) o;
+        HifiveMusicDetailModel musicModel = (HifiveMusicDetailModel) o;
         return musicId.equals(musicModel.getMusicId());
     }
 
