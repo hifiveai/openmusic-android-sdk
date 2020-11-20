@@ -7,13 +7,19 @@ import com.hifive.sdk.common.BaseConstance.Companion.societyOutId
 import com.hifive.sdk.dagger.DaggerServiceComponent
 import com.hifive.sdk.ext.request
 import com.hifive.sdk.hInterface.DataResponse
+import com.hifive.sdk.hInterface.DownLoadResponse
 import com.hifive.sdk.injection.module.ServiceModule
 import com.hifive.sdk.manager.HiFiveManager
 import com.hifive.sdk.manager.HiFiveManager.Companion.APP_ID
 import com.hifive.sdk.manager.HiFiveManager.Companion.SECRET
 import com.hifive.sdk.net.Encryption
 import com.hifive.sdk.rx.BaseSubscribe
+import com.tsy.sdk.myokhttp.MyOkHttp
+import com.tsy.sdk.myokhttp.response.DownloadResponseHandler
+import okhttp3.OkHttpClient
 import org.json.JSONObject
+import java.io.File
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -361,6 +367,42 @@ class MusicManager(val context: Context) : BaseController() {
                     }
                 })
     }
+
+
+    override fun downLoadFile(context: Context, url: String,
+                              path: String, dataResponse: DownLoadResponse) {
+        val down by lazy {
+            val okHttpClient = OkHttpClient.Builder()
+                    .connectTimeout(10000L, TimeUnit.MILLISECONDS)
+                    .readTimeout(10000L, TimeUnit.MILLISECONDS)
+                    .build()
+            MyOkHttp(okHttpClient)
+        }
+
+        down.download()
+                .url(url)
+                .filePath(path)
+                .tag(this)
+                .enqueue(object : DownloadResponseHandler() {
+                    override fun onStart(totalBytes: Long) {
+                        dataResponse.size(totalBytes);
+                    }
+
+                    override fun onFinish(downloadFile: File) {
+                        dataResponse.succeed(downloadFile)
+                    }
+
+                    override fun onProgress(currentBytes: Long, totalBytes: Long) {
+                        dataResponse.progress(currentBytes, totalBytes)
+                    }
+
+                    override fun onFailure(error_msg: String) {
+                        dataResponse.fail(error_msg)
+                    }
+                })
+    }
+
+
 }
 
 

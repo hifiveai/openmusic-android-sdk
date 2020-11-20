@@ -2,6 +2,7 @@ package com.hifive.sdk.controller
 
 import android.content.Context
 import com.hifive.sdk.hInterface.DataResponse
+import com.hifive.sdk.hInterface.DownLoadResponse
 import com.hifive.sdk.service.Service
 import com.hifive.sdk.utils.NetWorkUtils
 import javax.inject.Inject
@@ -220,6 +221,14 @@ abstract class BaseController {
             language: String?,
             field: String?,
             dataResponse: DataResponse
+    )
+
+
+    abstract fun downLoadFile(
+            context: Context,
+            url: String,
+            path: String,
+            dataResponse: DownLoadResponse
     )
 
 
