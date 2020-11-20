@@ -223,11 +223,11 @@ class MusicManager(val context: Context) : BaseController() {
                 })
     }
 
-    override fun getMemberSheetList(context: Context, dataResponse: DataResponse) {
+    override fun getMemberSheetList(context: Context, page: String?, pageSize: String?, dataResponse: DataResponse) {
         if (!checkNetWork(context, dataResponse)) {
             return
         }
-        mService.getMemberSheetList()
+        mService.getMemberSheetList(page, pageSize)
                 .request(object : BaseSubscribe<Any>(dataResponse) {
                     override fun onNext(t: Any) {
                         super.onNext(t)
@@ -247,11 +247,11 @@ class MusicManager(val context: Context) : BaseController() {
                 })
     }
 
-    override fun getMusicDetail(context: Context, musicId: String, language: String?, mediaType: String, field: String?, dataResponse: DataResponse) {
+    override fun getMusicDetail(context: Context, musicId: String, language: String?, mediaType: String, audioFormat: String?, audioRate: String?, field: String?, dataResponse: DataResponse) {
         if (!checkNetWork(context, dataResponse)) {
             return
         }
-        mService.getMusicDetail(musicId, language, mediaType, field)
+        mService.getMusicDetail(musicId, language, mediaType, audioFormat, audioRate, field)
                 .request(object : BaseSubscribe<Any>(dataResponse) {
                     override fun onNext(t: Any) {
                         super.onNext(t)

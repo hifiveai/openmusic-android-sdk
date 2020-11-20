@@ -138,7 +138,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
     private void getData() {
         if( HiFiveManager.Companion.getInstance() == null || mContext == null)
             return;
-        HiFiveManager.Companion.getInstance().getMemberSheetList(mContext, new DataResponse() {
+        HiFiveManager.Companion.getInstance().getMemberSheetList(mContext, "1", "10", new DataResponse() {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                 showToast(string);
@@ -146,7 +146,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
 
             @Override
             public void data(@NotNull Object any) {
-                Log.e("TAG","我的歌单=="+any);
+                Log.e("TAG", "我的歌单==" + any);
                 List<HifiveMusicUserSheetModel> sheetModels = JSON.parseArray(JSON.parseObject(String.valueOf(any)).getString("records"), HifiveMusicUserSheetModel.class);
                 HifiveDialogManageUtil.getInstance().setUserSheetModels(sheetModels);
                 initMagicIndicator();

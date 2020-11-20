@@ -161,7 +161,7 @@ public class HifiveDialogManageUtil {
     }
     //切歌后删除上一首歌下载的伴奏
     private void deleteAccompany() {
-        File  file = HifivePlayerView.accompanyFile;
+        File file = HifivePlayerView.accompanyFile;
         if(file != null){//切歌后删除上一首歌下载的伴奏
             if (file.exists() && file.isFile()) {
                 if (file.delete()) {
@@ -244,14 +244,15 @@ public class HifiveDialogManageUtil {
         if(HiFiveManager.Companion.getInstance() == null)
             return;
         HiFiveManager.Companion.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
-                mediaType,null, new DataResponse() {
+                mediaType,null,null,null, new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                        showToast(string,activity);
+                        showToast(string, activity);
                     }
+
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG", "==音乐详情=="+any);
+                        Log.e("TAG", "==音乐详情==" + any);
                         playMusicDetail = JSON.parseObject(String.valueOf(any), HifiveMusicDetailModel.class);
                         updateObservable.postNewPublication(PALYINGMUSIC);
                     }
@@ -263,7 +264,7 @@ public class HifiveDialogManageUtil {
         if(HiFiveManager.Companion.getInstance() == null || TextUtils.isEmpty(musicId))
             return;
         HiFiveManager.Companion.getInstance().getMusicDetail(activity,musicId, null,
-                "2",null, new DataResponse() {
+                "2",null,null,null, new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                         showToast(string,activity);

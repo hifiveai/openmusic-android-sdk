@@ -60,9 +60,9 @@ interface Service {
     fun bind(memberId: String, societyId: String): Flowable<Any>
     fun delete(memberId: String): Flowable<Any>
     fun deleteSociety(societyId: String): Flowable<Any>
-    fun getMemberSheetList(): Flowable<Any>
+    fun getMemberSheetList(page: String?, pageSize: String?): Flowable<Any>
     fun getMemberSheetMusicList(sheetId: String, language: String?, field: String?, pageSize: String?, page: String?): Flowable<Any>
-    fun getMusicDetail(musicId: String, language: String?, mediaType: String, field: String?): Flowable<Any>
+    fun getMusicDetail(musicId: String, language: String?, mediaType: String, audioFormat: String?, audioRate: String?, field: String?): Flowable<Any>
     fun saveMemberSheet(sheetName: String): Flowable<Any>
     fun saveMemberSheetMusic(sheetId: String, musicId: String): Flowable<Any>
     fun deleteMemberSheetMusic(sheetId: String, musicId: String): Flowable<Any>

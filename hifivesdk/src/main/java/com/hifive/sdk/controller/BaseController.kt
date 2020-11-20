@@ -131,6 +131,8 @@ abstract class BaseController {
 
     abstract fun getMemberSheetList(
             context: Context,
+            page: String?,
+            pageSize: String?,
             dataResponse: DataResponse
     )
 
@@ -148,7 +150,8 @@ abstract class BaseController {
 
     abstract fun getMusicDetail(
             context: Context,
-            musicId: String, language: String?, mediaType: String, field: String?,
+            musicId: String, language: String?, mediaType: String,
+            audioFormat: String?, audioRate: String?, field: String?,
             dataResponse: DataResponse
     )
 

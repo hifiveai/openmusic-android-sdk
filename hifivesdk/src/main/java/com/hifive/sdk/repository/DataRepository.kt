@@ -141,8 +141,8 @@ class DataRepository @Inject constructor() {
         )
     }
 
-    fun getMemberSheetList(): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().getMemberSheetList()
+    fun getMemberSheetList(page: String?, pageSize: String?): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api().getMemberSheetList(page, pageSize)
     }
 
     fun getMemberSheetMusicList(
@@ -153,9 +153,9 @@ class DataRepository @Inject constructor() {
 
 
     fun getMusicDetail(
-            musicId: String, language: String?, mediaType: String, field: String?
+            musicId: String, language: String?, mediaType: String, audioFormat: String?, audioRate: String?, field: String?
     ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().getMusicDetail(musicId, language, mediaType, field)
+        return LiveRetrofitFactory.api().getMusicDetail(musicId, language, mediaType, audioFormat, audioRate, field)
     }
 
 

@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        HiFiveManager.start(application, appId, secretKey)
+        HiFiveManager.registerApp(application, appId, secretKey)
         findViewById<View>(R.id.play).setOnClickListener {
             when {
                 !flag -> {
@@ -194,6 +194,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.button10).setOnClickListener {
             HiFiveManager.getInstance()?.getMemberSheetList(
                     this,
+                    null,
+                    null,
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {
                             Toast.makeText(this@MainActivity, "请求失败", Toast.LENGTH_SHORT).show()
@@ -201,7 +203,7 @@ class MainActivity : AppCompatActivity() {
 
                         override fun data(any: Any) {
                             Toast.makeText(this@MainActivity, "请求成功", Toast.LENGTH_SHORT).show()
-                            Log.e("TAG","data=="+any)
+                            Log.e("TAG", "data==" + any)
                         }
                     })
         }
@@ -230,6 +232,8 @@ class MainActivity : AppCompatActivity() {
                     "167",
                     null,
                     "2",
+                    null,
+                    null,
                     null,
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {

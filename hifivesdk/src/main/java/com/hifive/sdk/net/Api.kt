@@ -109,7 +109,10 @@ interface Api {
 
 
     @POST("/livestream/v1/member/music/getMemberSheetList")
-    fun getMemberSheetList(): Flowable<BaseResp<Any>>
+    fun getMemberSheetList(
+            @Field("page") page: String?,
+            @Field("pageSize") pageSize: String?
+    ): Flowable<BaseResp<Any>>
 
 
     @FormUrlEncoded
@@ -129,6 +132,8 @@ interface Api {
             @Field("musicId") musicId: String,
             @Field("language") language: String?,
             @Field("mediaType") mediaType: String,
+            @Field("audioFormat") audioFormat: String?,
+            @Field("audioRate") audioRate: String?,
             @Field("field") field: String?
     ): Flowable<BaseResp<Any>>
 
