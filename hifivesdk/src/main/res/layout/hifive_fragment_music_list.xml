@@ -15,43 +15,75 @@
             android:layout_height="match_parent"
             android:fillViewport="true"
             android:scrollbars="none">
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
                 <LinearLayout
-                    android:id="@+id/ll_playall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingStart="20dp"
-                    android:paddingTop="15dp"
-                    android:visibility="gone"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@mipmap/hifivesdk_icon_music_play"/>
-
-                    <TextView
-                        android:id="@+id/tv_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#FF282828"
-                        android:layout_marginStart="5dp"
-                        android:textSize="14sp"/>
-
-                </LinearLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_music"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    android:scrollbars="none"/>
+                    android:descendantFocusability="blocksDescendants"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/ll_playall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:paddingStart="20dp"
+                        android:paddingTop="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/hifivesdk_icon_music_play"/>
 
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FF282828"
+                            android:layout_marginStart="5dp"
+                            android:textSize="14sp"/>
+
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_music"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="58dp"
+                    android:background="#FFFFFFFF"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        android:src="@mipmap/hifivesdk_icon_play_empty"/>
+
+                    <TextView
+                        android:id="@+id/tv_add"
+                        android:layout_width="110dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:textColor="#FFFF8622"
+                        android:textSize="16sp"
+                        android:layout_marginTop="12dp"
+                        android:textStyle="bold"
+                        android:text="@string/hifivesdk_music_add_music"
+                        android:background="@mipmap/hifivesdk_icon_add_music"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
         </androidx.core.widget.NestedScrollView>
 
 

@@ -23,12 +23,12 @@ import java.util.List;
  */
 public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSearchAdapter.MusicSearchHolder> {
     private List<HifiveMusicModel> dataList;
-    private Context mContext;
+    private final Context mContext;
     private OnItemClickListener onItemClickListener;
     private OnAddLikeClickListener OnAddLikeClickListener;
     private OnAddkaraokeClickListener onAddkaraokeClickListener;
 
-    private boolean showNumber;//判断是否显示序号
+    private final boolean showNumber;//判断是否显示序号
     //item点击回调
     public interface OnItemClickListener {
         void onClick(View v, int position);
@@ -75,14 +75,15 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
         }else{
             holder.iv_add_karaoke.setImageResource(R.mipmap.hifivesdk_icon_add_karaoke);
         }
-        if(HifiveDialogManageUtil.getInstance().getLikeList() != null
-                && HifiveDialogManageUtil.getInstance().getLikeList().contains(model)){
-            holder.iv_add_like.setImageResource(R.mipmap.hifivesdk_icon_add_like_select);
-        }else{
+        if (HifiveDialogManageUtil.getInstance().getLikeList() != null) {
+            if (HifiveDialogManageUtil.getInstance().getLikeList().contains(model)) {
+                holder.iv_add_like.setImageResource(R.mipmap.hifivesdk_icon_add_like_select);
+            } else holder.iv_add_like.setImageResource(R.mipmap.hifivesdk_icon_add_like);
+        } else {
             holder.iv_add_like.setImageResource(R.mipmap.hifivesdk_icon_add_like);
         }
         holder.tv_name.setText(model.getMusicName());
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuffer = new StringBuilder();
         if(model.getArtist() != null && model.getArtist().size() >0){
             for(HifiveMusicAuthorModel authorModel:model.getArtist()){
                 if(stringBuffer.length() >0){
@@ -105,6 +106,12 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
                 stringBuffer.append("-");
             }
             stringBuffer.append(model.getAlbum().getName());
+        }
+        if(!TextUtils.isEmpty(model.getIntro())){
+            if(stringBuffer.length() >0){
+                stringBuffer.append("-");
+            }
+            stringBuffer.append(model.getIntro());
         }
         holder.tv_detail.setText(stringBuffer.toString());
         //点击事件
@@ -166,7 +173,7 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
         this.onAddkaraokeClickListener = onAddkaraokeClickListener;
     }
 
-    public class MusicSearchHolder extends RecyclerView.ViewHolder {
+    public static class MusicSearchHolder extends RecyclerView.ViewHolder {
         View view;
         TextView tv_num;
         TextView tv_name;

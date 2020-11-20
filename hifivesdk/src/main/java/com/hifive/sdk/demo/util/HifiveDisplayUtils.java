@@ -1,21 +1,19 @@
 package com.hifive.sdk.demo.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 
 import com.hifive.sdk.demo.model.HifiveMusicLyricDetailModel;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,24 +25,9 @@ import java.util.regex.Pattern;
  */
 
 public class HifiveDisplayUtils {
-    /**
-     * 获取状态栏的高度
-     *
-     * @return
-     */
-    public static int getStatusBarHeight(Context context) {
-        int result = 0;
-        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = context.getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
 
     /**
      * 获取屏幕宽度
-     * @param context
-     * @return
      */
     public static int getScreenWidth(Context context) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -54,15 +37,11 @@ public class HifiveDisplayUtils {
 
     /**
      * dp转换成px
-     * @param context
-     * @param dpVale
-     * @return
      */
     public static int dip2px(Context context, float dpVale) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpVale * scale + 0.5f);
     }
-
     /**
      * 提供精确的除法运算方法div
      *
@@ -104,6 +83,7 @@ public class HifiveDisplayUtils {
     //将时间字符转为时间戳
     private static long getStartTime(String time) {
         try {
+            @SuppressLint("SimpleDateFormat")
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss.SSS");
             Date date = simpleDateFormat.parse(time);
             return date.getTime()+TimeZone.getDefault().getRawOffset();

@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
     private var flag: Boolean = false
     companion object {
         const val userId = "dongshihong"
-        const val secretKey = "f653ca0d989340708a"
-        const val appId = "e77e0f0ac5d54209850d7d720cacff64"
+        const val secretKey = "2122b24cbe0a461d8d"
+        const val appId = "316587ef8bd942bab0bc0a10cbfefe8c"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

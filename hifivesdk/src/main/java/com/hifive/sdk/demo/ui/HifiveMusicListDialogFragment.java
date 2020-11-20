@@ -1,5 +1,6 @@
 package com.hifive.sdk.demo.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -49,7 +50,7 @@ import java.util.List;
  * 音乐列表的弹窗
  * @author huchao
  */
-public class HifiveMusicListDialogFragment extends DialogFragment {
+public class HifiveMusicListDialogFragment extends DialogFragment implements HifiveAddMusicListener{
     private MagicIndicator magicIndicator;
     private ViewPager viewPager;
     private Context mContext;
@@ -57,14 +58,16 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Window window = getDialog().getWindow();
-        if(window != null) {
-            WindowManager.LayoutParams params = window.getAttributes();
-            params.gravity = Gravity.BOTTOM;
-            params.width = WindowManager.LayoutParams.MATCH_PARENT;
-            params.height = HifiveDisplayUtils.dip2px(mContext, 440);
-            window.setAttributes(params);
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if(getDialog()!= null) {
+            Window window = getDialog().getWindow();
+            if (window != null) {
+                WindowManager.LayoutParams params = window.getAttributes();
+                params.gravity = Gravity.BOTTOM;
+                params.width = WindowManager.LayoutParams.MATCH_PARENT;
+                params.height = HifiveDisplayUtils.dip2px(mContext, 440);
+                window.setAttributes(params);
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            }
         }
     }
 
@@ -78,13 +81,15 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mContext = this.getContext();
-        Window window = this.getDialog().getWindow();
-        if(window != null){
-            window.setWindowAnimations(R.style.AnimationBottomFade);
-            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
-            window.setFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
-                    WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+        if(getDialog()!= null) {
+            Window window = getDialog().getWindow();
+            if (window != null) {
+                window.setWindowAnimations(R.style.AnimationBottomFade);
+                window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+                window.setFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                        WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+            }
         }
         View view = inflater.inflate(R.layout.hifive_dialog_music_list, container);
         if(HifiveDialogManageUtil.getInstance().updateObservable == null){
@@ -114,14 +119,16 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 HifiveMusicSheetDialogFragment dialogFragment = new HifiveMusicSheetDialogFragment();
-                dialogFragment.show(getFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
+                if(getFragmentManager() != null)
+                    dialogFragment.show(getFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
             }
         });
         view.findViewById(R.id.iv_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HifiveMusicSearchDialoglFragment dialogFragment = new HifiveMusicSearchDialoglFragment();
-                dialogFragment.show(getFragmentManager(), HifiveMusicSearchDialoglFragment.class.getSimpleName());
+                if(getFragmentManager() != null)
+                    dialogFragment.show(getFragmentManager(), HifiveMusicSearchDialoglFragment.class.getSimpleName());
             }
         });
         magicIndicator = view.findViewById(R.id.magic_indicator);
@@ -129,7 +136,9 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
     }
     //获取用户歌单列表
     private void getData() {
-        HiFiveManager.Companion.getInstance().getMemberSheetList(mContext, null, null, new DataResponse() {
+        if( HiFiveManager.Companion.getInstance() == null || mContext == null)
+            return;
+        HiFiveManager.Companion.getInstance().getMemberSheetList(mContext, "1", "10", new DataResponse() {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                 showToast(string);
@@ -146,6 +155,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
         });
     }
     //显示自定义toast信息
+    @SuppressLint("ShowToast")
     private void showToast(String msg){
         if(getActivity() != null){
             if(toast == null){
@@ -240,10 +250,13 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
         List<Fragment> fragments = new ArrayList<>();
         //1.当前播放
         HifiveMusicPalyListFragment currentPalyListFragment = new HifiveMusicPalyListFragment();
+        currentPalyListFragment.setAddMusicListener(this);
         //2.我喜欢
         HifiveMusicLikeListFragment likeListFragment = new HifiveMusicLikeListFragment();
+        likeListFragment.setAddMusicListener(this);
         //3.K歌
         HifiveMusicKaraokeListFragment karaokeListFragment = new HifiveMusicKaraokeListFragment();
+        karaokeListFragment.setAddMusicListener(this);
         //为被观察者添加观察者
         HifiveDialogManageUtil.getInstance().updateObservable.addObserver(currentPalyListFragment);
         HifiveDialogManageUtil.getInstance().updateObservable.addObserver(likeListFragment);
@@ -257,4 +270,10 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
         viewPager.setCurrentItem(firstPageIndex);
     }
 
+    @Override
+    public void onAddMusic() {
+        HifiveMusicSheetDialogFragment dialogFragment = new HifiveMusicSheetDialogFragment();
+        if(getFragmentManager() != null)
+            dialogFragment.show(getFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
+    }
 }

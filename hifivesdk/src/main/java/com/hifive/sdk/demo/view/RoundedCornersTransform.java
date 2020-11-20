@@ -30,6 +30,7 @@ public class RoundedCornersTransform implements Transformation<Bitmap> {
         this.mBitmapPool = Glide.get(context).getBitmapPool();
         this.radius = radius;
     }
+
     @NonNull
     @Override
     public Resource<Bitmap> transform(@NonNull Context context, @NonNull Resource<Bitmap> resource, int outWidth, int outHeight) {

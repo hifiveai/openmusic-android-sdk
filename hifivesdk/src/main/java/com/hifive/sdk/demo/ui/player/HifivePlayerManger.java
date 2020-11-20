@@ -116,20 +116,19 @@ public class HifivePlayerManger{
         return this;
     }
 
-    public HifivePlayerManger attach(FrameLayout container) {
+    public void attach(FrameLayout container) {
         if (container == null || mPlayerView == null) {
             mContainer = new WeakReference<>(container);
-            return this;
+            return;
         }
         if (mPlayerView.getParent() == container) {
-            return this;
+            return;
         }
         if (mPlayerView.getParent() != null) {
             ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
         }
         mContainer = new WeakReference<>(container);
         container.addView(mPlayerView);
-        return this;
     }
     /**
      * 呼应activity生命周期中onStop方法
@@ -140,14 +139,13 @@ public class HifivePlayerManger{
         return this;
     }
 
-    public HifivePlayerManger detach(FrameLayout container) {
+    public void detach(FrameLayout container) {
         if (mPlayerView != null && container != null && ViewCompat.isAttachedToWindow(mPlayerView)) {
             container.removeView(mPlayerView);
         }
         if (getContainer() == container) {
             mContainer = null;
         }
-        return this;
     }
     //获取容器对象
     private FrameLayout getContainer() {

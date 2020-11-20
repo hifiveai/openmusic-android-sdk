@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,15 +31,16 @@
                 android:padding="10dp"
                 android:src="@mipmap/hifivesdk_icon_dialog_back"/>
 
-            <ImageView
+            <com.hifive.sdk.demo.view.RoundImageView
                 android:id="@+id/iv_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                app:radius="5dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:layout_below="@id/iv_back"
                 android:scaleType="centerCrop"
-                android:src="@drawable/hifve_sheet_default"/>
+                android:src="@mipmap/hifvesdk_sheet_default"/>
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
@@ -90,12 +92,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
-
                 <LinearLayout
                     android:id="@+id/ll_playall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
                     android:gravity="center_vertical"
                     android:visibility="gone"
                     android:paddingStart="20dp"
