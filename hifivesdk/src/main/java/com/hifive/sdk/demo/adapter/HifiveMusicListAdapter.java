@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicListAdapter.MusicListHolder> {
     private List<HifiveMusicModel> dataList;
-    private Context mContext;
+    private final Context mContext;
     private OnItemClickListener onItemClickListener;
     private OnItemDeleteClickListener onItemDeleteClickListener;
     //item点击回调
@@ -49,7 +49,7 @@ public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicList
     @Override
     public HifiveMusicListAdapter.MusicListHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.hifive_item_music_list, viewGroup, false);
-        return new HifiveMusicListAdapter.MusicListHolder(view);
+        return new MusicListHolder(view);
     }
 
 
@@ -67,7 +67,7 @@ public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicList
         Glide.with(mContext).asGif().load(R.drawable.hifive_music_play).into(holder.iv_play);
         holder.tv_num.setText(String.valueOf(position+1));
         holder.tv_name.setText(model.getMusicName());
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuffer = new StringBuilder();
         if(model.getArtist() != null && model.getArtist().size() >0){
             for(HifiveMusicAuthorModel authorModel:model.getArtist()){
                 if(stringBuffer.length() >0){
@@ -90,6 +90,12 @@ public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicList
                 stringBuffer.append("-");
             }
             stringBuffer.append(model.getAlbum().getName());
+        }
+        if(!TextUtils.isEmpty(model.getIntro())){
+            if(stringBuffer.length() >0){
+                stringBuffer.append("-");
+            }
+            stringBuffer.append(model.getIntro());
         }
         holder.tv_detail.setText(stringBuffer.toString());
         //点击事件
@@ -120,12 +126,6 @@ public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicList
         dataList = newDatas;
         notifyDataSetChanged();
     }
-
-    public void addDatas(List<HifiveMusicModel> addDatas) {
-        dataList.addAll(addDatas);
-        notifyDataSetChanged();
-    }
-
     public List<HifiveMusicModel> getDatas() {
         return dataList;
     }
@@ -139,7 +139,7 @@ public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicList
         this.onItemDeleteClickListener = onItemDeleteClickListener;
     }
 
-    public class MusicListHolder extends RecyclerView.ViewHolder {
+    public static class MusicListHolder extends RecyclerView.ViewHolder {
         View view;
         TextView tv_num;
         ImageView iv_play;

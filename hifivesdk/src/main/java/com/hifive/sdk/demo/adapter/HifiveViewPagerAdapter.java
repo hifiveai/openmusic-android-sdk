@@ -7,20 +7,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 /**
  * viewpager适配器
  * @author huchao
  */
 public class HifiveViewPagerAdapter extends FragmentPagerAdapter {
-    private List<Fragment> mFragmentList;//界面
-    private FragmentManager fm;
+    private final List<Fragment> mFragmentList;//界面
+    private final FragmentManager fm;
     public HifiveViewPagerAdapter(FragmentManager mFragmentManager,List<Fragment> fragmentList) {
-        super(mFragmentManager);
+        super (mFragmentManager);
         fm = mFragmentManager;
         mFragmentList = fragmentList;
     }
 
+    @NotNull
     @Override
     public Fragment getItem(int position) {
         Fragment fragment;
@@ -37,6 +40,7 @@ public class HifiveViewPagerAdapter extends FragmentPagerAdapter {
         return mFragmentList == null ? 0 : mFragmentList.size();
     }
 
+    @NotNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         Fragment fragment = (Fragment) super.instantiateItem(container, position);

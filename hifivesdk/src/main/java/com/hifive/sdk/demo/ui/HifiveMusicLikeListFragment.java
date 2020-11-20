@@ -1,5 +1,6 @@
 package com.hifive.sdk.demo.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveMusicListAdapter;
 import com.hifive.sdk.demo.model.HifiveMusicModel;
+import com.hifive.sdk.demo.model.HifiveMusicVersionModel;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 import com.hifive.sdk.demo.view.HifiveRefreshHeader;
 import com.hifive.sdk.hInterface.DataResponse;
@@ -53,8 +55,15 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
     private RecyclerView mRecyclerView;
     private HifiveMusicListAdapter adapter;
     private List<HifiveMusicModel> hifiveMusicModels;
+    private LinearLayout ll_empty;
+    private TextView tv_add;
     private long sheetId;
     private Toast toast;
+    private HifiveAddMusicListener addMusicListener;
+
+    public void setAddMusicListener(HifiveAddMusicListener addMusicListener) {
+        this.addMusicListener = addMusicListener;
+    }
     protected Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -66,11 +75,7 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
                         hifiveMusicModels = new ArrayList<>();
                     adapter.updateDatas(hifiveMusicModels);
                     tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
-                    if(hifiveMusicModels.size() > 0){
-                        ll_playall.setVisibility(View.VISIBLE);
-                    }else{
-                        refreshLayout.setEnableLoadMore(false);
-                    }
+                    updateView();
                     HifiveDialogManageUtil.getInstance().setLikeList(adapter.getDatas());
                     break;
                 case RequstFail:
@@ -82,6 +87,7 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
                 case deleteSuccess:
                     adapter.getDatas().remove(msg.arg1);
                     adapter.notifyDataSetChanged();
+                    updateView();
                     HifiveDialogManageUtil.getInstance().setLikeList(adapter.getDatas());
                     tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
                     break;
@@ -128,6 +134,16 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
                 }
             }
         });
+        ll_empty =  view.findViewById(R.id.ll_empty);
+        tv_add =  view.findViewById(R.id.tv_add);
+        tv_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(addMusicListener != null){
+                    addMusicListener.onAddMusic();
+                }
+            }
+        });
     }
     //初始化RecyclerView
     private void initRecyclerView() {
@@ -156,6 +172,14 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
             }
         });
     }
+    //判断空view是否显示
+    private void updateView() {
+        if(adapter.getItemCount() >0){
+            ll_empty.setVisibility(View.GONE);
+        }else{
+            ll_empty.setVisibility(View.VISIBLE);
+        }
+    }
     //弹窗删除二次确认框
     private void showConfirmDialog(final int position) {
         HifiveComfirmDialogFragment dialog = new HifiveComfirmDialogFragment();
@@ -168,10 +192,13 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
                 deleteMusic(position);
             }
         });
-        dialog.show(getFragmentManager(), HifiveComfirmDialogFragment.class.getSimpleName());
+        if(getFragmentManager() != null)
+            dialog.show(getFragmentManager(), HifiveComfirmDialogFragment.class.getSimpleName());
     }
     //删除会员歌单歌曲
     private void deleteMusic(final int position) {
+        if( HiFiveManager.Companion.getInstance() == null || getContext() == null)
+            return;
         HiFiveManager.Companion.getInstance().deleteMemberSheetMusic(getContext(), String.valueOf(sheetId),
                 adapter.getDatas().get(position).getMusicId(), new DataResponse() {
                     @Override
@@ -191,6 +218,8 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
 
     //根据用户歌单id获取歌曲数据
     private void getData() {
+        if( HiFiveManager.Companion.getInstance() == null || getContext() == null)
+            return;
         HiFiveManager.Companion.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, null,
                 "100", "1", new DataResponse() {
                     @Override
@@ -203,11 +232,38 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
                     public void data(@NotNull Object any) {
                         Log.e("TAG","喜欢数据=="+any);
                         hifiveMusicModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("records"), HifiveMusicModel.class);
+                        testAccompany();
+
+
                         mHandler.sendEmptyMessage(RequstSuccess);
                     }
                 });
     }
+    //测试伴奏原神切换模拟假数据，后期删除
+    private void testAccompany() {
+        if(hifiveMusicModels != null && hifiveMusicModels.size() >0){
+            for (HifiveMusicModel hifiveMusicModel : hifiveMusicModels) {
+                HifiveMusicVersionModel versionModel = new HifiveMusicVersionModel();
+                if(hifiveMusicModel.getMusicId().equals("108D675787BC4F")){
+                    versionModel.setMusicId("EF380B3309E844");
+                    versionModel.setName("主版本");
+                    versionModel.setMajorVersion(1);
+                    versionModel.setDuration(277);
+                }else{
+                    versionModel.setMusicId("108D675787BC4F");
+                    versionModel.setName("伴奏版");
+                    versionModel.setMajorVersion(0);
+                    versionModel.setDuration(191);
+                }
+                List<HifiveMusicVersionModel> versionModels =  hifiveMusicModel.getVersion();
+                versionModels.add(versionModel);
+                hifiveMusicModel.setVersion(versionModels);
+            }
+        }
+    }
+
     //显示自定义toast信息
+    @SuppressLint("ShowToast")
     private void showToast(String msg){
         if(getActivity() != null){
             if(toast == null){
@@ -238,6 +294,8 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
                     adapter.notifyDataSetChanged();
                 }else if(type == HifiveDialogManageUtil.UPDATELIKELIST){
                     adapter.updateDatas(HifiveDialogManageUtil.getInstance().getLikeList());
+                    if(ll_empty != null)
+                        updateView();
                     if(tv_number != null && getContext()!= null)
                         tv_number.setText(getContext().getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
                 }

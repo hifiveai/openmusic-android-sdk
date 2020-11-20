@@ -1,5 +1,6 @@
 package com.hifive.sdk.demo.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -60,14 +61,16 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Window window = getDialog().getWindow();
-        if(window != null && mContext != null) {
-            WindowManager.LayoutParams params = window.getAttributes();
-            params.gravity = Gravity.BOTTOM;
-            params.width = WindowManager.LayoutParams.MATCH_PARENT;
-            params.height = HifiveDisplayUtils.dip2px(mContext, 440);
-            window.setAttributes(params);
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if(getDialog() != null) {
+            Window window = getDialog().getWindow();
+            if (window != null && mContext != null) {
+                WindowManager.LayoutParams params = window.getAttributes();
+                params.gravity = Gravity.BOTTOM;
+                params.width = WindowManager.LayoutParams.MATCH_PARENT;
+                params.height = HifiveDisplayUtils.dip2px(mContext, 440);
+                window.setAttributes(params);
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            }
         }
     }
 
@@ -81,13 +84,15 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mContext = getContext();
-        Window window = this.getDialog().getWindow();
-        if(window != null) {
-            window.setWindowAnimations(R.style.AnimationRightFade);
-            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
-            window.setFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
-                    WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+        if(getDialog() != null) {
+            Window window = getDialog().getWindow();
+            if (window != null) {
+                window.setWindowAnimations(R.style.AnimationRightFade);
+                window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+                window.setFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                        WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+            }
         }
         View view = inflater.inflate(R.layout.hifive_dialog_music_sheet, container);
         initView(view);
@@ -197,6 +202,8 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
     }
     //获取电台列表
     private  void  getRadioStationData(){
+        if(HiFiveManager.Companion.getInstance() == null || mContext == null)
+            return;
         HiFiveManager.Companion.getInstance().getCompanyChannelList(mContext, new DataResponse() {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
@@ -213,6 +220,7 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
         });
     }
     //显示自定义toast信息
+    @SuppressLint("ShowToast")
     private void showToast(String msg){
         if(getActivity() != null){
             if(toast == null){

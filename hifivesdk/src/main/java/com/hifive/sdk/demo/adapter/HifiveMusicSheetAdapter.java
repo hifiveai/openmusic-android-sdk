@@ -13,11 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.model.HifiveMusicSheetModel;
 import com.hifive.sdk.demo.util.HifiveDisplayUtils;
-import com.hifive.sdk.demo.view.RoundedCornersTransform;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ import java.util.List;
  */
 public class HifiveMusicSheetAdapter extends RecyclerView.Adapter<HifiveMusicSheetAdapter.MusicSheetHolder> {
     private List<HifiveMusicSheetModel> dataList;
-    private Context mContext;
+    private final Context mContext;
     private OnItemClickListener onItemClickListener;
     //点击回调
     public interface OnItemClickListener {
@@ -58,14 +56,13 @@ public class HifiveMusicSheetAdapter extends RecyclerView.Adapter<HifiveMusicShe
         }else{
             holder.vv_line.setVisibility(View.GONE);
         }
-        RoundedCornersTransform transform = new RoundedCornersTransform(mContext,HifiveDisplayUtils.dip2px(mContext, 6));
         if(model.getCover() != null && !TextUtils.isEmpty(model.getCover().getUrl())){
             Glide.with(mContext).asBitmap().load(model.getCover().getUrl())
-                    .apply(new RequestOptions().transform(transform))
+                    .error(R.mipmap.hifvesdk_sheet_default)
+                    .placeholder(R.mipmap.hifvesdk_sheet_default)
                     .into(holder.iv_image);//四周都是圆角的圆角矩形图片。
         }else{
-            Glide.with(mContext).asBitmap().load(R.drawable.hifve_sheet_default)
-                    .apply(new RequestOptions().transform(transform))
+            Glide.with(mContext).asBitmap().load(R.mipmap.hifvesdk_sheet_default)
                     .into(holder.iv_image);//四周都是圆角的圆角矩形图片。
         }
         //点击事件

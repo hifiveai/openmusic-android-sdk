@@ -1,7 +1,6 @@
 package com.hifive.sdk.demo.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 商户电台的实体类

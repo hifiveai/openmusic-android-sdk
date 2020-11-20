@@ -1,7 +1,6 @@
 package com.hifive.sdk.demo.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 音乐歌曲作者实体类

@@ -22,5 +22,6 @@
     <string name="hifivesdk_music_player_lyric">词</string>
     <string name="hifivesdk_music_player_accompany">伴奏</string>
     <string name="hifivesdk_music_player_sound">原声</string>
+    <string name="hifivesdk_music_add_music">添加歌曲</string>
 
 </resources>

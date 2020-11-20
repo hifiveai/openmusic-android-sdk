@@ -1,5 +1,6 @@
 package com.hifive.sdk.demo.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -21,9 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveMusicSheetAdapter;
-import com.hifive.sdk.demo.model.HifiveMusicModel;
 import com.hifive.sdk.demo.model.HifiveMusicSheetModel;
-import com.hifive.sdk.demo.model.HifiveMusicTagModel;
 import com.hifive.sdk.demo.util.HifiveDisplayUtils;
 import com.hifive.sdk.demo.view.HifiveLoadMoreFooter;
 import com.hifive.sdk.demo.view.HifiveRefreshHeader;
@@ -57,7 +56,6 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     private HifiveMusicSheetAdapter adapter;
     private List<HifiveMusicSheetModel> sheetModels = new ArrayList<>();
     private int page = 1;
-    private final int pageSize = 10;
     private Context mContext;
     private Toast toast;
     private int totalPage =1;//总页卡
@@ -126,7 +124,8 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                 Bundle recommendBundle = new Bundle();
                 recommendBundle.putSerializable(HifiveMusicSheetDetaiDialoglFragment.MODEL,adapter.getDatas().get(position));
                 dialogFragment.setArguments(recommendBundle);
-                dialogFragment.show(getFragmentManager(), HifiveMusicSheetDetaiDialoglFragment.class.getSimpleName());
+                if(getFragmentManager() != null)
+                    dialogFragment.show(getFragmentManager(), HifiveMusicSheetDetaiDialoglFragment.class.getSimpleName());
             }
         });
         //设置布局管理器
@@ -165,8 +164,10 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     }
     //根据电台获取歌单数据
     private void getData(final int ty) {
+        if( HiFiveManager.Companion.getInstance() == null || getContext() == null)
+            return;
         HiFiveManager.Companion.getInstance().getCompanySheetList(getContext(), id, null, null,
-                null,null,null,String.valueOf(pageSize), String.valueOf(page), new DataResponse() {
+                null,null,null,"10", String.valueOf(page), new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                         if(ty != Refresh){//上拉加载请求失败后，还原页卡
@@ -187,6 +188,7 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                 });
     }
     //显示自定义toast信息
+    @SuppressLint("ShowToast")
     private void showToast(String msg){
         if(getActivity() != null){
             if(toast == null){
