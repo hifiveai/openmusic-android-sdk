@@ -4,8 +4,8 @@
 
 
     <string name="hifivesdk_music_current_play">当前播放</string>
-    <string name="hifivesdk_music_like">我喜欢</string>
-    <string name="hifivesdk_music_karaoke">K歌</string>
+    <string name="hifivesdk_music_like">我的喜欢</string>
+    <string name="hifivesdk_music_karaoke">我的K歌</string>
     <string name="hifivesdk_music_all_play">全部播放(%1$d)</string>
     <string name="hifivesdk_music_search_hint">搜索歌曲名/歌手</string>
     <string name="hifivesdk_music_search_cancel">取消</string>

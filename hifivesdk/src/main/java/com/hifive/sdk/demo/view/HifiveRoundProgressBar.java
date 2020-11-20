@@ -62,7 +62,6 @@ public class HifiveRoundProgressBar extends View {
         paint.setStrokeWidth(roundWidth); // 设置圆环的宽度
         paint.setAntiAlias(true); // 消除锯齿
         canvas.drawCircle(centre, centre, radius, paint); // 画出圆环
-        Log.e("log", centre + "");
         /**
          * 画圆弧 ，画圆环的进度
          */

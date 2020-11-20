@@ -5,9 +5,11 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,17 +17,25 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveMusicSheetAdapter;
+import com.hifive.sdk.demo.model.HifiveMusicModel;
 import com.hifive.sdk.demo.model.HifiveMusicSheetModel;
-import com.hifive.sdk.demo.model.HifiveMusicSheetTipsModel;
+import com.hifive.sdk.demo.model.HifiveMusicTagModel;
 import com.hifive.sdk.demo.util.HifiveDisplayUtils;
 import com.hifive.sdk.demo.view.HifiveLoadMoreFooter;
 import com.hifive.sdk.demo.view.HifiveRefreshHeader;
+import com.hifive.sdk.hInterface.DataResponse;
+import com.hifive.sdk.manager.HiFiveManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +59,8 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     private int page = 1;
     private final int pageSize = 10;
     private Context mContext;
+    private Toast toast;
+    private int totalPage =1;//总页卡
     protected Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -56,20 +68,18 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                 case Refresh:
                     isRefresh = false;
                     refreshLayout.finishRefresh();
-                    adapter.updateDatas(sheetModels);
-                    if( sheetModels != null && sheetModels.size() > 0){
-                        refreshLayout.setEnableLoadMore(sheetModels.size() >= pageSize);
-                    }else{
-                        refreshLayout.setEnableLoadMore(false);
-                    }
+                    if(sheetModels != null)
+                        adapter.updateDatas(sheetModels);
+                    refreshLayout.setEnableLoadMore(page<totalPage);
                     break;
                 case LoadMore:
                     isLoadMore = false;
-                    adapter.addDatas(sheetModels);
-                    if(sheetModels.size() < pageSize){//返回的数据小于每页条数表示没有更多数据了不允许上拉加载
-                        refreshLayout.finishLoadMoreWithNoMoreData();
-                    }else{
+                    if(sheetModels != null)
+                        adapter.addDatas(sheetModels);
+                    if(page < totalPage){
                         refreshLayout.finishLoadMore();
+                    }else{
+                        refreshLayout.finishLoadMoreWithNoMoreData();
                     }
                     break;
                 case RequstFail:
@@ -154,24 +164,43 @@ public class HifiveMusicRadioStationFragment extends Fragment {
         });
     }
     //根据电台获取歌单数据
-    private void getData(int ty) {
-        sheetModels = new ArrayList<>();
-        for(int i= pageSize*(page-1); i < pageSize*page ;i++){
-            HifiveMusicSheetModel musicModel = new HifiveMusicSheetModel();
-            musicModel.setId(i);
-            musicModel.setName("人气爆棚！直播时爱听的歌"+i);
-            musicModel.setIntroduce("歌单介绍歌单介绍歌单介绍歌单介绍歌单介绍歌单介绍歌单介绍歌单介绍歌单介绍歌单歌单介绍歌单介绍歌单介绍歌单介绍歌单介绍歌单介绍歌单介绍歌单介绍歌单介绍歌单");
-            List<HifiveMusicSheetTipsModel>  sheetTipsModels = new ArrayList<>();
-            for(int j= 0 ; j < 3 ;j++){
-                HifiveMusicSheetTipsModel tipsModel = new HifiveMusicSheetTipsModel();
-                tipsModel.setId(j);
-                tipsModel.setName("标签"+(j+1));
-                sheetTipsModels.add(tipsModel);
+    private void getData(final int ty) {
+        HiFiveManager.Companion.getInstance().getCompanySheetList(getContext(), id, null, null,
+                null,null,null,String.valueOf(pageSize), String.valueOf(page), new DataResponse() {
+                    @Override
+                    public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                        if(ty != Refresh){//上拉加载请求失败后，还原页卡
+                            page--;
+                        }
+                        showToast(string);
+                        mHandler.sendEmptyMessage(RequstFail);
+                    }
+
+                    @Override
+                    public void data(@NotNull Object any) {
+                        Log.e("TAG","歌单数据=="+any);
+                        JSONObject jsonObject = JSONObject.parseObject(String.valueOf(any));
+                        sheetModels = JSON.parseArray(jsonObject.getString("records"), HifiveMusicSheetModel.class);
+                        totalPage = jsonObject.getInteger("totalPage");
+                        mHandler.sendEmptyMessage(ty);
+                    }
+                });
+    }
+    //显示自定义toast信息
+    private void showToast(String msg){
+        if(getActivity() != null){
+            if(toast == null){
+                toast = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
+            }else {
+                toast.setText(msg);
             }
-            musicModel.setTips(sheetTipsModels);
-            sheetModels.add(musicModel);
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    toast.show();
+                }
+            });
         }
-        mHandler.sendEmptyMessageDelayed(ty,1000);
     }
     @Override
     public void onDestroy() {

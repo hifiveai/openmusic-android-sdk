@@ -3,11 +3,13 @@ package com.hifive.sdk.demo.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,14 +17,22 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveMusicListAdapter;
 import com.hifive.sdk.demo.model.HifiveMusicModel;
+import com.hifive.sdk.demo.model.HifiveMusicUserSheetModel;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 import com.hifive.sdk.demo.view.HifiveRefreshHeader;
+import com.hifive.sdk.hInterface.DataResponse;
+import com.hifive.sdk.manager.HiFiveManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -36,13 +46,16 @@ import java.util.Observer;
 public class HifiveMusicKaraokeListFragment extends Fragment implements Observer {
     protected static final int RequstSuccess =11;//请求成功
     protected static final int RequstFail= 12;//请求失败
+    protected static final int deleteSuccess= 13;//删除成功
     public boolean isRefresh= false;
     private SmartRefreshLayout refreshLayout;
     private LinearLayout ll_playall;
     private TextView tv_number;
     private RecyclerView mRecyclerView;
     private HifiveMusicListAdapter adapter;
-    private  List<HifiveMusicModel> hifiveMusicModels;
+    private List<HifiveMusicModel> hifiveMusicModels;
+    private long sheetId ;
+    private Toast toast;
     protected Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -50,9 +63,11 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
                 case RequstSuccess:
                     isRefresh = false;
                     refreshLayout.finishRefresh();
+                    if(hifiveMusicModels == null)
+                        hifiveMusicModels = new ArrayList<>();
                     adapter.updateDatas(hifiveMusicModels);
                     tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
-                    if( hifiveMusicModels != null && hifiveMusicModels.size() > 0){
+                    if(hifiveMusicModels.size() > 0){
                         ll_playall.setVisibility(View.VISIBLE);
                     }else{
                         ll_playall.setVisibility(View.GONE);
@@ -64,6 +79,12 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
                         isRefresh = false;
                         refreshLayout.finishRefresh();
                     }
+                    break;
+                case deleteSuccess:
+                    adapter.getDatas().remove(msg.arg1);
+                    adapter.notifyDataSetChanged();
+                    HifiveDialogManageUtil.getInstance().setKaraokeList(adapter.getDatas());
+                    tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
                     break;
             }
             return false;
@@ -78,6 +99,8 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.hifive_fragment_music_list, container, false);
+        if(getActivity() != null)
+            sheetId = HifiveDialogManageUtil.getInstance().getUserSheetIdByName(getActivity().getString(R.string.hifivesdk_music_karaoke));
         initView(view);
         initRecyclerView();
         if(HifiveDialogManageUtil.getInstance().getKaraokeList() !=null
@@ -112,7 +135,7 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
         adapter.setOnItemClickListener(new HifiveMusicListAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
+                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),adapter.getDatas().get(position),"1");
             }
         });
         adapter.setOnItemDeleteClickListener(new HifiveMusicListAdapter.OnItemDeleteClickListener() {
@@ -142,90 +165,65 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
         dialog.setOnSureClick(new HifiveComfirmDialogFragment.OnSureClick() {
             @Override
             public void sureClick() {
-                adapter.getDatas().remove(position);
-                HifiveDialogManageUtil.getInstance().setKaraokeList(adapter.getDatas());
-                adapter.notifyDataSetChanged();
+                deleteMusic(position);
             }
         });
         dialog.show(getFragmentManager(), HifiveComfirmDialogFragment.class.getSimpleName());
     }
-    //根据电台获取歌单数据
-    private void getData() {
-        hifiveMusicModels = new ArrayList<>();
-        for(int i= 0; i < 100 ;i++){
-            HifiveMusicModel musicModel = new HifiveMusicModel();
-            musicModel.setId(i);
-            musicModel.setName("告白气球"+(i+1));
-            musicModel.setAuthor("周杰伦");
-            musicModel.setAlbum("东风破");
-            musicModel.setIntroduce("这是一段浪漫的故事！");
-            if(i%6 == 0){
-                musicModel.setUrl("http://music.cytus2.dragonest.com/tune/robo001_001.mp3");
-                musicModel.setLyric("塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡");
-            }else if(i%6 == 1){
-                musicModel.setUrl("http://music.cytus2.dragonest.com/tune/robo001_002.mp3");
-                musicModel.setLyric("我是歌曲1的歌词\\n我是歌曲1的歌词\\n我是歌曲1的歌词\\n我是歌曲1的歌词\\n我是歌曲1的歌词\\n我是歌曲1的歌词\\n\n" +
-                        "我是歌曲1的歌词\\n我是歌曲1的歌词\\n我是歌曲1的歌词\\n\n" +
-                        "我是歌曲1的歌词\\n我是歌曲1的歌词\\n我是歌曲1的歌词\\n\n" +
-                        "我是歌曲1的歌词\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "我是歌曲1的歌词\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "我是歌曲1的歌词\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "我是歌曲1的歌词\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "我是歌曲1的歌词\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡");
-            }else if(i%6 == 2){
-                musicModel.setUrl("http://music.cytus2.dragonest.com/tune/robo001_003.mp3");
-                musicModel.setLyric("我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气");
-            }else if(i%6 == 3){
-                musicModel.setUrl("http://music.cytus2.dragonest.com/tune/robo001_004.mp3");
-                musicModel.setLyric("我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气");
-            }
-            else if(i%6 == 4){
-                musicModel.setUrl("http://music.cytus2.dragonest.com/tune/robo001_005.mp3");
-                musicModel.setLyric("我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气");
-            }else if(i%6 == 5){
-                musicModel.setUrl("http://music.cytus2.dragonest.com/tune/robo001_006.mp3");
-                musicModel.setLyric("我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n\n" +
-                        "塞纳河畔 左岸的咖啡\\n塞纳河畔 左岸的咖啡\\n我是一只鱼 水里的空气");
-            }
-            hifiveMusicModels.add(musicModel);
-        }
-        mHandler.sendEmptyMessageDelayed(RequstSuccess,1000);
+    //删除会员歌单歌曲
+    private void deleteMusic(final int position) {
+        HiFiveManager.Companion.getInstance().deleteMemberSheetMusic(getContext(), String.valueOf(sheetId),
+                adapter.getDatas().get(position).getMusicId(), new DataResponse() {
+                    @Override
+                    public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                        showToast(string);
+                    }
+
+                    @Override
+                    public void data(@NotNull Object any) {
+                        Log.e("TAG","==删除成功==");
+                        Message message = mHandler.obtainMessage();
+                        message.arg1 = position;
+                        message.what = deleteSuccess;
+                        mHandler.sendMessage(message);
+                    }
+                });
     }
 
+    //根据用户歌单id获取歌曲数据
+    private void getData() {
+        HiFiveManager.Companion.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, null,
+                "100", "1", new DataResponse() {
+                    @Override
+                    public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                        showToast(string);
+                        mHandler.sendEmptyMessage(RequstFail);
+                    }
+
+                    @Override
+                    public void data(@NotNull Object any) {
+                        Log.e("TAG","K歌数据=="+any);
+                        hifiveMusicModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("records"), HifiveMusicModel.class);
+                        mHandler.sendEmptyMessage(RequstSuccess);
+                    }
+                });
+    }
+    //显示自定义toast信息
+    private void showToast(String msg){
+        if(getActivity() != null){
+            if(toast == null){
+                toast = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
+            }else {
+                toast.setText(msg);
+            }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    toast.show();
+                }
+            });
+        }
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

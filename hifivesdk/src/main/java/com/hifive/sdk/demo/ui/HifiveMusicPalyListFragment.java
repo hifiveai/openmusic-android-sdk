@@ -17,7 +17,6 @@ import com.hifive.sdk.demo.model.HifiveMusicModel;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -52,7 +51,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         adapter.setOnItemClickListener(new HifiveMusicListAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                HifiveDialogManageUtil.getInstance().addCurrentSingle(adapter.getDatas().get(position));
+                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),adapter.getDatas().get(position),"2");
             }
         });
         adapter.setOnItemDeleteClickListener(new HifiveMusicListAdapter.OnItemDeleteClickListener() {

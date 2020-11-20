@@ -40,11 +40,14 @@ public class HifivePlayerManger{
     }
     //添加播放器view
     public HifivePlayerManger add(FragmentActivity activity) {
+        return add(activity,0,0);
+    }
+    public HifivePlayerManger add(FragmentActivity activity,int marginTop,int marginBottom) {
         synchronized (this) {
             if (mPlayerView != null) {
                 return this;
             }
-            mPlayerView = new HifivePlayerView(activity);
+            mPlayerView = new HifivePlayerView(activity,marginTop,marginBottom);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -84,15 +87,7 @@ public class HifivePlayerManger{
     }
     //播放器资源回收
     private void recyclePlayer() {
-        //回收定时器资源
-        if(mPlayerView.mTimerTask != null){
-            mPlayerView.mTimerTask.cancel();
-            mPlayerView.mTimerTask = null;
-        }
-        if(mPlayerView.mTimer != null){
-            mPlayerView.mTimer.cancel();
-            mPlayerView.mTimer= null;
-        }
+         mPlayerView.cleanTimer();
         //回收播放器资源
         if(mPlayerView.playerUtils != null){
             mPlayerView.playerUtils.onStop();

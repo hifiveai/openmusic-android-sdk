@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,30 +16,31 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.alibaba.fastjson.JSON;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveViewPagerAdapter;
+import com.hifive.sdk.demo.model.HifiveMusicUserSheetModel;
+import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
+import com.hifive.sdk.demo.util.HifiveDisplayUtils;
+import com.hifive.sdk.demo.view.magicindicator.CommonNavigator;
+import com.hifive.sdk.demo.view.magicindicator.CommonNavigatorAdapter;
 import com.hifive.sdk.demo.view.magicindicator.CommonPagerTitleView;
 import com.hifive.sdk.demo.view.magicindicator.MagicIndicator;
 import com.hifive.sdk.demo.view.magicindicator.ViewPagerHelper;
-import com.hifive.sdk.demo.view.magicindicator.CommonNavigator;
-import com.hifive.sdk.demo.view.magicindicator.CommonNavigatorAdapter;
 import com.hifive.sdk.demo.view.magicindicator.abs.IPagerIndicator;
 import com.hifive.sdk.demo.view.magicindicator.abs.IPagerTitleView;
-import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
-import com.hifive.sdk.demo.util.HifiveDisplayUtils;
-
+import com.hifive.sdk.hInterface.DataResponse;
+import com.hifive.sdk.manager.HiFiveManager;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
     private MagicIndicator magicIndicator;
     private ViewPager viewPager;
     private Context mContext;
+    private Toast toast;
     @Override
     public void onStart() {
         super.onStart();
@@ -88,8 +91,13 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
             HifiveDialogManageUtil.getInstance().updateObservable = new HifiveUpdateObservable();
         }
         initView(view);
-        initMagicIndicator();
-        initPage();
+        if(HifiveDialogManageUtil.getInstance().getUserSheetModels() != null
+                && HifiveDialogManageUtil.getInstance().getUserSheetModels().size() >0){
+            initMagicIndicator();
+            initPage();
+        }else{
+            getData();
+        }
         HifiveDialogManageUtil.getInstance().addDialog(this);
         return view;
     }
@@ -118,6 +126,40 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
         });
         magicIndicator = view.findViewById(R.id.magic_indicator);
         viewPager = view.findViewById(R.id.viewpager);
+    }
+    //获取用户歌单列表
+    private void getData() {
+        HiFiveManager.Companion.getInstance().getMemberSheetList(mContext, new DataResponse() {
+            @Override
+            public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                showToast(string);
+            }
+
+            @Override
+            public void data(@NotNull Object any) {
+                Log.e("TAG","我的歌单=="+any);
+                List<HifiveMusicUserSheetModel> sheetModels = JSON.parseArray(JSON.parseObject(String.valueOf(any)).getString("records"), HifiveMusicUserSheetModel.class);
+                HifiveDialogManageUtil.getInstance().setUserSheetModels(sheetModels);
+                initMagicIndicator();
+                initPage();
+            }
+        });
+    }
+    //显示自定义toast信息
+    private void showToast(String msg){
+        if(getActivity() != null){
+            if(toast == null){
+                toast = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
+            }else {
+                toast.setText(msg);
+            }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    toast.show();
+                }
+            });
+        }
     }
     //初始化指示器
     private void initMagicIndicator() {
@@ -214,5 +256,5 @@ public class HifiveMusicListDialogFragment extends DialogFragment {
         int firstPageIndex = 0;
         viewPager.setCurrentItem(firstPageIndex);
     }
-    
+
 }
