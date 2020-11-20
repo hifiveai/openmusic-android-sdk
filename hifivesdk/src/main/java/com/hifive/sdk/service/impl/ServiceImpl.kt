@@ -94,8 +94,8 @@ class ServiceImpl @Inject constructor() : Service {
         return dataRepository.deleteSociety(societyId).convert()
     }
 
-    override fun getMemberSheetList(): Flowable<Any> {
-        return dataRepository.getMemberSheetList().convert()
+    override fun getMemberSheetList(page: String?, pageSize: String?): Flowable<Any> {
+        return dataRepository.getMemberSheetList(page, pageSize).convert()
 
     }
 
@@ -104,8 +104,8 @@ class ServiceImpl @Inject constructor() : Service {
 
     }
 
-    override fun getMusicDetail(musicId: String, language: String?, mediaType: String, field: String?): Flowable<Any> {
-        return dataRepository.getMusicDetail(musicId, language, mediaType, field).convert()
+    override fun getMusicDetail(musicId: String, language: String?, mediaType: String, audioFormat: String?, audioRate: String?, field: String?): Flowable<Any> {
+        return dataRepository.getMusicDetail(musicId, language, mediaType, audioFormat, audioRate, field).convert()
 
     }
 

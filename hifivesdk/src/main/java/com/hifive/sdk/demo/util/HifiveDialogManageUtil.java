@@ -2,8 +2,6 @@ package com.hifive.sdk.demo.util;
 
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -11,33 +9,18 @@ import android.widget.Toast;
 import androidx.fragment.app.DialogFragment;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.hifive.sdk.R;
 import com.hifive.sdk.demo.model.HifiveMusicDetailModel;
 import com.hifive.sdk.demo.model.HifiveMusicModel;
 import com.hifive.sdk.demo.model.HifiveMusicRecordModel;
-import com.hifive.sdk.demo.model.HifiveMusicSheetModel;
 import com.hifive.sdk.demo.model.HifiveMusicUserSheetModel;
 import com.hifive.sdk.demo.ui.HifiveUpdateObservable;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HiFiveManager;
-import com.tsy.sdk.myokhttp.util.LogUtils;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * 弹窗管理工具
@@ -247,14 +230,19 @@ public class HifiveDialogManageUtil {
     //获取歌曲详情type表示是获取伴奏版本信息还是主版本信息
     public void getMusicDetail(final Activity activity, final HifiveMusicModel musicModel,String mediaType){
         HiFiveManager.Companion.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
-                mediaType,null, new DataResponse() {
+                mediaType,
+                null,
+                null,
+                null,
+                new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                        showToast(string,activity);
+                        showToast(string, activity);
                     }
+
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG", "==音乐详情=="+any);
+                        Log.e("TAG", "==音乐详情==" + any);
                         playMusicDetail = JSON.parseObject(String.valueOf(any), HifiveMusicDetailModel.class);
                         addPlayRecord();
                         updateObservable.postNewPublication(PALYINGMUSIC);

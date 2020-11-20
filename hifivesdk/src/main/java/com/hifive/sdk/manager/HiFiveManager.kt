@@ -43,7 +43,7 @@ class HiFiveManager {
         }
 
 
-        fun start(context: Application, APP_ID: String, SECRET: String) {
+        fun registerApp(context: Application, APP_ID: String, SECRET: String) {
             HiFiveManager.APP_ID = APP_ID
             HiFiveManager.SECRET = SECRET
             hiFiveContext = context
