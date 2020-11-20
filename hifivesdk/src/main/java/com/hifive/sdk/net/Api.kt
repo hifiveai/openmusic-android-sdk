@@ -108,6 +108,7 @@ interface Api {
     ): Flowable<BaseResp<Any>>
 
 
+    @FormUrlEncoded
     @POST("/livestream/v1/member/music/getMemberSheetList")
     fun getMemberSheetList(
             @Field("page") page: String?,
