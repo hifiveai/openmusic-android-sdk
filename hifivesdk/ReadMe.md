@@ -127,11 +127,11 @@ interface DataResponse {
 ```
 
 
-   参数  | 必填  |描述|
-      ---|---|---
- msg | | 错误描述
-  code | | 错误code
-   object | | 返回的数据（string字符串）
+参数  | 必填  |描述|
+---|---|---
+msg | | 错误描述
+code | | 错误code
+object | | 返回的数据（string字符串）
 
 
 ##### 4.2 SDK初始化
@@ -139,21 +139,21 @@ interface DataResponse {
 ```
 registerApp(context: Application, APP_ID: String, SECRET: String)
 ```
-   参数  | 必填  |描述|
-      ---|---|---
- context | 是| 上下文
+参数  | 必填  |描述|
+---|---|---
+context | 是| 上下文
 APP_ID | 是| APP_ID
 SECRET | 是| SECRET
 
 
-   返回值强转类型  | 返回形式
-      ---|---
- 无 | 无
+返回值强转类型  | 返回形式
+---|---
+无 | 无
 
 
-   返回值  | 描述|
-      ---|---
- 无 | 无
+返回值  | 描述|
+---|---
+无 | 无
 
 
 
@@ -164,9 +164,8 @@ SECRET | 是| SECRET
 memberLogin(context: Context, memberName: String, memberId: String, societyName: String?, societyId: String?, headerUrl: String?, gender: String?, birthday: String?, location: String?, favoriteSinger: String?, phone: String?, dataResponse: DataResponse)
 ```
 
-
-   参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 memberName | 是| 会员名称
 memberId | 是| 外部会员ID
 sociatyName | 否|公会名称
@@ -207,8 +206,8 @@ phone	 | 否| 手机号
             societyId: String,
             dataResponse: DataResponse)
 ```
-   参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 sociatyName | 是|公会名称
 sociatyId | 是| 公会外部ID
 
@@ -226,8 +225,8 @@ unbindingMember(
             dataResponse: DataResponse
     )
 ```
- 参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 memberId | 是| 外部会员ID
 sociatyId | 是| 外部公会ID
 
@@ -246,9 +245,9 @@ sociatyId | 是| 外部公会ID
     )
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
- memberId	 | 是| 外部会员ID
+参数  | 必填  |描述|
+---|---|---
+memberId	 | 是| 外部会员ID
 societyId | 是| 外部公会ID
 
 
@@ -262,8 +261,8 @@ deleteMember(
     )
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
  memberId | 是| 会员外部ID
 
 
@@ -277,8 +276,8 @@ deleteSociety(
     )
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 societyId | 是| 会员外部ID
 
 
@@ -311,8 +310,8 @@ getCompanySheetList(
     )
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 groupId | 否| 电台id
 language | 否| 0-中文,1-英文
 recoNum | 否| 推荐音乐数 0～10
@@ -337,8 +336,8 @@ getCompanySheetMusicList(
             response: DataResponse
     )
 ```
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 sheetId | 否| 歌单Id
 language | 否| 0-中文,1-英文
 field | 否| 扩展查询字段，album,musicTag,artist
@@ -371,8 +370,8 @@ getCompanyChannelList(
 
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 pageSize | 否| 每页显示条数，默认 10
 page | 否| 当前页
 
@@ -393,8 +392,8 @@ getMemberSheetMusicList(
 
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 sheetId | 否| 歌单Id
 language | 否| 0-中文,1-英文
 field | 否| 扩展查询字段，album,musicTag,artist
@@ -413,8 +412,8 @@ getMusicDetail(
     )
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 musicId | 是| 歌曲Id
 language | 否| 0-中文,1-英文
 mediaType | 是|类型：1-k歌；2-听歌
@@ -434,8 +433,8 @@ saveMemberSheet(
     )
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 sheetName | 是| 歌单名称
 
 
@@ -450,8 +449,8 @@ saveMemberSheetMusic(
     )
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 sheetId | 是| 会员歌单Id
 musicId | 是| 音乐Id
 
@@ -468,8 +467,8 @@ musicId | 是| 音乐Id
     )
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 sheetId | 是| 会员歌单Id
 musicId | 是| 音乐Id
 
@@ -487,8 +486,8 @@ getMemberSheetMusicAll(
     )
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 sheetId | 是| 会员歌单Id
 language | 否| 0-中文,1-英文
 field | 否| 扩展查询字段，album,musicTag,artist
@@ -508,8 +507,8 @@ updateMusicRecord(
     )
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 recordId | 是| 播放记录Id
 duration | 是| 播放记录时长
 mediaType | 是| 播放记录类型 1-k歌；2-听歌
@@ -543,8 +542,8 @@ getMusicList(
     )
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 searchId | 是| 搜索类型Id
 keyword | 否| 搜索关键字
 language | 否| 0-中文,1-英文
@@ -565,8 +564,8 @@ getSearchRecordList(
     )
 ```
 
-  参数  | 必填  |描述|
-      ---|---|---
+参数  | 必填  |描述|
+---|---|---
 pageSize | 否| 每页显示条数，默认 10
 page | 否| 当前页
 
