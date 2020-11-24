@@ -105,6 +105,8 @@
                     android:background="@drawable/hifive_player_accompany_bg"
                     android:layout_marginTop="4dp"
                     android:textColor="#ffffff"
+                    android:alpha="0.45"
+                    android:enabled="false"
                     android:textStyle="bold"
                     android:textSize="10sp"
                     android:text="@string/hifivesdk_music_player_sound"/>
@@ -120,6 +122,8 @@
                     android:layout_marginStart="15dp"
                     android:background="@drawable/hifive_music_player_lyric_checkbox_bg"
                     android:checked="false"
+                    android:alpha="0.45"
+                    android:enabled="false"
                     android:layout_marginTop="4dp"
                     android:textColor="@drawable/hifive_music_player_lyric_checkbox_textcolor"
                     android:textStyle="bold"

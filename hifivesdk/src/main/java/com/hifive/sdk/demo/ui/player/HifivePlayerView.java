@@ -582,8 +582,24 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             if(type == HifiveDialogManageUtil.UPDATEPALY){
                 stopPlay();
                 clear();
-                showLoadVew();
-                updateView();
+                //隐藏歌词
+                rl_lyric_dynamic.setVisibility(GONE);
+                fl_lyric.setVisibility(GONE);
+                if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null){
+                    showLoadVew();
+                    updateView();
+                }else{//重置播放器
+                    enabledLyric();
+                    tv_music_info.setText("");
+                    tv_accompany.setEnabled(false);
+                    tv_accompany.setAlpha(0.45f);
+                    if(mContext != null) {
+                        RoundedCornersTransform transform = new RoundedCornersTransform(mContext, HifiveDisplayUtils.dip2px(mContext, 25));
+                        Glide.with(mContext).asBitmap().load(R.mipmap.hifivesdk_icon_music_player_defaut)
+                                .apply(new RequestOptions().transform(transform))
+                                .into(iv_music);
+                    }
+                }
             }else if(type == HifiveDialogManageUtil.PALYINGMUSIC){
                 updatePlayView(false);
             }else if(type == HifiveDialogManageUtil.PALYINGCHANGEMUSIC){
@@ -600,6 +616,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         playUrl = "";//重置播放链接
         isChange = false;//重置歌词查找状态
         position = 0;//重置歌词查找下标
+        pb_play.setProgress(0);
         //歌词置空
         tv_lyric_left.setText("");
         tv_lyric_right.setText("");
@@ -608,43 +625,40 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     //更新view，音乐图片，音乐名称更新
     private void updateView() {
         HifiveMusicModel playMusic = HifiveDialogManageUtil.getInstance().getPlayMusic();
-        if(playMusic != null && mContext != null){
-            StringBuilder info = new StringBuilder();
-            if(!TextUtils.isEmpty(playMusic.getMusicName())){
-                info.append(playMusic.getMusicName());
-            }
-            if(playMusic.getArtist() != null && playMusic.getArtist().size() >0){
-                for(HifiveMusicAuthorModel authorModel:playMusic.getArtist()){
-                    if(info.length() >0){
-                        info.append("-");
-                    }
-                    info.append(authorModel.getName());
+        StringBuilder info = new StringBuilder();
+        if(!TextUtils.isEmpty(playMusic.getMusicName())){
+            info.append(playMusic.getMusicName());
+        }
+        if(playMusic.getArtist() != null && playMusic.getArtist().size() >0){
+            for(HifiveMusicAuthorModel authorModel:playMusic.getArtist()){
+                if(info.length() >0){
+                    info.append("-");
                 }
+                info.append(authorModel.getName());
             }
-            tv_music_info.setText(info.toString());
-            RoundedCornersTransform transform = new RoundedCornersTransform(mContext,HifiveDisplayUtils.dip2px(mContext, 25));
-            if(playMusic.getCover()!= null && !TextUtils.isEmpty(playMusic.getCover().getUrl())){
+        }
+        tv_music_info.setText(info.toString());
+        if(mContext != null) {
+            RoundedCornersTransform transform = new RoundedCornersTransform(mContext, HifiveDisplayUtils.dip2px(mContext, 25));
+            if (playMusic.getCover() != null && !TextUtils.isEmpty(playMusic.getCover().getUrl())) {
                 Glide.with(mContext).asBitmap().load(playMusic.getCover().getUrl())
                         .error(R.mipmap.hifivesdk_icon_music_player_defaut)
                         .placeholder(R.mipmap.hifivesdk_icon_music_player_defaut)
                         .apply(new RequestOptions().transform(transform))
                         .into(iv_music);//四周都是圆角的圆角矩形图片。
-            }else{
+            } else {
                 Glide.with(mContext).asBitmap().load(R.mipmap.hifivesdk_icon_music_player_defaut)
                         .apply(new RequestOptions().transform(transform))
                         .into(iv_music);//四周都是圆角的圆角矩形图片。
             }
-            //当前歌曲有多个版本时支持切换原神和伴奏
-            if(playMusic.getVersion()!= null && playMusic.getVersion().size() >1){
-                tv_accompany.setEnabled(true);
-                tv_accompany.setAlpha(1f);
-            }else{
-                tv_accompany.setEnabled(false);
-                tv_accompany.setAlpha(0.45f);
-            }
-            //隐藏歌词
-            rl_lyric_dynamic.setVisibility(GONE);
-            fl_lyric.setVisibility(GONE);
+        }
+        //当前歌曲有多个版本时支持切换原神和伴奏
+        if(playMusic.getVersion()!= null && playMusic.getVersion().size() >1){
+            tv_accompany.setEnabled(true);
+            tv_accompany.setAlpha(1f);
+        }else{
+            tv_accompany.setEnabled(false);
+            tv_accompany.setAlpha(0.45f);
         }
     }
     //更新播放view，下载歌词，播放音乐isChange表示是否是切换播放模式
@@ -655,9 +669,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 HifiveMusiclyricModel lyric = playMusicDetail.getLyric();
                 //没有歌词的时候
                 if (lyric == null || (TextUtils.isEmpty(lyric.getDynamicUrl()) && TextUtils.isEmpty(lyric.getStaticUrl()))) {
-                    cb_lyric.setChecked(false);
-                    cb_lyric.setEnabled(false);
-                    cb_lyric.setAlpha(0.45f);
+                    enabledLyric();
                 } else {
                     //动态歌词不等于空就下载动态歌词否则下载静态歌词
                     if (!TextUtils.isEmpty(lyric.getDynamicUrl())) {
@@ -694,6 +706,13 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             }
         }
     }
+    //设置歌词不能点击
+    private void enabledLyric() {
+        cb_lyric.setChecked(false);
+        cb_lyric.setEnabled(false);
+        cb_lyric.setAlpha(0.45f);
+    }
+
     //下载伴奏
     private void downLoadAccompany(String file, String musicId, String expand, final boolean ischange) {
         Log.e("TAG","file=="+file);
@@ -730,14 +749,16 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private void updateDownLoadProgress(final long currentBytes, final long totalBytes) {
         if(mContext != null){
             mContext.runOnUiThread(new Runnable() {
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void run() {
-                    tv_download.setText(HifiveDisplayUtils.div(currentBytes,totalBytes,2)*100+"%");
+                    tv_download.setText((int)(HifiveDisplayUtils.div(currentBytes,totalBytes,2)*100)+"%");
                 }
             });
         }
     }
     //显示自定义toast信息
+    @SuppressLint("ShowToast")
     private void showToast(String msg){
         if(mContext != null){
             if(toast == null){
@@ -768,6 +789,12 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             }
             @Override
             public void reqNo(Object o, Exception e) {
+                mContext.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        enabledLyric();
+                    }
+                });
                 showToast("未找到歌词");
             }
         });
@@ -788,9 +815,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                                 rl_lyric_dynamic.setVisibility(VISIBLE);
                             }
                         }else{
-                            cb_lyric.setChecked(false);
-                            cb_lyric.setEnabled(false);
-                            cb_lyric.setAlpha(0.45f);
+                            enabledLyric();
                         }
                     }else{
                         if(!TextUtils.isEmpty(content)){
@@ -801,16 +826,13 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                                 fl_lyric.setVisibility(VISIBLE);
                             }
                         }else{
-                            cb_lyric.setChecked(false);
-                            cb_lyric.setEnabled(false);
-                            cb_lyric.setAlpha(0.45f);
+                            enabledLyric();
                         }
                     }
                 }
             });
         }
     }
-
     private boolean isChange;//判断歌词是否正在改变
     private int position = 0;//保留歌词下标，下次从下标开始查找歌词
     private void updateLyricDetail(int playProgress) {

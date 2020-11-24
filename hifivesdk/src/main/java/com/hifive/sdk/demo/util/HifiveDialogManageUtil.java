@@ -37,6 +37,7 @@ public class HifiveDialogManageUtil {
     public static final int UPDATEKARAOKLIST = 4;//通知相关页面更新k歌列表
     public static final int PALYINGMUSIC = 5;//通知播放器开始播放新歌曲
     public static final int PALYINGCHANGEMUSIC = 6;//通知播放器改变播放模式
+
     private static HifiveDialogManageUtil singleManage;
     private HifiveDialogManageUtil(){
 
@@ -99,11 +100,9 @@ public class HifiveDialogManageUtil {
     }
 
     //更新当前播放列表
-    public void updateCurrentList(List<HifiveMusicModel> currentList){
-        if(currentList == null ){
-            currentList = new ArrayList<>();
-        }
-        this.currentList = currentList;
+    public void updateCurrentList(List<HifiveMusicModel> musicModels){
+        currentList = new ArrayList<>();
+        currentList.addAll(musicModels);
         updateObservable.postNewPublication(UPDATEPALYLIST);
     }
     //添加某一首歌曲到当前播放中mediaType	类型：1-k歌；2-听歌
@@ -129,18 +128,26 @@ public class HifiveDialogManageUtil {
         updateObservable.postNewPublication(UPDATEPALY);
         getMusicDetail(activity,musicModel,mediaType);
     }
+    //清空播放，重置播放效果
+    public void cleanPlayMusic(){
+        playMusic = null;
+        playMusicDetail = null;
+        updateObservable.postNewPublication(UPDATEPALY);
+    }
     //按顺序播放上一首歌
     public void playLastMusic(Activity activity){
-        if(currentList!= null){
+        if(currentList!= null && currentList.size() >1){
             int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
             if(positon != 0){//不是第一首
                 setCurrentPlay(activity,currentList.get(positon-1));
+            }else{
+                setCurrentPlay(activity,currentList.get(currentList.size()-1));
             }
         }
     }
     //按顺序播放下一首歌
     public void playNextMusic(Activity activity){
-        if(currentList != null){
+        if(currentList != null  && currentList.size() >1){
             int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
             if(positon != (currentList.size()-1)){//不是最后一首
                 setCurrentPlay(activity,currentList.get(positon+1));
@@ -272,7 +279,7 @@ public class HifiveDialogManageUtil {
                     @Override
                     public void data(@NotNull Object any) {
                         Log.e("TAG", "==音乐详情=="+any);
-                       playMusicDetail = JSON.parseObject(String.valueOf(any), HifiveMusicDetailModel.class);
+                        playMusicDetail = JSON.parseObject(String.valueOf(any), HifiveMusicDetailModel.class);
                         updateObservable.postNewPublication(PALYINGCHANGEMUSIC);
                     }
                 });

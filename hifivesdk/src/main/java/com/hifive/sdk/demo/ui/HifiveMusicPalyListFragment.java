@@ -78,7 +78,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         adapter.setOnItemDeleteClickListener(new HifiveMusicListAdapter.OnItemDeleteClickListener() {
             @Override
             public void onClick(View v, int position) {
-                showConfirmDialog(position);
+                showConfirmDialog(adapter.getDatas().get(position));
             }
         });
         mRecyclerView.setAdapter(adapter);
@@ -93,7 +93,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         }
     }
     //弹窗删除二次确认框
-    private void showConfirmDialog(final int position) {
+    private void showConfirmDialog(final HifiveMusicModel musicModel) {
         HifiveComfirmDialogFragment dialog = new HifiveComfirmDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString(HifiveComfirmDialogFragment.ContentTx, getString(R.string.hifivesdk_comfirm_delete_music));
@@ -101,7 +101,16 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         dialog.setOnSureClick(new HifiveComfirmDialogFragment.OnSureClick() {
             @Override
             public void sureClick() {
-                HifiveDialogManageUtil.getInstance().getCurrentList().remove(position);
+                //如果删除的是正在播放的歌曲
+                if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null
+                        && HifiveDialogManageUtil.getInstance().getPlayMusic().getMusicId().equals(musicModel.getMusicId())){
+                    if(adapter.getItemCount() > 1){
+                        HifiveDialogManageUtil.getInstance().playNextMusic(getActivity());
+                    }else{
+                        HifiveDialogManageUtil.getInstance().cleanPlayMusic();
+                    }
+                }
+                HifiveDialogManageUtil.getInstance().getCurrentList().remove(musicModel);
                 adapter.notifyDataSetChanged();
                 updateView();
             }

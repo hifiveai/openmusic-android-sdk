@@ -60,11 +60,11 @@ public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicList
                 && HifiveDialogManageUtil.getInstance().getPlayMusic().getMusicId().equals(model.getMusicId())){
             holder.tv_num.setVisibility(View.GONE);
             holder.iv_play.setVisibility(View.VISIBLE);
+            Glide.with(mContext).asGif().load(R.drawable.hifive_music_play).into(holder.iv_play);
         }else{
             holder.iv_play.setVisibility(View.GONE);
             holder.tv_num.setVisibility(View.VISIBLE);
         }
-        Glide.with(mContext).asGif().load(R.drawable.hifive_music_play).into(holder.iv_play);
         holder.tv_num.setText(String.valueOf(position+1));
         holder.tv_name.setText(model.getMusicName());
         StringBuilder stringBuffer = new StringBuilder();
