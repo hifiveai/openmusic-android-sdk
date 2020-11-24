@@ -1,0 +1,3 @@
+include ':hfliveplayer'
+include ':app'
+rootProject.name = "open_play_android_sdk"
