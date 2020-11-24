@@ -10,7 +10,7 @@ import com.hifive.sdk.common.BaseConstance.Companion.accessTokenMember
 import com.hifive.sdk.common.BaseConstance.Companion.accessTokenUnion
 import com.hifive.sdk.demo.ui.player.HifivePlayerManger
 import com.hifive.sdk.hInterface.DataResponse
-import com.hifive.sdk.manager.HiFiveManager
+import com.hifive.sdk.manager.HFLiveApi
 
 /**
  * @author Dsh  imkobedroid@gmail.com
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        HiFiveManager.registerApp(application, appId, secretKey)
+        HFLiveApi.registerApp(application, appId, secretKey)
         findViewById<View>(R.id.play).setOnClickListener {
             when {
                 !flag -> {
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         findViewById<View>(R.id.button).setOnClickListener {
-            HiFiveManager.getInstance()?.memberLogin(this,
+            HFLiveApi.getInstance()?.memberLogin(this,
                     userId,
                     userId,
                     null,
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             })
         }
         findViewById<View>(R.id.button1).setOnClickListener {
-            HiFiveManager.getInstance()?.societyLogin(
+            HFLiveApi.getInstance()?.societyLogin(
                     this,
                     userId,
                     userId,
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button2).setOnClickListener {
-            HiFiveManager.getInstance()?.unbindingMember(
+            HFLiveApi.getInstance()?.unbindingMember(
                     this,
                     userId,
                     userId
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             })
         }
         findViewById<View>(R.id.button3).setOnClickListener {
-            HiFiveManager.getInstance()?.bindingMember(
+            HFLiveApi.getInstance()?.bindingMember(
                     this,
                     userId,
                     userId
@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
             })
         }
         findViewById<View>(R.id.button4).setOnClickListener {
-            HiFiveManager.getInstance()?.deleteMember(
+            HFLiveApi.getInstance()?.deleteMember(
                     this,
                     userId,
                     object : DataResponse {
@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button5).setOnClickListener {
-            HiFiveManager.getInstance()?.deleteSociety(
+            HFLiveApi.getInstance()?.deleteSociety(
                     this,
                     userId,
                     object : DataResponse {
@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button6).setOnClickListener {
-            HiFiveManager.getInstance()?.getCompanySheetTagList(
+            HFLiveApi.getInstance()?.getCompanySheetTagList(
                     this,
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {
@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button7).setOnClickListener {
-            HiFiveManager.getInstance()?.getCompanySheetList(
+            HFLiveApi.getInstance()?.getCompanySheetList(
                     this,
                     null,
                     null,
@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button8).setOnClickListener {
-            HiFiveManager.getInstance()?.getCompanySheetMusicList(
+            HFLiveApi.getInstance()?.getCompanySheetMusicList(
                     this,
                     null,
                     null,
@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button9).setOnClickListener {
-            HiFiveManager.getInstance()?.getCompanyChannelList(
+            HFLiveApi.getInstance()?.getCompanyChannelList(
                     this,
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {
@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button10).setOnClickListener {
-            HiFiveManager.getInstance()?.getMemberSheetList(
+            HFLiveApi.getInstance()?.getMemberSheetList(
                     this,
                     null,
                     null,
@@ -208,7 +208,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button11).setOnClickListener {
-            HiFiveManager.getInstance()?.getMemberSheetMusicList(
+            HFLiveApi.getInstance()?.getMemberSheetMusicList(
                     this,
                     "167",
                     null,
@@ -227,7 +227,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button12).setOnClickListener {
-            HiFiveManager.getInstance()?.getMusicDetail(
+            HFLiveApi.getInstance()?.getMusicDetail(
                     this,
                     "167",
                     null,
@@ -246,7 +246,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button13).setOnClickListener {
-            HiFiveManager.getInstance()?.saveMemberSheet(
+            HFLiveApi.getInstance()?.saveMemberSheet(
                     this,
                     "167",
                     object : DataResponse {
@@ -260,7 +260,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button14).setOnClickListener {
-            HiFiveManager.getInstance()?.saveMemberSheetMusic(
+            HFLiveApi.getInstance()?.saveMemberSheetMusic(
                     this,
                     "167",
                     "100",
@@ -275,7 +275,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button15).setOnClickListener {
-            HiFiveManager.getInstance()?.deleteMemberSheetMusic(
+            HFLiveApi.getInstance()?.deleteMemberSheetMusic(
                     this,
                     "167",
                     "100",
@@ -290,7 +290,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button16).setOnClickListener {
-            HiFiveManager.getInstance()?.getMemberSheetMusicAll(
+            HFLiveApi.getInstance()?.getMemberSheetMusicAll(
                     this,
                     "167",
                     null,
@@ -306,7 +306,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button17).setOnClickListener {
-            HiFiveManager.getInstance()?.updateMusicRecord(
+            HFLiveApi.getInstance()?.updateMusicRecord(
                     this,
                     "167",
                     "100",
@@ -322,7 +322,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button18).setOnClickListener {
-            HiFiveManager.getInstance()?.getConfigList(
+            HFLiveApi.getInstance()?.getConfigList(
                     this,
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {
@@ -335,7 +335,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button19).setOnClickListener {
-            HiFiveManager.getInstance()?.getMusicList(
+            HFLiveApi.getInstance()?.getMusicList(
                     this,
                     "167", null,
                     null,
@@ -353,7 +353,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button20).setOnClickListener {
-            HiFiveManager.getInstance()?.getSearchRecordList(
+            HFLiveApi.getInstance()?.getSearchRecordList(
                     this,
                     "1",
                     "10",
@@ -368,7 +368,7 @@ class MainActivity : AppCompatActivity() {
                     })
         }
         findViewById<View>(R.id.button21).setOnClickListener {
-            HiFiveManager.getInstance()?.deleteSearchRecord(
+            HFLiveApi.getInstance()?.deleteSearchRecord(
                     this,
                     object : DataResponse {
                         override fun errorMsg(string: String, code: Int?) {
@@ -382,7 +382,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private  fun Login() {
-        HiFiveManager.getInstance()?.memberLogin(this,
+        HFLiveApi.getInstance()?.memberLogin(this,
                 userId,
                 userId,
                 null,

@@ -2,7 +2,7 @@ package com.hifive.sdk.rx
 
 import com.google.gson.JsonSyntaxException
 import com.hifive.sdk.hInterface.DataResponse
-import com.hifive.sdk.manager.HiFiveManager
+import com.hifive.sdk.manager.HFLiveApi
 import io.reactivex.subscribers.ResourceSubscriber
 import org.json.JSONException
 import retrofit2.HttpException
@@ -48,7 +48,7 @@ open class BaseSubscribe<T>(private val dataResponse: DataResponse?) : ResourceS
     }
 
     override fun onNext(t: T) {
-        val json = HiFiveManager.gson.toJson(t)
+        val json = HFLiveApi.gson.toJson(t)
         dataResponse?.data(json)
     }
 }

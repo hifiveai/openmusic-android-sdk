@@ -3,7 +3,7 @@ package com.hifive.sdk.net
 import com.hifive.sdk.common.BaseConstance
 import com.hifive.sdk.common.BaseConstance.Companion.accessTokenMember
 import com.hifive.sdk.common.BaseConstance.Companion.accessTokenUnion
-import com.hifive.sdk.manager.HiFiveManager
+import com.hifive.sdk.manager.HFLiveApi
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -32,9 +32,9 @@ class DefaultHeaderInterceptor : Interceptor {
 
         val time = System.currentTimeMillis().toString()
         val original = chain.request().newBuilder()
-                .addHeader("accessToken", BaseConstance.getSignToken(HiFiveManager.SECRET!!, token
+                .addHeader("accessToken", BaseConstance.getSignToken(HFLiveApi.SECRET!!, token
                         ?: "", time) ?: "")
-                .addHeader("appId", HiFiveManager.APP_ID ?: "")
+                .addHeader("appId", HFLiveApi.APP_ID ?: "")
                 .addHeader("timestamp", time)
         if (memberOutId.isNotBlank()) {
             original.addHeader("memberOutId", memberOutId)

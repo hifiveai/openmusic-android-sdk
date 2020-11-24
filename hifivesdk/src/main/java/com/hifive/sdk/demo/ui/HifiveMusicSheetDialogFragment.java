@@ -38,7 +38,7 @@ import com.hifive.sdk.demo.view.magicindicator.ViewPagerHelper;
 import com.hifive.sdk.demo.view.magicindicator.abs.IPagerIndicator;
 import com.hifive.sdk.demo.view.magicindicator.abs.IPagerTitleView;
 import com.hifive.sdk.hInterface.DataResponse;
-import com.hifive.sdk.manager.HiFiveManager;
+import com.hifive.sdk.manager.HFLiveApi;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -202,9 +202,9 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
     }
     //获取电台列表
     private  void  getRadioStationData(){
-        if(HiFiveManager.Companion.getInstance() == null || mContext == null)
+        if (HFLiveApi.Companion.getInstance() == null || mContext == null)
             return;
-        HiFiveManager.Companion.getInstance().getCompanyChannelList(mContext, new DataResponse() {
+        HFLiveApi.Companion.getInstance().getCompanyChannelList(mContext, new DataResponse() {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                 showToast(string);
@@ -212,8 +212,8 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
 
             @Override
             public void data(@NotNull Object any) {
-                Log.e("TAG","电台数据=="+any);
-                companyChannelLists = JSON.parseArray(String.valueOf(any),HifiveMusicChannelModel.class);
+                Log.e("TAG", "电台数据==" + any);
+                companyChannelLists = JSON.parseArray(String.valueOf(any), HifiveMusicChannelModel.class);
                 initMagicIndicator();
                 initPage();
             }

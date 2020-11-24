@@ -94,7 +94,7 @@ SDK默认开启debug模式，输出日志可在控制台进行查看。
 建议在应用一启动就初始化，例如Application中
 
 ```
-HiFiveManager.Companion.registerApp(Application context, String APP_ID,String SECRET );
+HFLiveApi.Companion.registerApp(Application context, String APP_ID,String SECRET );
 
 ```
 

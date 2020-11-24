@@ -26,7 +26,7 @@ import com.hifive.sdk.demo.model.HifiveMusicModel;
 import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 import com.hifive.sdk.demo.view.HifiveRefreshHeader;
 import com.hifive.sdk.hInterface.DataResponse;
-import com.hifive.sdk.manager.HiFiveManager;
+import com.hifive.sdk.manager.HFLiveApi;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -195,9 +195,9 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
     }
     //删除会员歌单歌曲
     private void deleteMusic(final int position) {
-        if( HiFiveManager.Companion.getInstance() == null || getContext() == null)
+        if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
             return;
-        HiFiveManager.Companion.getInstance().deleteMemberSheetMusic(getContext(), String.valueOf(sheetId),
+        HFLiveApi.Companion.getInstance().deleteMemberSheetMusic(getContext(), String.valueOf(sheetId),
                 adapter.getDatas().get(position).getMusicId(), new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
@@ -206,7 +206,7 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
 
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG","==删除成功==");
+                        Log.e("TAG", "==删除成功==");
                         Message message = mHandler.obtainMessage();
                         message.arg1 = position;
                         message.what = deleteSuccess;
@@ -218,9 +218,9 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
 
     //根据用户歌单id获取歌曲数据
     private void getData() {
-        if( HiFiveManager.Companion.getInstance() == null || getContext() == null)
+        if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
             return;
-        HiFiveManager.Companion.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, null,
+        HFLiveApi.Companion.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, null,
                 "100", "1", new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
@@ -230,7 +230,7 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
 
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG","K歌数据=="+any);
+                        Log.e("TAG", "K歌数据==" + any);
                         hifiveMusicModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("records"), HifiveMusicModel.class);
                         mHandler.sendEmptyMessage(RequstSuccess);
                     }

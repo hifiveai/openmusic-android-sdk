@@ -10,7 +10,7 @@ import com.hifive.sdk.controller.MusicManager
  * @author Dsh  imkobedroid@gmail.com
  * @date 2019-07-09
  */
-class HiFiveManager {
+class HFLiveApi {
 
     companion object {
         val gson by lazy { Gson() }
@@ -44,8 +44,8 @@ class HiFiveManager {
 
 
         fun registerApp(context: Application, APP_ID: String, SECRET: String) {
-            HiFiveManager.APP_ID = APP_ID
-            HiFiveManager.SECRET = SECRET
+            HFLiveApi.APP_ID = APP_ID
+            HFLiveApi.SECRET = SECRET
             hiFiveContext = context
         }
     }

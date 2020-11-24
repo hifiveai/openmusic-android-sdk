@@ -9,9 +9,9 @@ import com.hifive.sdk.ext.request
 import com.hifive.sdk.hInterface.DataResponse
 import com.hifive.sdk.hInterface.DownLoadResponse
 import com.hifive.sdk.injection.module.ServiceModule
-import com.hifive.sdk.manager.HiFiveManager
-import com.hifive.sdk.manager.HiFiveManager.Companion.APP_ID
-import com.hifive.sdk.manager.HiFiveManager.Companion.SECRET
+import com.hifive.sdk.manager.HFLiveApi
+import com.hifive.sdk.manager.HFLiveApi.Companion.APP_ID
+import com.hifive.sdk.manager.HFLiveApi.Companion.SECRET
 import com.hifive.sdk.net.Encryption
 import com.hifive.sdk.rx.BaseSubscribe
 import com.tsy.sdk.myokhttp.MyOkHttp
@@ -132,7 +132,7 @@ class MusicManager(val context: Context) : BaseController() {
                         val token = json.getString("accessToken")
                         BaseConstance.accessTokenMember = token ?: ""
                         BaseConstance.accessTokenUnion = null
-                        dataResponse.data(HiFiveManager.gson.toJson(t))
+                        dataResponse.data(HFLiveApi.gson.toJson(t))
                     }
                 })
     }
@@ -156,7 +156,7 @@ class MusicManager(val context: Context) : BaseController() {
                         val json = JSONObject(t.toString())
                         val token = json.getString("accessToken")
                         BaseConstance.accessTokenUnion = token ?: ""
-                        dataResponse.data(HiFiveManager.gson.toJson(t))
+                        dataResponse.data(HFLiveApi.gson.toJson(t))
                     }
                 })
     }

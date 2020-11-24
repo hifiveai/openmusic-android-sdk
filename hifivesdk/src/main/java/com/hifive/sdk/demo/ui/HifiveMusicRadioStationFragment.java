@@ -27,7 +27,7 @@ import com.hifive.sdk.demo.util.HifiveDisplayUtils;
 import com.hifive.sdk.demo.view.HifiveLoadMoreFooter;
 import com.hifive.sdk.demo.view.HifiveRefreshHeader;
 import com.hifive.sdk.hInterface.DataResponse;
-import com.hifive.sdk.manager.HiFiveManager;
+import com.hifive.sdk.manager.HFLiveApi;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -164,13 +164,13 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     }
     //根据电台获取歌单数据
     private void getData(final int ty) {
-        if( HiFiveManager.Companion.getInstance() == null || getContext() == null)
+        if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
             return;
-        HiFiveManager.Companion.getInstance().getCompanySheetList(getContext(), id, null, null,
-                null,null,null,"10", String.valueOf(page), new DataResponse() {
+        HFLiveApi.Companion.getInstance().getCompanySheetList(getContext(), id, null, null,
+                null, null, null, "10", String.valueOf(page), new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                        if(ty != Refresh){//上拉加载请求失败后，还原页卡
+                        if (ty != Refresh) {//上拉加载请求失败后，还原页卡
                             page--;
                         }
                         showToast(string);

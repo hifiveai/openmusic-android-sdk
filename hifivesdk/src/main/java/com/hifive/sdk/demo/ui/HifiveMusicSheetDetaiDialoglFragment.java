@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.hifive.sdk.R;
 import com.hifive.sdk.demo.adapter.HifiveMusicSearchAdapter;
 import com.hifive.sdk.demo.model.HifiveMusicModel;
@@ -39,7 +38,7 @@ import com.hifive.sdk.demo.util.HifiveDialogManageUtil;
 import com.hifive.sdk.demo.util.HifiveDisplayUtils;
 import com.hifive.sdk.demo.view.HifiveLoadMoreFooter;
 import com.hifive.sdk.hInterface.DataResponse;
-import com.hifive.sdk.manager.HiFiveManager;
+import com.hifive.sdk.manager.HFLiveApi;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -242,14 +241,14 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
     }
     //添加歌曲到会员歌单列表
     private void addUserSheet(final int position, final int type) {
-        if(mContext != null && HiFiveManager.Companion.getInstance() != null) {
+        if (mContext != null && HFLiveApi.Companion.getInstance() != null) {
             long sheetId;
             if (type == Addkaraoke) {//加入到我的K歌
                 sheetId = HifiveDialogManageUtil.getInstance().getUserSheetIdByName(mContext.getString(R.string.hifivesdk_music_karaoke));
             } else {//加入到我的喜欢
                 sheetId = HifiveDialogManageUtil.getInstance().getUserSheetIdByName(mContext.getString(R.string.hifivesdk_music_like));
             }
-            HiFiveManager.Companion.getInstance().saveMemberSheetMusic(mContext, String.valueOf(sheetId),
+            HFLiveApi.Companion.getInstance().saveMemberSheetMusic(mContext, String.valueOf(sheetId),
                     adapter.getDatas().get(position).getMusicId(), new DataResponse() {
                         @Override
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
@@ -336,18 +335,18 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
     }
     //根据歌单id获取歌曲信息
     private void getData(final int ty) {
-        if( HiFiveManager.Companion.getInstance() == null || mContext == null)
+        if (HFLiveApi.Companion.getInstance() == null || mContext == null)
             return;
-        if(ty == Refresh){
+        if (ty == Refresh) {
             page = 1;
-        }else{
+        } else {
             page++;
         }
-        HiFiveManager.Companion.getInstance().getCompanySheetMusicList(mContext, String.valueOf(sheetId), null, null,
-                "10",  String.valueOf(page), new DataResponse() {
+        HFLiveApi.Companion.getInstance().getCompanySheetMusicList(mContext, String.valueOf(sheetId), null, null,
+                "10", String.valueOf(page), new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                        if(ty != Refresh){//上拉加载请求失败后，还原页卡
+                        if (ty != Refresh) {//上拉加载请求失败后，还原页卡
                             page--;
                         }
                         showToast(string);

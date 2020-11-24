@@ -38,7 +38,7 @@ import com.hifive.sdk.demo.view.magicindicator.ViewPagerHelper;
 import com.hifive.sdk.demo.view.magicindicator.abs.IPagerIndicator;
 import com.hifive.sdk.demo.view.magicindicator.abs.IPagerTitleView;
 import com.hifive.sdk.hInterface.DataResponse;
-import com.hifive.sdk.manager.HiFiveManager;
+import com.hifive.sdk.manager.HFLiveApi;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -136,9 +136,9 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
     }
     //获取用户歌单列表
     private void getData() {
-        if( HiFiveManager.Companion.getInstance() == null || mContext == null)
+        if (HFLiveApi.Companion.getInstance() == null || mContext == null)
             return;
-        HiFiveManager.Companion.getInstance().getMemberSheetList(mContext, "1", "10", new DataResponse() {
+        HFLiveApi.Companion.getInstance().getMemberSheetList(mContext, "1", "10", new DataResponse() {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                 showToast(string);

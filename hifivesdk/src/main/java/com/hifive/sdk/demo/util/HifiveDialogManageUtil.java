@@ -16,7 +16,7 @@ import com.hifive.sdk.demo.model.HifiveMusicVersionModel;
 import com.hifive.sdk.demo.ui.HifiveUpdateObservable;
 import com.hifive.sdk.demo.ui.player.HifivePlayerView;
 import com.hifive.sdk.hInterface.DataResponse;
-import com.hifive.sdk.manager.HiFiveManager;
+import com.hifive.sdk.manager.HFLiveApi;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -248,10 +248,10 @@ public class HifiveDialogManageUtil {
 
     //获取歌曲详情type表示是获取伴奏版本信息还是主版本信息
     public void getMusicDetail(final Activity activity, final HifiveMusicModel musicModel,String mediaType){
-        if(HiFiveManager.Companion.getInstance() == null)
+        if (HFLiveApi.Companion.getInstance() == null)
             return;
-        HiFiveManager.Companion.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
-                mediaType,null,null,null, new DataResponse() {
+        HFLiveApi.Companion.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
+                mediaType, null, null, null, new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                         showToast(string, activity);
@@ -268,17 +268,18 @@ public class HifiveDialogManageUtil {
     //音乐播放切换播放模式（主版和伴奏切换）时获取歌曲详情
     public void getMusicDetail(int majorVersion, final Activity activity){
         String musicId = getMusicId(majorVersion);
-        if(HiFiveManager.Companion.getInstance() == null || TextUtils.isEmpty(musicId))
+        if (HFLiveApi.Companion.getInstance() == null || TextUtils.isEmpty(musicId))
             return;
-        HiFiveManager.Companion.getInstance().getMusicDetail(activity,musicId, null,
-                "2",null,null,null, new DataResponse() {
+        HFLiveApi.Companion.getInstance().getMusicDetail(activity, musicId, null,
+                "2", null, null, null, new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                        showToast(string,activity);
+                        showToast(string, activity);
                     }
+
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG", "==音乐详情=="+any);
+                        Log.e("TAG", "==音乐详情==" + any);
                         playMusicDetail = JSON.parseObject(String.valueOf(any), HifiveMusicDetailModel.class);
                         updateObservable.postNewPublication(PALYINGCHANGEMUSIC);
                     }

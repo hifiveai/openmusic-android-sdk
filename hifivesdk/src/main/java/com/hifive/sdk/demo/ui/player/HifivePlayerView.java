@@ -26,8 +26,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.hifive.sdk.R;
@@ -43,8 +45,10 @@ import com.hifive.sdk.demo.util.HifiveDownloadUtile;
 import com.hifive.sdk.demo.view.HifiveRoundProgressBar;
 import com.hifive.sdk.demo.view.RoundedCornersTransform;
 import com.hifive.sdk.hInterface.DownLoadResponse;
-import com.hifive.sdk.manager.HiFiveManager;
+import com.hifive.sdk.manager.HFLiveApi;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.List;
 import java.util.Observable;
@@ -716,17 +720,18 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     //下载伴奏
     private void downLoadAccompany(String file, String musicId, String expand, final boolean ischange) {
         Log.e("TAG","file=="+file);
-        HiFiveManager.Companion.getInstance().downLoadFile(mContext, file, mContext.getFilesDir() +"/"+ musicId+"."+expand,
+        HFLiveApi.Companion.getInstance().downLoadFile(mContext, file, mContext.getFilesDir() + "/" + musicId + "." + expand,
                 new DownLoadResponse() {
                     @Override
                     public void size(long totalBytes) {
 
                     }
+
                     @Override
                     public void succeed(@NotNull File file) {
-                        accompanyFile =  file;
-                        if(accompanyFile != null){
-                            if(ischange){
+                        accompanyFile = file;
+                        if (accompanyFile != null) {
+                            if (ischange) {
                                 changePlayMusic(accompanyFile.getPath(),true);
                             }else{
                                 startPlayMusic(accompanyFile.getPath(),true);
