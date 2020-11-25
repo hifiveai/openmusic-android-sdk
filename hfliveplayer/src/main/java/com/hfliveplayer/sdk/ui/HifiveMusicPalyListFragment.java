@@ -106,7 +106,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
                     if(adapter.getItemCount() > 1){
                         HifiveDialogManageUtil.getInstance().playNextMusic(getActivity());
                     }else{
-                        HifiveDialogManageUtil.getInstance().cleanPlayMusic();
+                        HifiveDialogManageUtil.getInstance().cleanPlayMusic(true);
                     }
                 }
                 HifiveDialogManageUtil.getInstance().getCurrentList().remove(musicModel);

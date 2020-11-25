@@ -39,6 +39,7 @@ import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveMusicSearchAdapter;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.model.HifiveMusicSearchrModel;
+import com.hfliveplayer.sdk.ui.player.HFLivePlayer;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.HifiveFlowLayout;
@@ -462,7 +463,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
             page++;
         }
         Log.e("TAG","searchPage=="+page);
-        HFLiveApi.Companion.getInstance().getMusicList(getContext(), "2", content, null, "musicTag",
+        HFLiveApi.Companion.getInstance().getMusicList(getContext(), "2", content, null, HFLivePlayer.field,
                 "15", String.valueOf(page), new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {

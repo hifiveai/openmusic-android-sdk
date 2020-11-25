@@ -1,11 +1,26 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+
 android {
+    signingConfigs {
+        debug {
+            storeFile file('hifiveplayer.jks')
+            storePassword 'HiFiveSdk'
+            keyAlias = 'player'
+            keyPassword 'HiFiveSdk'
+        }
+        release {
+            storeFile file('hifiveplayer.jks')
+            storePassword 'HiFiveSdk'
+            keyPassword 'HiFiveSdk'
+            keyAlias = 'player'
+        }
+
+    }
+
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
-
     defaultConfig {
-        applicationId "com.longyuan.livesdkplayer"
+        applicationId "com.hifiveai.liveplayer"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -32,8 +47,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation project(path: ':hfliveplayer')
+    implementation project(path: ':hifivesdk')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
 }

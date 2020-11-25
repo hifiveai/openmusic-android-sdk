@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+apply from: "config.gradle"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+
+
+android {
+    compileSdkVersion HiFiveVersion.compileSdkVersion
+    defaultConfig {
+        minSdkVersion HiFiveVersion.minSdkVersion
+        targetSdkVersion HiFiveVersion.targetSdkVersion
+        versionCode HiFiveVersion.versionCode
+        versionName HiFiveVersion.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api "androidx.appcompat:appcompat:$HiFiveVersion.appCompat"
+    api "junit:junit:$HiFiveVersion.junit"
+    api "androidx.test:runner:$HiFiveVersion.runner"
+    api "androidx.test.espresso:espresso-core:$HiFiveVersion.espresso"
+
+    //打包进sdk的库
+    implementation files('libs/dagger-2.23.2.jar')
+    implementation files('libs/downFile.jar')
+    //开发者必须导入的包
+    api HifiveDependencies["javax"]
+    api HifiveDependencies["rxKotlin"]
+    api HifiveDependencies["rxjava"]
+    api HifiveDependencies["rxandroid"]
+    api HifiveDependencies["retrofit"]
+    api HifiveDependencies["retrofit-converter-gson"]
+    api HifiveDependencies["retrofit-adapter-rxjava2"]
+    api HifiveDependencies["okhttp"]
+    api HifiveDependencies["okhttp-logging-interceptor"]
+
+}

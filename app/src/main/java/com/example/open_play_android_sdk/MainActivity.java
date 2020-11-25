@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         HFLiveApi.Companion.registerApp(getApplication(), appId, secretKey);
         findViewById(R.id.play).setOnClickListener(view -> {
-            if(flag){
+            if(!flag){
                 Login();
             }else{
                 HFLivePlayer.getInstance().remove();
@@ -38,22 +38,14 @@ public class MainActivity extends AppCompatActivity {
                 , null, null, null, null, null, new DataResponse() {
                     @Override
                     public void errorMsg(String string, Integer code) {
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this, string, Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        MainActivity.this.runOnUiThread(() -> Toast.makeText(MainActivity.this, string, Toast.LENGTH_SHORT).show());
                     }
 
                     @Override
                     public void data(Object any) {
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HFLivePlayer.getInstance().add(MainActivity.this);
-                                flag = true ;
-                            }
+                        MainActivity.this.runOnUiThread(() -> {
+                            HFLivePlayer.getInstance().add(MainActivity.this);
+                            flag = true ;
                         });
                     }
                 });

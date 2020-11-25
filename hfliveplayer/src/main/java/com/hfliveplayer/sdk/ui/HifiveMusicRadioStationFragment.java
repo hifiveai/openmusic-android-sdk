@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveMusicSheetAdapter;
 import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
+import com.hfliveplayer.sdk.ui.player.HFLivePlayer;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.HifiveLoadMoreFooter;
 import com.hfliveplayer.sdk.view.HifiveRefreshHeader;
@@ -167,7 +168,7 @@ public class HifiveMusicRadioStationFragment extends Fragment {
         if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
             return;
         HFLiveApi.Companion.getInstance().getCompanySheetList(getContext(), id, null, null,
-                null, null, null, "10", String.valueOf(page), new DataResponse() {
+                null, null, "sheetTag", "10", String.valueOf(page), new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                         if (ty != Refresh) {//上拉加载请求失败后，还原页卡

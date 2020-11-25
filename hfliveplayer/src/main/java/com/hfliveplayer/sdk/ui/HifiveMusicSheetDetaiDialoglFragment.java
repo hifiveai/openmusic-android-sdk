@@ -34,6 +34,7 @@ import com.hfliveplayer.sdk.adapter.HifiveMusicSearchAdapter;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
 import com.hfliveplayer.sdk.model.HifiveMusicTagModel;
+import com.hfliveplayer.sdk.ui.player.HFLivePlayer;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.HifiveLoadMoreFooter;
@@ -284,18 +285,25 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
             }
             tv_name.setText(musicSheetModel.getSheetName());
             tv_introduce.setText(musicSheetModel.getDescribe());
-            if (musicSheetModel.getTag() != null && musicSheetModel.getTag().size() > 0) {
+            StringBuilder tip = new StringBuilder();
+            getTipsText(tip,musicSheetModel.getTag());
+            if(tip.length() >0){
                 tv_tips.setVisibility(View.VISIBLE);
-                StringBuilder tip = new StringBuilder();
-                for (HifiveMusicTagModel tipsModel : musicSheetModel.getTag()) {
-                    if (tip.length() > 0) {
-                        tip.append("，");
-                    }
-                    tip.append(tipsModel.getTagName());
-                }
                 tv_tips.setText(tip.toString());
-            } else {
+            }else{
                 tv_tips.setVisibility(View.GONE);
+            }
+        }
+    }
+    //获取标签名称
+    private void getTipsText(StringBuilder tip,List<HifiveMusicTagModel> tag) {
+        if(tag != null && tag.size() >0) {
+            for (HifiveMusicTagModel tipsModel : tag) {
+                if (tip.length() > 0) {
+                    tip.append(",");
+                }
+                tip.append(tipsModel.getTagName());
+                getTipsText(tip,tipsModel.getChild());
             }
         }
     }
@@ -342,7 +350,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
         } else {
             page++;
         }
-        HFLiveApi.Companion.getInstance().getCompanySheetMusicList(mContext, String.valueOf(sheetId), null, null,
+        HFLiveApi.Companion.getInstance().getCompanySheetMusicList(mContext, String.valueOf(sheetId), null, HFLivePlayer.field,
                 "10", String.valueOf(page), new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {

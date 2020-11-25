@@ -31,7 +31,7 @@
                 android:padding="10dp"
                 android:src="@mipmap/hifivesdk_icon_dialog_back"/>
 
-            <com.hifive.sdk.demo.view.RoundImageView
+            <com.hfliveplayer.sdk.view.RoundImageView
                 android:id="@+id/iv_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -72,6 +72,8 @@
                 android:layout_alignBottom="@id/iv_image"
                 android:textColor="#FF282828"
                 android:textSize="11sp"
+                android:ellipsize="end"
+                android:lines="1"
                 android:layout_marginStart="10dp"/>
 
         </RelativeLayout>

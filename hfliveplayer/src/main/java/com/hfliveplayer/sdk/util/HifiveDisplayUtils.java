@@ -73,7 +73,6 @@ public class HifiveDisplayUtils {
             Matcher matcher = pattern.matcher(s1);
             while (matcher.find()) {
                 long time = getStartTime(matcher.group(1));
-                Log.e("TAGFG","time=="+time);
                 if(time != -1) {
                     detailModel.setStartTime(getStartTime(matcher.group(1)));
                     detailModel.setContent(s1.replace("[" + matcher.group(1) + "]", "").trim());

@@ -57,7 +57,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * @ClassName  HifivePlayerView
  * 播放器悬浮窗view
  * Created by huchao on 20/11/10.
  */
@@ -196,21 +195,17 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             public void onClick(View v) {
                 if(isShowAccompany){//已是伴奏模式
                     if(!TextUtils.isEmpty(playUrl)){//当前歌曲URL不为空直接切换播放
-                        changePlayMusic(playUrl,false);
+                        changePlayMusic(playUrl);
                         setTypeSound();
                     }else{//为空暂停播放，并开始获取歌曲URL信息
-                        stopPlay();
-                        showLoadVew();
-                        HifiveDialogManageUtil.getInstance().getMusicDetail(1,mContext);
+                        getMusicDetail(1);
                     }
                 }else{//不是伴奏模式
                     if(accompanyFile != null){//当前伴奏不为空直接切换播放
-                        changePlayMusic(accompanyFile.getPath(),false);
+                        changePlayMusic(accompanyFile.getPath());
                         setTypeAccompany();
                     }else{//为空暂停播放，并开始获取伴奏信息
-                        stopPlay();
-                        showLoadVew();
-                        HifiveDialogManageUtil.getInstance().getMusicDetail(0,mContext);
+                        getMusicDetail(0);
                     }
                 }
             }
@@ -270,15 +265,41 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             }
         });
     }
+    //获取音乐详情type ：0.伴奏1.主版本
+    private void getMusicDetail(int type) {
+        stopPlay();
+        showLoadVew();
+        HifiveDialogManageUtil.getInstance().getMusicDetail(type,mContext);
+    }
     //设置播放器原声模式
     private void setTypeSound() {
         tv_accompany.setText(mContext.getString(R.string.hifivesdk_music_player_sound));
         isShowAccompany = false;
+        setMusicName(HifiveDialogManageUtil.getInstance().playMusicDetail);
     }
     //设置播放器伴奏模式
     private void setTypeAccompany() {
         tv_accompany.setText(mContext.getString(R.string.hifivesdk_music_player_accompany));
         isShowAccompany = true;
+        setMusicName(HifiveDialogManageUtil.getInstance().accompanyDetail);
+    }
+    //设置歌曲名称
+    private void setMusicName(HifiveMusicDetailModel playMusicDetail) {
+      if(playMusicDetail != null){
+          StringBuilder info = new StringBuilder();
+          if(!TextUtils.isEmpty(playMusicDetail.getMusicName())){
+              info.append(playMusicDetail.getMusicName());
+          }
+          if(playMusicDetail.getArtist() != null && playMusicDetail.getArtist().size() >0){
+              for(HifiveMusicAuthorModel authorModel:playMusicDetail.getArtist()){
+                  if(info.length() >0){
+                      info.append("-");
+                  }
+                  info.append(authorModel.getName());
+              }
+          }
+          tv_music_info.setText(info.toString());
+      }
     }
     //显示加载view
     private void showLoadVew() {
@@ -335,9 +356,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     /**
      * 切换播放歌曲
      * @param path 音频文件路径或者url
-     * @param isRestart true表示切歌播放新歌曲，false表示暂停后继续播放
      */
-    private void changePlayMusic(String path,boolean isRestart) {
+    private void changePlayMusic(String path) {
         if(playerUtils!= null) {
             playerUtils.prepareAndPlay(path, new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -350,7 +370,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 }
             });
         }
-        if(isRestart){
+        if(!isPlay) {
             iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_play);
             isPlay = true;
             StartAnimationPlay();
@@ -670,7 +690,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     }
     //更新播放view，下载歌词，播放音乐isChange表示是否是切换播放模式
     private void updatePlayView(boolean isChange) {
-        HifiveMusicDetailModel playMusicDetail = HifiveDialogManageUtil.getInstance().playMusicDetail;
+        HifiveMusicDetailModel playMusicDetail = HifiveDialogManageUtil.getInstance().getPlayMusicDetail();
         if(playMusicDetail != null) {
             if(!isChange) {
                 HifiveMusiclyricModel lyric = playMusicDetail.getLyric();
@@ -696,7 +716,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     if(!isChange) {
                         startPlayMusic(playUrl,true);//开始播放新歌曲
                     }else{
-                        changePlayMusic(playUrl,true);//切换播放歌曲
+                        changePlayMusic(playUrl);//切换播放歌曲
                     }
                 } else {
                     showToast("播放歌曲出错");
@@ -723,6 +743,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     //下载伴奏
     private void downLoadAccompany(String file, String musicId, String expand, final boolean ischange) {
         Log.e("TAG","file=="+file);
+        if (HFLiveApi.Companion.getInstance() == null)
+            return;
         HFLiveApi.Companion.getInstance().downLoadFile(mContext, file, mContext.getFilesDir() + "/" + musicId + "." + expand,
                 new DownLoadResponse() {
                     @Override
@@ -733,14 +755,10 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     @Override
                     public void succeed(@NotNull File file) {
                         accompanyFile = file;
-                        if (accompanyFile != null) {
-                            if (ischange) {
-                                changePlayMusic(accompanyFile.getPath(),true);
-                            }else{
-                                startPlayMusic(accompanyFile.getPath(),true);
-                            }
+                        if (ischange) {
+                            changePlayMusic(accompanyFile.getPath());
                         }else{
-                            showToast("播放伴奏出错");
+                            startPlayMusic(accompanyFile.getPath(),true);
                         }
                     }
                     @Override
@@ -789,7 +807,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
      * @author huchao
      */
     private void downloadLyric(String lyricUrl, final int type) {
-        Log.e("TAG","lyricUrl=="+lyricUrl);
         HifiveDownloadUtile.downloadFile(lyricUrl,new HifiveDownloadUtile.NetCallback() {
             @Override
             public void reqYes(Object o, String s) {

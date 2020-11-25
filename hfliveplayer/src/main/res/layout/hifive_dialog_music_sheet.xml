@@ -19,7 +19,7 @@
             android:padding="10dp"
             android:src="@mipmap/hifivesdk_icon_dialog_back"/>
 
-        <com.hifive.sdk.demo.view.magicindicator.MagicIndicator
+        <com.hfliveplayer.sdk.view.magicindicator.MagicIndicator
             android:id="@+id/magic_indicator"
             android:layout_marginStart="10dp"
             android:layout_width="match_parent"

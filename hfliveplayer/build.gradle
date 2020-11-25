@@ -32,16 +32,15 @@ repositories {
 }
 
 dependencies {
-
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'org.jetbrains:annotations:15.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation project(path: ':hifivesdk')
     implementation group: 'com.github.bumptech.glide', name: 'glide', version: '4.9.0'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-11'
     implementation 'com.alibaba:fastjson:1.2.51'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.12.3'
-
 }

@@ -150,7 +150,7 @@
                     android:layout_gravity="center"
                     android:scaleType="fitXY"
                     android:src="@mipmap/hifivesdk_icon_player_suspend"/>
-                <com.hifive.sdk.demo.view.HifiveRoundProgressBar
+                <com.hfliveplayer.sdk.view.HifiveRoundProgressBar
                     android:id="@+id/pb_play"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
