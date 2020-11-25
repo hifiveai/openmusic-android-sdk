@@ -115,6 +115,7 @@ HFLiveApi.Companion.registerApp(Application context, String APP_ID,String SECRET
     HFLivePlayer.getInstance().add(FragmentActivity activity,int marginTop,int marginBottom);
     参数说明：marginTop表示播放器可移动范围距离屏幕上方的间距。（默认为0，表示可以拖至屏幕最上方）
              marginBottom表示播放器可移动范围距离屏幕下方的间距。（默认为0，表示可以拖至屏幕最底部，只对未显示音乐列表弹窗时有效）
+    注意事项：播放器UI相关接口都是基于登录后的操作，为了正常使用，请确保已完成登录操作。
 ```
 - 关闭播放器方法
 ```
