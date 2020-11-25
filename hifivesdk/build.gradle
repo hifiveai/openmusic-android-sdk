@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 apply from: "config.gradle"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'kotlin-kapt'
 
 
 
@@ -35,9 +34,6 @@ dependencies {
     //打包进sdk的库
     implementation files('libs/dagger-2.23.2.jar')
     implementation files('libs/downFile.jar')
-    implementation group: 'com.github.bumptech.glide', name: 'glide', version: '4.9.0'
-    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-11'
-    implementation 'com.alibaba:fastjson:1.2.51'
     //开发者必须导入的包
     api HifiveDependencies["javax"]
     api HifiveDependencies["rxKotlin"]
@@ -48,32 +44,5 @@ dependencies {
     api HifiveDependencies["retrofit-adapter-rxjava2"]
     api HifiveDependencies["okhttp"]
     api HifiveDependencies["okhttp-logging-interceptor"]
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-//    kapt HifiveDependencies["dagger-compiler"]
-//    api HifiveDependencies["dagger"]
 }
-
-
-
-/**
- * 打包函数
- */
-def SDK_BASENAME = "$HiFiveVersion.sdkName"
-def SDK_VERSION = "_V$HiFiveVersion.versionName"
-def sdkDestinationPath = "build"
-def zipFile = file('build/intermediates/packaged-classes/release/fileDownLoad.jar')
-
-
-task deleteBuild(type: Delete) {
-    delete sdkDestinationPath + SDK_BASENAME + SDK_VERSION + ".jar"
-}
-
-task makeJar(type: Jar) {
-    from zipTree(zipFile)
-    from fileTree(dir: 'src/main', includes: ['res/**'])
-    baseName = SDK_BASENAME + SDK_VERSION
-    destinationDir = file(sdkDestinationPath)
-}
-
-makeJar.dependsOn(deleteBuild, build)

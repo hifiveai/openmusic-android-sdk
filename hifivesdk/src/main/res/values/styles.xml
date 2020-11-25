@@ -1,22 +1,12 @@
 <resources>
-    <style name="AnimationBottomFade">
-        <item name="android:windowEnterAnimation">@anim/hifive_anim_bottom_in</item>
-        <item name="android:windowExitAnimation">@anim/hifive_anim_bottom_out</item>
-    </style>
-    <style name="AnimationRightFade">
-        <item name="android:windowEnterAnimation">@anim/hifive_anim_right_in</item>
-        <item name="android:windowExitAnimation">@anim/hifive_anim_right_out</item>
-    </style>
     <style name="HifiveSdkDialogStyly" parent="@android:style/Animation.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">false</item>//默认为false，设置了这个为true会出现闪屏
+        <item name="android:windowIsFloating">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <!--透明背景-->
         <item name="android:background">@android:color/transparent</item>
-        <!--窗口背景透明-->
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:backgroundDimEnabled">false</item><!--activity不变暗-->
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 </resources>
