@@ -110,13 +110,11 @@ HFLiveApi.Companion.registerApp(Application context, String APP_ID,String SECRET
 - 显示播放器方法
 
 ```
-    HFLivePlayer.getInstance().add(FragmentActivity);
+    HFLivePlayer.getInstance().add(FragmentActivity activity);
     或者
-    HFLivePlayer.getInstance().add(FragmentActivity,int marginTop,int marginBottom);
-    参数说明
-      marginTop表示播放器可移动范围距离屏幕上方的间距。（默认为0，表示可以拖至屏幕最上方）
-      marginBottom表示播放器可移动范围距离屏幕下方的间距。（默认为0，表示可以拖至屏幕最底部，只对未显示音乐列表弹窗时有效）
-      
+    HFLivePlayer.getInstance().add(FragmentActivity activity,int marginTop,int marginBottom);
+    参数说明：marginTop表示播放器可移动范围距离屏幕上方的间距。（默认为0，表示可以拖至屏幕最上方）
+             marginBottom表示播放器可移动范围距离屏幕下方的间距。（默认为0，表示可以拖至屏幕最底部，只对未显示音乐列表弹窗时有效）
 ```
 - 关闭播放器方法
 ```
