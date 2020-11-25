@@ -234,34 +234,10 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
                     public void data(@NotNull Object any) {
                         Log.e("TAG", "喜欢数据==" + any);
                         hifiveMusicModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("records"), HifiveMusicModel.class);
-                       // testAccompany();
                         mHandler.sendEmptyMessage(RequstSuccess);
                     }
                 });
     }
-    //测试伴奏原神切换模拟假数据，后期删除
-    private void testAccompany() {
-        if(hifiveMusicModels != null && hifiveMusicModels.size() >0){
-            for (HifiveMusicModel hifiveMusicModel : hifiveMusicModels) {
-                HifiveMusicVersionModel versionModel = new HifiveMusicVersionModel();
-                if(hifiveMusicModel.getMusicId().equals("108D675787BC4F")){
-                    versionModel.setMusicId("EF380B3309E844");
-                    versionModel.setName("主版本");
-                    versionModel.setMajorVersion(1);
-                    versionModel.setDuration(277);
-                }else{
-                    versionModel.setMusicId("108D675787BC4F");
-                    versionModel.setName("伴奏版");
-                    versionModel.setMajorVersion(0);
-                    versionModel.setDuration(191);
-                }
-                List<HifiveMusicVersionModel> versionModels =  hifiveMusicModel.getVersion();
-                versionModels.add(versionModel);
-                hifiveMusicModel.setVersion(versionModels);
-            }
-        }
-    }
-
     //显示自定义toast信息
     @SuppressLint("ShowToast")
     private void showToast(String msg){

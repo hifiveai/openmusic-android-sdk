@@ -99,6 +99,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private boolean isShowAccompany;//是否是伴奏模式
     private boolean isPlay;//是否正在播放
     private boolean isStatic;//歌词是动态还是静态歌词
+    private boolean isError;//判断是否播放出错
+
     private final FragmentActivity mContext;
     private AnimationDrawable animationDrawable;//加载的动画
     private Animation rotateAnimation;//音乐图片旋转的动画
@@ -348,7 +350,12 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     }
                 });
             } else {
-                playerUtils.play();
+                //是否是播放错误后导致的暂停，播放出错暂停播放后需要重新prepare（）
+                if(isError){
+                    changePlayMusic(path);
+                }else{
+                    playerUtils.play();
+                }
             }
         }
         StartAnimationPlay();
@@ -523,6 +530,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     @Override
     public void playError() {
         Log.e("TAG","playError");
+        isError = true;
         stopPlay();
     }
     //当前歌曲播放完成回调

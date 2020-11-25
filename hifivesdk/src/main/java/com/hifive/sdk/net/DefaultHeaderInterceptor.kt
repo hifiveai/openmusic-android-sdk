@@ -6,6 +6,7 @@ import com.hifive.sdk.common.BaseConstance.Companion.accessTokenUnion
 import com.hifive.sdk.manager.HFLiveApi
 import okhttp3.Interceptor
 import okhttp3.Response
+import java.net.URLEncoder
 
 
 /**
@@ -37,13 +38,26 @@ class DefaultHeaderInterceptor : Interceptor {
                 .addHeader("appId", HFLiveApi.APP_ID ?: "")
                 .addHeader("timestamp", time)
         if (memberOutId.isNotBlank()) {
-            original.addHeader("memberOutId", memberOutId)
+            original.addHeader("memberOutId", getValueEncoded(memberOutId))
         }
         if (societyOutId.isNotBlank()) {
-            original.addHeader("sociatyOutId", societyOutId)
+            original.addHeader("sociatyOutId", getValueEncoded(societyOutId))
         }
         val authorised = original.build()
         return chain.proceed(authorised)
 
+    }
+    private fun getValueEncoded(value: String): String {
+        val newValue = value.replace("\n", "")
+        var i = 0
+        val length = newValue.length
+        while (i < length) {
+            val c = newValue[i]
+            if (c <= '\u001f' || c >= '\u007f') {
+                return URLEncoder.encode(newValue, "UTF-8")
+            }
+            i++
+        }
+        return newValue
     }
 }

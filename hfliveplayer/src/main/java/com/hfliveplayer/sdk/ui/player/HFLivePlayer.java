@@ -67,6 +67,11 @@ public class HFLivePlayer {
         }
         return this;
     }
+    //移除播放器view,清除缓存数据
+    public void destory() {
+        HifiveDialogManageUtil.getInstance().clearData();
+        remove();
+    }
     //移除播放器view
     public HFLivePlayer remove() {
         new Handler(Looper.getMainLooper()).post(new Runnable() {

@@ -50,6 +50,7 @@ public class HifiveDialogManageUtil {
         return singleManage;
     }
     public List<DialogFragment> dialogFragments;//维护当前所打开的dialog
+
     //关闭所有dialog
     public void CloseDialog(){
         try {
@@ -103,6 +104,12 @@ public class HifiveDialogManageUtil {
     //更新当前播放列表
     public void updateCurrentList(List<HifiveMusicModel> musicModels){
         currentList = new ArrayList<>();
+        //当前有播放的歌曲
+        if(playMusic != null && !TextUtils.isEmpty(playMusic.getMusicId())){
+           if(!musicModels.contains(playMusic)){
+               currentList.add(playMusic);
+           }
+        }
         currentList.addAll(musicModels);
         updateObservable.postNewPublication(UPDATEPALYLIST);
     }
@@ -327,6 +334,14 @@ public class HifiveDialogManageUtil {
             });
         }
     }
-
-
+    //清除缓存数据
+    public  void clearData() {
+        playMusic = null;
+        playMusicDetail = null;
+        accompanyDetail = null;
+        currentList = null;
+        KaraokeList = null;
+        likeList = null;
+        userSheetModels =null;
+    }
 }
