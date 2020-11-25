@@ -1,0 +1,9 @@
+[submodule "hfliveplayer/src/main/java/com/hfliveplayer/sdk/hfliveapi/open_api_android_sdk"]
+	path = hfliveplayer/src/main/java/com/hfliveplayer/sdk/hfliveapi/open_api_android_sdk
+	url = https://gitlab.ilongyuan.cn/hifive/open_api_android_sdk.git
+[submodule "hfliveplayer/src/main/java/com/hfliveplayer/sdk/api/open_api_android_sdk"]
+	path = hfliveplayer/src/main/java/com/hfliveplayer/sdk/api/open_api_android_sdk
+	url = https://gitlab.ilongyuan.cn/hifive/open_api_android_sdk.git
+[submodule "open_api_android_sdk"]
+	path = open_api_android_sdk
+	url = https://gitlab.ilongyuan.cn/hifive/open_api_android_sdk.git
