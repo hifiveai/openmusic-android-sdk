@@ -113,10 +113,10 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     public static File accompanyFile;//播放伴奏的文件
     private int playProgress;//播放的进度
     private List<HifiveMusicLyricDetailModel> lyricDetailModels;
-    public HifivePlayerView(@NonNull FragmentActivity context, int marginTop, int marginBottom) {
+    public HifivePlayerView(@NonNull FragmentActivity context, int Top, int Bottom) {
         this(context, null,0);
-        this.marginTop = marginTop;
-        this.marginBottom = marginBottom;
+        marginTop = Math.max(Top, 0);
+        marginBottom = Math.max(Bottom, 0);
     }
     public HifivePlayerView(@NonNull FragmentActivity context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
