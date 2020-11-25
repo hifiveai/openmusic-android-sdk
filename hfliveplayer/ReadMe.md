@@ -40,7 +40,7 @@ targetSdkVersion : 30
 
 #### 2.3集成SDK
 ##### 2.3.1 集成准备
-本SDK依赖于open_api_android_sdk，使用集成前请确保已正确集成open_api_android_sdk。
+本SDK依赖于open_api_android_sdk，使用前请确保已正确集成open_api_android_sdk。
 
 - 参考文档 https://gitlab.ilongyuan.cn/hifive/open_api_android_sdk/-/blob/master/hifivesdk/ReadMe.md
 
@@ -58,7 +58,7 @@ targetSdkVersion : 30
 ```
 ## 三、SDK使用
 
-##### 3.1 日志输出与相关说明
+#### 3.1 日志输出与相关说明
 
 控制SDK相关信息打印
 ```
@@ -67,7 +67,7 @@ SDK默认开启debug模式，输出日志可在控制台进行查看。
 开发接口以kotlin的方式输出
 ```
 
-##### 3.2 SDK初始化
+#### 3.2 SDK初始化
 建议在应用一启动就初始化，例如Application中
 
 ```
@@ -75,16 +75,20 @@ HFLiveApi.Companion.registerApp(Application context, String APP_ID,String SECRET
 
 ```
 
-##### 3.3 播放器UI使用
-####### 3.3.1 注意事项
-使用播放器UI前请确保SDK已初始化，并完成登录操作。
-## 登录操作调用sdk中的memberLogin(...)或者societyLogin(...)
-由于播放器UI和SDK基于androidX工程开发，防止兼容性问题，推荐项目升级到AndroidX，
-##并且需要使用播放器UI的Activity务必继承FragmentActivity或FragmentActivity的子类。
-####### 3.3.2 使用
+#### 3.3 播放器UI使用
+
+##### 3.3.1 注意事项
+- 使用播放器UI前请确保SDK已初始化，并完成登录操作。
+```
+ 登录操作调用sdk中的memberLogin(...)或者societyLogin(...)
 
 ```
-请在使用播放器UI的Activity中的生命周期中完成如下操作
+- 由于播放器UI和SDK基于androidX工程开发，防止兼容性问题，推荐项目升级到AndroidX，并且需要使用播放器UI的Activity务必继承FragmentActivity或FragmentActivity的子类。
+##### 3.3.2 使用
+
+- 请在使用播放器UI的Activity中的生命周期中完成如下操作
+
+```
    @Override
     protected void onStart() {
         HFLivePlayer.getInstance().attach(this);
@@ -102,17 +106,20 @@ HFLiveApi.Companion.registerApp(Application context, String APP_ID,String SECRET
     }
 
 ```
+
+- 显示播放器方法
+
 ```
-显示播放器方法
     HFLivePlayer.getInstance().add(FragmentActivity);
     或者
     HFLivePlayer.getInstance().add(FragmentActivity,int marginTop,int marginBottom);
     参数说明
       marginTop表示播放器可移动范围距离屏幕上方的间距。（默认为0，表示可以拖至屏幕最上方）
       marginBottom表示播放器可移动范围距离屏幕下方的间距。（默认为0，表示可以拖至屏幕最底部，只对未显示音乐列表弹窗时有效）
+      
 ```
+- 关闭播放器方法
 ```
-关闭播放器方法
     HFLivePlayer.getInstance().remove();
 
 ```
