@@ -22,13 +22,18 @@ interface Service {
             page: String?
     ): Flowable<Any>
 
-
     fun getCompanySheetMusicList(
             sheetId: String?,
             language: String?,
             field: String?,
             pageSize: String?,
             page: String?
+    ): Flowable<Any>
+
+    fun getCompanySheetMusicAll(
+            sheetId: String?,
+            language: String?,
+            field: String?
     ): Flowable<Any>
 
     fun getCompanyChannelList(): Flowable<Any>

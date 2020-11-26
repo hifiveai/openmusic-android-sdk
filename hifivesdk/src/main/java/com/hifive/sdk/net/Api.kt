@@ -39,6 +39,14 @@ interface Api {
     ): Flowable<BaseResp<Any>>
 
 
+    @FormUrlEncoded
+    @POST("/livestream/v1/company/getCompanySheetMusicAll")
+    fun getCompanySheetMusicAll(
+            @Field("sheetId") sheetId: String?,
+            @Field("language") language: String?,
+            @Field("field") field: String?
+    ): Flowable<BaseResp<Any>>
+
     @GET("/livestream/v1/company/getCompanyChannelList")
     fun getCompanyChannelList(): Flowable<BaseResp<Any>>
 

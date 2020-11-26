@@ -44,6 +44,15 @@ class DataRepository @Inject constructor() {
                 .getCompanySheetMusicList(sheetId, language, field, pageSize, page)
     }
 
+    fun getCompanySheetMusicAll(
+            sheetId: String?,
+            language: String?,
+            field: String?
+    ): Flowable<BaseResp<Any>> {
+        return LiveRetrofitFactory.api()
+                .getCompanySheetMusicAll(sheetId, language, field)
+    }
+
 
     fun getCompanyChannelList(
     ): Flowable<BaseResp<Any>> {

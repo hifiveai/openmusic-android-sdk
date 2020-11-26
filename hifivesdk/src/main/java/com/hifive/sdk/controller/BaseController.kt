@@ -63,6 +63,17 @@ abstract class BaseController {
             response: DataResponse
     )
 
+    /**
+     * 获取商户歌单全部歌曲列表
+     */
+    abstract fun getCompanySheetMusicAll(
+            context: Context,
+            sheetId: String?,
+            language: String?,
+            field: String?,
+            response: DataResponse
+    )
+
 
     /**
      * 获取商户电台列表
