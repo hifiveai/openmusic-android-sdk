@@ -7,8 +7,8 @@ import android.widget.SeekBar
 import java.io.IOException
 
 /**
- * @author Dsh  imkobedroid@gmail.com
- * @date 2020/5/19
+ * @author huchao
+ * @date 2020/11/10
  */
 
 @Suppress("DEPRECATION")

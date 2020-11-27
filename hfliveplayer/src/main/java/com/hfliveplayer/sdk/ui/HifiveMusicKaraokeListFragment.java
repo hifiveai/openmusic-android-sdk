@@ -21,7 +21,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveMusicListAdapter;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
-import com.hfliveplayer.sdk.ui.player.HFLivePlayer;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.view.HifiveRefreshHeader;
 import com.hifive.sdk.hInterface.DataResponse;
@@ -216,7 +215,7 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
     private void getData() {
         if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
             return;
-        HFLiveApi.Companion.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, HFLivePlayer.field,
+        HFLiveApi.Companion.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, HifiveDialogManageUtil.field,
                 "100", "1", new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {

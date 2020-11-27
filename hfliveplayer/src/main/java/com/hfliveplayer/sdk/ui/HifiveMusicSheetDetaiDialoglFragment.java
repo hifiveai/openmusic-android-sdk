@@ -32,7 +32,6 @@ import com.hfliveplayer.sdk.adapter.HifiveMusicSearchAdapter;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
 import com.hfliveplayer.sdk.model.HifiveMusicTagModel;
-import com.hfliveplayer.sdk.ui.player.HFLivePlayer;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.HifiveRefreshHeader;
@@ -305,7 +304,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
         if (HFLiveApi.Companion.getInstance() == null || mContext == null)
             return;
         HFLiveApi.Companion.getInstance().getCompanySheetMusicAll(mContext, String.valueOf(sheetId), null,
-                HFLivePlayer.field, new DataResponse() {
+                HifiveDialogManageUtil.field, new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                         mHandler.sendEmptyMessage(Fail);

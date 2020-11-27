@@ -22,7 +22,6 @@ import java.lang.ref.WeakReference;
  * Created by huchao on 20/11/10.
  */
 public class HFLivePlayer {
-    public static String field = "album,artist,musicTag";
     private HifivePlayerView mPlayerView;
     private static volatile HFLivePlayer mInstance;
     private WeakReference<FrameLayout> mContainer;

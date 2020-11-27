@@ -1,21 +1,21 @@
 package com.hfliveplayer.sdk.util;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
 import com.alibaba.fastjson.JSON;
 import com.hfliveplayer.sdk.model.HifiveMusicDetailModel;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.model.HifiveMusicUserSheetModel;
 import com.hfliveplayer.sdk.model.HifiveMusicVersionModel;
 import com.hfliveplayer.sdk.ui.HifiveUpdateObservable;
-import com.hfliveplayer.sdk.ui.player.HFLivePlayer;
 import com.hfliveplayer.sdk.ui.player.HifivePlayerView;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
@@ -32,6 +32,7 @@ import java.util.List;
  * @author huchao
  */
 public class HifiveDialogManageUtil {
+    public static String field = "album,artist,musicTag";
     public HifiveUpdateObservable updateObservable;
     public static final int UPDATEPALY = 1;//通知相关页面更新当前播放歌曲
     public static final int UPDATEPALYLIST = 2;//通知相关页面更新当前播放列表
@@ -68,9 +69,8 @@ public class HifiveDialogManageUtil {
     }
     //添加dialog
     public void addDialog(DialogFragment dialogFragment){
-        if(dialogFragments == null ){
+        if(dialogFragments == null )
             dialogFragments = new ArrayList<>();
-        }
         if(dialogFragment != null)
             dialogFragments.add(dialogFragment);
 
@@ -85,7 +85,7 @@ public class HifiveDialogManageUtil {
             e.printStackTrace();
         }
     }
-    public HifiveMusicModel playMusic;//维护当前所播放的音乐
+    public HifiveMusicModel playMusic;//维护当前所播放的音乐，方便当前播放、K歌、喜欢页面显示播放效果。
 
     public HifiveMusicModel getPlayMusic() {
         return playMusic;
@@ -94,7 +94,7 @@ public class HifiveDialogManageUtil {
     public void setPlayMusic(HifiveMusicModel playMusic) {
         this.playMusic = playMusic;
     }
-    //因为同一首歌原声版和伴奏版的歌名可能不一样，所以需要同时维护两个对象，方便切换播放模式时，改变歌曲名字
+    //因为同一首歌原声版和伴奏版的歌名可能不一样，所以需要同时维护两个对象，方便切换播放模式时，改变歌曲名字，
     public HifiveMusicDetailModel playMusicDetail;//主版本的详情
     public HifiveMusicDetailModel accompanyDetail;//伴奏的详情
     private  List<HifiveMusicModel> currentList;//维护当前播放的音乐列表
@@ -245,12 +245,12 @@ public class HifiveDialogManageUtil {
         }
         updateObservable.postNewPublication(UPDATEKARAOKLIST);
     }
-    //获取歌曲详情type表示是获取伴奏版本信息还是主版本信息
+    //获取歌曲详情mediaType表示是获取伴奏版本信息还是主版本信息
     public void getMusicDetail(final Activity activity, final HifiveMusicModel musicModel,String mediaType){
         if (HFLiveApi.Companion.getInstance() == null)
             return;
         HFLiveApi.Companion.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
-                mediaType, null, null, HFLivePlayer.field, new DataResponse() {
+                mediaType, null, null, field, new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @Nullable Integer code) {
                         showToast(activity,string);
@@ -270,7 +270,7 @@ public class HifiveDialogManageUtil {
         if (HFLiveApi.Companion.getInstance() == null || TextUtils.isEmpty(musicId))
             return;
         HFLiveApi.Companion.getInstance().getMusicDetail(activity, musicId, null,
-                "2", null, null, HFLivePlayer.field, new DataResponse() {
+                "2", null, null,field, new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string,@Nullable Integer code) {
                         showToast(activity,string);
@@ -309,7 +309,7 @@ public class HifiveDialogManageUtil {
     }
     //根据版本获取音乐id
     public String getMusicId(int majorVersion) {
-        if(playMusic != null&& playMusic.getVersion() !=null && playMusic.getVersion().size() >0){
+        if(playMusic != null && playMusic.getVersion() !=null && playMusic.getVersion().size() >0){
             for(HifiveMusicVersionModel versionModel : playMusic.getVersion()){
                 if(versionModel.getMajorVersion() == majorVersion ){
                     return  versionModel.getMusicId();
@@ -322,13 +322,11 @@ public class HifiveDialogManageUtil {
     public void showToast(final Activity activity,final String msg){
         if(activity != null){
             activity.runOnUiThread(new Runnable() {
+                @SuppressLint("ShowToast")
                 @Override
                 public void run() {
-                    if(toast == null){
-                        toast = Toast.makeText(activity,msg,Toast.LENGTH_SHORT);
-                    }else {
-                        toast.setText(msg);
-                    }
+                    if(toast == null) toast = Toast.makeText(activity, msg, Toast.LENGTH_SHORT);
+                    else toast.setText(msg);
                     toast.show();
                 }
             });

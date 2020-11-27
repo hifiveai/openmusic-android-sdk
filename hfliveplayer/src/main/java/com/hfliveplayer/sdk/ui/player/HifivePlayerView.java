@@ -396,7 +396,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 if(playerUtils!= null && playerUtils.isPlaying()) {
                     playProgress = playerUtils.progress();
                     if(!isStatic)
-                        updateLyricDetail(playProgress);
+                        updateLyricText(playProgress);
                     pb_play.setProgress(playProgress);
                 }
             }
@@ -782,7 +782,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                                 startPlayMusic(accompanyFile.getPath(),true);
                             }
                         }else{//如果已切歌就删掉文件
-                            if(file != null && file.exists() && file.isFile()) {
+                            if(file.exists() && file.isFile()) {
                                 if(file.delete()) Log.e("TAG", "文件删除成功");
                                 else Log.e("TAG", "文件删除失败");
                             }
@@ -838,7 +838,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             }
         });
     }
-    //更新歌词的view
+    //更新歌词的view type 歌词类型1.动态歌词2.静态歌词
     private void updateLyricView(final String content, final int type) {
         if(mContext != null){
             mContext.runOnUiThread(new Runnable() {
@@ -849,7 +849,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                             cb_lyric.setEnabled(true);
                             cb_lyric.setAlpha(1f);
                             lyricDetailModels = HifiveDisplayUtils.getLyricDetailModels(content);
-                            updateLyricDetail(0);
+                            updateLyricText(0);
                             if(cb_lyric.isChecked()){
                                 rl_lyric_dynamic.setVisibility(VISIBLE);
                             }
@@ -874,7 +874,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     }
     private boolean isChange;//判断歌词是否正在改变
     private int position = 0;//保留歌词下标，下次从下标开始查找歌词
-    private void updateLyricDetail(int playProgress) {
+    private void updateLyricText(int playProgress) {
         if (isChange)
             return;
         isChange = true;

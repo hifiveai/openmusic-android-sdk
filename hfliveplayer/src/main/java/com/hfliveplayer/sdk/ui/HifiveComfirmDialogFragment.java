@@ -17,7 +17,11 @@ import androidx.fragment.app.DialogFragment;
 
 import com.hfliveplayer.sdk.R;
 
-
+/**
+ * 二次确认弹窗的fragment
+ *
+ * @author huchao
+ */
 public class HifiveComfirmDialogFragment extends DialogFragment {
     public static final String ContentTx = "contentTx";
     private OnSureClick sureClick;
