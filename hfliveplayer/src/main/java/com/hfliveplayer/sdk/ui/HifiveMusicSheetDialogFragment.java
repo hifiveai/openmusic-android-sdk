@@ -1,6 +1,5 @@
 package com.hfliveplayer.sdk.ui;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -17,7 +16,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -56,8 +54,6 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
     private ViewPager viewPager;
     private List<HifiveMusicChannelModel> companyChannelLists = new ArrayList<>();
     private  Context mContext;
-    private Toast toast;
-
     @Override
     public void onStart() {
         super.onStart();
@@ -207,7 +203,7 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
         HFLiveApi.Companion.getInstance().getCompanyChannelList(mContext, new DataResponse() {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                showToast(string);
+                HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
             }
 
             @Override
@@ -218,22 +214,5 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
                 initPage();
             }
         });
-    }
-    //显示自定义toast信息
-    @SuppressLint("ShowToast")
-    private void showToast(String msg){
-        if(getActivity() != null){
-            if(toast == null){
-                toast = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
-            }else {
-                toast.setText(msg);
-            }
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    toast.show();
-                }
-            });
-        }
     }
 }

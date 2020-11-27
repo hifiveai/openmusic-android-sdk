@@ -4,6 +4,7 @@ package com.hfliveplayer.sdk.util;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -38,8 +39,8 @@ public class HifiveDialogManageUtil {
     public static final int UPDATEKARAOKLIST = 4;//通知相关页面更新k歌列表
     public static final int PALYINGMUSIC = 5;//通知播放器开始播放新歌曲
     public static final int PALYINGCHANGEMUSIC = 6;//通知播放器改变播放模式
-
     private static HifiveDialogManageUtil singleManage;
+    private Toast toast;
     private HifiveDialogManageUtil(){
 
     }
@@ -102,15 +103,12 @@ public class HifiveDialogManageUtil {
     }
 
     //更新当前播放列表
-    public void updateCurrentList(List<HifiveMusicModel> musicModels){
+    public void updateCurrentList(Activity activity,List<HifiveMusicModel> musicModels){
+        if(musicModels == null || musicModels.size() == 0)
+            return;
         currentList = new ArrayList<>();
-        //当前有播放的歌曲
-        if(playMusic != null && !TextUtils.isEmpty(playMusic.getMusicId())){
-           if(!musicModels.contains(playMusic)){
-               currentList.add(playMusic);
-           }
-        }
         currentList.addAll(musicModels);
+        setCurrentPlay(activity,currentList.get(0));
         updateObservable.postNewPublication(UPDATEPALYLIST);
     }
     //添加某一首歌曲到当前播放中mediaType	类型：1-k歌；2-听歌
@@ -145,10 +143,7 @@ public class HifiveDialogManageUtil {
         playMusic = null;
         playMusicDetail = null;
         accompanyDetail = null;
-        File file = HifivePlayerView.accompanyFile;
-        if(file != null && file.exists() && file.isFile()){//切歌后删除上一首歌下载的伴奏
-            file.delete();
-        }
+        deleteFile();
         if(isStop)
             updateObservable.postNewPublication(UPDATEPALY);
     }
@@ -165,7 +160,7 @@ public class HifiveDialogManageUtil {
     }
     //按顺序播放下一首歌
     public void playNextMusic(Activity activity){
-        if(currentList != null  && currentList.size() >1){
+        if(currentList != null){
             int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
             if(positon != (currentList.size()-1)){//不是最后一首
                 setCurrentPlay(activity,currentList.get(positon+1));
@@ -258,7 +253,7 @@ public class HifiveDialogManageUtil {
                 mediaType, null, null, HFLivePlayer.field, new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @Nullable Integer code) {
-                        showToast(string, activity);
+                        showToast(activity,string);
                     }
 
                     @Override
@@ -278,7 +273,8 @@ public class HifiveDialogManageUtil {
                 "2", null, null, HFLivePlayer.field, new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string,@Nullable Integer code) {
-                        showToast(string, activity);
+                        showToast(activity,string);
+                        HifivePlayerView.isCut = false;
                     }
 
                     @Override
@@ -323,12 +319,16 @@ public class HifiveDialogManageUtil {
         return "";
     }
     //显示自定义toast信息
-    public void showToast(String msg, Activity activity){
+    public void showToast(final Activity activity,final String msg){
         if(activity != null){
-            final Toast  toast = Toast.makeText(activity,msg,Toast.LENGTH_SHORT);
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    if(toast == null){
+                        toast = Toast.makeText(activity,msg,Toast.LENGTH_SHORT);
+                    }else {
+                        toast.setText(msg);
+                    }
                     toast.show();
                 }
             });
@@ -343,5 +343,15 @@ public class HifiveDialogManageUtil {
         KaraokeList = null;
         likeList = null;
         userSheetModels =null;
+        deleteFile();
+    }
+    //删除伴奏文件
+    private void deleteFile() {
+        File file = HifivePlayerView.accompanyFile;
+        //切歌后删除上一首歌下载的伴奏
+        if(file != null && file.exists() && file.isFile()) {
+            if(file.delete()) Log.e("TAG", "文件删除成功");
+            else Log.e("TAG", "文件删除失败");
+        }
     }
 }

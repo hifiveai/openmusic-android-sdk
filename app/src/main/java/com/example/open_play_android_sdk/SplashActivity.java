@@ -13,7 +13,6 @@ import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class SplashActivity extends AppCompatActivity {
     private EditText et_appid,et_secretkey;
@@ -47,12 +46,12 @@ public class SplashActivity extends AppCompatActivity {
         et_member_id.setText(memberId);
 
         et_sociaty_name = findViewById(R.id.et_sociaty_name);
-       /* sociatyName = (String) SPUtils.get(this,SPUtils.sociatyName,"");
-        et_sociaty_name.setText(sociatyName);*/
+        sociatyName = (String) SPUtils.get(this,SPUtils.sociatyName,"");
+        et_sociaty_name.setText(sociatyName);
 
         et_sociaty_id = findViewById(R.id.et_sociaty_id);
-       /* sociatyId = (String) SPUtils.get(this,SPUtils.sociatyId,"");
-        et_sociaty_id.setText(sociatyId);*/
+        sociatyId = (String) SPUtils.get(this,SPUtils.sociatyId,"");
+        et_sociaty_id.setText(sociatyId);
 
         btn_initialize = findViewById(R.id.btn_initialize);
         btn_initialize.setOnClickListener(view -> {
@@ -86,6 +85,7 @@ public class SplashActivity extends AppCompatActivity {
         memberId = et_member_id.getText().toString().trim();
         sociatyName = et_sociaty_name.getText().toString().trim();
         sociatyId = et_sociaty_id.getText().toString().trim();
+
         if(TextUtils.isEmpty(memberName)){
             Toast.makeText(SplashActivity.this,"请输入会员名称",Toast.LENGTH_SHORT).show();
             return;
@@ -94,44 +94,23 @@ public class SplashActivity extends AppCompatActivity {
             Toast.makeText(SplashActivity.this,"请输入会员id",Toast.LENGTH_SHORT).show();
             return;
         }
-        if(!TextUtils.isEmpty(sociatyName) && !TextUtils.isEmpty(sociatyId)){
-            HFLiveApi.Companion.getInstance().societyLogin(this, sociatyName, sociatyId, new DataResponse() {
-                @Override
-                public void errorMsg(String string, Integer code) {
-                    SplashActivity.this.runOnUiThread(() -> Toast.makeText(SplashActivity.this, string, Toast.LENGTH_SHORT).show());
-                }
+        HFLiveApi.Companion.getInstance().memberLogin(this, memberName, memberId, sociatyName, sociatyId,
+                null , null, null, null, null, null, new DataResponse() {
+                    @Override
+                    public void errorMsg(@NotNull String string, Integer code) {
+                        SplashActivity.this.runOnUiThread(() -> Toast.makeText(SplashActivity.this, string, Toast.LENGTH_SHORT).show());
+                    }
 
-                @Override
-                public void data(Object any) {
-                    SplashActivity.this.runOnUiThread(() -> {
-                        SPUtils.put(SplashActivity.this,SPUtils.sociatyName,sociatyName);
-                        SPUtils.put(SplashActivity.this,SPUtils.sociatyId,sociatyId);
-                        Toast.makeText(SplashActivity.this, "公会登录成功", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                    });
-                }
-            });
-        }else{
-            HFLiveApi.Companion.getInstance().memberLogin(this, memberName, memberId, "", "",
-                    null , null, null, null, null, null, new DataResponse() {
-                        @Override
-                        public void errorMsg(String string, Integer code) {
-                            SplashActivity.this.runOnUiThread(() -> Toast.makeText(SplashActivity.this, string, Toast.LENGTH_SHORT).show());
-                        }
-
-                        @Override
-                        public void data(Object any) {
-                            SplashActivity.this.runOnUiThread(() -> {
-                                SPUtils.put(SplashActivity.this,SPUtils.memberName,memberName);
-                                SPUtils.put(SplashActivity.this,SPUtils.memberId,memberId);
-                                Toast.makeText(SplashActivity.this, "会员登录成功", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                                finish();
-                            });
-                        }
-                    });
-        }
-
-
+                    @Override
+                    public void data(@NotNull Object any) {
+                        SplashActivity.this.runOnUiThread(() -> {
+                            SPUtils.put(SplashActivity.this,SPUtils.memberName,memberName);
+                            SPUtils.put(SplashActivity.this,SPUtils.memberId,memberId);
+                            Toast.makeText(SplashActivity.this, "会员登录成功", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                            finish();
+                        });
+                    }
+                });
     }
 }

@@ -30,7 +30,6 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
     private RecyclerView mRecyclerView;
     private HifiveMusicListAdapter adapter;
     private LinearLayout ll_empty;
-    private TextView tv_add;
     private HifiveAddMusicListener addMusicListener;
 
     public void setAddMusicListener(HifiveAddMusicListener addMusicListener) {
@@ -48,7 +47,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         View view = inflater.inflate(R.layout.hifive_fragment_music_list_current, container, false);
         mRecyclerView =  view.findViewById(R.id.rv_music);
         ll_empty =  view.findViewById(R.id.ll_empty);
-        tv_add =  view.findViewById(R.id.tv_add);
+        TextView tv_add = view.findViewById(R.id.tv_add);
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

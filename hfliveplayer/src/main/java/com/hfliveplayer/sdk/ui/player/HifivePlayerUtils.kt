@@ -80,8 +80,8 @@ class HifivePlayerUtils {
             play.reset()
             play.setDataSource(url)
             play.setAudioStreamType(AudioManager.STREAM_MUSIC)
-            play.prepareAsync()
             play.setOnPreparedListener(onPreparedListener!!)
+            play.prepareAsync()
         } catch (e: IOException) {
             e.printStackTrace()
         }

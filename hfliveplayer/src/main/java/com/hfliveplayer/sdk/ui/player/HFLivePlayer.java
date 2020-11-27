@@ -73,7 +73,7 @@ public class HFLivePlayer {
         remove();
     }
     //移除播放器view
-    public HFLivePlayer remove() {
+    public void remove() {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -89,7 +89,6 @@ public class HFLivePlayer {
                 HifiveDialogManageUtil.getInstance().CloseDialog();
             }
         });
-        return this;
     }
     //播放器资源回收
     private void recyclePlayer() {
@@ -117,9 +116,8 @@ public class HFLivePlayer {
      * 呼应activity生命周期中onStart方法
      * activity启动时重新添加播放器，实现播放器与activity绑定
      */
-    public HFLivePlayer attach(FragmentActivity activity) {
+    public void attach(FragmentActivity activity) {
         attach(getActivityRoot(activity));
-        return this;
     }
 
     public void attach(FrameLayout container) {
@@ -140,9 +138,8 @@ public class HFLivePlayer {
      * 呼应activity生命周期中onStop方法
      * activity停止是暂时移除播放器，实现播放器与activity绑定
      */
-    public HFLivePlayer detach(FragmentActivity activity) {
+    public void detach(FragmentActivity activity) {
         detach(getActivityRoot(activity));
-        return this;
     }
 
     public void detach(FrameLayout container) {

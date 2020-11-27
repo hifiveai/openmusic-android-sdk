@@ -1,6 +1,5 @@
 package com.hfliveplayer.sdk.ui;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +21,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveMusicListAdapter;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
-import com.hfliveplayer.sdk.model.HifiveMusicVersionModel;
 import com.hfliveplayer.sdk.ui.player.HFLivePlayer;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.view.HifiveRefreshHeader;
@@ -51,15 +48,12 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
     protected static final int deleteSuccess= 13;//删除成功
     public boolean isRefresh= false;
     private SmartRefreshLayout refreshLayout;
-    private LinearLayout ll_playall;
     private TextView tv_number;
     private RecyclerView mRecyclerView;
     private HifiveMusicListAdapter adapter;
     private List<HifiveMusicModel> hifiveMusicModels;
     private LinearLayout ll_empty;
-    private TextView tv_add;
     private long sheetId;
-    private Toast toast;
     private HifiveAddMusicListener addMusicListener;
 
     public void setAddMusicListener(HifiveAddMusicListener addMusicListener) {
@@ -122,7 +116,7 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
     //初始化view
     private void initView(View view) {
         refreshLayout = view.findViewById(R.id.refreshLayout);
-        ll_playall = view.findViewById(R.id.ll_playall);
+        LinearLayout ll_playall = view.findViewById(R.id.ll_playall);
         tv_number = view.findViewById(R.id.tv_number);
         mRecyclerView = view.findViewById(R.id.rv_music);
         refreshLayout.setRefreshHeader(new HifiveRefreshHeader(getContext()));
@@ -131,12 +125,12 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
             @Override
             public void onClick(View v) {
                 if(adapter != null){
-                    HifiveDialogManageUtil.getInstance().updateCurrentList(adapter.getDatas());
+                    HifiveDialogManageUtil.getInstance().updateCurrentList(getActivity(),adapter.getDatas());
                 }
             }
         });
         ll_empty =  view.findViewById(R.id.ll_empty);
-        tv_add =  view.findViewById(R.id.tv_add);
+        TextView tv_add = view.findViewById(R.id.tv_add);
         tv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,7 +198,7 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
                 adapter.getDatas().get(position).getMusicId(), new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                        showToast(string);
+                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
                     }
 
                     @Override
@@ -226,7 +220,7 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
                 "100", "1", new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                        showToast(string);
+                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
                         mHandler.sendEmptyMessage(RequstFail);
                     }
 
@@ -237,23 +231,6 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
                         mHandler.sendEmptyMessage(RequstSuccess);
                     }
                 });
-    }
-    //显示自定义toast信息
-    @SuppressLint("ShowToast")
-    private void showToast(String msg){
-        if(getActivity() != null){
-            if(toast == null){
-                toast = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
-            }else {
-                toast.setText(msg);
-            }
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    toast.show();
-                }
-            });
-        }
     }
     @Override
     public void onDestroy() {

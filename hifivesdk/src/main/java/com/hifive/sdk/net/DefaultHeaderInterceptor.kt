@@ -47,6 +47,7 @@ class DefaultHeaderInterceptor : Interceptor {
         return chain.proceed(authorised)
 
     }
+
     private fun getValueEncoded(value: String): String {
         val newValue = value.replace("\n", "")
         var i = 0

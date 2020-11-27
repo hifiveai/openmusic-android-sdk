@@ -80,7 +80,7 @@ HFLiveApi.Companion.registerApp(Application context, String APP_ID,String SECRET
 ##### 3.3.1 注意事项
 - 使用播放器UI前请确保SDK已初始化，并完成登录操作。
 ```
- 登录操作调用sdk中的memberLogin(...)或者societyLogin(...)
+ 登录操作调用sdk中的memberLogin(...)
 
 ```
 - 由于播放器UI和SDK基于androidX工程开发，防止兼容性问题，推荐项目升级到AndroidX，并且需要使用播放器UI的Activity务必继承FragmentActivity或FragmentActivity的子类。

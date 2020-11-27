@@ -50,6 +50,24 @@ class MusicManager(val context: Context) : BaseController() {
     }
 
 
+    override fun getCompanySheetMusicAll(
+            context: Context,
+            sheetId: String?,
+            language: String?,
+            field: String?,
+            response: DataResponse
+    ) {
+        if (!checkNetWork(context, response)) {
+            return
+        }
+        mService.getCompanySheetMusicAll(sheetId, language, field)
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun onNext(t: Any) {
+                        super.onNext(t)
+                    }
+                })
+    }
+
     override fun getCompanySheetMusicList(
             context: Context,
             sheetId: String?,
@@ -127,7 +145,7 @@ class MusicManager(val context: Context) : BaseController() {
                 .request(object : BaseSubscribe<Any>(dataResponse) {
                     override fun onNext(t: Any) {
                         memberOutId = memberId
-                        societyOutId = societyId
+                        societyOutId = null
                         val json = JSONObject(t.toString())
                         val token = json.getString("accessToken")
                         BaseConstance.accessTokenMember = token ?: ""

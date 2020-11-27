@@ -1,6 +1,5 @@
 package com.hfliveplayer.sdk.ui;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveMusicSheetAdapter;
 import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
-import com.hfliveplayer.sdk.ui.player.HFLivePlayer;
+import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.HifiveLoadMoreFooter;
 import com.hfliveplayer.sdk.view.HifiveRefreshHeader;
@@ -58,7 +56,6 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     private List<HifiveMusicSheetModel> sheetModels = new ArrayList<>();
     private int page = 1;
     private Context mContext;
-    private Toast toast;
     private int totalPage =1;//总页卡
     protected Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -174,7 +171,7 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                         if (ty != Refresh) {//上拉加载请求失败后，还原页卡
                             page--;
                         }
-                        showToast(string);
+                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
                         mHandler.sendEmptyMessage(RequstFail);
                     }
 
@@ -187,23 +184,6 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                         mHandler.sendEmptyMessage(ty);
                     }
                 });
-    }
-    //显示自定义toast信息
-    @SuppressLint("ShowToast")
-    private void showToast(String msg){
-        if(getActivity() != null){
-            if(toast == null){
-                toast = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
-            }else {
-                toast.setText(msg);
-            }
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    toast.show();
-                }
-            });
-        }
     }
     @Override
     public void onDestroy() {

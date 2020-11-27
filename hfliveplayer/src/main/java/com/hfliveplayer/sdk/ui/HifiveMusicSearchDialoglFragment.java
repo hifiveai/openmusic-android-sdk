@@ -1,6 +1,5 @@
 package com.hfliveplayer.sdk.ui;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -93,7 +92,6 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
     private boolean isAddLike;//保存是否正在添加喜欢状态，防止重复点击
     private boolean isAddkaraoke;//保存是否正在添加K歌状态，防止重复点击
     private Toast toastStyle;//自定义样式的toast
-    private Toast toast;//系统自带样式的toast
     private TextView toastTextview;
     private boolean isRecommand;//是否为无结果时推荐
     private int totalPage =1;//总页卡
@@ -283,7 +281,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                             isAddLike = false;
                             isAddkaraoke = false;
-                            showToast(string);
+                            HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
                         }
 
                         @Override
@@ -378,7 +376,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
         HFLiveApi.Companion.getInstance().deleteSearchRecord(getContext(), new DataResponse() {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                showToast(string);
+                HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
             }
 
             @Override
@@ -397,7 +395,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                 if (!isUpdate) {
-                    showToast(string);
+                    HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
                     mHandler.sendEmptyMessage(HistorySuccess);
                 }
             }
@@ -472,7 +470,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                         } else {
                             getHistoryData(true);
                         }
-                        showToast(string);
+                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
                         mHandler.sendEmptyMessage(RequstFail);
                     }
 
@@ -505,23 +503,6 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                 toastTextview.setText(mContext.getString(msgId));
             }
             toastStyle.show();
-        }
-    }
-    //显示自定义toast信息
-    @SuppressLint("ShowToast")
-    private void showToast(String msg){
-        if(getActivity() != null){
-            if(toast == null){
-                toast = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
-            }else {
-                toast.setText(msg);
-            }
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    toast.show();
-                }
-            });
         }
     }
     /**

@@ -39,6 +39,12 @@ class ServiceImpl @Inject constructor() : Service {
         return dataRepository.getCompanySheetMusicList(sheetId, language, field, pageSize, page).convert()
     }
 
+    override fun getCompanySheetMusicAll(sheetId: String?,
+                                          language: String?,
+                                          field: String?): Flowable<Any> {
+        return dataRepository.getCompanySheetMusicAll(sheetId, language, field).convert()
+    }
+
     override fun getCompanyChannelList(): Flowable<Any> {
         return dataRepository.getCompanyChannelList().convert()
     }
