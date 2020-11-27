@@ -109,6 +109,9 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                     }
                     break;
                 case HistoryDeleteSuccess:
+                    if(getActivity() != null){
+                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
+                    }
                     historyData.clear();
                     if (fl_history != null) {
                         fl_history.removeAllViews();

@@ -82,6 +82,9 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
                     adapter.getDatas().remove(msg.arg1);
                     adapter.notifyDataSetChanged();
                     updateView();
+                    if(getActivity() != null){
+                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
+                    }
                     HifiveDialogManageUtil.getInstance().setLikeList(adapter.getDatas());
                     tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
                     break;

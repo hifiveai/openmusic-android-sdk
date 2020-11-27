@@ -14,7 +14,7 @@ import com.hifive.sdk.manager.HFLiveApi;
 
 import org.jetbrains.annotations.NotNull;
 
-public class SplashActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     private EditText et_appid,et_secretkey;
     private EditText et_member_name,et_member_id,et_sociaty_name,et_sociaty_id;
     private AppCompatButton btn_initialize,btn_login;
@@ -58,15 +58,15 @@ public class SplashActivity extends AppCompatActivity {
             secretKey = et_secretkey.getText().toString().trim();
             appId = et_appid.getText().toString().trim();
             if(TextUtils.isEmpty(secretKey)){
-                Toast.makeText(SplashActivity.this,"请输入secretKey",Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this,"请输入secretKey",Toast.LENGTH_SHORT).show();
                 return;
             }
             if(TextUtils.isEmpty(appId)){
-                Toast.makeText(SplashActivity.this,"请输入appId",Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this,"请输入appId",Toast.LENGTH_SHORT).show();
                 return;
             }
             HFLiveApi.Companion.registerApp(getApplication(), appId, secretKey);
-            Toast.makeText(SplashActivity.this,"初始化SDK成功",Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this,"初始化SDK成功",Toast.LENGTH_SHORT).show();
             SPUtils.put(this,SPUtils.appId,appId);
             SPUtils.put(this,SPUtils.secretKey,secretKey);
             flag = true;
@@ -74,7 +74,7 @@ public class SplashActivity extends AppCompatActivity {
         btn_login = findViewById(R.id.btn_login);
         btn_login.setOnClickListener(view -> {
             if(!flag){
-                Toast.makeText(SplashActivity.this,"请先初始化SDK",Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this,"请先初始化SDK",Toast.LENGTH_SHORT).show();
             }else{
                 Login();
             }
@@ -87,27 +87,27 @@ public class SplashActivity extends AppCompatActivity {
         sociatyId = et_sociaty_id.getText().toString().trim();
 
         if(TextUtils.isEmpty(memberName)){
-            Toast.makeText(SplashActivity.this,"请输入会员名称",Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this,"请输入会员名称",Toast.LENGTH_SHORT).show();
             return;
         }
         if(TextUtils.isEmpty(memberId)){
-            Toast.makeText(SplashActivity.this,"请输入会员id",Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this,"请输入会员id",Toast.LENGTH_SHORT).show();
             return;
         }
         HFLiveApi.Companion.getInstance().memberLogin(this, memberName, memberId, sociatyName, sociatyId,
                 null , null, null, null, null, null, new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, Integer code) {
-                        SplashActivity.this.runOnUiThread(() -> Toast.makeText(SplashActivity.this, string, Toast.LENGTH_SHORT).show());
+                        LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, string, Toast.LENGTH_SHORT).show());
                     }
 
                     @Override
                     public void data(@NotNull Object any) {
-                        SplashActivity.this.runOnUiThread(() -> {
-                            SPUtils.put(SplashActivity.this,SPUtils.memberName,memberName);
-                            SPUtils.put(SplashActivity.this,SPUtils.memberId,memberId);
-                            Toast.makeText(SplashActivity.this, "会员登录成功", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                        LoginActivity.this.runOnUiThread(() -> {
+                            SPUtils.put(LoginActivity.this,SPUtils.memberName,memberName);
+                            SPUtils.put(LoginActivity.this,SPUtils.memberId,memberId);
+                            Toast.makeText(LoginActivity.this, "会员登录成功", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
                             finish();
                         });
                     }

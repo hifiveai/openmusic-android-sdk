@@ -79,6 +79,9 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
                     }
                     break;
                 case deleteSuccess:
+                    if(getActivity() != null){
+                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
+                    }
                     adapter.getDatas().remove(msg.arg1);
                     adapter.notifyDataSetChanged();
                     updateView();
