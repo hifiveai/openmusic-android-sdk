@@ -16,6 +16,7 @@ import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.model.HifiveMusicUserSheetModel;
 import com.hfliveplayer.sdk.model.HifiveMusicVersionModel;
 import com.hfliveplayer.sdk.ui.HifiveUpdateObservable;
+import com.hfliveplayer.sdk.ui.player.HFLivePlayer;
 import com.hfliveplayer.sdk.ui.player.HifivePlayerView;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
@@ -40,14 +41,18 @@ public class HifiveDialogManageUtil {
     public static final int UPDATEKARAOKLIST = 4;//通知相关页面更新k歌列表
     public static final int PALYINGMUSIC = 5;//通知播放器开始播放新歌曲
     public static final int PALYINGCHANGEMUSIC = 6;//通知播放器改变播放模式
-    private static HifiveDialogManageUtil singleManage;
+    private  static volatile  HifiveDialogManageUtil singleManage;
     private Toast toast;
     private HifiveDialogManageUtil(){
 
     }
-    public static synchronized HifiveDialogManageUtil getInstance(){//同步控制,避免多线程的状况多创建了实例对象
-        if (singleManage==null){
-            singleManage = new HifiveDialogManageUtil();//在需要的时候在创建
+    public static  HifiveDialogManageUtil getInstance(){
+        if (singleManage == null) {
+            synchronized (HifiveDialogManageUtil.class) {
+                if (singleManage == null) {
+                    singleManage = new HifiveDialogManageUtil();
+                }
+            }
         }
         return singleManage;
     }
