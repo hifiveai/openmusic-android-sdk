@@ -4,17 +4,14 @@ import com.hifive.sdk.ext.convert
 import com.hifive.sdk.repository.DataRepository
 import com.hifive.sdk.service.Service
 import io.reactivex.Flowable
-import javax.inject.Inject
 
 /**
  * @author Dsh  imkobedroid@gmail.com
  * @date 2019-07-09
  */
-class ServiceImpl @Inject constructor() : Service {
+class ServiceImpl constructor() : Service {
 
-
-    @Inject
-    lateinit var dataRepository: DataRepository
+    private val dataRepository by lazy { DataRepository() }
 
     override fun getCompanySheetTagList(): Flowable<Any> {
         return dataRepository.getCompanySheetTagList().convert()

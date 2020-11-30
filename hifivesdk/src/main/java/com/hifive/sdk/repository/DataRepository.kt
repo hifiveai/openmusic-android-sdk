@@ -3,14 +3,13 @@ package com.hifive.sdk.repository
 import com.hifive.sdk.net.LiveRetrofitFactory
 import com.hifive.sdk.protocol.BaseResp
 import io.reactivex.Flowable
-import javax.inject.Inject
 
 
 /**
  * @author Dsh  imkobedroid@gmail.com
  * @date 2019-07-09
  */
-class DataRepository @Inject constructor() {
+class DataRepository  constructor() {
 
 
     fun getCompanySheetTagList(): Flowable<BaseResp<Any>> {

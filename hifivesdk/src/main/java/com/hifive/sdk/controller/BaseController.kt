@@ -3,9 +3,9 @@ package com.hifive.sdk.controller
 import android.content.Context
 import com.hifive.sdk.hInterface.DataResponse
 import com.hifive.sdk.hInterface.DownLoadResponse
-import com.hifive.sdk.service.Service
+import com.hifive.sdk.service.impl.ServiceImpl
 import com.hifive.sdk.utils.NetWorkUtils
-import javax.inject.Inject
+
 
 
 /**
@@ -14,8 +14,7 @@ import javax.inject.Inject
  */
 abstract class BaseController {
 
-    @Inject
-    lateinit var mService: Service
+    val mService by lazy { ServiceImpl() }
 
     fun checkNetWork(context: Context, info: DataResponse): Boolean {
         if (NetWorkUtils.isNetWorkAvailable(context)) {
