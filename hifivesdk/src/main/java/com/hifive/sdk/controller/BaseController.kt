@@ -5,7 +5,7 @@ import com.hifive.sdk.hInterface.DataResponse
 import com.hifive.sdk.hInterface.DownLoadResponse
 import com.hifive.sdk.service.impl.ServiceImpl
 import com.hifive.sdk.utils.NetWorkUtils
-
+import okhttp3.Call
 
 
 /**
@@ -235,14 +235,4 @@ abstract class BaseController {
             field: String?,
             dataResponse: DataResponse
     )
-
-
-    abstract fun downLoadFile(
-            context: Context,
-            url: String,
-            path: String,
-            dataResponse: DownLoadResponse
-    )
-
-
 }

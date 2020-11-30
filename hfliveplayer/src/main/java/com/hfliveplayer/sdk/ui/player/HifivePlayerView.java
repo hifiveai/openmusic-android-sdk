@@ -55,6 +55,8 @@ import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import okhttp3.Call;
+
 /**
  * 播放器悬浮窗view
  * Created by huchao on 20/11/10.
@@ -111,6 +113,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     public static File accompanyFile;//播放伴奏的文件
     private int playProgress;//播放的进度
     private List<HifiveMusicLyricDetailModel> lyricDetailModels;
+    private Call downLoadFileCall;//伴奏下载的Call
+
     public HifivePlayerView(@NonNull FragmentActivity context, int Top, int Bottom) {
         this(context, null,0);
         marginTop = Math.max(Top, 0);
@@ -656,12 +660,18 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         isCut = false;//重置播放模式切换状态
         position = 0;//重置歌词查找下标
         pb_play.setProgress(0);
-        tv_download.setText("");
         //歌词置空
         tv_lyric_left.setText("");
         tv_lyric_right.setText("");
         tv_lyric_static.setText("");
         lyricDetailModels = null;
+        //取消下载
+        if(null != downLoadFileCall){
+            downLoadFileCall.cancel();
+            downLoadFileCall = null;
+        }
+        //清空伴奏下载进度
+        tv_download.setText("");
     }
     //更新view，音乐图片，音乐名称更新
     private void updateView() {
@@ -763,7 +773,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         Log.e("TAG","file=="+file);
         if (HFLiveApi.Companion.getInstance() == null)
             return;
-        HFLiveApi.Companion.getInstance().downLoadFile(mContext, file, mContext.getFilesDir() + "/" + musicId + "." + expand,
+        downLoadFileCall = HFLiveApi.Companion.getInstance().downLoadFile(mContext, file, mContext.getFilesDir() + "/" + musicId + "." + expand,
                 new DownLoadResponse() {
                     @Override
                     public void size(long totalBytes) {
@@ -773,34 +783,42 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     @Override
                     public void succeed(@NotNull File file) {
                         //伴奏下载完成后，防止在下载过程中已经切歌，或者歌曲已经删除
-                        if(HifiveDialogManageUtil.getInstance().getPlayMusicDetail() != null
-                                && musicId.equals(HifiveDialogManageUtil.getInstance().getPlayMusicDetail().getMusicId())){
+                        if (HifiveDialogManageUtil.getInstance().getPlayMusicDetail() != null
+                                && musicId.equals(HifiveDialogManageUtil.getInstance().getPlayMusicDetail().getMusicId())) {
                             accompanyFile = file;
+                            downLoadFileCall = null;
                             if (ischange) {
                                 changePlayMusic(accompanyFile.getPath());
-                            }else{
-                                startPlayMusic(accompanyFile.getPath(),true);
+                            } else {
+                                startPlayMusic(accompanyFile.getPath(), true);
                             }
-                        }else{//如果已切歌就删掉文件
-                            if(file.exists() && file.isFile()) {
-                                if(file.delete()) Log.e("TAG", "文件删除成功");
+                        } else {//如果已切歌就删掉文件
+                            if (file.exists() && file.isFile()) {
+                                if (file.delete()) Log.e("TAG", "文件删除成功");
                                 else Log.e("TAG", "文件删除失败");
                             }
                             fl_play.setVisibility(VISIBLE);
                             fl_download.setVisibility(GONE);
                         }
 
+
+
                     }
+
                     @Override
                     public void fail(@NotNull String error_msg) {
                         isCut = false;
-                        HifiveDialogManageUtil.getInstance().showToast(mContext,error_msg);
+                        HifiveDialogManageUtil.getInstance().showToast(mContext, error_msg);
                     }
+
                     @Override
                     public void progress(long currentBytes, long totalBytes) {
-                        updateDownLoadProgress(currentBytes,totalBytes);
+                        if(null != downLoadFileCall){
+                            updateDownLoadProgress(currentBytes, totalBytes);
+                        }
                     }
                 });
+
     }
     //更新下载进度
     private void updateDownLoadProgress(final long currentBytes, final long totalBytes) {
