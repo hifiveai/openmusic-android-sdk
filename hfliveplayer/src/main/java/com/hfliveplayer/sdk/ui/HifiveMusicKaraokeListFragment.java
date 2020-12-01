@@ -61,33 +61,37 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
     protected Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case RequstSuccess:
-                    isRefresh = false;
-                    refreshLayout.finishRefresh();
-                    if(hifiveMusicModels == null)
-                        hifiveMusicModels = new ArrayList<>();
-                    adapter.updateDatas(hifiveMusicModels);
-                    updateView();
-                    tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
-                    HifiveDialogManageUtil.getInstance().setKaraokeList(adapter.getDatas());
-                    break;
-                case RequstFail:
-                    if (isRefresh) {
+            try {
+                switch (msg.what) {
+                    case RequstSuccess:
                         isRefresh = false;
                         refreshLayout.finishRefresh();
-                    }
-                    break;
-                case deleteSuccess:
-                    if(getActivity() != null){
-                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
-                    }
-                    adapter.getDatas().remove(msg.arg1);
-                    adapter.notifyDataSetChanged();
-                    updateView();
-                    HifiveDialogManageUtil.getInstance().setKaraokeList(adapter.getDatas());
-                    tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
-                    break;
+                        if(hifiveMusicModels == null)
+                            hifiveMusicModels = new ArrayList<>();
+                        adapter.updateDatas(hifiveMusicModels);
+                        updateView();
+                        tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
+                        HifiveDialogManageUtil.getInstance().setKaraokeList(adapter.getDatas());
+                        break;
+                    case RequstFail:
+                        if (isRefresh) {
+                            isRefresh = false;
+                            refreshLayout.finishRefresh();
+                        }
+                        break;
+                    case deleteSuccess:
+                        if(getActivity() != null){
+                            HifiveDialogManageUtil.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
+                        }
+                        adapter.getDatas().remove(msg.arg1);
+                        adapter.notifyDataSetChanged();
+                        updateView();
+                        HifiveDialogManageUtil.getInstance().setKaraokeList(adapter.getDatas());
+                        tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             return false;
         }

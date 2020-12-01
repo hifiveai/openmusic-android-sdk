@@ -13,7 +13,7 @@ public abstract class NoDoubleClickListener implements View.OnClickListener {
     protected abstract void onNoDoubleClick(View v);
     @Override
     public void onClick(View v) {
-        long currentTime = Calendar.getInstance().getTimeInMillis();
+        long currentTime = System.currentTimeMillis();
         if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
             lastClickTime = currentTime;
             onNoDoubleClick(v);

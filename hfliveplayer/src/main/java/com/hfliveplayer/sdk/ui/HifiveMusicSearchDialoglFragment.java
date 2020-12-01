@@ -97,70 +97,74 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
     private final Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case HistorySuccess:
-                    if(historyData != null && historyData.size() > 0){
-                        iv_delete.setVisibility(View.VISIBLE);
-                        fl_history.setVisibility(View.VISIBLE);
-                        initFlowLayout();
-                    }else{
+            try {
+                switch (msg.what) {
+                    case HistorySuccess:
+                        if(historyData != null && historyData.size() > 0){
+                            iv_delete.setVisibility(View.VISIBLE);
+                            fl_history.setVisibility(View.VISIBLE);
+                            initFlowLayout();
+                        }else{
+                            iv_delete.setVisibility(View.GONE);
+                            fl_history.setVisibility(View.GONE);
+                        }
+                        break;
+                    case HistoryDeleteSuccess:
+                        if(getActivity() != null){
+                            HifiveDialogManageUtil.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
+                        }
+                        historyData.clear();
+                        if (fl_history != null) {
+                            fl_history.removeAllViews();
+                        }
                         iv_delete.setVisibility(View.GONE);
-                        fl_history.setVisibility(View.GONE);
-                    }
-                    break;
-                case HistoryDeleteSuccess:
-                    if(getActivity() != null){
-                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
-                    }
-                    historyData.clear();
-                    if (fl_history != null) {
-                        fl_history.removeAllViews();
-                    }
-                    iv_delete.setVisibility(View.GONE);
-                    break;
-                case Refresh:
-                    ll_result.setVisibility(View.VISIBLE);
-                    ll_history.setVisibility(View.GONE);
-                    hideInput();
-                    if(isRecommand){
-                        ll_empty.setVisibility(View.VISIBLE);
-                        if(mContext != null)
-                            tv_empty.setText(mContext.getString(R.string.hifivesdk_music_search_history_empty,content));
-                    }else{
-                        ll_empty.setVisibility(View.GONE);
-                    }
-                    if(musicModels != null)
-                        adapter.updateDatas(musicModels);
-                    refreshLayout.setEnableLoadMore(page<totalPage);
-                    break;
-                case LoadMore:
-                    isLoadMore = false;
-                    if(musicModels != null)
-                        adapter.addDatas(musicModels);
-                    if(page < totalPage){
-                        refreshLayout.finishLoadMore();
-                    }else{
-                        refreshLayout.finishLoadMoreWithNoMoreData();
-                    }
-                    break;
-                case RequstFail:
-                    if (isLoadMore) {
+                        break;
+                    case Refresh:
+                        ll_result.setVisibility(View.VISIBLE);
+                        ll_history.setVisibility(View.GONE);
+                        hideInput();
+                        if(isRecommand){
+                            ll_empty.setVisibility(View.VISIBLE);
+                            if(mContext != null)
+                                tv_empty.setText(mContext.getString(R.string.hifivesdk_music_search_history_empty,content));
+                        }else{
+                            ll_empty.setVisibility(View.GONE);
+                        }
+                        if(musicModels != null)
+                            adapter.updateDatas(musicModels);
+                        refreshLayout.setEnableLoadMore(page<totalPage);
+                        break;
+                    case LoadMore:
                         isLoadMore = false;
-                        refreshLayout.finishLoadMore();
-                    }
-                    break;
-                case AddLike:
-                    isAddLike = false;
-                    showToast(R.string.hifivesdk_music_add_like_msg);
-                    HifiveDialogManageUtil.getInstance().addLikeSingle((HifiveMusicModel) msg.obj);
-                    adapter.notifyItemChanged(msg.arg1);
-                    break;
-                case Addkaraoke:
-                    isAddkaraoke = false;
-                    showToast(R.string.hifivesdk_music_add_karaoke_msg);
-                    HifiveDialogManageUtil.getInstance().addKaraokeSingle((HifiveMusicModel) msg.obj);
-                    adapter.notifyItemChanged(msg.arg1);
-                    break;
+                        if(musicModels != null)
+                            adapter.addDatas(musicModels);
+                        if(page < totalPage){
+                            refreshLayout.finishLoadMore();
+                        }else{
+                            refreshLayout.finishLoadMoreWithNoMoreData();
+                        }
+                        break;
+                    case RequstFail:
+                        if (isLoadMore) {
+                            isLoadMore = false;
+                            refreshLayout.finishLoadMore();
+                        }
+                        break;
+                    case AddLike:
+                        isAddLike = false;
+                        showToast(R.string.hifivesdk_music_add_like_msg);
+                        HifiveDialogManageUtil.getInstance().addLikeSingle((HifiveMusicModel) msg.obj);
+                        adapter.notifyItemChanged(msg.arg1);
+                        break;
+                    case Addkaraoke:
+                        isAddkaraoke = false;
+                        showToast(R.string.hifivesdk_music_add_karaoke_msg);
+                        HifiveDialogManageUtil.getInstance().addKaraokeSingle((HifiveMusicModel) msg.obj);
+                        adapter.notifyItemChanged(msg.arg1);
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             return false;
         }

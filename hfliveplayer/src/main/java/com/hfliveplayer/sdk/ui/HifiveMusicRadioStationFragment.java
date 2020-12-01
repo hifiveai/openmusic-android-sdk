@@ -60,34 +60,38 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     protected Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case Refresh:
-                    isRefresh = false;
-                    refreshLayout.finishRefresh();
-                    if(sheetModels != null)
-                        adapter.updateDatas(sheetModels);
-                    refreshLayout.setEnableLoadMore(page<totalPage);
-                    break;
-                case LoadMore:
-                    isLoadMore = false;
-                    if(sheetModels != null)
-                        adapter.addDatas(sheetModels);
-                    if(page < totalPage){
-                        refreshLayout.finishLoadMore();
-                    }else{
-                        refreshLayout.finishLoadMoreWithNoMoreData();
-                    }
-                    break;
-                case RequstFail:
-                    if (isRefresh) {
+            try {
+                switch (msg.what) {
+                    case Refresh:
                         isRefresh = false;
                         refreshLayout.finishRefresh();
-                    }
-                    if (isLoadMore) {
+                        if(sheetModels != null)
+                            adapter.updateDatas(sheetModels);
+                        refreshLayout.setEnableLoadMore(page<totalPage);
+                        break;
+                    case LoadMore:
                         isLoadMore = false;
-                        refreshLayout.finishLoadMore();
-                    }
-                    break;
+                        if(sheetModels != null)
+                            adapter.addDatas(sheetModels);
+                        if(page < totalPage){
+                            refreshLayout.finishLoadMore();
+                        }else{
+                            refreshLayout.finishLoadMoreWithNoMoreData();
+                        }
+                        break;
+                    case RequstFail:
+                        if (isRefresh) {
+                            isRefresh = false;
+                            refreshLayout.finishRefresh();
+                        }
+                        if (isLoadMore) {
+                            isLoadMore = false;
+                            refreshLayout.finishLoadMore();
+                        }
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             return false;
         }
