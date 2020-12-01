@@ -279,7 +279,6 @@ public class HifiveDialogManageUtil {
                     @Override
                     public void errorMsg(@NotNull String string,@Nullable Integer code) {
                         showToast(activity,string);
-//                        HifivePlayerView.isCut = false;
                     }
 
                     @Override
