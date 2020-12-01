@@ -4,11 +4,9 @@ import android.content.Context
 import com.hifive.sdk.common.BaseConstance
 import com.hifive.sdk.common.BaseConstance.Companion.memberOutId
 import com.hifive.sdk.common.BaseConstance.Companion.societyOutId
-import com.hifive.sdk.dagger.DaggerServiceComponent
 import com.hifive.sdk.ext.request
 import com.hifive.sdk.hInterface.DataResponse
 import com.hifive.sdk.hInterface.DownLoadResponse
-import com.hifive.sdk.injection.module.ServiceModule
 import com.hifive.sdk.manager.HFLiveApi
 import com.hifive.sdk.manager.HFLiveApi.Companion.APP_ID
 import com.hifive.sdk.manager.HFLiveApi.Companion.SECRET
@@ -27,11 +25,6 @@ import java.util.concurrent.TimeUnit
  * @date 2019-07-09
  */
 class MusicManager(val context: Context) : BaseController() {
-
-
-    init {
-        DaggerServiceComponent.builder().serviceModule(ServiceModule()).build().inject(this)
-    }
 
 
     override fun getCompanySheetTagList(
