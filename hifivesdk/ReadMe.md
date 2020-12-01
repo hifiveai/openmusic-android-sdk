@@ -66,15 +66,13 @@ targetSdkVersion : 28
 
 
 ```
-    api HifiveDependencies["javax"]
-    api HifiveDependencies["rxKotlin"]
-    api HifiveDependencies["rxJava"]
-    api HifiveDependencies["rxAndroid"]
+    api HifiveDependencies["rxjava"]
+    api HifiveDependencies["rxandroid"]
     api HifiveDependencies["retrofit"]
     api HifiveDependencies["retrofit-converter-gson"]
     api HifiveDependencies["retrofit-adapter-rxjava2"]
-    api HifiveDependencies["okHttp"]
-    api HifiveDependencies["okHttp-logging-interceptor"]
+    api HifiveDependencies["okhttp"]
+    api HifiveDependencies["okhttp-logging-interceptor"]
 ```
 
 

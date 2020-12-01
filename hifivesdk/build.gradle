@@ -12,6 +12,7 @@ android {
         targetSdkVersion HiFiveVersion.targetSdkVersion
         versionCode HiFiveVersion.versionCode
         versionName HiFiveVersion.versionName
+        consumerProguardFiles 'proguard-rules.pro'//一行代码解决SDK内部混淆问题
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

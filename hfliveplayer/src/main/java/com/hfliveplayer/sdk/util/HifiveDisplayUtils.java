@@ -37,6 +37,15 @@ public class HifiveDisplayUtils {
     }
 
     /**
+     * 获取组件高度
+     */
+    public static int getPlayerHeight(Context context) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.heightPixels/2;
+    }
+
+    /**
      * dp转换成px
      */
     public static int dip2px(Context context, float dpVale) {
@@ -92,7 +101,6 @@ public class HifiveDisplayUtils {
             Date date = simpleDateFormat.parse(time);
             return date.getTime()+TimeZone.getDefault().getRawOffset();
         }catch (Exception e){
-            e.printStackTrace();
             return -1;
         }
     }

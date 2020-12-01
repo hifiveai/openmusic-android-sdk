@@ -52,7 +52,7 @@ public class HFLivePlayer {
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.START | Gravity.BOTTOM;
-            params.setMargins(0, params.topMargin, params.rightMargin, HifiveDisplayUtils.dip2px(activity,470));
+            params.setMargins(0, params.topMargin, params.rightMargin, HifiveDisplayUtils.dip2px(activity,30) + HifiveDisplayUtils.getPlayerHeight(activity));
             mPlayerView.setLayoutParams(params);
             //初始化被观察者
             if(HifiveDialogManageUtil.getInstance().updateObservable == null){

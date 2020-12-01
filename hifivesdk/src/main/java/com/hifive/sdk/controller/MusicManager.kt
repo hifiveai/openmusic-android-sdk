@@ -394,7 +394,7 @@ class MusicManager(val context: Context) : BaseController() {
         return down.download()
                 .url(url)
                 .filePath(path)
-                .tag(this)
+                .tag(url)
                 .enqueue(object : DownloadResponseHandler() {
                     override fun onStart(totalBytes: Long) {
                         dataResponse.size(totalBytes);
@@ -409,7 +409,9 @@ class MusicManager(val context: Context) : BaseController() {
                     }
 
                     override fun onFailure(error_msg: String) {
-                        dataResponse.fail(error_msg)
+                        if(!error_msg.contains("Canceled")){
+                            dataResponse.fail(error_msg)
+                        }
                     }
                 })
     }

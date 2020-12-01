@@ -62,7 +62,6 @@ class LiveRetrofitFactory private constructor() {
                 .addInterceptor(DefaultHeaderInterceptor())
                 .addInterceptor(encryptionInterceptor)
                 .addInterceptor(initLogInterceptor())
-                .retryOnConnectionFailure(true)
                 .connectTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
                 .writeTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
                 .readTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)

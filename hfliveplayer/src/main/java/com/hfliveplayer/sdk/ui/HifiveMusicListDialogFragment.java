@@ -61,7 +61,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
                 WindowManager.LayoutParams params = window.getAttributes();
                 params.gravity = Gravity.BOTTOM;
                 params.width = WindowManager.LayoutParams.MATCH_PARENT;
-                params.height = HifiveDisplayUtils.dip2px(mContext, 440);
+                params.height = HifiveDisplayUtils.getPlayerHeight(mContext);
                 window.setAttributes(params);
                 window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             }

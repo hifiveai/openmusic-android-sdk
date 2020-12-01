@@ -41,6 +41,7 @@ import com.hfliveplayer.sdk.ui.HifiveMusicListDialogFragment;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.util.HifiveDownloadUtile;
+import com.hfliveplayer.sdk.util.NoDoubleClickListener;
 import com.hfliveplayer.sdk.view.HifiveRoundProgressBar;
 import com.hfliveplayer.sdk.view.RoundedCornersTransform;
 import com.hifive.sdk.hInterface.DownLoadResponse;
@@ -49,6 +50,7 @@ import com.hifive.sdk.manager.HFLiveApi;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -101,7 +103,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private boolean isPlay;//是否正在播放
     private boolean isStatic;//歌词是动态还是静态歌词
     private boolean isError;//判断是否播放出错
-    public static boolean isCut;//判断是否正在切换播放模式，防止频繁点击
+//    public static boolean isCut;//判断是否正在切换播放模式，防止频繁点击
     private final FragmentActivity mContext;
     private AnimationDrawable animationDrawable;//加载的动画
     private Animation rotateAnimation;//音乐图片旋转的动画
@@ -193,11 +195,11 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 return true;
             }
         });
-        tv_accompany.setOnClickListener(new OnClickListener() {
+        tv_accompany.setOnClickListener(new NoDoubleClickListener() {
             @Override
-            public void onClick(View v) {
-                if(!isCut){
-                    isCut = true;
+            public void onNoDoubleClick(View v) {
+//                if(!isCut){
+//                    isCut = true;
                     cleanTimer();
                     if(playerUtils.isPlaying()) playerUtils.onStop();
                     if(isShowAccompany){//已是伴奏模式
@@ -215,7 +217,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                             getMusicDetail(0);
                         }
                     }
-                }
+//                }
             }
         });
         cb_lyric.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -259,7 +261,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     stopPlay();
                 }else{//暂停点击就是播放
                     if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null){
-                        if(isShowAccompany) {
+                        if(isShowAccompany && accompanyFile!= null) {
                             startPlayMusic(accompanyFile.getPath(),false);
                         }else{
                             startPlayMusic(playUrl,false);
@@ -278,7 +280,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     }
     //获取音乐详情type ：0.伴奏1.主版本
     private void getMusicDetail(int type) {
-        showLoadVew();
+        showLoadView();
         HifiveDialogManageUtil.getInstance().getMusicDetail(type,mContext);
     }
     //设置播放器原声模式
@@ -312,7 +314,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         }
     }
     //显示加载view
-    private void showLoadVew() {
+    private void showLoadView() {
         fl_play.setVisibility(GONE);
         fl_download.setVisibility(GONE);
         fl_loading.setVisibility(VISIBLE);
@@ -372,11 +374,20 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
      * @param path 音频文件路径或者url
      */
     private void changePlayMusic(String path) {
+        //取消下载
+        if(null != downLoadFileCall){
+            downLoadFileCall.cancel();
+            downLoadFileCall = null;
+        }
+        //清空伴奏下载进度
+        tv_download.setText("");
+
         if(playerUtils!= null) {
             playerUtils.prepareAndPlay(path, new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    isCut = false;
+//                    isCut = false;
+                    pb_play.setMax(playerUtils.duration());
                     showPlayView();
                     setPlayProgress();
                     playerUtils.play();
@@ -463,14 +474,14 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     public int getMaxScrollY() {
         //判断歌曲选择相关的弹窗是否打开
         if(dialogFragment != null && dialogFragment.getDialog() != null && dialogFragment.getDialog().isShowing()){
-            return mScreenHeight - getHeight()- HifiveDisplayUtils.dip2px(mContext,470);
+            return mScreenHeight - getHeight()- HifiveDisplayUtils.dip2px(mContext,30) - HifiveDisplayUtils.getPlayerHeight(mContext);
         }else{
             return mScreenHeight - getHeight() - marginBottom;
         }
     }
     //歌曲弹窗显示时更新最大可滑动距离
     public void updateViewY() {
-        final int   maxScrollY = mScreenHeight - getHeight()-HifiveDisplayUtils.dip2px(mContext,470);
+        final int   maxScrollY = mScreenHeight - getHeight()- HifiveDisplayUtils.dip2px(mContext,30) - HifiveDisplayUtils.getPlayerHeight(mContext);
         if(getY() > maxScrollY){
             TranslateAnimation translateAnimation = new TranslateAnimation(0, 0,0,maxScrollY-getY());
             translateAnimation.setDuration(500);
@@ -627,10 +638,10 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 rl_lyric_dynamic.setVisibility(GONE);
                 fl_lyric.setVisibility(GONE);
                 if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null){
-                    showLoadVew();
+                    showLoadView();
                     updateView();
                 }else{//重置播放器
-                    enabledLyric();
+                    disabledLyric();
                     tv_music_info.setText("");
                     tv_accompany.setEnabled(false);
                     tv_accompany.setAlpha(0.45f);
@@ -642,6 +653,11 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     }
                 }
             }else if(type == HifiveDialogManageUtil.PALYINGMUSIC){
+                //歌词置空
+                tv_lyric_left.setText("");
+                tv_lyric_right.setText("");
+                tv_lyric_static.setText("");
+                rl_lyric_dynamic.setVisibility(GONE);
                 updatePlayView(false);
             }else if(type == HifiveDialogManageUtil.PALYINGCHANGEMUSIC){
                 updatePlayView(true);
@@ -657,7 +673,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         accompanyFile = null;//重置伴奏
         playUrl = "";//重置播放链接
         isChange = false;//重置歌词查找状态
-        isCut = false;//重置播放模式切换状态
+//        isCut = false;//重置播放模式切换状态
         position = 0;//重置歌词查找下标
         pb_play.setProgress(0);
         //歌词置空
@@ -672,6 +688,10 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         }
         //清空伴奏下载进度
         tv_download.setText("");
+
+        fl_play.setVisibility(VISIBLE);
+        fl_download.setVisibility(GONE);
+        fl_loading.setVisibility(GONE);
     }
     //更新view，音乐图片，音乐名称更新
     private void updateView() {
@@ -716,14 +736,14 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private void updatePlayView(boolean isChange) {
         HifiveMusicDetailModel playMusicDetail = HifiveDialogManageUtil.getInstance().getPlayMusicDetail();
         if(playMusicDetail == null){
-            isCut = false;
+//            isCut = false;
             return;
         }
         if(!isChange) {
             HifiveMusiclyricModel lyric = playMusicDetail.getLyric();
             //没有歌词的时候
             if (lyric == null || (TextUtils.isEmpty(lyric.getDynamicUrl()) && TextUtils.isEmpty(lyric.getStaticUrl()))) {
-                enabledLyric();
+                disabledLyric();
             } else {
                 //动态歌词不等于空就下载动态歌词否则下载静态歌词
                 if (!TextUtils.isEmpty(lyric.getDynamicUrl())) {
@@ -746,7 +766,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     changePlayMusic(playUrl);//切换播放歌曲
                 }
             } else {
-                isCut = false;
+//                isCut = false;
                 HifiveDialogManageUtil.getInstance().showToast(mContext,"歌曲地址有误");
             }
         } else {//伴奏
@@ -756,13 +776,13 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 showDownLoadView();
                 downLoadAccompany(playMusicDetail.getFile().getUrl(),playMusicDetail.getMusicId(), playMusicDetail.getFile().getExt(),isChange);
             } else {
-                isCut = false;
+//                isCut = false;
                 HifiveDialogManageUtil.getInstance().showToast(mContext,"伴奏文件有误");
             }
         }
     }
     //设置歌词不能点击
-    private void enabledLyric() {
+    private void disabledLyric() {
         cb_lyric.setChecked(false);
         cb_lyric.setEnabled(false);
         cb_lyric.setAlpha(0.45f);
@@ -773,6 +793,10 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         Log.e("TAG","file=="+file);
         if (HFLiveApi.Companion.getInstance() == null)
             return;
+        if(null != downLoadFileCall){
+            downLoadFileCall.cancel();
+            downLoadFileCall = null;
+        }
         downLoadFileCall = HFLiveApi.Companion.getInstance().downLoadFile(mContext, file, mContext.getFilesDir() + "/" + musicId + "." + expand,
                 new DownLoadResponse() {
                     @Override
@@ -801,20 +825,20 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                             fl_download.setVisibility(GONE);
                         }
 
-
-
                     }
 
                     @Override
                     public void fail(@NotNull String error_msg) {
-                        isCut = false;
+//                        isCut = false;
                         HifiveDialogManageUtil.getInstance().showToast(mContext, error_msg);
                     }
 
                     @Override
                     public void progress(long currentBytes, long totalBytes) {
-                        if(null != downLoadFileCall){
+                        if(null != downLoadFileCall && downLoadFileCall.isExecuted()){
                             updateDownLoadProgress(currentBytes, totalBytes);
+                        }else{
+//                            stopPlay();
                         }
                     }
                 });
@@ -849,7 +873,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 mContext.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        enabledLyric();
+                        disabledLyric();
                     }
                 });
                 HifiveDialogManageUtil.getInstance().showToast(mContext,"未找到歌词");
@@ -872,7 +896,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                                 rl_lyric_dynamic.setVisibility(VISIBLE);
                             }
                         }else{
-                            enabledLyric();
+                            disabledLyric();
                         }
                     }else{
                         if(!TextUtils.isEmpty(content)){
@@ -883,7 +907,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                                 fl_lyric.setVisibility(VISIBLE);
                             }
                         }else{
-                            enabledLyric();
+                            disabledLyric();
                         }
                     }
                 }
@@ -895,6 +919,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private void updateLyricText(int playProgress) {
         if (isChange)
             return;
+        isChange = true;
         isChange = true;
         if(lyricDetailModels != null) {
             for (int i = position; i < lyricDetailModels.size(); i++) {
@@ -938,4 +963,5 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             updateViewY();
         }
     }
+
 }
