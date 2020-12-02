@@ -10,9 +10,11 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hfliveplayer.sdk.model.HifiveMusicDetailModel;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
+import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
 import com.hfliveplayer.sdk.model.HifiveMusicUserSheetModel;
 import com.hfliveplayer.sdk.model.HifiveMusicVersionModel;
 import com.hfliveplayer.sdk.ui.HifiveUpdateObservable;
@@ -24,6 +26,7 @@ import com.hifive.sdk.manager.HFLiveApi;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -295,7 +298,10 @@ public class HifiveDialogManageUtil {
     public int playType;//当前播放的类型 1.主版本 0.伴奏版
     //更新音乐详情model
     private void updatePlayMusicDetail(String valueOf) {
-        HifiveMusicDetailModel   musicDetailModel = JSON.parseObject(valueOf, HifiveMusicDetailModel.class);
+
+        Type type = new TypeToken<HifiveMusicDetailModel>(){}.getType();
+        HifiveMusicDetailModel   musicDetailModel = new Gson().fromJson(valueOf,type);
+
         if(musicDetailModel != null){
             playType = musicDetailModel.getIsMajor();
             if(playType == 1){

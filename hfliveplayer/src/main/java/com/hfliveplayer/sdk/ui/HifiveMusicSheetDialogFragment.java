@@ -22,10 +22,14 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveViewPagerAdapter;
 import com.hfliveplayer.sdk.model.HifiveMusicChannelModel;
+import com.hfliveplayer.sdk.model.HifiveMusicDetailModel;
+import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
+import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.magicindicator.CommonNavigator;
@@ -40,6 +44,7 @@ import com.hifive.sdk.manager.HFLiveApi;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -209,7 +214,8 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
             @Override
             public void data(@NotNull Object any) {
                 Log.e("TAG", "电台数据==" + any);
-                companyChannelLists = JSON.parseArray(String.valueOf(any), HifiveMusicChannelModel.class);
+
+                companyChannelLists = GsonUtils.parseJson(String.valueOf(any), HifiveMusicChannelModel.class);
                 initMagicIndicator();
                 initPage();
             }

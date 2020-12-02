@@ -16,11 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveMusicSheetAdapter;
+import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
+import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.HifiveLoadMoreFooter;
@@ -182,9 +183,10 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                     @Override
                     public void data(@NotNull Object any) {
                         Log.e("TAG","歌单数据=="+any);
-                        JSONObject jsonObject = JSONObject.parseObject(String.valueOf(any));
-                        sheetModels = JSON.parseArray(jsonObject.getString("records"), HifiveMusicSheetModel.class);
-                        totalPage = jsonObject.getInteger("totalPage");
+
+                        sheetModels = GsonUtils.getRecords(String.valueOf(any), HifiveMusicSheetModel.class);
+                        totalPage = GsonUtils.getValue(String.valueOf(any),"totalPage").getAsInt();
+
                         mHandler.sendEmptyMessage(ty);
                     }
                 });

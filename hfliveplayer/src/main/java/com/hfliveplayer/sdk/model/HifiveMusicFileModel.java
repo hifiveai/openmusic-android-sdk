@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class HifiveMusicFileModel implements Serializable {
     private String url;//编码
     private String ext;//名称
-    private int expires;//编码
+    private String expires;//编码
     private int size;//名称
 
     public String getUrl() {
@@ -29,11 +29,11 @@ public class HifiveMusicFileModel implements Serializable {
         this.ext = ext;
     }
 
-    public int getExpires() {
+    public String getExpires() {
         return expires;
     }
 
-    public void setExpires(int expires) {
+    public void setExpires(String expires) {
         this.expires = expires;
     }
 

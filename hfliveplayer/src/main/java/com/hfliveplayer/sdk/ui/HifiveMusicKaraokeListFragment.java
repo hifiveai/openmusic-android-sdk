@@ -16,11 +16,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveMusicListAdapter;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
+import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.view.HifiveRefreshHeader;
 import com.hifive.sdk.hInterface.DataResponse;
@@ -233,7 +232,8 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
                     @Override
                     public void data(@NotNull Object any) {
                         Log.e("TAG", "K歌数据==" + any);
-                        hifiveMusicModels = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("records"), HifiveMusicModel.class);
+
+                        hifiveMusicModels = GsonUtils.getRecords(String.valueOf(any),HifiveMusicModel.class);
                         mHandler.sendEmptyMessage(RequstSuccess);
                     }
                 });

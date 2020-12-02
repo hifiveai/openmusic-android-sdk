@@ -25,13 +25,14 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alibaba.fastjson.JSON;
+
 import com.bumptech.glide.Glide;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveMusicSearchAdapter;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
 import com.hfliveplayer.sdk.model.HifiveMusicTagModel;
+import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.HifiveRefreshHeader;
@@ -314,7 +315,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                     @Override
                     public void data(@NotNull Object any) {
                         Log.e("TAG","歌曲=="+any);
-                        musicModels = JSON.parseArray(String.valueOf(any), HifiveMusicModel.class);
+                        musicModels = GsonUtils.parseJson(String.valueOf(any),HifiveMusicModel.class);
                         mHandler.sendEmptyMessage(Success);
                     }
                 });

@@ -32,12 +32,11 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveMusicSearchAdapter;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.model.HifiveMusicSearchrModel;
+import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.HifiveFlowLayout;
@@ -50,6 +49,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -409,8 +409,9 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
             @Override
             public void data(@NotNull Object any) {
                 Log.e("TAG","==搜索历史=="+any);
-                historyData = JSON.parseArray(JSONObject.parseObject(String.valueOf(any)).getString("records"), HifiveMusicSearchrModel.class);
+                historyData = GsonUtils.getRecords(String.valueOf(any),HifiveMusicSearchrModel.class);
                 mHandler.sendEmptyMessage(HistorySuccess);
+
             }
         });
     }
@@ -483,11 +484,11 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                     @Override
                     public void data(@NotNull Object any) {
                         Log.e("TAG","搜索歌曲=="+ any);
-                        JSONObject jsonObject = JSONObject.parseObject(String.valueOf(any));
-                        musicModels = JSON.parseArray(jsonObject.getString("records"), HifiveMusicModel.class);
-                        totalPage = jsonObject.getInteger("totalPage");
+
+                        musicModels = GsonUtils.getRecords(String.valueOf(any),HifiveMusicModel.class);
+                        totalPage = GsonUtils.getValue(String.valueOf(any),"totalPage").getAsInt();
                         if(ty == Refresh){
-                            isRecommand = jsonObject.getBoolean("isRecommand");
+                            isRecommand = GsonUtils.getValue(String.valueOf(any),"totalPage").getAsBoolean();
                             getHistoryData(true);
                         }
                         mHandler.sendEmptyMessage(ty);

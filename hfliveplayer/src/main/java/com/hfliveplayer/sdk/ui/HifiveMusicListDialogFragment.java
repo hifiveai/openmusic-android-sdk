@@ -22,10 +22,11 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.alibaba.fastjson.JSON;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveViewPagerAdapter;
+import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.model.HifiveMusicUserSheetModel;
+import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.magicindicator.CommonNavigator;
@@ -144,7 +145,8 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
             @Override
             public void data(@NotNull Object any) {
                 Log.e("TAG", "我的歌单==" + any);
-                List<HifiveMusicUserSheetModel> sheetModels = JSON.parseArray(JSON.parseObject(String.valueOf(any)).getString("records"), HifiveMusicUserSheetModel.class);
+
+                List<HifiveMusicUserSheetModel> sheetModels  = GsonUtils.getRecords(String.valueOf(any), HifiveMusicUserSheetModel.class);
                 HifiveDialogManageUtil.getInstance().setUserSheetModels(sheetModels);
                 initMagicIndicator();
                 initPage();
