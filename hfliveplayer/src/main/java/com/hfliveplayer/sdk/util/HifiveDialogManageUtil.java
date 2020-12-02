@@ -156,6 +156,8 @@ public class HifiveDialogManageUtil {
     public void playLastMusic(Activity activity){
         if(currentList!= null && currentList.size() >1){
             int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
+            if(positon<0)
+                return;
             if(positon != 0){//不是第一首
                 setCurrentPlay(activity,currentList.get(positon-1));
             }else{

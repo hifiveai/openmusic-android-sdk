@@ -3,6 +3,7 @@ package com.hifive.sdk.manager
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.hifive.sdk.controller.MusicManager
 
@@ -42,11 +43,15 @@ class HFLiveApi {
             }
         }
 
+        fun registerApp(application: Application?, APP_ID: String, SECRET: String) {
+            if (application == null) {
+                Log.e("e", "Please init with the param \"Application\"/")
+                throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
+            }
 
-        fun registerApp(context: Application, APP_ID: String, SECRET: String) {
             HFLiveApi.APP_ID = APP_ID
             HFLiveApi.SECRET = SECRET
-            hiFiveContext = context
+            hiFiveContext = application
         }
     }
 
