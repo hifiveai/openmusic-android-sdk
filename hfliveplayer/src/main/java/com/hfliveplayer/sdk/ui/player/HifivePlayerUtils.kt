@@ -11,22 +11,19 @@ import java.io.IOException
  * @date 2020/11/10
  */
 
-@Suppress("DEPRECATION")
-class HifivePlayerUtils {
 
+class HifivePlayerUtils private constructor(){
 
     private var playCompletionListener: HifivePlayListener? = null
     private var mediaPlayer: MediaPlayer? = null
 
-
     companion object {
-        val instance by lazy { HifivePlayerUtils() }
+        val instance by lazy (mode = LazyThreadSafetyMode.SYNCHRONIZED){ HifivePlayerUtils() }
         var isPause = false
         var isMute = false
         var soundA: Float = 1f
         var soundB: Float = 1f
     }
-
 
     /**
      * 获取播放器

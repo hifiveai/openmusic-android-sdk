@@ -337,9 +337,7 @@ public class HifiveDialogManageUtil {
                 @SuppressLint("ShowToast")
                 @Override
                 public void run() {
-                    if(toast == null) toast = Toast.makeText(activity, msg, Toast.LENGTH_SHORT);
-                    else toast.setText(msg);
-                    toast.show();
+                    Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                 }
             });
         }

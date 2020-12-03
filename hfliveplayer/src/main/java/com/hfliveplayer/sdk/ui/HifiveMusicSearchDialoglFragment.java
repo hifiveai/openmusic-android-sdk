@@ -60,13 +60,13 @@ import java.util.List;
  * @author huchao
  */
 public class HifiveMusicSearchDialoglFragment extends DialogFragment {
-    public static final int HistorySuccess= 1;//请求搜索历史数据成功
-    public static final int HistoryDeleteSuccess= 2;//请求搜索历史数据成功
-    public static final int RequstFail= 11;//请求失败
-    public static final int LoadMore= 12;//加载
-    public static final int Refresh =13;//刷新
-    public static final int AddLike= 14;//添加喜欢的回调
-    public static final int Addkaraoke =15;//添加K歌的回调
+    public static final int HistorySuccess = 1;//请求搜索历史数据成功
+    public static final int HistoryDeleteSuccess = 2;//请求搜索历史数据成功
+    public static final int RequstFail = 11;//请求失败
+    public static final int LoadMore = 12;//加载
+    public static final int Refresh = 13;//刷新
+    public static final int AddLike = 14;//添加喜欢的回调
+    public static final int Addkaraoke = 15;//添加K歌的回调
     public boolean isLoadMore = false;
     private TextView tv_cancle;//取消搜索按钮
     private EditText et_content;//输出框
@@ -86,32 +86,32 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
     private List<HifiveMusicSearchrModel> historyData;//搜索历史的数据
     private HifiveMusicSearchAdapter adapter;
     private List<HifiveMusicModel> musicModels;
-    private String content= "";//搜索的内容
+    private String content = "";//搜索的内容
     private Context mContext;
     private boolean isAddLike;//保存是否正在添加喜欢状态，防止重复点击
     private boolean isAddkaraoke;//保存是否正在添加K歌状态，防止重复点击
     private Toast toastStyle;//自定义样式的toast
     private TextView toastTextview;
     private boolean isRecommand;//是否为无结果时推荐
-    private int totalPage =1;//总页卡
+    private int totalPage = 1;//总页卡
     private final Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             try {
                 switch (msg.what) {
                     case HistorySuccess:
-                        if(historyData != null && historyData.size() > 0){
+                        if (historyData != null && historyData.size() > 0) {
                             iv_delete.setVisibility(View.VISIBLE);
                             fl_history.setVisibility(View.VISIBLE);
                             initFlowLayout();
-                        }else{
+                        } else {
                             iv_delete.setVisibility(View.GONE);
                             fl_history.setVisibility(View.GONE);
                         }
                         break;
                     case HistoryDeleteSuccess:
-                        if(getActivity() != null){
-                            HifiveDialogManageUtil.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
+                        if (getActivity() != null) {
+                            HifiveDialogManageUtil.getInstance().showToast(getActivity(), getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
                         }
                         historyData.clear();
                         if (fl_history != null) {
@@ -123,24 +123,24 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                         ll_result.setVisibility(View.VISIBLE);
                         ll_history.setVisibility(View.GONE);
                         hideInput();
-                        if(isRecommand){
+                        if (isRecommand) {
                             ll_empty.setVisibility(View.VISIBLE);
-                            if(mContext != null)
-                                tv_empty.setText(mContext.getString(R.string.hifivesdk_music_search_history_empty,content));
-                        }else{
+                            if (mContext != null)
+                                tv_empty.setText(mContext.getString(R.string.hifivesdk_music_search_history_empty, content));
+                        } else {
                             ll_empty.setVisibility(View.GONE);
                         }
-                        if(musicModels != null)
+                        if (musicModels != null)
                             adapter.updateDatas(musicModels);
-                        refreshLayout.setEnableLoadMore(page<totalPage);
+                        refreshLayout.setEnableLoadMore(page < totalPage);
                         break;
                     case LoadMore:
                         isLoadMore = false;
-                        if(musicModels != null)
+                        if (musicModels != null)
                             adapter.addDatas(musicModels);
-                        if(page < totalPage){
+                        if (page < totalPage) {
                             refreshLayout.finishLoadMore();
-                        }else{
+                        } else {
                             refreshLayout.finishLoadMoreWithNoMoreData();
                         }
                         break;
@@ -173,7 +173,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(getDialog() != null) {
+        if (getDialog() != null) {
             Window window = getDialog().getWindow();
             if (window != null) {
                 WindowManager.LayoutParams params = window.getAttributes();
@@ -196,7 +196,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mContext = getContext();
-        if(getDialog() != null) {
+        if (getDialog() != null) {
             Window window = this.getDialog().getWindow();
             if (window != null) {
                 window.setWindowAnimations(R.style.AnimationBottomFade);
@@ -235,29 +235,30 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
         refreshLayout.setRefreshFooter(new HifiveLoadMoreFooter(getContext()));
         mRecyclerView = view.findViewById(R.id.rv_music);
     }
+
     //初始化ReclyView
     private void ininReclyView() {
-        adapter = new HifiveMusicSearchAdapter(getContext(),new ArrayList<HifiveMusicModel>(),false);
+        adapter = new HifiveMusicSearchAdapter(getContext(), new ArrayList<HifiveMusicModel>(), false);
         adapter.setOnAddkaraokeClickListener(new HifiveMusicSearchAdapter.OnAddkaraokeClickListener() {
             @Override
             public void onClick(View v, int position) {
-                if(!isAddkaraoke){
-                    addUserSheet(position,Addkaraoke);
+                if (!isAddkaraoke) {
+                    addUserSheet(position, Addkaraoke);
                 }
             }
         });
         adapter.setOnAddLikeClickListener(new HifiveMusicSearchAdapter.OnAddLikeClickListener() {
             @Override
             public void onClick(View v, int position) {
-                if(!isAddLike){
-                    addUserSheet(position,AddLike);
+                if (!isAddLike) {
+                    addUserSheet(position, AddLike);
                 }
             }
         });
         adapter.setOnItemClickListener(new HifiveMusicSearchAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),adapter.getDatas().get(position),"2");
+                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(), adapter.getDatas().get(position), "2");
             }
         });
         mRecyclerView.setAdapter(adapter);
@@ -272,6 +273,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
             }
         });
     }
+
     //添加歌曲到会员歌单列表
     private void addUserSheet(final int position, final int type) {
         if (mContext != null && HFLiveApi.Companion.getInstance() != null) {
@@ -287,7 +289,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                             isAddLike = false;
                             isAddkaraoke = false;
-                            HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
+                            HifiveDialogManageUtil.getInstance().showToast(getActivity(), string);
                         }
 
                         @Override
@@ -302,6 +304,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                     });
         }
     }
+
     //初始化点击事件
     private void initEvent() {
         tv_cancle.setOnClickListener(new View.OnClickListener() {//取消搜索
@@ -325,23 +328,25 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() == 0){
+                if (s.length() == 0) {
                     iv_clear.setVisibility(View.GONE);
-                }else{
+                } else {
                     iv_clear.setVisibility(View.VISIBLE);
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
             }
         });
-        et_content.setOnFocusChangeListener(new View.OnFocusChangeListener(){//监听焦点输入框焦点变化
+        et_content.setOnFocusChangeListener(new View.OnFocusChangeListener() {//监听焦点输入框焦点变化
             @Override
             public void onFocusChange(View arg0, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
                     ll_history.setVisibility(View.VISIBLE);
                     ll_result.setVisibility(View.GONE);
                 }
@@ -360,6 +365,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
             }
         });
     }
+
     //弹窗删除二次确认框
     private void showConfirmDialog() {
         HifiveComfirmDialogFragment dialog = new HifiveComfirmDialogFragment();
@@ -372,9 +378,10 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                 deleteSearchHistory();
             }
         });
-        if(getFragmentManager() != null)
+        if (getFragmentManager() != null)
             dialog.show(getFragmentManager(), HifiveComfirmDialogFragment.class.getSimpleName());
     }
+
     //清空搜索历史
     private void deleteSearchHistory() {
         if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
@@ -382,7 +389,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
         HFLiveApi.Companion.getInstance().deleteSearchRecord(getContext(), new DataResponse() {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
+                HifiveDialogManageUtil.getInstance().showToast(getActivity(), string);
             }
 
             @Override
@@ -401,20 +408,21 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                 if (!isUpdate) {
-                    HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
+                    HifiveDialogManageUtil.getInstance().showToast(getActivity(), string);
                     mHandler.sendEmptyMessage(HistorySuccess);
                 }
             }
 
             @Override
             public void data(@NotNull Object any) {
-                Log.e("TAG","==搜索历史=="+any);
-                historyData = GsonUtils.getRecords(String.valueOf(any),HifiveMusicSearchrModel.class);
+                Log.e("TAG", "==搜索历史==" + any);
+                historyData = GsonUtils.getRecords(String.valueOf(any), HifiveMusicSearchrModel.class);
                 mHandler.sendEmptyMessage(HistorySuccess);
 
             }
         });
     }
+
     //设置搜索历史信息
     private void initFlowLayout() {
         if (fl_history != null) {
@@ -443,21 +451,23 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                     searchMusic();
                 }
             });
-            fl_history.addView(tv,layoutParams);
+            fl_history.addView(tv, layoutParams);
         }
     }
+
     //搜索音乐
     private void searchMusic() {
         content = et_content.getText().toString().trim();
-        if(TextUtils.isEmpty(content)){
-            if(mContext != null)
-                Toast.makeText(mContext,mContext.getString(R.string.hifivesdk_music_search_toast),Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(content)) {
+            if (mContext != null)
+                Toast.makeText(mContext, mContext.getString(R.string.hifivesdk_music_search_toast), Toast.LENGTH_SHORT).show();
             return;
         }
         et_content.clearFocus();
         refreshLayout.resetNoMoreData();
         getData(Refresh);
     }
+
     //根据名称搜索歌曲
     private void getData(final int ty) {
         if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
@@ -467,7 +477,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
         } else {
             page++;
         }
-        Log.e("TAG","searchPage=="+page);
+        Log.e("TAG", "searchPage==" + page);
         HFLiveApi.Companion.getInstance().getMusicList(getContext(), "2", content, null, HifiveDialogManageUtil.field,
                 "15", String.valueOf(page), new DataResponse() {
                     @Override
@@ -477,47 +487,45 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                         } else {
                             getHistoryData(true);
                         }
-                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
+                        HifiveDialogManageUtil.getInstance().showToast(getActivity(), string);
                         mHandler.sendEmptyMessage(RequstFail);
                     }
 
                     @Override
                     public void data(@NotNull Object any) {
-                        Log.e("TAG","搜索歌曲=="+ any);
+                        Log.e("TAG", "搜索歌曲==" + any);
 
-                        musicModels = GsonUtils.getRecords(String.valueOf(any),HifiveMusicModel.class);
-                        totalPage = GsonUtils.getValue(String.valueOf(any),"totalPage").getAsInt();
-                        if(ty == Refresh){
-                            isRecommand = GsonUtils.getValue(String.valueOf(any),"totalPage").getAsBoolean();
+                        musicModels = GsonUtils.getRecords(String.valueOf(any), HifiveMusicModel.class);
+                        totalPage = GsonUtils.getValue(String.valueOf(any), "totalPage").getAsInt();
+                        if (ty == Refresh) {
+                            isRecommand = GsonUtils.getValue(String.valueOf(any), "isRecommand").getAsBoolean();
                             getHistoryData(true);
                         }
                         mHandler.sendEmptyMessage(ty);
                     }
                 });
     }
+
     //显示自定义toast信息
-    private void showToast(int msgId){
-        if(mContext != null){
-            if(toastStyle == null){
-                toastStyle = new Toast(mContext);
-                View layout = View.inflate(mContext, R.layout.hifive_layout_toast, null);
-                toastTextview = layout.findViewById(R.id.tv_content);
-                toastTextview.setText(mContext.getString(msgId));
-                toastStyle.setView(layout);
-                toastStyle.setGravity(Gravity.CENTER, 0, 0);
-                toastStyle.setDuration(Toast.LENGTH_LONG);
-            }else {
-                toastTextview.setText(mContext.getString(msgId));
-            }
+    private void showToast(int msgId) {
+        if (mContext != null) {
+            Toast toastStyle = new Toast(mContext);
+            View layout = View.inflate(mContext, R.layout.hifive_layout_toast, null);
+            TextView toastTextview = layout.findViewById(R.id.tv_content);
+            toastTextview.setText(mContext.getString(msgId));
+            toastStyle.setView(layout);
+            toastStyle.setGravity(Gravity.CENTER, 0, 0);
+            toastStyle.setDuration(Toast.LENGTH_LONG);
             toastStyle.show();
         }
     }
+
     /**
      * 隐藏键盘
      */
     protected void hideInput() {
-        Log.e("TAG","==hideInput==");
-        if (getActivity() != null &&  getDialog()!= null && getDialog().getWindow()!= null) {
+        Log.e("TAG", "==hideInput==");
+        if (getActivity() != null && getDialog() != null && getDialog().getWindow() != null) {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             View v = getDialog().getWindow().peekDecorView();
             if (null != v) {
@@ -525,6 +533,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
             }
         }
     }
+
     @Override
     public void dismiss() {
         mHandler.removeCallbacksAndMessages(null);
