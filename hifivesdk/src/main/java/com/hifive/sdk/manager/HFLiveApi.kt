@@ -3,8 +3,10 @@ package com.hifive.sdk.manager
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.hifive.sdk.controller.MusicManager
+import com.hifive.sdk.utils.StringFilterUtils
 
 /**
  * @author Dsh  imkobedroid@gmail.com
@@ -42,11 +44,24 @@ class HFLiveApi {
             }
         }
 
+        fun registerApp(application: Application?, APP_ID: String, SECRET: String) {
+            if(application == null){
+                throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
+            }
+            if(Companion.APP_ID.isNullOrEmpty()){
+                throw IllegalArgumentException("Failed to obtain information : The APP_ID cannot be null")
+            }else if(StringFilterUtils.idFilter(APP_ID)){
+                throw IllegalArgumentException("Failed to obtain information : Only numbers and letters are allowed for the APP_ID")
+            }
+            if(Companion.SECRET.isNullOrEmpty()){
+                throw IllegalArgumentException("Failed to obtain information : The SECRET cannot be null")
+            } else if(StringFilterUtils.idFilter(SECRET)){
+                throw IllegalArgumentException("Failed to obtain information : Only numbers and letters are allowed for the SECRET")
+            }
 
-        fun registerApp(context: Application, APP_ID: String, SECRET: String) {
             HFLiveApi.APP_ID = APP_ID
             HFLiveApi.SECRET = SECRET
-            hiFiveContext = context
+            hiFiveContext = application
         }
     }
 
