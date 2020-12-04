@@ -248,6 +248,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
         fragments.add(karaokeListFragment);
         HifiveViewPagerAdapter adapter = new HifiveViewPagerAdapter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(2);
         int firstPageIndex = 0;
         viewPager.setCurrentItem(firstPageIndex);
     }
