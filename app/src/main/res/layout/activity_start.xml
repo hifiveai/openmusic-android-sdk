@@ -119,6 +119,7 @@
             android:textColor="#FF282828"
             android:hint="请输入会员ID"
             android:inputType="textVisiblePassword"
+            android:maxLength="50"
             android:digits="@string/filter_vcode"
             android:background="@null"/>
     </LinearLayout>
@@ -169,6 +170,7 @@
             android:textSize="14sp"
             android:textColor="#FF282828"
             android:inputType="textVisiblePassword"
+            android:maxLength="50"
             android:digits="@string/filter_vcode"
             android:hint="请输入公会ID"
             android:background="@null"/>
