@@ -66,13 +66,6 @@ public class LyricDynamicView extends RelativeLayout {
 
     }
 
-    private void drawLyric(){
-        if(lyricDetailModels != null && leftLyric!= null && rightLyric != null) {
-            tv_lyric_left.setText(leftLyric);
-            tv_lyric_right.setText(rightLyric);
-        }
-    }
-
     /**
      * 设置歌词进度
      * @param playProgress
@@ -86,17 +79,21 @@ public class LyricDynamicView extends RelativeLayout {
                 if (playProgress <= lyricDetailModels.get(i).getStartTime()) {
                     String content = lyricDetailModels.get(i).getContent();
                     if (i % 2 == 0) {
-                        leftLyric = content;
-                        tv_lyric_left.setTextColor(backgroundTextColor);
-                        tv_lyric_right.setTextColor(foregroundTextColor);
-
+                        if(!leftLyric.equals(content)){
+                            leftLyric = content;
+                            tv_lyric_left.setTextColor(backgroundTextColor);
+                            tv_lyric_right.setTextColor(foregroundTextColor);
+                            tv_lyric_left.setText(leftLyric);
+                        }
                     } else {
-                        rightLyric = content;
-                        tv_lyric_left.setTextColor(foregroundTextColor);
-                        tv_lyric_right.setTextColor(backgroundTextColor);
+                        if(!rightLyric.equals(content)) {
+                            rightLyric = content;
+                            tv_lyric_left.setTextColor(foregroundTextColor);
+                            tv_lyric_right.setTextColor(backgroundTextColor);
+                            tv_lyric_right.setText(rightLyric);
+                        }
 
                     }
-                    drawLyric();
                     position = i;
                     break;
                 }
@@ -111,7 +108,8 @@ public class LyricDynamicView extends RelativeLayout {
         this.lyricDetailModels=null;
         this.leftLyric = "";
         this.rightLyric = "";
-        drawLyric();
+        tv_lyric_left.setText(leftLyric);
+        tv_lyric_right.setText(rightLyric);
     }
 
     public void setLyricDetailModels(List<HifiveMusicLyricDetailModel> lyricDetailModels) {
