@@ -2,8 +2,6 @@ package com.hfliveplayer.sdk.ui.player;
 
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Looper;
@@ -83,8 +81,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private float mPortraitY;
     private FrameLayout fl_lyric;
     private TextView tv_lyric_static;
-    //    private RelativeLayout rl_lyric_dynamic;
-//    private TextView tv_lyric_left, tv_lyric_right;
     private LinearLayout ll_player;
     private ImageView iv_music;
     private TextView tv_music_info;
@@ -97,7 +93,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private FrameLayout fl_download;//下载伴奏的layout
     private TextView tv_download;
     private FrameLayout fl_loading;//加载中的layout
-    private ImageView iv_loading;
     private ImageView iv_next;
     private ImageView iv_back;
     private LyricDynamicView lyric_dynamic_view;
@@ -106,7 +101,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private boolean isStatic;//歌词是动态还是静态歌词
     private boolean isError;//判断是否播放出错
     private final FragmentActivity mContext;
-    private AnimationDrawable animationDrawable;//加载的动画
     private Animation rotateAnimation;//音乐图片旋转的动画
     public HifivePlayerUtils playerUtils;
     private HifiveMusicListDialogFragment dialogFragment;
@@ -155,7 +149,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         fl_download = findViewById(R.id.fl_download);
         tv_download = findViewById(R.id.tv_download);
         fl_loading = findViewById(R.id.fl_loading);
-        iv_loading = findViewById(R.id.iv_loading);
         iv_next = findViewById(R.id.iv_next);
         iv_back = findViewById(R.id.iv_back);
     }
@@ -320,9 +313,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         fl_play.setVisibility(GONE);
         fl_download.setVisibility(GONE);
         fl_loading.setVisibility(VISIBLE);
-        if (animationDrawable == null)
-            animationDrawable = (AnimationDrawable) iv_loading.getDrawable();
-        animationDrawable.start();
     }
 
     //显示播放view
@@ -330,8 +320,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         fl_play.setVisibility(VISIBLE);
         fl_loading.setVisibility(GONE);
         fl_download.setVisibility(GONE);
-        if (animationDrawable != null)
-            animationDrawable.stop();
     }
 
     //显示下载view
@@ -339,8 +327,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         fl_play.setVisibility(GONE);
         fl_loading.setVisibility(GONE);
         fl_download.setVisibility(VISIBLE);
-        if (animationDrawable != null)
-            animationDrawable.stop();
     }
 
     /**
@@ -695,10 +681,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 }
             } else if (type == HifiveDialogManageUtil.PALYINGMUSIC) {
                 //歌词置空
-//                tv_lyric_left.setText("");
-//                tv_lyric_right.setText("");
                 tv_lyric_static.setText("");
-//                rl_lyric_dynamic.setVisibility(GONE);
                 lyric_dynamic_view.clearLyric();
                 lyric_dynamic_view.setVisibility(GONE);
                 updatePlayView(false);
@@ -718,8 +701,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         playUrl = "";//重置播放链接
         pb_play.setProgress(0);
         //歌词置空
-//        tv_lyric_left.setText("");
-//        tv_lyric_right.setText("");
         tv_lyric_static.setText("");
         lyricDetailModels = null;
         lyric_dynamic_view.clearLyric();

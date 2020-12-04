@@ -163,11 +163,11 @@
                 android:visibility="gone"
                 android:background="@drawable/hifive_player_download_bg">
 
-                <ImageView
-                    android:id="@+id/iv_loading"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/hifive_loading_anim"/>
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/HifiveSdkProgressbarStyle"/>
+
             </FrameLayout>
             <ImageView
                 android:id="@+id/iv_next"
