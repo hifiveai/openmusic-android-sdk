@@ -25,13 +25,17 @@
         <EditText
             android:id="@+id/et_appid"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="69dp"
+            android:maxLines="1"
+            android:background="@null"
+            android:digits="@string/filter_vcode"
             android:gravity="center_vertical"
-            android:textSize="14sp"
-            android:textColor="#FF282828"
             android:hint="请输入appId"
+            android:inputType="textVisiblePassword"
+            android:maxLength="50"
             android:text="1998ca60c18a42b38fa03b80cce1832a"
-            android:background="@null"/>
+            android:textColor="#FF282828"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -55,8 +59,12 @@
             android:gravity="center_vertical"
             android:textSize="14sp"
             android:textColor="#FF282828"
+            android:maxLines="1"
             android:hint="请输入secretKey"
             android:text="259e23ea0c684bd7be"
+            android:inputType="textVisiblePassword"
+            android:maxLength="50"
+            android:digits="@string/filter_vcode"
             android:background="@null"/>
     </LinearLayout>
 
@@ -91,6 +99,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:textSize="14sp"
+            android:maxLines="1"
             android:textColor="#FF282828"
             android:hint="请输入会员名称"
             android:background="@null"/>
@@ -119,6 +128,7 @@
             android:textColor="#FF282828"
             android:hint="请输入会员ID"
             android:inputType="textVisiblePassword"
+            android:maxLines="1"
             android:maxLength="50"
             android:digits="@string/filter_vcode"
             android:background="@null"/>
@@ -140,12 +150,13 @@
         <EditText
             android:id="@+id/et_sociaty_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="71dp"
+            android:background="@null"
             android:gravity="center_vertical"
-            android:textSize="14sp"
-            android:textColor="#FF282828"
             android:hint="请输入公会名称"
-            android:background="@null"/>
+            android:maxLines="1"
+            android:textColor="#FF282828"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -170,6 +181,7 @@
             android:textSize="14sp"
             android:textColor="#FF282828"
             android:inputType="textVisiblePassword"
+            android:maxLines="1"
             android:maxLength="50"
             android:digits="@string/filter_vcode"
             android:hint="请输入公会ID"
