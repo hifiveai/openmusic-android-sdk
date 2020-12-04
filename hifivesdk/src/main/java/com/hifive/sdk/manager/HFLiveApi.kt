@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.google.gson.Gson
 import com.hifive.sdk.controller.MusicManager
 import com.hifive.sdk.utils.StringFilterUtils
@@ -44,20 +45,22 @@ class HFLiveApi {
             }
         }
 
-        fun registerApp(application: Application?, APP_ID: String, SECRET: String) {
+        fun registerApp(application: Application?, APP_ID: String?, SECRET: String?) {
             if(application == null){
                 throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
             }
-            if(Companion.APP_ID.isNullOrEmpty()){
+            if(APP_ID.isNullOrEmpty()){
                 throw IllegalArgumentException("Failed to obtain information : The APP_ID cannot be null")
-            }else if(StringFilterUtils.idFilter(APP_ID)){
-                throw IllegalArgumentException("Failed to obtain information : Only numbers and letters are allowed for the APP_ID")
             }
-            if(Companion.SECRET.isNullOrEmpty()){
+//            else if(!StringFilterUtils.idFilter(APP_ID)){
+//                Toast.makeText(application,"Failed to obtain information : Only numbers and letters are allowed for the APP_ID",Toast.LENGTH_SHORT).show()
+//            }
+            if(SECRET.isNullOrEmpty()){
                 throw IllegalArgumentException("Failed to obtain information : The SECRET cannot be null")
-            } else if(StringFilterUtils.idFilter(SECRET)){
-                throw IllegalArgumentException("Failed to obtain information : Only numbers and letters are allowed for the SECRET")
             }
+//            else if(!StringFilterUtils.idFilter(SECRET)){
+//                Toast.makeText(application,"Failed to obtain information : Only numbers and letters are allowed for the SECRET",Toast.LENGTH_SHORT).show()
+//            }
 
             HFLiveApi.APP_ID = APP_ID
             HFLiveApi.SECRET = SECRET
