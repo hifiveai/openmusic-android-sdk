@@ -235,14 +235,4 @@ abstract class BaseController {
             field: String?,
             dataResponse: DataResponse
     )
-
-
-    abstract fun downLoadFile(
-            context: Context,
-            url: String,
-            path: String,
-            dataResponse: DownLoadResponse
-    )
-
-
 }

@@ -14,6 +14,7 @@ import com.hifive.sdk.net.Encryption
 import com.hifive.sdk.rx.BaseSubscribe
 import com.tsy.sdk.myokhttp.MyOkHttp
 import com.tsy.sdk.myokhttp.response.DownloadResponseHandler
+import okhttp3.Call
 import okhttp3.OkHttpClient
 import org.json.JSONObject
 import java.io.File
@@ -380,8 +381,8 @@ class MusicManager(val context: Context) : BaseController() {
     }
 
 
-    override fun downLoadFile(context: Context, url: String,
-                              path: String, dataResponse: DownLoadResponse) {
+    fun downLoadFile(context: Context, url: String,
+                              path: String, dataResponse: DownLoadResponse) : Call {
         val down by lazy {
             val okHttpClient = OkHttpClient.Builder()
                     .connectTimeout(10000L, TimeUnit.MILLISECONDS)
@@ -390,7 +391,7 @@ class MusicManager(val context: Context) : BaseController() {
             MyOkHttp(okHttpClient)
         }
 
-        down.download()
+        return down.download()
                 .url(url)
                 .filePath(path)
                 .tag(this)
@@ -408,7 +409,9 @@ class MusicManager(val context: Context) : BaseController() {
                     }
 
                     override fun onFailure(error_msg: String) {
-                        dataResponse.fail(error_msg)
+                        if(!error_msg.contains("Canceled")){
+                            dataResponse.fail(error_msg)
+                        }
                     }
                 })
     }
