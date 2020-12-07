@@ -1,5 +1,7 @@
 package com.hifive.sdk.net
 
+import android.util.Log
+import com.hifive.sdk.BuildConfig
 import com.hifive.sdk.common.BaseConstance
 import com.hifive.sdk.common.BaseConstance.Companion.accessTokenMember
 import com.hifive.sdk.common.BaseConstance.Companion.accessTokenUnion
@@ -43,6 +45,8 @@ class DefaultHeaderInterceptor : Interceptor {
         if (societyOutId.isNotBlank()) {
             original.addHeader("sociatyOutId", getValueEncoded(societyOutId))
         }
+        original.addHeader("X-HF-Version", getValueEncoded(HFLiveApi.verison))
+        Log.i("X-HF-Version","-----"+HFLiveApi.verison)
         val authorised = original.build()
         return chain.proceed(authorised)
 

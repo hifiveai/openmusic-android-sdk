@@ -6,6 +6,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
+import com.hifive.sdk.BuildConfig
 import com.hifive.sdk.controller.MusicManager
 import com.hifive.sdk.utils.StringFilterUtils
 
@@ -27,6 +28,9 @@ class HFLiveApi {
 
         //密钥
         var SECRET: String? = null
+
+
+        var verison : String = BuildConfig.VERSION_NAME
 
         fun getInstance(): MusicManager? {
             return when {
@@ -66,6 +70,7 @@ class HFLiveApi {
             HFLiveApi.SECRET = SECRET
             hiFiveContext = application
         }
+
     }
 
 
