@@ -572,19 +572,17 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     public void playError() {
         HifiveDialogManageUtil.getInstance().showToast(mContext, "歌曲播放出错");
         isError = true;
-        cleanTimer();
         stopPlay();
-        //歌词置空
-        tv_lyric_static.setText("");
-        lyric_dynamic_view.clearLyric();
-        lyric_dynamic_view.setVisibility(GONE);
+        clear();
         //重新播放
+        updatePlayView(false);
+
         if(initialVersion==1){
             setTypeSound();
-            changePlayMusic(playUrl);
+//            changePlayMusic(playUrl);
         }else{
             setTypeAccompany();
-            getMusicDetail(0);
+//            getMusicDetail(0);
         }
     }
 
