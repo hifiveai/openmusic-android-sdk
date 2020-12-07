@@ -86,7 +86,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
         et_member_name.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

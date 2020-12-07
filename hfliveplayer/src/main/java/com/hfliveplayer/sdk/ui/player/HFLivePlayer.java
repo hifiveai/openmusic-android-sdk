@@ -10,9 +10,11 @@ import android.widget.RelativeLayout;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.hfliveplayer.sdk.BuildConfig;
 import com.hfliveplayer.sdk.ui.HifiveUpdateObservable;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
+import com.hifive.sdk.manager.HFLiveApi;
 
 import java.lang.ref.WeakReference;
 
@@ -43,6 +45,7 @@ public class HFLivePlayer {
         return add(activity,0,0);
     }
     public HFLivePlayer add(FragmentActivity activity, int marginTop, int marginBottom) {
+        HFLiveApi.Companion.setVerison("1.2.1.1");
         synchronized (this) {
             if (mPlayerView != null) {
                 return this;

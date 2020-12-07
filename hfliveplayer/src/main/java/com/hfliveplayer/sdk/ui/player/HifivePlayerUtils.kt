@@ -1,6 +1,8 @@
 package com.hfliveplayer.sdk.ui.player;
 
+import android.media.AudioAttributes
 import android.media.AudioManager
+import android.media.AudioManager.STREAM_MUSIC
 import android.media.MediaPlayer
 import android.util.Log
 import android.widget.SeekBar
@@ -76,7 +78,13 @@ class HifivePlayerUtils private constructor(){
             val play = getMediaPlayer()
             play.reset()
             play.setDataSource(url)
-            play.setAudioStreamType(AudioManager.STREAM_MUSIC)
+
+            //AudioAttributes是一个封装音频各种属性的类
+            val attrBuilder = AudioAttributes.Builder()
+            //设置音频流的合适属性
+            attrBuilder.setLegacyStreamType(STREAM_MUSIC)
+            play.setAudioAttributes(attrBuilder.build())
+//            play.setAudioStreamType(AudioManager.STREAM_MUSIC)
             play.setOnPreparedListener(onPreparedListener!!)
             play.prepareAsync()
         } catch (e: IOException) {
@@ -90,8 +98,12 @@ class HifivePlayerUtils private constructor(){
      * 释放资源
      */
     fun release() {
-        getMediaPlayer().release()
-        mediaPlayer = null
+        try {
+            getMediaPlayer().release()
+            mediaPlayer = null
+        } catch (e: Exception) {
+        }
+
     }
 
 

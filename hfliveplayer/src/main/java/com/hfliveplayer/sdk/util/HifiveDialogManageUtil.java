@@ -355,7 +355,7 @@ public class HifiveDialogManageUtil {
     }
     //删除伴奏文件
     private void deleteFile() {
-        File file = HifivePlayerView.accompanyFile;
+        File file = HifivePlayerView.musicFile;
         //切歌后删除上一首歌下载的伴奏
         if(file != null && file.exists() && file.isFile()) {
             if(file.delete()) Log.e("TAG", "文件删除成功");

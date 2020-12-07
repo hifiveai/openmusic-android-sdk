@@ -17,6 +17,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            buildConfigField "String", "VERSION_NAME", "\"1.2.1.1\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
