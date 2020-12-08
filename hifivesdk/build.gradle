@@ -1,3 +1,5 @@
+import proguard.gradle.ProGuardTask
+
 apply plugin: 'com.android.library'
 apply from: "config.gradle"
 apply plugin: 'kotlin-android'
@@ -12,19 +14,19 @@ android {
         targetSdkVersion HiFiveVersion.targetSdkVersion
         versionCode HiFiveVersion.versionCode
         versionName HiFiveVersion.versionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "proguard-rules.pro"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     task makeJar(type: Copy) {
         //删除存在的
-        delete 'build/libs/myjar.jar'
+        delete 'build/libs/open_api_android_sdk.jar'
         //设置拷贝的文件
         from('build/intermediates/aar_main_jar/release/')
         //打进jar包后的文件目录
@@ -38,7 +40,6 @@ android {
     }
 
     makeJar.dependsOn(build)
-
 }
 
 dependencies {
@@ -54,3 +55,17 @@ dependencies {
     api HifiveDependencies["okhttp-logging-interceptor"]
 
 }
+
+
+
+//task makeJar(type: ProGuardTask, dependsOn: "build") {
+//    //刪除已有的jar包
+//    delete 'build/libs/open_api_android_sdk.jar'
+//    // 未混淆的jar路徑
+//    injars 'build/intermediates/aar_main_jar/release/'
+//    // 混淆後的jar輸出路徑
+//    outjars 'build/libs/open_api_android_sdk.jar'
+//    // 混淆協議
+//    configuration 'proguard-rules.pro'
+//}
+
