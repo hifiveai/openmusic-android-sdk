@@ -24,7 +24,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveViewPagerAdapter;
-import com.hfliveplayer.sdk.model.HifiveMusicModel;
+import com.hfliveplayer.sdk.listener.HifiveAddMusicListener;
 import com.hfliveplayer.sdk.model.HifiveMusicUserSheetModel;
 import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
@@ -49,7 +49,7 @@ import java.util.List;
  * 音乐列表的弹窗
  * @author huchao
  */
-public class HifiveMusicListDialogFragment extends DialogFragment implements HifiveAddMusicListener{
+public class HifiveMusicListDialogFragment extends DialogFragment implements HifiveAddMusicListener {
     private MagicIndicator magicIndicator;
     private ViewPager viewPager;
     private Context mContext;

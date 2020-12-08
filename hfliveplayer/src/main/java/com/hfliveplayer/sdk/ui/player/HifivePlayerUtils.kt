@@ -1,11 +1,11 @@
 package com.hfliveplayer.sdk.ui.player;
 
 import android.media.AudioAttributes
-import android.media.AudioManager
 import android.media.AudioManager.STREAM_MUSIC
 import android.media.MediaPlayer
 import android.util.Log
 import android.widget.SeekBar
+import com.hfliveplayer.sdk.listener.HifivePlayListener
 import java.io.IOException
 
 /**

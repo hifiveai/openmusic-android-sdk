@@ -33,21 +33,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    @Override
-    protected void onStart() {
-        HFLivePlayer.getInstance().attach(this);
-        super.onStart();
-    }
-
-    @Override
-    protected void onDestroy() {
-        HFLivePlayer.getInstance().destory();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        HFLivePlayer.getInstance().detach(this);
-        super.onStop();
-    }
 }

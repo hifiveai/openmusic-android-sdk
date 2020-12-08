@@ -66,12 +66,14 @@ public class HifiveDialogManageUtil {
         try {
             if(dialogFragments != null && dialogFragments.size() >0){
                 for(DialogFragment dialogFragment:dialogFragments){
-                    if(dialogFragment != null)
+                    if(dialogFragment != null && dialogFragment.isAdded())
                         dialogFragment.dismiss();
                 }
                 dialogFragments = null;
             }
         }catch (Exception e){
+            dialogFragments.clear();
+            dialogFragments = null;
             e.printStackTrace();
         }
     }

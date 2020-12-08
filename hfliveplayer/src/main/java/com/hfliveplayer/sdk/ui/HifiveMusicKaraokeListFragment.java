@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveMusicListAdapter;
+import com.hfliveplayer.sdk.listener.HifiveAddMusicListener;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;

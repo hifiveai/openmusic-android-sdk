@@ -21,7 +21,6 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +29,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.hfliveplayer.sdk.R;
+import com.hfliveplayer.sdk.listener.HifivePlayListener;
 import com.hfliveplayer.sdk.model.HifiveMusicAuthorModel;
 import com.hfliveplayer.sdk.model.HifiveMusicDetailModel;
 import com.hfliveplayer.sdk.model.HifiveMusicLyricDetailModel;
@@ -39,7 +39,7 @@ import com.hfliveplayer.sdk.ui.HifiveMusicListDialogFragment;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.util.HifiveDownloadUtile;
-import com.hfliveplayer.sdk.util.NoDoubleClickListener;
+import com.hfliveplayer.sdk.listener.NoDoubleClickListener;
 import com.hfliveplayer.sdk.view.HifiveRoundProgressBar;
 import com.hfliveplayer.sdk.view.LyricDynamicView;
 import com.hfliveplayer.sdk.view.RoundedCornersTransform;
@@ -49,7 +49,6 @@ import com.hifive.sdk.manager.HFLiveApi;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -780,6 +779,12 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         if (playMusicDetail == null) {
             return;
         }
+        //设置信息
+        if (playMusicDetail.getIsMajor() == 1) {
+            setTypeSound();
+        }else{
+            setTypeAccompany();
+        }
         if (!isChangePlayMode) {
             HifiveMusiclyricModel lyric = playMusicDetail.getLyric();
             initialVersion = playMusicDetail.getIsMajor();
@@ -797,12 +802,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     downloadLyric(lyric.getStaticUrl(), 2);
                 }
             }
-            //设置信息
-            if (playMusicDetail.getIsMajor() == 1) {
-                setTypeSound();
-            }else{
-                setTypeAccompany();
-            }
+
             //切换歌曲
             if (playMusicDetail.getFile() != null
                     && !TextUtils.isEmpty(playMusicDetail.getFile().getUrl())) {
