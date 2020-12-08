@@ -410,7 +410,7 @@ class MusicManager(val context: Context) : BaseController() {
 
                     override fun onFailure(error_msg: String) {
                         if(!error_msg.contains("Canceled")){
-                            dataResponse.fail(error_msg)
+                            dataResponse.fail("加载错误")
                         }
                     }
                 })
