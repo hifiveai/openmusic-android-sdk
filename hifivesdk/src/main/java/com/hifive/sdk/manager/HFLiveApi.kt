@@ -57,8 +57,8 @@ class HFLiveApi {
                 throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
             }
             hiFiveContext = application
-            APP_ID = MetaDataUtils.getApplicationMetaData(application,"hifive_appId")
-            SECRET = MetaDataUtils.getApplicationMetaData(application,"hifive_secret")
+            APP_ID = MetaDataUtils.getApplicationMetaData(application,"HIFIVE_APPID")
+            SECRET = MetaDataUtils.getApplicationMetaData(application,"HIFIVE_SECRET")
 
         }
 
@@ -69,8 +69,8 @@ class HFLiveApi {
 
             hiFiveContext = application
             HFLiveApi.callbacks = callbacks
-            APP_ID = MetaDataUtils.getApplicationMetaData(application,"hifive_appId")
-            SECRET = MetaDataUtils.getApplicationMetaData(application,"hifive_secret")
+            APP_ID = MetaDataUtils.getApplicationMetaData(application,"HIFIVE_APPID")
+            SECRET = MetaDataUtils.getApplicationMetaData(application,"HIFIVE_SECRET")
             callbacks?.onSuccess()
         }
 
