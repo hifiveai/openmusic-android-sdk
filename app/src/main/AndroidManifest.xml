@@ -14,11 +14,11 @@
 
 
         <meta-data
-            android:name="hifive_appId"
+            android:name="HIFIVE_APPID"
             android:value="1998ca60c18a42b38fa03b80cce1832a" >
         </meta-data>
         <meta-data
-            android:name="hifive_secret"
+            android:name="HIFIVE_SECRET"
             android:value="259e23ea0c684bd7be" />
 
 

@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-dontwarn com.hfliveplayer.sdk.**
+-keep public class com.hfliveplayer.sdk.**{*;}
+
+-dontwarn com.hifive.sdk.**
+-keep public class com.hifive.sdk.**{*;}
