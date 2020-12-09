@@ -59,7 +59,7 @@ public class HifiveDialogManageUtil {
         }
         return singleManage;
     }
-    public List<DialogFragment> dialogFragments;//维护当前所打开的dialog
+    public static List<DialogFragment> dialogFragments;//维护当前所打开的dialog
 
     //关闭所有dialog
     public void CloseDialog(){

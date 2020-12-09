@@ -40,6 +40,7 @@ import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.util.HifiveDownloadUtile;
 import com.hfliveplayer.sdk.listener.NoDoubleClickListener;
+import com.hfliveplayer.sdk.view.DraggableLinearLayout;
 import com.hfliveplayer.sdk.view.HifiveRoundProgressBar;
 import com.hfliveplayer.sdk.view.LyricDynamicView;
 import com.hfliveplayer.sdk.view.RoundedCornersTransform;
@@ -63,21 +64,9 @@ import okhttp3.Call;
  */
 @SuppressLint("ViewConstructor")
 public class HifivePlayerView extends FrameLayout implements Observer, HifivePlayListener {
-    public static final int MARGIN_EDGE = 13;
-    private float mOriginalRawX;
-    private float mOriginalRawY;
-    private float mOriginalX;
-    private float mOriginalY;
-    private static final int TOUCH_TIME_THRESHOLD = 150;//点击事件的时长，
-    private static final int LONG_TOUCH_TIME_THRESHOLD = 300;//长按事件的时长
     private int marginTop = 0;//滑动范围顶部的间距限制默认为0，
     private int marginBottom = 0;//滑动范围底部的间距限制默认为0，
-    private long mLastTouchDownTime;
-    private final MoveAnimator mMoveAnimator = new MoveAnimator();
-    private int mScreenWidth;
-    private int mScreenHeight;
-    private boolean isNearestLeft = true;
-    private float mPortraitY;
+    private DraggableLinearLayout dragLayout;
     private FrameLayout fl_lyric;
     private TextView tv_lyric_static;
     private LinearLayout ll_player;
@@ -133,6 +122,9 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             playerUtils = HifivePlayerUtils.Companion.getInstance();
             playerUtils.setPlayCompletionListener(this);
         }
+        dragLayout = findViewById(R.id.root);
+        dragLayout.setMarginTop(marginTop);
+        dragLayout.setMarginBottom(marginBottom);
         fl_lyric = findViewById(R.id.fl_lyric);
         tv_lyric_static = findViewById(R.id.tv_lyric_static);
         tv_lyric_static.setMovementMethod(new ScrollingMovementMethod());
@@ -157,38 +149,14 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     //初始化点击事件
     @SuppressLint("ClickableViewAccessibility")
     private void initEvent() {
-        iv_music.setOnTouchListener(new OnTouchListener() {
+        dragLayout.setDragView(iv_music, new DraggableLinearLayout.OnClickEvent() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event == null) {
-                    return false;
-                }
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        changeOriginalTouchParams(event);
-                        updateSize();
-                        mMoveAnimator.stop();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (isOnLongClickEvent()) {//长按时执行滑动
-                            updateViewPosition(event);
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        if (isOnLongClickEvent()) {//长按结束执行滑动
-                            clearPortraitY();
-                            moveToEdge();
-                        } else {
-                            if (isOnClickEvent()) {//短按结束执行点击事件
-                                AnimationOpen();
-                                showDialog();
-                            }
-                        }
-                        break;
-                }
-                return true;
+            public void onClickEvent() {
+                AnimationOpen();
+                showDialog();
             }
         });
+
         tv_accompany.setOnClickListener(new NoDoubleClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
@@ -462,110 +430,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         iv_music.clearAnimation();
     }
 
-    //判断是否执行事件
-    protected boolean isOnClickEvent() {
-        return System.currentTimeMillis() - mLastTouchDownTime < TOUCH_TIME_THRESHOLD;
-    }
-
-    //判断是否执行长按事件
-    protected boolean isOnLongClickEvent() {
-        return System.currentTimeMillis() - mLastTouchDownTime > LONG_TOUCH_TIME_THRESHOLD;
-    }
-
-    //滑动更新view位置
-    private void updateViewPosition(MotionEvent event) {
-        setX(mOriginalX + event.getRawX() - mOriginalRawX);
-        // 限制不可超出屏幕高度
-        float desY = mOriginalY + event.getRawY() - mOriginalRawY;
-        int maxScrollY = getMaxScrollY();
-        if (desY > maxScrollY) {
-            desY = maxScrollY;
-        } else {
-            if (desY < marginTop) {
-                desY = marginTop;
-            }
-        }
-        setY(desY);
-    }
-
-    //获取最大可滑动距离
-    public int getMaxScrollY() {
-        //判断歌曲选择相关的弹窗是否打开
-        if (dialogFragment != null && dialogFragment.getDialog() != null && dialogFragment.getDialog().isShowing()) {
-            return mScreenHeight - getHeight() - HifiveDisplayUtils.dip2px(mContext, 30) - HifiveDisplayUtils.getPlayerHeight(mContext);
-        } else {
-            return mScreenHeight - getHeight() - marginBottom;
-        }
-    }
-
-    //歌曲弹窗显示时更新最大可滑动距离
-    public void updateViewY() {
-        final int maxScrollY = mScreenHeight - getHeight() - HifiveDisplayUtils.dip2px(mContext, 30) - HifiveDisplayUtils.getPlayerHeight(mContext);
-        if (getY() > maxScrollY) {
-            TranslateAnimation translateAnimation = new TranslateAnimation(0, 0, 0, maxScrollY - getY());
-            translateAnimation.setDuration(500);
-            translateAnimation.setFillAfter(true);
-            translateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    setY(maxScrollY);
-                    clearAnimation();
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            startAnimation(translateAnimation);
-        }
-    }
-
-    private void changeOriginalTouchParams(MotionEvent event) {
-        mOriginalX = getX();
-        mOriginalY = getY();
-        mOriginalRawX = event.getRawX();
-        mOriginalRawY = event.getRawY();
-        mLastTouchDownTime = System.currentTimeMillis();
-    }
-
-    protected void updateSize() {
-        ViewGroup viewGroup = (ViewGroup) getParent();
-        if (viewGroup != null) {
-            mScreenWidth = viewGroup.getWidth() - getWidth();
-            mScreenHeight = viewGroup.getHeight();
-        }
-    }
-
-    public void moveToEdge() {
-        moveToEdge(isNearestLeft(), false);
-    }
-
-    public void moveToEdge(boolean isLeft, boolean isLandscape) {
-        float moveDistance = isLeft ? MARGIN_EDGE : mScreenWidth - MARGIN_EDGE;
-        float y = getY();
-        if (!isLandscape && mPortraitY != 0) {
-            y = mPortraitY;
-            clearPortraitY();
-        }
-        mMoveAnimator.start(moveDistance, Math.min(Math.max(0, y), mScreenHeight - getHeight()));
-    }
-
-    private void clearPortraitY() {
-        mPortraitY = 0;
-    }
-
-    protected boolean isNearestLeft() {
-        int middle = mScreenWidth / 2;
-        isNearestLeft = getX() < middle;
-        return isNearestLeft;
-    }
-
     //当前歌曲播放错误回调
     @Override
     public void playError() {
@@ -645,23 +509,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         Animation animation = new HifiveViewChangeAnimation(ll_player, HifiveDisplayUtils.dip2px(mContext, 50));
         animation.setDuration(500);
         ll_player.startAnimation(animation);
-    }
-
-    @Override
-    protected void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (getParent() != null) {
-            final boolean isLandscape = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;
-            if (isLandscape)
-                mPortraitY = getY();
-            ((ViewGroup) getParent()).post(new Runnable() {
-                @Override
-                public void run() {
-                    updateSize();
-                    moveToEdge(isNearestLeft, isLandscape);
-                }
-            });
-        }
     }
 
     //收到被观察者发出的更新通知
@@ -975,12 +822,12 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 HifiveDialogManageUtil.getInstance().CloseDialog();
             } else {
                 dialogFragment.show(mContext.getSupportFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
-                updateViewY();
+                dragLayout.updateViewY();
             }
         } else {
             dialogFragment = new HifiveMusicListDialogFragment();
             dialogFragment.show(mContext.getSupportFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
-            updateViewY();
+            dragLayout.updateViewY();
         }
     }
 
