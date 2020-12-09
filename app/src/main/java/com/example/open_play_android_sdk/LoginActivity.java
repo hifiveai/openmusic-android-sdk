@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hifive.sdk.common.BaseConstance;
 import com.hifive.sdk.common.HFLiveCallback;
 import com.hifive.sdk.hInterface.DataResponse;
@@ -86,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
             });
-            Toast.makeText(LoginActivity.this, "初始化SDK成功", Toast.LENGTH_SHORT).show();
+            HifiveDialogManageUtil.getInstance().showToast(this, "初始化SDK成功");
             SPUtils.put(this, SPUtils.appId, appId);
             SPUtils.put(this, SPUtils.secretKey, secretKey);
             flag = true;
@@ -94,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_login = findViewById(R.id.btn_login);
         btn_login.setOnClickListener(view -> {
             if (!flag) {
-                Toast.makeText(LoginActivity.this, "请先初始化SDK", Toast.LENGTH_SHORT).show();
+                HifiveDialogManageUtil.getInstance().showToast(this, "请先初始化SDK");
             } else {
                 Login();
             }
@@ -164,29 +165,27 @@ public class LoginActivity extends AppCompatActivity {
         sociatyId = et_sociaty_id.getText().toString().trim();
 
         if(TextUtils.isEmpty(memberName)){
-            Toast.makeText(LoginActivity.this,"请输入会员名称",Toast.LENGTH_SHORT).show();
+            HifiveDialogManageUtil.getInstance().showToast(this, "请输入会员名称");
             return;
         }
         if(TextUtils.isEmpty(memberId)){
-            Toast.makeText(LoginActivity.this,"请输入会员id",Toast.LENGTH_SHORT).show();
+            HifiveDialogManageUtil.getInstance().showToast(this, "请输入会员id");
             return;
         }
         HFLiveApi.Companion.getInstance().memberLogin(this, memberName, memberId, sociatyName, sociatyId,
                 null , null, null, null, null, null, new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, Integer code) {
-                        LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, string, Toast.LENGTH_SHORT).show());
+                        HifiveDialogManageUtil.getInstance().showToast(LoginActivity.this, string);
                     }
 
                     @Override
                     public void data(@NotNull Object any) {
-                        LoginActivity.this.runOnUiThread(() -> {
-                            SPUtils.put(LoginActivity.this,SPUtils.memberName,memberName);
-                            SPUtils.put(LoginActivity.this,SPUtils.memberId,memberId);
-                            Toast.makeText(LoginActivity.this, "会员登录成功", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                            finish();
-                        });
+                        SPUtils.put(LoginActivity.this,SPUtils.memberName,memberName);
+                        SPUtils.put(LoginActivity.this,SPUtils.memberId,memberId);
+                        HifiveDialogManageUtil.getInstance().showToast(LoginActivity.this, "会员登录成功");
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        finish();
                     }
                 });
     }
