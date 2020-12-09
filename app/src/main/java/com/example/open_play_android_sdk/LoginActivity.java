@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "请输入appId", Toast.LENGTH_SHORT).show();
                 return;
             }
-            HFLiveApi.Companion.registerApp(getApplication(), appId, secretKey, new HFLiveCallback() {
+            HFLiveApi.Companion.registerApp(getApplication(), new HFLiveCallback() {
                 @Override
                 public void onError(@NotNull BaseException e) {
                     Log.e("eeeeeee",e.getMsg());

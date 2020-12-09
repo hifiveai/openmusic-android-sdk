@@ -11,6 +11,17 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true" >
+
+
+        <meta-data
+            android:name="hifive_appId"
+            android:value="1998ca60c18a42b38fa03b80cce1832a" >
+        </meta-data>
+        <meta-data
+            android:name="hifive_secret"
+            android:value="259e23ea0c684bd7be" />
+
+
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait" >
