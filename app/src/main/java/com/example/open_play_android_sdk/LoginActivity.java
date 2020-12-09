@@ -5,14 +5,18 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.hifive.sdk.common.BaseConstance;
+import com.hifive.sdk.common.HFLiveCallback;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
+import com.hifive.sdk.rx.BaseException;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -71,7 +75,17 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "请输入appId", Toast.LENGTH_SHORT).show();
                 return;
             }
-            HFLiveApi.Companion.registerApp(getApplication(), appId, secretKey);
+            HFLiveApi.Companion.registerApp(getApplication(), appId, secretKey, new HFLiveCallback() {
+                @Override
+                public void onError(@NotNull BaseException e) {
+                    Log.e("eeeeeee",e.getMsg());
+                }
+
+                @Override
+                public void onSuccess() {
+
+                }
+            });
             Toast.makeText(LoginActivity.this, "初始化SDK成功", Toast.LENGTH_SHORT).show();
             SPUtils.put(this, SPUtils.appId, appId);
             SPUtils.put(this, SPUtils.secretKey, secretKey);

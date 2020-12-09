@@ -883,6 +883,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     @Override
                     public void fail(@NotNull String error_msg) {
                         HifiveDialogManageUtil.getInstance().showToast(mContext, error_msg);
+                        stopPlay();
+                        clear();
                     }
 
                     @Override

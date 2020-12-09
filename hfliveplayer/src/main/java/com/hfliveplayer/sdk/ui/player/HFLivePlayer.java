@@ -46,7 +46,6 @@ public class HFLivePlayer {
         return add(activity,0,0);
     }
     public HFLivePlayer add(FragmentActivity activity, int marginTop, int marginBottom) {
-        HFLiveApi.Companion.setVerison("1.2.1.1");
         LifeFragmentManager.Companion.getInstances().addLifeListener(activity, "HFLivePlayer", null);
         synchronized (this) {
             if (mPlayerView != null) {
