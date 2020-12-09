@@ -1,6 +1,7 @@
 package com.hifive.sdk.common
 
 import android.util.Base64
+import com.hifive.sdk.BuildConfig
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
@@ -13,6 +14,7 @@ class BaseConstance {
         const val TIME_OUT: Long = 30
         const val BASE_URL: String = "http://openmusic-api.hifiveai.com"
         const val BASE_URL_MUSIC: String = "https://hifive-gateway-test.hifiveai.com"
+        var verison : String = BuildConfig.VERSION_NAME
         var accessTokenMember: String? = null
         var accessTokenUnion: String? = null
         var memberOutId: String? = null

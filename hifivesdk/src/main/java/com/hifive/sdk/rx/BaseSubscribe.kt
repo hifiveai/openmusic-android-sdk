@@ -19,6 +19,8 @@ open class BaseSubscribe<T>(private val dataResponse: DataResponse?) : ResourceS
         t?.printStackTrace()
         when (t) {
             is BaseException -> {
+                //向开发者抛出errorMsg,交给开发者处理
+                HFLiveApi.callbacks?.onError(BaseException(t.status,t.msg ?: ""))
                 dataResponse?.errorMsg(t.msg ?: "", t.status)
             }
             is TimeoutException -> {

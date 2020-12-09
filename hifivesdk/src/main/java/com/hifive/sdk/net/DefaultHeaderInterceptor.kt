@@ -45,8 +45,8 @@ class DefaultHeaderInterceptor : Interceptor {
         if (societyOutId.isNotBlank()) {
             original.addHeader("sociatyOutId", getValueEncoded(societyOutId))
         }
-        original.addHeader("X-HF-Version", getValueEncoded(HFLiveApi.verison))
-        Log.i("X-HF-Version","-----"+HFLiveApi.verison)
+        original.addHeader("X-HF-Version", getValueEncoded(BaseConstance.verison))
+        Log.i("X-HF-Version","-----"+BaseConstance.verison)
         val authorised = original.build()
         return chain.proceed(authorised)
 

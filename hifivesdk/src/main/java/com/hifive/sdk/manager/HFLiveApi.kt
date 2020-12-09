@@ -2,12 +2,15 @@ package com.hifive.sdk.manager
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.ComponentCallbacks
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
 import com.hifive.sdk.BuildConfig
+import com.hifive.sdk.common.HFLiveCallback
 import com.hifive.sdk.controller.MusicManager
+import com.hifive.sdk.utils.MetaDataUtils
 import com.hifive.sdk.utils.StringFilterUtils
 
 /**
@@ -29,15 +32,15 @@ class HFLiveApi {
         //密钥
         var SECRET: String? = null
 
-
-        var verison : String = BuildConfig.VERSION_NAME
+        //回调
+        var callbacks : HFLiveCallback? = null
 
         fun getInstance(): MusicManager? {
             return when {
                 hiFiveContext == null || APP_ID.isNullOrEmpty() || SECRET.isNullOrEmpty() -> when {
                     hiFiveContext == null -> throw IllegalArgumentException("Failed to obtain information : The Context cannot be null")
-                    APP_ID.isNullOrEmpty() -> throw IllegalArgumentException("Failed to obtain information : The APP_ID cannot be null")
-                    SECRET.isNullOrEmpty() -> throw IllegalArgumentException("Failed to obtain information :  SECRET cannot be null")
+                    APP_ID.isNullOrEmpty() -> throw IllegalArgumentException("Failed to obtain information : The HIFive_APPID cannot be null")
+                    SECRET.isNullOrEmpty() -> throw IllegalArgumentException("Failed to obtain information : The HIFive_SECRET cannot be null")
                     else -> null
                 }
                 else -> {
@@ -49,26 +52,26 @@ class HFLiveApi {
             }
         }
 
-        fun registerApp(application: Application?, APP_ID: String?, SECRET: String?) {
+        fun registerApp(application: Application?) {
             if(application == null){
                 throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
             }
-            if(APP_ID.isNullOrEmpty()){
-                throw IllegalArgumentException("Failed to obtain information : The APP_ID cannot be null")
-            }
-//            else if(!StringFilterUtils.idFilter(APP_ID)){
-//                Toast.makeText(application,"Failed to obtain information : Only numbers and letters are allowed for the APP_ID",Toast.LENGTH_SHORT).show()
-//            }
-            if(SECRET.isNullOrEmpty()){
-                throw IllegalArgumentException("Failed to obtain information : The SECRET cannot be null")
-            }
-//            else if(!StringFilterUtils.idFilter(SECRET)){
-//                Toast.makeText(application,"Failed to obtain information : Only numbers and letters are allowed for the SECRET",Toast.LENGTH_SHORT).show()
-//            }
-
-            HFLiveApi.APP_ID = APP_ID
-            HFLiveApi.SECRET = SECRET
             hiFiveContext = application
+            APP_ID = MetaDataUtils.getApplicationMetaData(application,"hifive_appId")
+            SECRET = MetaDataUtils.getApplicationMetaData(application,"hifive_secret")
+
+        }
+
+        fun registerApp(application: Application?,callbacks: HFLiveCallback?) {
+            if(application == null){
+                throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
+            }
+
+            hiFiveContext = application
+            HFLiveApi.callbacks = callbacks
+            APP_ID = MetaDataUtils.getApplicationMetaData(application,"hifive_appId")
+            SECRET = MetaDataUtils.getApplicationMetaData(application,"hifive_secret")
+            callbacks?.onSuccess()
         }
 
     }

@@ -1,5 +1,3 @@
-import proguard.gradle.ProGuardTask
-
 apply plugin: 'com.android.library'
 apply from: "config.gradle"
 apply plugin: 'kotlin-android'
@@ -19,7 +17,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

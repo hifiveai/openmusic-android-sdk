@@ -3,6 +3,8 @@ package com.hifive.sdk.controller
 import android.content.Context
 import com.hifive.sdk.hInterface.DataResponse
 import com.hifive.sdk.hInterface.DownLoadResponse
+import com.hifive.sdk.manager.HFLiveApi
+import com.hifive.sdk.rx.BaseException
 import com.hifive.sdk.service.Service
 import com.hifive.sdk.service.impl.ServiceImpl
 import com.hifive.sdk.utils.NetWorkUtils
@@ -20,6 +22,8 @@ abstract class BaseController {
         if (NetWorkUtils.isNetWorkAvailable(context)) {
             return true
         }
+        //向开发者抛出errorMsg,交给开发者处理
+        HFLiveApi.callbacks?.onError(BaseException(10001,"网络错误"))
         info.errorMsg("网络错误", null)
         return false
     }
