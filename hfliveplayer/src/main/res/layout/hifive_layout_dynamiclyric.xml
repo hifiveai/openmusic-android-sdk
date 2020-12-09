@@ -4,30 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <com.hfliveplayer.sdk.view.MarqueeTextView
         android:id="@+id/tv_lyric_left"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:gravity="start"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:singleLine="true"
         android:textColor="#FFF69643"
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <TextView
+    <com.hfliveplayer.sdk.view.MarqueeTextView
         android:id="@+id/tv_lyric_right"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_lyric_left"
         android:layout_marginTop="5dp"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:gravity="end"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:singleLine="true"
+        android:layout_alignParentEnd="true"
         android:textColor="#FFF69643"
         android:textSize="20sp"
         android:textStyle="bold" />

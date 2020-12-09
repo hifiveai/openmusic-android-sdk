@@ -34,7 +34,8 @@ public class LyricDynamicView extends RelativeLayout {
     private String leftLyric;
     private String rightLyric;
 
-    private TextView tv_lyric_left, tv_lyric_right;
+    private MarqueeTextView tv_lyric_left;
+    private MarqueeTextView tv_lyric_right;
 
     public LyricDynamicView(Context context) {
         super(context);
@@ -61,8 +62,7 @@ public class LyricDynamicView extends RelativeLayout {
 
         tv_lyric_left =  findViewById(R.id.tv_lyric_left);
         tv_lyric_right =  findViewById(R.id.tv_lyric_right);
-//        tv_lyric_left.setSelected(true);
-//        tv_lyric_right.setSelected(true);
+
 
     }
 
@@ -82,18 +82,18 @@ public class LyricDynamicView extends RelativeLayout {
                         if(!leftLyric.equals(content)){
                             leftLyric = content;
                             tv_lyric_left.setTextColor(backgroundTextColor);
-                            tv_lyric_left.setSelected(false);
+                            tv_lyric_left.setCurrent(false);
                             tv_lyric_right.setTextColor(foregroundTextColor);
-                            tv_lyric_right.setSelected(true);
+                            tv_lyric_right.setCurrent(true);
                             tv_lyric_left.setText(leftLyric);
                         }
                     } else {
                         if(!rightLyric.equals(content)) {
                             rightLyric = content;
                             tv_lyric_left.setTextColor(foregroundTextColor);
-                            tv_lyric_left.setSelected(true);
+                            tv_lyric_left.setCurrent(true);
                             tv_lyric_right.setTextColor(backgroundTextColor);
-                            tv_lyric_right.setSelected(false);
+                            tv_lyric_right.setCurrent(false);
                             tv_lyric_right.setText(rightLyric);
                         }
 
