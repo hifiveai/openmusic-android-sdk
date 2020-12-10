@@ -457,44 +457,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         HifiveDialogManageUtil.getInstance().playNextMusic(mContext);//播放完成自动播放下一首
     }
 
-    //移动view的动画
-    protected class MoveAnimator implements Runnable {
-        private final Handler handler = new Handler(Looper.getMainLooper());
-        private float destinationX;
-        private float destinationY;
-        private long startingTime;
-
-        void start(float x, float y) {
-            this.destinationX = x;
-            this.destinationY = y;
-            startingTime = System.currentTimeMillis();
-            handler.post(this);
-        }
-
-        @Override
-        public void run() {
-            if (getRootView() == null || getRootView().getParent() == null) {
-                return;
-            }
-            float progress = Math.min(1, (System.currentTimeMillis() - startingTime) / 400f);
-            float deltaX = (destinationX - getX()) * progress;
-            float deltaY = (destinationY - getY()) * progress;
-            move(deltaX, deltaY);
-            if (progress < 1) {
-                handler.post(this);
-            }
-        }
-
-        private void stop() {
-            handler.removeCallbacks(this);
-        }
-    }
-
-    private void move(float deltaX, float deltaY) {
-        //setX(getX() + deltaX);
-        setX(0);
-        setY(getY() + deltaY);
-    }
 
     //播放器展开动画
     protected void AnimationOpen() {
