@@ -273,7 +273,8 @@ public class HifiveDialogManageUtil {
                     @Override
                     public void errorMsg(@NotNull String string, @Nullable Integer code) {
                         showToast(activity,string);
-                        if(currentList != null && currentList.size() >0){
+                        //454 版权过期
+                        if(currentList != null && currentList.size() >0 && code== 454){
                             playNextMusic(activity);
                         }else{
                             cleanPlayMusic(true);
