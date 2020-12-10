@@ -52,6 +52,15 @@ class HFLiveApi {
             }
         }
 
+        fun registerApp(application: Application?, APP_ID: String, SECRET: String) {
+            if(application == null){
+                throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
+            }
+            HFLiveApi.APP_ID = APP_ID
+            HFLiveApi.SECRET = SECRET
+            hiFiveContext = application
+        }
+
         fun registerApp(application: Application?) {
             if(application == null){
                 throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
