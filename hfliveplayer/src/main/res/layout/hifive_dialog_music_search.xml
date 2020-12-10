@@ -131,6 +131,7 @@
                 android:id="@+id/tv_empty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
                 android:textColor="#FFC7C7CC"
                 android:textSize="11sp"
                 android:gravity="center"

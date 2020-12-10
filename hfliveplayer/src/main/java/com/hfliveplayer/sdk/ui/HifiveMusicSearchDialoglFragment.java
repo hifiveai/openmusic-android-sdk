@@ -126,9 +126,6 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                         if (isRecommand) {
                             ll_empty.setVisibility(View.VISIBLE);
                             if (mContext != null){
-                                if(content.length()>15){
-                                    content = content.substring(0,15)+"...";
-                                }
                                 tv_empty.setText(mContext.getString(R.string.hifivesdk_music_search_history_empty, content));
                             }
 
