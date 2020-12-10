@@ -255,14 +255,14 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
 
     //设置播放器原声模式
     private void setTypeSound() {
-        tv_accompany.setText(mContext.getString(R.string.hifivesdk_music_player_sound));
+        tv_accompany.setText(mContext.getString(R.string.hifivesdk_music_player_accompany));
         isShowAccompany = false;
         setMusicName(HifiveDialogManageUtil.getInstance().playMusicDetail);
     }
 
     //设置播放器伴奏模式
     private void setTypeAccompany() {
-        tv_accompany.setText(mContext.getString(R.string.hifivesdk_music_player_accompany));
+        tv_accompany.setText(mContext.getString(R.string.hifivesdk_music_player_sound));
         isShowAccompany = true;
         setMusicName(HifiveDialogManageUtil.getInstance().accompanyDetail);
     }

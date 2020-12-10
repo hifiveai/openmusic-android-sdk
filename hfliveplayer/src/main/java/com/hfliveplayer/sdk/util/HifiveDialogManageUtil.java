@@ -44,6 +44,7 @@ public class HifiveDialogManageUtil {
     public static final int UPDATEKARAOKLIST = 4;//通知相关页面更新k歌列表
     public static final int PALYINGMUSIC = 5;//通知播放器开始播放新歌曲
     public static final int PALYINGCHANGEMUSIC = 6;//通知播放器改变播放模式
+    public static final int STOPPALYINGMUSIC = 7;//通知播放器停止播放
     private  static volatile  HifiveDialogManageUtil singleManage;
     private Toast toast;
     private HifiveDialogManageUtil(){
@@ -131,6 +132,7 @@ public class HifiveDialogManageUtil {
         }
         cleanPlayMusic(false);
         playMusic = musicModel;
+
         if(currentList != null && currentList.size() >0){
             if(!currentList.contains(musicModel)){
                 currentList.add(0,musicModel);
@@ -141,6 +143,7 @@ public class HifiveDialogManageUtil {
             currentList.add(musicModel);
             updateObservable.postNewPublication(UPDATEPALYLIST);
         }
+
         updateObservable.postNewPublication(UPDATEPALY);
         getMusicDetail(activity,musicModel,mediaType);
     }
@@ -172,7 +175,7 @@ public class HifiveDialogManageUtil {
     }
     //按顺序播放下一首歌
     public void playNextMusic(Activity activity){
-        if(currentList != null){
+        if(currentList != null && currentList.size()>0){
             int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
             if(positon != (currentList.size()-1)){//不是最后一首
                 setCurrentPlay(activity,currentList.get(positon+1));
@@ -266,8 +269,15 @@ public class HifiveDialogManageUtil {
                     @Override
                     public void errorMsg(@NotNull String string, @Nullable Integer code) {
                         showToast(activity,string);
+                        if(currentList != null && currentList.size() >0){
+                            currentList.remove(playMusic);
+                            if(currentList.size() >0){
+                                playNextMusic(activity);
+                            }else{
+                                cleanPlayMusic(true);
+                            }
+                        }
                     }
-
                     @Override
                     public void data(@NotNull Object any) {
                         Log.e("TAG", "==音乐详情==" + any);

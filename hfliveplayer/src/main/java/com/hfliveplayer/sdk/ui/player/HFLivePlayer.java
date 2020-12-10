@@ -79,21 +79,16 @@ public class HFLivePlayer {
     //移除播放器view
     public void remove() {
         try {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    if (mPlayerView == null) {
-                        return;
-                    }
-                    if (ViewCompat.isAttachedToWindow(mPlayerView) && getContainer() != null) {
-                        getContainer().removeView(mPlayerView);
-                    }
-                    recyclePlayer();
-                    mPlayerView = null;
-                    HifiveDialogManageUtil.getInstance().setPlayMusic(null);//清空当前播放的歌曲
-                    HifiveDialogManageUtil.getInstance().CloseDialog();
-                }
-            });
+            if (mPlayerView == null) {
+                return;
+            }
+            if (ViewCompat.isAttachedToWindow(mPlayerView) && getContainer() != null) {
+                getContainer().removeView(mPlayerView);
+            }
+            recyclePlayer();
+            mPlayerView = null;
+            HifiveDialogManageUtil.getInstance().setPlayMusic(null);//清空当前播放的歌曲
+            HifiveDialogManageUtil.getInstance().CloseDialog();
         } catch (Exception e) {
             e.printStackTrace();
         }
