@@ -36,7 +36,6 @@ public class DraggableLinearLayout extends LinearLayout {
     private final MoveAnimator mMoveAnimator = new MoveAnimator();
     private int mScreenWidth;
     private int mScreenHeight;
-    private boolean isNearestLeft = true;
     private float mPortraitY;
 
     public void setMarginTop(int marginTop) {
@@ -167,6 +166,7 @@ public class DraggableLinearLayout extends LinearLayout {
         }
     }
 
+    //获取touch时初始值
     private void changeOriginalTouchParams(MotionEvent event) {
         mOriginalX = getX();
         mOriginalY = ((View)getParent()).getY();
@@ -175,6 +175,7 @@ public class DraggableLinearLayout extends LinearLayout {
         mLastTouchDownTime = System.currentTimeMillis();
     }
 
+    //获取宽高
     protected void updateSize() {
         ViewGroup viewGroup = (ViewGroup) getParent().getParent();
         if (viewGroup != null) {
@@ -201,10 +202,10 @@ public class DraggableLinearLayout extends LinearLayout {
         mPortraitY = 0;
     }
 
+    //是否靠左
     protected boolean isNearestLeft() {
         int middle = mScreenWidth / 2;
-        isNearestLeft = getX() < middle;
-        return isNearestLeft;
+        return getX() < middle;
     }
 
     //移动view的动画
