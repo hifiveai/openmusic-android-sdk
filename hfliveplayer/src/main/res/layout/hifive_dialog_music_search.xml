@@ -36,6 +36,8 @@
                 android:imeOptions="actionSearch"
                 android:inputType="text|textCapSentences"
                 android:lines="1"
+                android:maxLines="1"
+                android:maxLength="50"
                 android:background="@null"
                 android:textSize="14sp"
                 android:textColorHint="#FFC7C7CC"
@@ -131,6 +133,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#FFC7C7CC"
                 android:textSize="11sp"
+                android:gravity="center"
                 android:layout_marginTop="5dp"
                 android:text="@string/hifivesdk_music_search_history_empty"/>
 

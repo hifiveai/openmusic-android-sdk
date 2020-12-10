@@ -25,3 +25,6 @@
 
 -dontwarn com.hifive.sdk.**
 -keep public class com.hifive.sdk.**{*;}
+
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}

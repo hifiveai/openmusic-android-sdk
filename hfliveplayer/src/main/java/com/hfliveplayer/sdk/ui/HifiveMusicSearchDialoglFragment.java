@@ -125,8 +125,13 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                         hideInput();
                         if (isRecommand) {
                             ll_empty.setVisibility(View.VISIBLE);
-                            if (mContext != null)
+                            if (mContext != null){
+                                if(content.length()>15){
+                                    content = content.substring(0,15)+"...";
+                                }
                                 tv_empty.setText(mContext.getString(R.string.hifivesdk_music_search_history_empty, content));
+                            }
+
                         } else {
                             ll_empty.setVisibility(View.GONE);
                         }
@@ -438,6 +443,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                     HifiveDisplayUtils.dip2px(mContext, 10), 0);
             tv.setText(historyData.get(i).getKeyword());
             tv.setMaxEms(10);
+            tv.setEllipsize(TextUtils.TruncateAt.END);
             tv.setSingleLine();
             tv.setGravity(Gravity.CENTER_VERTICAL);
             tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);

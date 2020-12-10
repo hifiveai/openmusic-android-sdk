@@ -18,6 +18,7 @@ import com.hifive.sdk.common.HFLiveCallback;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
 import com.hifive.sdk.rx.BaseException;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        CrashReport.initCrashReport(getApplicationContext(), "2e151e6755", false);
+
         initView();
     }
 
