@@ -33,10 +33,7 @@ public class DraggableLinearLayout extends LinearLayout {
     private int marginTop = 0;//滑动范围顶部的间距限制默认为0，
     private int marginBottom = 0;//滑动范围底部的间距限制默认为0，
     private long mLastTouchDownTime;
-    private final MoveAnimator mMoveAnimator = new MoveAnimator();
-    private int mScreenWidth;
     private int mScreenHeight;
-    private float mPortraitY;
 
     public void setMarginTop(int marginTop) {
         this.marginTop = marginTop;
@@ -76,7 +73,6 @@ public class DraggableLinearLayout extends LinearLayout {
                     case MotionEvent.ACTION_DOWN:
                         changeOriginalTouchParams(event);
                         updateSize();
-                        mMoveAnimator.stop();
                         break;
                     case MotionEvent.ACTION_MOVE:
                         if (isOnLongClickEvent()) {//长按时执行滑动
@@ -85,8 +81,7 @@ public class DraggableLinearLayout extends LinearLayout {
                         break;
                     case MotionEvent.ACTION_UP:
                         if (isOnLongClickEvent()) {//长按结束执行滑动
-                            clearPortraitY();
-                            moveToEdge();
+                            setX(MARGIN_EDGE);
                         } else {
                             if (isOnClickEvent()) {//短按结束执行点击事件
                                 clickevent.onClickEvent();
@@ -179,73 +174,35 @@ public class DraggableLinearLayout extends LinearLayout {
     protected void updateSize() {
         ViewGroup viewGroup = (ViewGroup) getParent().getParent();
         if (viewGroup != null) {
-            mScreenWidth = viewGroup.getWidth() - getWidth();
             mScreenHeight = viewGroup.getHeight();
         }
     }
 
-    public void moveToEdge() {
-        moveToEdge(isNearestLeft(), false);
-    }
+//    //touch结束时移动到边缘
+//    public void updateViewX() {
+//        TranslateAnimation translateAnimation = new TranslateAnimation(getX(), MARGIN_EDGE, 0, 0);
+//        translateAnimation.setDuration(500);
+//        translateAnimation.setFillAfter(true);
+//        translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                setX(MARGIN_EDGE);
+//                clearAnimation();
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//
+//            }
+//        });
+//        startAnimation(translateAnimation);
+//    }
 
-    public void moveToEdge(boolean isLeft, boolean isLandscape) {
-        float moveDistance = isLeft ? MARGIN_EDGE : mScreenWidth - MARGIN_EDGE;
-        float y = ((View)getParent()).getY();
-        if (!isLandscape && mPortraitY != 0) {
-            y = mPortraitY;
-            clearPortraitY();
-        }
-        mMoveAnimator.start(moveDistance, Math.min(Math.max(0, y), mScreenHeight - getHeight()));
-    }
-
-    private void clearPortraitY() {
-        mPortraitY = 0;
-    }
-
-    //是否靠左
-    protected boolean isNearestLeft() {
-        int middle = mScreenWidth / 2;
-        return getX() < middle;
-    }
-
-    //移动view的动画
-    protected class MoveAnimator implements Runnable {
-        private final Handler handler = new Handler(Looper.getMainLooper());
-        private float destinationX;
-        private float destinationY;
-        private long startingTime;
-
-        void start(float x, float y) {
-            this.destinationX = x;
-            this.destinationY = y;
-            startingTime = System.currentTimeMillis();
-            handler.post(this);
-        }
-
-        @Override
-        public void run() {
-            if (getRootView() == null || getRootView().getParent() == null) {
-                return;
-            }
-            float progress = Math.min(1, (System.currentTimeMillis() - startingTime) / 400f);
-            float deltaX = (destinationX - getX()) * progress;
-            float deltaY = (destinationY - ((View)getParent()).getY()) * progress;
-            move(deltaX, deltaY);
-            if (progress < 1) {
-                handler.post(this);
-            }
-        }
-
-        private void stop() {
-            handler.removeCallbacks(this);
-        }
-    }
-
-    private void move(float deltaX, float deltaY) {
-        //setX(getX() + deltaX);
-        setX(0);
-        ((View)getParent()).setY(((View)getParent()).getY() + deltaY);
-    }
 
     public interface OnClickEvent {
         void onClickEvent();
