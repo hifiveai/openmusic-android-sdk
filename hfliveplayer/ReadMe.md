@@ -69,8 +69,8 @@ api "io.reactivex.rxjava2:rxjava:2.2.10"
 api "io.reactivex.rxjava2:rxandroid:2.1.1"
 api "com.squareup.retrofit2:retrofit:2.6.0"
 api "com.squareup.retrofit2:adapter-rxjava2:2.6.0"
-api "com.squareup.okhttp3:okhttp:4.0.0"
-api "com.squareup.okhttp3:logging-interceptor:4.0.0"
+api "com.squareup.okhttp3:okhttp:4.9.0"
+api "com.squareup.okhttp3:logging-interceptor:4.9.0"
 api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
 api 'com.github.bumptech.glide:glide:4.8.0'
 api "com.android.support:recyclerview-v7:28.0.0"

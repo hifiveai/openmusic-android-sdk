@@ -43,8 +43,8 @@ dependencies {
     api "com.squareup.retrofit2:retrofit:2.6.0"
     api "com.squareup.retrofit2:converter-gson:2.6.0"
     api "com.squareup.retrofit2:adapter-rxjava2:2.6.0"
-    api "com.squareup.okhttp3:okhttp:4.0.0"
-    api "com.squareup.okhttp3:logging-interceptor:4.0.0"
+    api "com.squareup.okhttp3:okhttp:4.9.0"
+    api "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
     api group: 'com.github.bumptech.glide', name: 'glide', version: '4.11.0'
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
