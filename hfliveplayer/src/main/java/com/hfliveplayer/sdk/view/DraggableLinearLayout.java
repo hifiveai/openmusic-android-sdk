@@ -3,8 +3,6 @@ package com.hfliveplayer.sdk.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,7 +21,7 @@ import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
  */
 public class DraggableLinearLayout extends LinearLayout {
 
-    public static final int MARGIN_EDGE = 13;
+    private final int MARGIN_EDGE = 13;
     private float mOriginalRawX;
     private float mOriginalRawY;
     private float mOriginalX;
