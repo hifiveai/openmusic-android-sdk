@@ -118,8 +118,9 @@ HFLiveApi.Companion.registerApp(Application context);
 - 由于播放器UI基于DialogFragment开发，需要使用播放器UI的Activity务必继承FragmentActivity或FragmentActivity的子类。
 - 使用播放器UI前请确保SDK已初始化，并完成用户登录操作。
 ```
- HFLiveApi.Companion.getInstance().memberLogin(context: Context, memberName: String, memberId: String, societyName: String?, societyId: String?, headerUrl: String?, gender: String?, birthday: String?, location: String?, favoriteSinger: String?, phone: String?, dataResponse: DataResponse)
+ HFLiveApi.Companion.getInstance().memberLogin()
 ```
+用户登录参数参考[open_api_android_sdk](https://gitlab.ilongyuan.cn/hifive/open_api_android_sdk/-/blob/master/hifivesdk/ReadMe.md)文档
 
 ##### 3.3.2 使用
 
