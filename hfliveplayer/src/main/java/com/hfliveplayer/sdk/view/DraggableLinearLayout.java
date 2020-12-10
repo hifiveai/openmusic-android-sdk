@@ -2,6 +2,7 @@ package com.hfliveplayer.sdk.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
@@ -203,6 +204,18 @@ public class DraggableLinearLayout extends LinearLayout {
 //        startAnimation(translateAnimation);
 //    }
 
+
+    @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (getParent() != null) {
+            boolean isLandscape = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;
+            if (isLandscape) {
+                updateSize();
+                setX(MARGIN_EDGE);
+            }
+        }
+    }
 
     public interface OnClickEvent {
         void onClickEvent();
