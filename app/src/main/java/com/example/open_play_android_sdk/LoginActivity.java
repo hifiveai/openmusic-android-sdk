@@ -76,17 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "请输入appId", Toast.LENGTH_SHORT).show();
                 return;
             }
-            HFLiveApi.Companion.registerApp(getApplication(), new HFLiveCallback() {
-                @Override
-                public void onError(@NotNull BaseException e) {
-                    Log.e("eeeeeee",e.getMsg());
-                }
-
-                @Override
-                public void onSuccess() {
-
-                }
-            });
+            HFLiveApi.Companion.registerApp(getApplication(),appId,secretKey);
             HifiveDialogManageUtil.getInstance().showToast(this, "初始化SDK成功");
             SPUtils.put(this, SPUtils.appId, appId);
             SPUtils.put(this, SPUtils.secretKey, secretKey);
