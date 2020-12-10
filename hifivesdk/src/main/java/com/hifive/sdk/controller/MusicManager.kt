@@ -139,7 +139,7 @@ class MusicManager(val context: Context) : BaseController() {
                 .request(object : BaseSubscribe<Any>(dataResponse) {
                     override fun onNext(t: Any) {
                         memberOutId = memberId
-                        societyOutId = null
+                        societyOutId = societyId
                         val json = JSONObject(t.toString())
                         val token = json.getString("accessToken")
                         BaseConstance.accessTokenMember = token ?: ""
