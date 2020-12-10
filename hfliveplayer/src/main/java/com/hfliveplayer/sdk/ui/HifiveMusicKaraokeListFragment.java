@@ -161,7 +161,7 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
                 Message message = mHandler.obtainMessage();
                 message.obj = hifiveMusicModel;
                 message.what = UPDATE_CURRENT_SONG;
-                mHandler.sendMessageDelayed(message,300);
+                mHandler.sendMessageDelayed(message,200);
 //                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),hifiveMusicModel,"1");
             }
         });

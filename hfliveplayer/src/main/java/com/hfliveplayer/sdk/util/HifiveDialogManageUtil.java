@@ -130,23 +130,27 @@ public class HifiveDialogManageUtil {
         if(playMusic != null && playMusic.getMusicId().equals(musicModel.getMusicId())){//播放的同一首=歌
             return;
         }
+
+        getMusicDetail(activity,musicModel,mediaType);
+    }
+
+    //获取歌曲详情成功后才添加到播放列表以及播放
+    private void updatePlayList(HifiveMusicModel musicModel){
         cleanPlayMusic(false);
         playMusic = musicModel;
-
+        updateObservable.postNewPublication(UPDATEPALY);
         if(currentList != null && currentList.size() >0){
-            if(!currentList.contains(musicModel)){
-                currentList.add(0,musicModel);
+            if(!currentList.contains(playMusic)){
+                currentList.add(0,playMusic);
                 updateObservable.postNewPublication(UPDATEPALYLIST);
             }
         }else{
             currentList = new ArrayList<>();
-            currentList.add(musicModel);
+            currentList.add(playMusic);
             updateObservable.postNewPublication(UPDATEPALYLIST);
         }
-
-        updateObservable.postNewPublication(UPDATEPALY);
-        getMusicDetail(activity,musicModel,mediaType);
     }
+
     /**
      *  清空播放缓存数据，重置播放效果
      * @param isStop 是否重置播放器播放效果
@@ -270,17 +274,15 @@ public class HifiveDialogManageUtil {
                     public void errorMsg(@NotNull String string, @Nullable Integer code) {
                         showToast(activity,string);
                         if(currentList != null && currentList.size() >0){
-                            currentList.remove(playMusic);
-                            if(currentList.size() >0){
-                                playNextMusic(activity);
-                            }else{
-                                cleanPlayMusic(true);
-                            }
+                            playNextMusic(activity);
+                        }else{
+                            cleanPlayMusic(true);
                         }
                     }
                     @Override
                     public void data(@NotNull Object any) {
                         Log.e("TAG", "==音乐详情==" + any);
+                        updatePlayList(musicModel);
                         updatePlayMusicDetail(String.valueOf(any));
                         updateObservable.postNewPublication(PALYINGMUSIC);
                     }

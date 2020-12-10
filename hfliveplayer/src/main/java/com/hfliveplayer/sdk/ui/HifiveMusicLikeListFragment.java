@@ -45,6 +45,7 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
     protected static final int RequstSuccess =11;//请求成功
     protected static final int RequstFail= 12;//请求失败
     protected static final int deleteSuccess= 13;//删除成功
+    protected static final int UPDATE_CURRENT_SONG= 99;//切歌
     public boolean isRefresh= false;
     private SmartRefreshLayout refreshLayout;
     private TextView tv_number;
@@ -88,6 +89,10 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
                         }
                         HifiveDialogManageUtil.getInstance().setLikeList(adapter.getDatas());
                         tv_number.setText(getString(R.string.hifivesdk_music_all_play,adapter.getItemCount()));
+                        break;
+                    case UPDATE_CURRENT_SONG:
+                        HifiveMusicModel hifiveMusicModel = (HifiveMusicModel) msg.obj;
+                        HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),hifiveMusicModel,"2");
                         break;
                 }
             } catch (Exception e) {
@@ -152,7 +157,13 @@ public class HifiveMusicLikeListFragment extends Fragment implements Observer {
         adapter.setOnItemClickListener(new HifiveMusicListAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),adapter.getDatas().get(position),"2");
+                mHandler.removeMessages(UPDATE_CURRENT_SONG);
+                HifiveMusicModel hifiveMusicModel = adapter.getDatas().get(position);
+                Message message = mHandler.obtainMessage();
+                message.obj = hifiveMusicModel;
+                message.what = UPDATE_CURRENT_SONG;
+                mHandler.sendMessageDelayed(message,200);
+//                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),adapter.getDatas().get(position),"2");
             }
         });
         adapter.setOnItemDeleteClickListener(new HifiveMusicListAdapter.OnItemDeleteClickListener() {

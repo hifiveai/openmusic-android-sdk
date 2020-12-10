@@ -1,6 +1,8 @@
 package com.hfliveplayer.sdk.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +35,22 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
     private LinearLayout ll_empty;
     private HifiveAddMusicListener addMusicListener;
 
+    protected static final int UPDATE_CURRENT_SONG= 99;//切歌
+
     public void setAddMusicListener(HifiveAddMusicListener addMusicListener) {
         this.addMusicListener = addMusicListener;
     }
+
+    protected Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            if (msg.what == UPDATE_CURRENT_SONG) {
+                HifiveMusicModel hifiveMusicModel = (HifiveMusicModel) msg.obj;
+                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(), hifiveMusicModel, "2");
+            }
+            return true;
+        }
+    });
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +86,13 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         adapter.setOnItemClickListener(new HifiveMusicListAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),adapter.getDatas().get(position),"2");
+                mHandler.removeMessages(UPDATE_CURRENT_SONG);
+                HifiveMusicModel hifiveMusicModel = adapter.getDatas().get(position);
+                Message message = mHandler.obtainMessage();
+                message.obj = hifiveMusicModel;
+                message.what = UPDATE_CURRENT_SONG;
+                mHandler.sendMessageDelayed(message,200);
+//                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),adapter.getDatas().get(position),"2");
             }
         });
         adapter.setOnItemDeleteClickListener(new HifiveMusicListAdapter.OnItemDeleteClickListener() {
@@ -128,6 +149,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
