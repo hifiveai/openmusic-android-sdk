@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,6 +52,7 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     public boolean isRefresh= false;
     public boolean isLoadMore = false;
     private String id;//电台id
+    private LinearLayout ll_empty;
     private SmartRefreshLayout refreshLayout;
     private RecyclerView mRecyclerView;
     private HifiveMusicSheetAdapter adapter;
@@ -68,6 +70,7 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                         refreshLayout.finishRefresh();
                         if(sheetModels != null)
                             adapter.updateDatas(sheetModels);
+                        updateView();
                         refreshLayout.setEnableLoadMore(page<totalPage);
                         break;
                     case LoadMore:
@@ -109,6 +112,7 @@ public class HifiveMusicRadioStationFragment extends Fragment {
         View view = inflater.inflate(R.layout.hifive_fragment_radio_station, container, false);
         if(getArguments() != null)
             id = getArguments().getString(TYPE_ID);
+        ll_empty =  view.findViewById(R.id.ll_empty);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setRefreshHeader(new HifiveRefreshHeader(getContext()));
         refreshLayout.setRefreshFooter(new HifiveLoadMoreFooter(getContext()));
@@ -167,30 +171,44 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     }
     //根据电台获取歌单数据
     private void getData(final int ty) {
-        if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
-            return;
-        HFLiveApi.Companion.getInstance().getCompanySheetList(getContext(), id, null, null,
-                null, null, "sheetTag", "10", String.valueOf(page), new DataResponse() {
-                    @Override
-                    public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                        if (ty != Refresh) {//上拉加载请求失败后，还原页卡
-                            page--;
+        try {
+            if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
+                return;
+            HFLiveApi.Companion.getInstance().getCompanySheetList(getContext(), id, null, null,
+                    null, null, "sheetTag", "10", String.valueOf(page), new DataResponse() {
+                        @Override
+                        public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                            if (ty != Refresh) {//上拉加载请求失败后，还原页卡
+                                page--;
+                            }
+                            HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
+                            mHandler.sendEmptyMessage(RequstFail);
                         }
-                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
-                        mHandler.sendEmptyMessage(RequstFail);
-                    }
 
-                    @Override
-                    public void data(@NotNull Object any) {
-                        Log.e("TAG","歌单数据=="+any);
+                        @Override
+                        public void data(@NotNull Object any) {
+                            Log.e("TAG","歌单数据=="+any);
 
-                        sheetModels = GsonUtils.getRecords(String.valueOf(any), HifiveMusicSheetModel.class);
-                        totalPage = GsonUtils.getValue(String.valueOf(any),"totalPage").getAsInt();
+                            sheetModels = GsonUtils.getRecords(String.valueOf(any), HifiveMusicSheetModel.class);
+                            totalPage = GsonUtils.getValue(String.valueOf(any),"totalPage").getAsInt();
 
-                        mHandler.sendEmptyMessage(ty);
-                    }
-                });
+                            mHandler.sendEmptyMessage(ty);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    //判断空view是否显示
+    private void updateView() {
+        if(adapter.getItemCount() >0){
+            ll_empty.setVisibility(View.GONE);
+        }else{
+            ll_empty.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

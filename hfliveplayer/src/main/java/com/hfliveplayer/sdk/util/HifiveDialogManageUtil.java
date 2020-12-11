@@ -64,19 +64,15 @@ public class HifiveDialogManageUtil {
 
     //关闭所有dialog
     public void CloseDialog(){
-        try {
             if(dialogFragments != null && dialogFragments.size() >0){
                 for(DialogFragment dialogFragment:dialogFragments){
-                    if(dialogFragment != null && dialogFragment.isAdded())
-                        dialogFragment.dismiss();
+                    if(dialogFragment != null){
+                        dialogFragment.dismissAllowingStateLoss();
+                    }
                 }
-                dialogFragments = null;
+                dialogFragments.clear();
             }
-        }catch (Exception e){
-            dialogFragments.clear();
             dialogFragments = null;
-            e.printStackTrace();
-        }
     }
     //添加dialog
     public void addDialog(DialogFragment dialogFragment){
@@ -266,48 +262,59 @@ public class HifiveDialogManageUtil {
     }
     //获取歌曲详情mediaType表示是获取伴奏版本信息还是主版本信息
     public void getMusicDetail(final Activity activity, final HifiveMusicModel musicModel,String mediaType){
-        if (HFLiveApi.Companion.getInstance() == null)
-            return;
-        HFLiveApi.Companion.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
-                mediaType, null, null, field, new DataResponse() {
-                    @Override
-                    public void errorMsg(@NotNull String string, @Nullable Integer code) {
-                        showToast(activity,string);
-                        //454 版权过期
-                        if(currentList != null && currentList.size() >0 && code== 454){
-                            playNextMusic(activity);
-                        }else{
-                            cleanPlayMusic(true);
+        try {
+            if (HFLiveApi.Companion.getInstance() == null)
+                return;
+            HFLiveApi.Companion.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
+                    mediaType, null, null, field, new DataResponse() {
+                        @Override
+                        public void errorMsg(@NotNull String string, @Nullable Integer code) {
+                            showToast(activity,string);
+                            //454 版权过期
+                            if(code != null && code == 454 && currentList != null){
+                                currentList.remove(musicModel);
+                            }
+                            if(currentList != null && currentList.size() >0 && code != null && code == 454 ){
+                                playNextMusic(activity);
+                            }else{
+                                cleanPlayMusic(true);
+                            }
                         }
-                    }
-                    @Override
-                    public void data(@NotNull Object any) {
-                        Log.e("TAG", "==音乐详情==" + any);
-                        updatePlayList(musicModel);
-                        updatePlayMusicDetail(String.valueOf(any));
-                        updateObservable.postNewPublication(PALYINGMUSIC);
-                    }
-                });
+                        @Override
+                        public void data(@NotNull Object any) {
+                            Log.e("TAG", "==音乐详情==" + any);
+                            updatePlayList(musicModel);
+                            updatePlayMusicDetail(String.valueOf(any));
+                            updateObservable.postNewPublication(PALYINGMUSIC);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     //音乐播放切换播放模式（主版和伴奏切换）时获取歌曲详情
     public void getMusicDetail(int majorVersion, final Activity activity){
-        String musicId = getMusicId(majorVersion);
-        if (HFLiveApi.Companion.getInstance() == null || TextUtils.isEmpty(musicId))
-            return;
-        HFLiveApi.Companion.getInstance().getMusicDetail(activity, musicId, null,
-                "2", null, null,field, new DataResponse() {
-                    @Override
-                    public void errorMsg(@NotNull String string,@Nullable Integer code) {
-                        showToast(activity,string);
-                    }
+        try {
+            String musicId = getMusicId(majorVersion);
+            if (HFLiveApi.Companion.getInstance() == null || TextUtils.isEmpty(musicId))
+                return;
+            HFLiveApi.Companion.getInstance().getMusicDetail(activity, musicId, null,
+                    "2", null, null,field, new DataResponse() {
+                        @Override
+                        public void errorMsg(@NotNull String string,@Nullable Integer code) {
+                            showToast(activity,string);
+                        }
 
-                    @Override
-                    public void data(@NotNull Object any) {
-                        Log.e("TAG", "==音乐详情==" + any);
-                        updatePlayMusicDetail(String.valueOf(any));
-                        updateObservable.postNewPublication(PALYINGCHANGEMUSIC);
-                    }
-                });
+                        @Override
+                        public void data(@NotNull Object any) {
+                            Log.e("TAG", "==音乐详情==" + any);
+                            updatePlayMusicDetail(String.valueOf(any));
+                            updateObservable.postNewPublication(PALYINGCHANGEMUSIC);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     //保存当前播放类型，根据播放类型查找对应的音乐详情对象，播放相应歌曲
     public int playType;//当前播放的类型 1.主版本 0.伴奏版

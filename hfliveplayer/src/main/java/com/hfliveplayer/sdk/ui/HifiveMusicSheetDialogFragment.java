@@ -203,22 +203,26 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
     }
     //获取电台列表
     private  void  getRadioStationData(){
-        if (HFLiveApi.Companion.getInstance() == null || mContext == null)
-            return;
-        HFLiveApi.Companion.getInstance().getCompanyChannelList(mContext, new DataResponse() {
-            @Override
-            public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
-            }
+        try {
+            if (HFLiveApi.Companion.getInstance() == null || mContext == null)
+                return;
+            HFLiveApi.Companion.getInstance().getCompanyChannelList(mContext, new DataResponse() {
+                @Override
+                public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                    HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
+                }
 
-            @Override
-            public void data(@NotNull Object any) {
-                Log.e("TAG", "电台数据==" + any);
+                @Override
+                public void data(@NotNull Object any) {
+                    Log.e("TAG", "电台数据==" + any);
 
-                companyChannelLists = GsonUtils.parseJson(String.valueOf(any), HifiveMusicChannelModel.class);
-                initMagicIndicator();
-                initPage();
-            }
-        });
+                    companyChannelLists = GsonUtils.parseJson(String.valueOf(any), HifiveMusicChannelModel.class);
+                    initMagicIndicator();
+                    initPage();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

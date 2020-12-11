@@ -208,47 +208,55 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
     }
     //删除会员歌单歌曲
     private void deleteMusic(final int position) {
-        if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
-            return;
-        HFLiveApi.Companion.getInstance().deleteMemberSheetMusic(getContext(), String.valueOf(sheetId),
-                adapter.getDatas().get(position).getMusicId(), new DataResponse() {
-                    @Override
-                    public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
-                    }
+        try {
+            if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
+                return;
+            HFLiveApi.Companion.getInstance().deleteMemberSheetMusic(getContext(), String.valueOf(sheetId),
+                    adapter.getDatas().get(position).getMusicId(), new DataResponse() {
+                        @Override
+                        public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                            HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
+                        }
 
-                    @Override
-                    public void data(@NotNull Object any) {
-                        Log.e("TAG", "==删除成功==");
-                        Message message = mHandler.obtainMessage();
-                        message.arg1 = position;
-                        message.what = deleteSuccess;
-                        mHandler.sendMessage(message);
-                    }
-                });
+                        @Override
+                        public void data(@NotNull Object any) {
+                            Log.e("TAG", "==删除成功==");
+                            Message message = mHandler.obtainMessage();
+                            message.arg1 = position;
+                            message.what = deleteSuccess;
+                            mHandler.sendMessage(message);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
     //根据用户歌单id获取歌曲数据
     private void getData() {
-        if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
-            return;
-        HFLiveApi.Companion.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, HifiveDialogManageUtil.field,
-                "100", "1", new DataResponse() {
-                    @Override
-                    public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                        HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
-                        mHandler.sendEmptyMessage(RequstFail);
-                    }
+        try {
+            if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
+                return;
+            HFLiveApi.Companion.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, HifiveDialogManageUtil.field,
+                    "100", "1", new DataResponse() {
+                        @Override
+                        public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
+                            HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
+                            mHandler.sendEmptyMessage(RequstFail);
+                        }
 
-                    @Override
-                    public void data(@NotNull Object any) {
-                        Log.e("TAG", "K歌数据==" + any);
+                        @Override
+                        public void data(@NotNull Object any) {
+                            Log.e("TAG", "K歌数据==" + any);
 
-                        hifiveMusicModels = GsonUtils.getRecords(String.valueOf(any),HifiveMusicModel.class);
-                        mHandler.sendEmptyMessage(RequstSuccess);
-                    }
-                });
+                            hifiveMusicModels = GsonUtils.getRecords(String.valueOf(any),HifiveMusicModel.class);
+                            mHandler.sendEmptyMessage(RequstSuccess);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void onDestroy() {

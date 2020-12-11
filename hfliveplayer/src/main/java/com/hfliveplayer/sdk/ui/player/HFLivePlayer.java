@@ -28,6 +28,7 @@ public class HFLivePlayer {
     private HifivePlayerView mPlayerView;
     private static volatile HFLivePlayer mInstance;
     private WeakReference<FrameLayout> mContainer;
+    public static boolean isAttached;
     private HFLivePlayer() {
 
     }
@@ -120,6 +121,7 @@ public class HFLivePlayer {
      * activity启动时重新添加播放器，实现播放器与activity绑定
      */
     public void attach(FragmentActivity activity) {
+        isAttached = true;
         attach(getActivityRoot(activity));
     }
 
@@ -142,6 +144,7 @@ public class HFLivePlayer {
      * activity停止是暂时移除播放器，实现播放器与activity绑定
      */
     public void detach(FragmentActivity activity) {
+        isAttached = false;
         detach(getActivityRoot(activity));
     }
 

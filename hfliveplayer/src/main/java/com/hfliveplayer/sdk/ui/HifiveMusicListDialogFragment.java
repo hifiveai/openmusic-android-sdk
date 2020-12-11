@@ -25,6 +25,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveViewPagerAdapter;
 import com.hfliveplayer.sdk.listener.HifiveAddMusicListener;
+import com.hfliveplayer.sdk.listener.NoDoubleClickListener;
 import com.hfliveplayer.sdk.model.HifiveMusicUserSheetModel;
 import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
@@ -113,19 +114,19 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
                 HifiveDialogManageUtil.getInstance().removeDialog(0);
             }
         });
-        view.findViewById(R.id.iv_sheet).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.iv_sheet).setOnClickListener(new NoDoubleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onNoDoubleClick(View v) {
                 HifiveMusicSheetDialogFragment dialogFragment = new HifiveMusicSheetDialogFragment();
-                if(getFragmentManager() != null)
+                if(getFragmentManager() != null )
                     dialogFragment.show(getFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
             }
         });
-        view.findViewById(R.id.iv_search).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.iv_search).setOnClickListener(new NoDoubleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onNoDoubleClick(View v) {
                 HifiveMusicSearchDialoglFragment dialogFragment = new HifiveMusicSearchDialoglFragment();
-                if(getFragmentManager() != null)
+                if(getFragmentManager() != null )
                     dialogFragment.show(getFragmentManager(), HifiveMusicSearchDialoglFragment.class.getSimpleName());
             }
         });
