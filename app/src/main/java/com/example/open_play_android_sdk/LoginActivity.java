@@ -42,13 +42,18 @@ public class LoginActivity extends AppCompatActivity {
         initView();
     }
 
+    /**
+     *  正式 300a44d050c942eebeae8765a878b0ee   0e31fe11b31247fca8
+     *  测试 1998ca60c18a42b38fa03b80cce1832a   259e23ea0c684bd7be
+     *
+     */
     private void initView() {
         et_appid = findViewById(R.id.et_appid);
-        appId = (String) SPUtils.get(this, SPUtils.appId, "1998ca60c18a42b38fa03b80cce1832a");
+        appId = (String) SPUtils.get(this, SPUtils.appId, "300a44d050c942eebeae8765a878b0ee");
         et_appid.setText(appId);
 
         et_secretkey = findViewById(R.id.et_secretkey);
-        secretKey = (String) SPUtils.get(this, SPUtils.secretKey, "259e23ea0c684bd7be");
+        secretKey = (String) SPUtils.get(this, SPUtils.secretKey, "0e31fe11b31247fca8");
         et_secretkey.setText(secretKey);
 
         et_member_name = findViewById(R.id.et_member_name);

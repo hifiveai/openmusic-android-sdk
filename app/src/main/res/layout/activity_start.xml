@@ -33,7 +33,6 @@
             android:hint="请输入appId"
             android:inputType="textVisiblePassword"
             android:maxLength="50"
-            android:text="1998ca60c18a42b38fa03b80cce1832a"
             android:textColor="#FF282828"
             android:textSize="14sp" />
     </LinearLayout>
@@ -61,7 +60,6 @@
             android:textColor="#FF282828"
             android:maxLines="1"
             android:hint="请输入secretKey"
-            android:text="259e23ea0c684bd7be"
             android:inputType="textVisiblePassword"
             android:maxLength="50"
             android:digits="@string/filter_vcode"
