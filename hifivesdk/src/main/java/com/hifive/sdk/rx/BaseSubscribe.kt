@@ -24,22 +24,22 @@ open class BaseSubscribe<T>(private val dataResponse: DataResponse?) : ResourceS
                 dataResponse?.errorMsg(t.msg ?: "", t.status)
             }
             is TimeoutException -> {
-                dataResponse?.errorMsg(t.message ?: "连接超时", null)
+                dataResponse?.errorMsg(t.message ?: "连接超时", 10002)
             }
             is HttpException -> {
-                dataResponse?.errorMsg(t.message ?: "http异常", null)
+                dataResponse?.errorMsg(t.message ?: "http异常", 10003)
             }
             is SocketException -> {
-                dataResponse?.errorMsg(t.message ?: "链接异常", null)
+                dataResponse?.errorMsg(t.message ?: "链接异常", 10004)
             }
             is JSONException -> {
-                dataResponse?.errorMsg(t.message ?: "JSON转换失败", null)
+                dataResponse?.errorMsg(t.message ?: "JSON转换失败",10097)
             }
             is JsonSyntaxException -> {
-                dataResponse?.errorMsg(t.message ?: "JSON格式不匹配", null)
+                dataResponse?.errorMsg(t.message ?: "JSON格式不匹配", 10098)
             }
             else -> {
-                dataResponse?.errorMsg(t?.message ?: "未知错误", null)
+                dataResponse?.errorMsg(t?.message ?: "未知错误", 10099)
             }
         }
 

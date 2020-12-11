@@ -24,7 +24,7 @@ abstract class BaseController {
         }
         //向开发者抛出errorMsg,交给开发者处理
         HFLiveApi.callbacks?.onError(BaseException(10001,"网络错误"))
-        info.errorMsg("网络错误", null)
+        info.errorMsg("网络错误", 10001)
         return false
     }
 
