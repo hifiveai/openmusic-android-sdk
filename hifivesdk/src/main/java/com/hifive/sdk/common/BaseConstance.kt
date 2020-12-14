@@ -1,7 +1,7 @@
 package com.hifive.sdk.common
 
 import android.util.Base64
-import com.tsy.sdk.myokhttp.BuildConfig
+import com.hifive.sdk.BuildConfig
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
