@@ -97,13 +97,13 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                         isAddLike = false;
                         showToast(R.string.hifivesdk_music_add_like_msg);
                         HifiveDialogManageUtil.getInstance().addLikeSingle((HifiveMusicModel) msg.obj);
-                        adapter.notifyItemChanged(msg.arg1);
+                        adapter.notifyItemChanged(msg.arg1,0);
                         break;
                     case Addkaraoke:
                         isAddkaraoke = false;
                         showToast(R.string.hifivesdk_music_add_karaoke_msg);
                         HifiveDialogManageUtil.getInstance().addKaraokeSingle((HifiveMusicModel) msg.obj);
-                        adapter.notifyItemChanged(msg.arg1);
+                        adapter.notifyItemChanged(msg.arg1,1);
                         break;
                 }
             } catch (Exception e) {

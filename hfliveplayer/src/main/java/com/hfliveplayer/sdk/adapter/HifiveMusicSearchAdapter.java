@@ -62,6 +62,23 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
 
 
     @Override
+    public void onBindViewHolder(@NonNull MusicSearchHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            //payloads 为 空，说明是更新整个 ViewHolder
+            onBindViewHolder(holder, position);
+        } else {
+//            final HifiveMusicModel model =dataList.get(position);
+            if((int)payloads.get(0) == 1){
+                holder.iv_add_karaoke.setImageResource(R.mipmap.hifivesdk_icon_add_karaoke_select);
+            }else{
+                holder.iv_add_like.setImageResource(R.mipmap.hifivesdk_icon_add_like_select);
+            }
+
+        }
+
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull MusicSearchHolder holder, final int position) {
         final HifiveMusicModel model = dataList.get(position);
         holder.tv_num.setText(String.valueOf(position+1));
@@ -115,31 +132,6 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
             stringBuffer.append(model.getIntro());
         }
         holder.tv_detail.setText(stringBuffer.toString());
-        //点击事件
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onItemClickListener != null){
-                    onItemClickListener.onClick(v,position);
-                }
-            }
-        });
-        holder.iv_add_like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(OnAddLikeClickListener != null){
-                    OnAddLikeClickListener.onClick(v,position);
-                }
-            }
-        });
-        holder.iv_add_karaoke.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onAddkaraokeClickListener != null){
-                    onAddkaraokeClickListener.onClick(v,position);
-                }
-            }
-        });
     }
 
     @Override
@@ -174,7 +166,7 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
         this.onAddkaraokeClickListener = onAddkaraokeClickListener;
     }
 
-    public static class MusicSearchHolder extends RecyclerView.ViewHolder {
+    public class MusicSearchHolder extends RecyclerView.ViewHolder {
         View view;
         TextView tv_num;
         TextView tv_name;
@@ -183,12 +175,37 @@ public class HifiveMusicSearchAdapter extends RecyclerView.Adapter<HifiveMusicSe
         ImageView iv_add_karaoke;
         public MusicSearchHolder(@NonNull View itemView) {
             super(itemView);
-            this.view = itemView;
+            view = itemView;
             tv_num = itemView.findViewById(R.id.tv_num);
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_detail = itemView.findViewById(R.id.tv_detail);
             iv_add_like = itemView.findViewById(R.id.iv_add_like);
             iv_add_karaoke = itemView.findViewById(R.id.iv_add_karaoke);
+            //点击事件
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(onItemClickListener != null){
+                        onItemClickListener.onClick(v,getLayoutPosition());
+                    }
+                }
+            });
+
+            iv_add_like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(OnAddLikeClickListener != null){
+                        OnAddLikeClickListener.onClick(v,getLayoutPosition());
+                    }
+                }
+            });iv_add_karaoke.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(onAddkaraokeClickListener != null){
+                        onAddkaraokeClickListener.onClick(v,getLayoutPosition());
+                    }
+                }
+            });
         }
     }
 }

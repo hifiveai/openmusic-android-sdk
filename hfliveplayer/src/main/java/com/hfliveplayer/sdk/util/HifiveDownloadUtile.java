@@ -24,6 +24,7 @@ public class HifiveDownloadUtile {
     private static OkHttpClient.Builder getClient() {
         if (mClient == null) {
             mClient = new OkHttpClient.Builder()
+//                    .addInterceptor(new EncodingInterceptor("ISO-8859-1"))
                     .connectTimeout(10, TimeUnit.SECONDS)
                     .readTimeout(10, TimeUnit.SECONDS)
                     .writeTimeout(10, TimeUnit.SECONDS)
@@ -48,6 +49,7 @@ public class HifiveDownloadUtile {
             public void onResponse(@NotNull Call call, @NotNull Response response){
                 try {
                     String s = response.body().string();
+//                    String result = EncodUtils.isoToUTF(s);
                     callback.reqYes(response, s);
                 } catch (Exception e) {
                     e.printStackTrace();

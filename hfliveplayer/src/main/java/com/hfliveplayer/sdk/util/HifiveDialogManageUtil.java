@@ -282,7 +282,6 @@ public class HifiveDialogManageUtil {
                         }
                         @Override
                         public void data(@NotNull Object any) {
-                            Log.e("TAG", "==音乐详情==" + any);
                             updatePlayList(musicModel);
                             updatePlayMusicDetail(String.valueOf(any));
                             updateObservable.postNewPublication(PALYINGMUSIC);
@@ -307,7 +306,6 @@ public class HifiveDialogManageUtil {
 
                         @Override
                         public void data(@NotNull Object any) {
-                            Log.e("TAG", "==音乐详情==" + any);
                             updatePlayMusicDetail(String.valueOf(any));
                             updateObservable.postNewPublication(PALYINGCHANGEMUSIC);
                         }
