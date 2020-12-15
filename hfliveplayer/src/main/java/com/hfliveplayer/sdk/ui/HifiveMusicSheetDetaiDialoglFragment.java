@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,7 +29,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hfliveplayer.sdk.R;
-import com.hfliveplayer.sdk.adapter.HifiveMusicSearchAdapter;
+import com.hfliveplayer.sdk.adapter.BaseRecyclerViewAdapter;
+import com.hfliveplayer.sdk.adapter.HifiveMusicSheetListAdapter;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
 import com.hfliveplayer.sdk.model.HifiveMusicTagModel;
@@ -64,11 +66,9 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
     private TextView tv_name;
     private TextView tv_introduce;
     private TextView tv_tips;
-    private LinearLayout ll_playall;
-    private TextView tv_number;
     private RecyclerView mRecyclerView;
     private SmartRefreshLayout refreshLayout;
-    private HifiveMusicSearchAdapter adapter;
+    private HifiveMusicSheetListAdapter adapter;
     private List<HifiveMusicModel> musicModels;
     private Context mContext;
     private boolean isAddLike;//保存是否正在添加喜欢状态，防止重复点击
@@ -79,16 +79,11 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
             try {
                 switch (msg.what) {
                     case Success:
-                        refreshLayout.finishRefresh();
                         if (musicModels != null && musicModels.size() > 0) {
+                            adapter.addHeaderView(R.layout.hifive_header_playall);
                             adapter.updateDatas(musicModels);
-                            ll_playall.setVisibility(View.VISIBLE);
-                        } else {
-                            ll_playall.setVisibility(View.GONE);
                         }
-                        if(tv_number != null){
-                            tv_number.setText(getString(R.string.hifivesdk_music_all_play, adapter.getItemCount()));
-                        }
+                        refreshLayout.finishRefresh();
                         break;
                     case Fail:
                         refreshLayout.finishRefresh();
@@ -97,13 +92,13 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                         isAddLike = false;
                         showToast(R.string.hifivesdk_music_add_like_msg);
                         HifiveDialogManageUtil.getInstance().addLikeSingle((HifiveMusicModel) msg.obj);
-                        adapter.notifyItemChanged(msg.arg1,0);
+                        adapter.notifyContentItemChanged(msg.arg1,0);
                         break;
                     case Addkaraoke:
                         isAddkaraoke = false;
                         showToast(R.string.hifivesdk_music_add_karaoke_msg);
                         HifiveDialogManageUtil.getInstance().addKaraokeSingle((HifiveMusicModel) msg.obj);
-                        adapter.notifyItemChanged(msg.arg1,1);
+                        adapter.notifyContentItemChanged(msg.arg1,1);
                         break;
                 }
             } catch (Exception e) {
@@ -112,6 +107,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
             return false;
         }
     });
+
 
     @Override
     public void onStart() {
@@ -176,23 +172,13 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
         refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setEnableLoadMore(false);
         refreshLayout.setRefreshHeader(new HifiveRefreshHeader(getContext()));
-        ll_playall = view.findViewById(R.id.ll_playall);
-        tv_number = view.findViewById(R.id.tv_number);
         mRecyclerView = view.findViewById(R.id.rv_music);
-        ll_playall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (adapter != null) {
-                    HifiveDialogManageUtil.getInstance().updateCurrentList(getActivity(), adapter.getDatas());
-                }
-            }
-        });
     }
 
     //初始化ReclyView
     private void ininReclyView() {
-        adapter = new HifiveMusicSearchAdapter(getContext(), new ArrayList<HifiveMusicModel>(), true);
-        adapter.setOnAddkaraokeClickListener(new HifiveMusicSearchAdapter.OnAddkaraokeClickListener() {
+        adapter = new HifiveMusicSheetListAdapter(getContext(), new ArrayList<HifiveMusicModel>(), true);
+        adapter.setOnAddkaraokeClickListener(new HifiveMusicSheetListAdapter.OnAddkaraokeClickListener() {
             @Override
             public void onClick(View v, int position) {
                 if (!isAddkaraoke) {
@@ -200,7 +186,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                 }
             }
         });
-        adapter.setOnAddLikeClickListener(new HifiveMusicSearchAdapter.OnAddLikeClickListener() {
+        adapter.setOnAddLikeClickListener(new HifiveMusicSheetListAdapter.OnAddLikeClickListener() {
             @Override
             public void onClick(View v, int position) {
                 if (!isAddLike) {
@@ -208,12 +194,22 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                 }
             }
         });
-        adapter.setOnItemClickListener(new HifiveMusicSearchAdapter.OnItemClickListener() {
+
+        adapter.setOnRecyclerViewContentClick(new BaseRecyclerViewAdapter.OnRecyclerViewContentClick(){
+
             @Override
-            public void onClick(View v, int position) {
-                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(), adapter.getDatas().get(position), "2");
+            public void OnContentClick(int position) {
+                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(), (HifiveMusicModel) adapter.getDatas().get(position), "2");
             }
         });
+
+        adapter.setOnRecyclerViewHeaderClick(new BaseRecyclerViewAdapter.OnRecyclerViewHeaderClick() {
+            @Override
+            public void OnHeaderClick() {
+                HifiveDialogManageUtil.getInstance().updateCurrentList(getActivity(), (List<HifiveMusicModel>)adapter.getDatas());
+            }
+        });
+
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));//调整RecyclerView的排列方向
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -235,7 +231,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                     sheetId = HifiveDialogManageUtil.getInstance().getUserSheetIdByName(mContext.getString(R.string.hifivesdk_music_like));
                 }
                 HFLiveApi.Companion.getInstance().saveMemberSheetMusic(mContext, String.valueOf(sheetId),
-                        adapter.getDatas().get(position).getMusicId(), new DataResponse() {
+                        ((HifiveMusicModel)adapter.getDatas().get(position)).getMusicId(), new DataResponse() {
                             @Override
                             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                                 isAddLike = false;
@@ -298,17 +294,21 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
         }
     }
 
+    private Toast toastStyle;
     //显示自定义toast信息
     private void showToast(int msgId) {
         if (mContext != null) {
-            Toast toastStyle = new Toast(mContext);
+            if(toastStyle != null){
+                toastStyle.cancel();
+                toastStyle = null;
+            }
+            toastStyle = new Toast(mContext);
             View layout = View.inflate(mContext, R.layout.hifive_layout_toast, null);
             TextView toastTextview = layout.findViewById(R.id.tv_content);
             toastTextview.setText(mContext.getString(msgId));
             toastStyle.setView(layout);
             toastStyle.setGravity(Gravity.CENTER, 0, 0);
-            toastStyle.setDuration(Toast.LENGTH_LONG);
-
+            toastStyle.setDuration(Toast.LENGTH_SHORT);
             toastStyle.show();
         }
     }

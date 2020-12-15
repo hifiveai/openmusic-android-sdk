@@ -6,8 +6,6 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.hfliveplayer.sdk.R;
+import com.hfliveplayer.sdk.adapter.BaseRecyclerViewAdapter;
 import com.hfliveplayer.sdk.adapter.HifiveMusicListAdapter;
 import com.hfliveplayer.sdk.listener.HifiveAddMusicListener;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
@@ -32,7 +31,6 @@ import java.util.Observer;
 public class HifiveMusicPalyListFragment extends Fragment implements Observer {
     private RecyclerView mRecyclerView;
     private HifiveMusicListAdapter adapter;
-    private LinearLayout ll_empty;
     private HifiveAddMusicListener addMusicListener;
 
     protected static final int UPDATE_CURRENT_SONG= 99;//切歌
@@ -62,54 +60,48 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.hifive_fragment_music_list_current, container, false);
         mRecyclerView =  view.findViewById(R.id.rv_music);
-        ll_empty =  view.findViewById(R.id.ll_empty);
-        TextView tv_add = view.findViewById(R.id.tv_add);
-        tv_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(addMusicListener != null){
-                    addMusicListener.onAddMusic();
-                }
-            }
-        });
         initRecyclerView();
-        if(HifiveDialogManageUtil.getInstance().getCurrentList() !=null
-                && HifiveDialogManageUtil.getInstance().getCurrentList().size() >0){
-            adapter.updateDatas(HifiveDialogManageUtil.getInstance().getCurrentList());
-        }
-        updateView();
         return view;
     }
     //初始化view
     private void initRecyclerView() {
         adapter = new HifiveMusicListAdapter(getActivity(), new ArrayList<HifiveMusicModel>());
-        adapter.setOnItemClickListener(new HifiveMusicListAdapter.OnItemClickListener() {
+        adapter.setOnRecyclerViewContentClick(new BaseRecyclerViewAdapter.OnRecyclerViewContentClick(){
             @Override
-            public void onClick(View v, int position) {
+            public void OnContentClick(int position) {
                 mHandler.removeMessages(UPDATE_CURRENT_SONG);
-                HifiveMusicModel hifiveMusicModel = adapter.getDatas().get(position);
+                HifiveMusicModel hifiveMusicModel = (HifiveMusicModel) adapter.getDatas().get(position);
                 Message message = mHandler.obtainMessage();
                 message.obj = hifiveMusicModel;
                 message.what = UPDATE_CURRENT_SONG;
                 mHandler.sendMessageDelayed(message,200);
-//                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(),adapter.getDatas().get(position),"2");
+//                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(), (HifiveMusicModel) adapter.getDatas().get(position), "2");
             }
         });
+
         adapter.setOnItemDeleteClickListener(new HifiveMusicListAdapter.OnItemDeleteClickListener() {
             @Override
             public void onClick(View v, int position) {
-                showConfirmDialog(adapter.getDatas().get(position));
+                showConfirmDialog((HifiveMusicModel) adapter.getDatas().get(position));
             }
         });
+        adapter.setOnEmptyViewClickListener(new HifiveMusicListAdapter.OnEmptyViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                if(addMusicListener != null){
+                    addMusicListener.onAddMusic();
+                }
+            }
+        });
+
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));//调整RecyclerView的排列方向
-    }
-    //判断空view是否显示
-    private void updateView() {
-        if(adapter.getItemCount() >0){
-            ll_empty.setVisibility(View.GONE);
+
+        if(HifiveDialogManageUtil.getInstance().getCurrentList() !=null
+                && HifiveDialogManageUtil.getInstance().getCurrentList().size() >0){
+            adapter.updateDatas(HifiveDialogManageUtil.getInstance().getCurrentList());
         }else{
-            ll_empty.setVisibility(View.VISIBLE);
+            adapter.addEmptyView(R.layout.hifive_recycler_emptyview2);
         }
     }
     //弹窗删除二次确认框
@@ -135,7 +127,6 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
                 if(getActivity() != null){
                     HifiveDialogManageUtil.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
                 }
-                updateView();
             }
         });
         if(getFragmentManager() != null)
@@ -161,7 +152,6 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
                     adapter.notifyDataSetChanged();
                 }else  if(type == HifiveDialogManageUtil.UPDATEPALYLIST){
                     adapter.updateDatas(HifiveDialogManageUtil.getInstance().getCurrentList());
-                    updateView();
                 }
             }
         }catch (Exception e){

@@ -2,71 +2,67 @@ package com.hfliveplayer.sdk.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.model.HifiveMusicAuthorModel;
 import com.hfliveplayer.sdk.model.HifiveMusicModel;
+
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 
 import java.util.List;
 
 /**
- * 歌曲列表适配器
+ * 歌曲列表
  */
-public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicListAdapter.MusicListHolder> {
-    private List<HifiveMusicModel> dataList;
+public class HifiveMusicListAdapter extends BaseRecyclerViewAdapter{
     private final Context mContext;
-    private OnItemClickListener onItemClickListener;
+
     private OnItemDeleteClickListener onItemDeleteClickListener;
-    //item点击回调
-    public interface OnItemClickListener {
-        void onClick(View v, int position);
-    }
-    //item删除回调
-    public interface OnItemDeleteClickListener {
-        void onClick(View v, int position);
-    }
-    //ty
-    public HifiveMusicListAdapter(Context ctx, List<HifiveMusicModel> news) {
-        this.mContext = ctx;
-        this.dataList = news;
-    }
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @NonNull
-    @Override
-    public MusicListHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.hifive_item_music_list, viewGroup, false);
-        return new MusicListHolder(view);
-    }
+    private OnEmptyViewClickListener onEmptyViewClickListener;
 
 
+    public HifiveMusicListAdapter(Context mContext, List<HifiveMusicModel> news) {
+        super(mContext, news);
+        this.mContext = mContext;
+    }
+
     @Override
-    public void onBindViewHolder(@NonNull MusicListHolder holder, final int position) {
-        final HifiveMusicModel model = dataList.get(position);
+    public void onBindHeaderViewHolder(BaseRecyclerViewHolder holder, int position) {
+        holder.setText(R.id.tv_number,mContext.getString(R.string.hifivesdk_music_all_play, getDatas().size()));
+    }
+
+    @Override
+    public void onBindEmptyViewHolder(BaseRecyclerViewHolder holder, final int position) {
+        holder.setOnClickListener(R.id.tv_add, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != onEmptyViewClickListener){
+                    onEmptyViewClickListener.onClick(v,position);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onBindContentViewHolder(BaseRecyclerViewHolder holder, final int position) {
+        final HifiveMusicModel model = (HifiveMusicModel) getDatas().get(position);
+
+        holder.setText(R.id.tv_num,String.valueOf(position+1));
+        holder.setText(R.id.tv_name,model.getMusicName());
+
         if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null
                 && HifiveDialogManageUtil.getInstance().getPlayMusic().getMusicId().equals(model.getMusicId())){
-            holder.tv_num.setVisibility(View.GONE);
-            holder.iv_play.setVisibility(View.VISIBLE);
-            Glide.with(mContext).asGif().load(R.drawable.hifive_music_play).into(holder.iv_play);
+            holder.setVisible(R.id.tv_num, View.GONE);
+            holder.setVisible(R.id.iv_play, View.VISIBLE);
+            Glide.with(mContext).asGif().load(R.drawable.hifive_music_play).into((ImageView) holder.get(R.id.iv_play));
         }else{
-            holder.iv_play.setVisibility(View.GONE);
-            holder.tv_num.setVisibility(View.VISIBLE);
+            holder.setVisible(R.id.tv_num, View.VISIBLE);
+            holder.setVisible(R.id.iv_play, View.GONE);
+
         }
-        holder.tv_num.setText(String.valueOf(position+1));
-        holder.tv_name.setText(model.getMusicName());
         StringBuilder stringBuffer = new StringBuilder();
         if(model.getArtist() != null && model.getArtist().size() >0){
             for(HifiveMusicAuthorModel authorModel:model.getArtist()){
@@ -97,17 +93,12 @@ public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicList
             }
             stringBuffer.append(model.getIntro());
         }
-        holder.tv_detail.setText(stringBuffer.toString());
+        holder.setText(R.id.tv_detail,stringBuffer.toString());
+
+
         //点击事件
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onItemClickListener != null){
-                    onItemClickListener.onClick(v,position);
-                }
-            }
-        });
-        holder.iv_delete.setOnClickListener(new View.OnClickListener() {
+        holder.setOnClickListener(R.id.iv_delete,new View.OnClickListener(){
+
             @Override
             public void onClick(View v) {
                 if(onItemDeleteClickListener != null){
@@ -115,45 +106,28 @@ public class HifiveMusicListAdapter extends RecyclerView.Adapter<HifiveMusicList
                 }
             }
         });
+
     }
 
-    @Override
-    public int getItemCount() {
-        return (dataList != null) ? dataList.size()  : 0;
+    //item删除回调
+    public interface OnItemDeleteClickListener {
+        void onClick(View v, int position);
     }
-
-    public void updateDatas(List<HifiveMusicModel> newDatas) {
-        dataList = newDatas;
-        notifyDataSetChanged();
-    }
-    public List<HifiveMusicModel> getDatas() {
-        return dataList;
-    }
-
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        onItemClickListener = listener;
-    }
-
     public void setOnItemDeleteClickListener(OnItemDeleteClickListener onItemDeleteClickListener) {
         this.onItemDeleteClickListener = onItemDeleteClickListener;
     }
 
-    public static class MusicListHolder extends RecyclerView.ViewHolder {
-        View view;
-        TextView tv_num;
-        ImageView iv_play;
-        TextView tv_name;
-        TextView tv_detail;
-        ImageView iv_delete;
-        public MusicListHolder(@NonNull View itemView) {
-            super(itemView);
-            this.view = itemView;
-            tv_num = itemView.findViewById(R.id.tv_num);
-            tv_name = itemView.findViewById(R.id.tv_name);
-            tv_detail = itemView.findViewById(R.id.tv_detail);
-            iv_play = itemView.findViewById(R.id.iv_play);
-            iv_delete = itemView.findViewById(R.id.iv_delete);
-        }
+    //空布局点击添加
+    public interface OnEmptyViewClickListener {
+        void onClick(View v, int position);
+    }
+    public void setOnEmptyViewClickListener(OnEmptyViewClickListener onEmptyViewClickListener) {
+        this.onEmptyViewClickListener = onEmptyViewClickListener;
+    }
+
+
+    @Override
+    protected int setContentLayout() {
+        return R.layout.hifive_item_music_list;
     }
 }
