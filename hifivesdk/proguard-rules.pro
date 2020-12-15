@@ -8,6 +8,7 @@
 -keep class com.hifive.sdk.controller.MusicManager$Companion{*;}
 -keep class com.hifive.sdk.hInterface.** { *; }
 -keep class com.hifive.sdk.protocol.BaseResp{ *; }
+-keep class com.hifive.sdk.common.HFLiveCallback{ *; }
 
  # dagger
 -dontwarn dagger.**
