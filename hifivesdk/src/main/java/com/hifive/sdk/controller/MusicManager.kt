@@ -1,6 +1,7 @@
 package com.hifive.sdk.controller
 
 import android.content.Context
+import android.util.Log
 import com.hifive.sdk.common.BaseConstance
 import com.hifive.sdk.common.BaseConstance.Companion.memberOutId
 import com.hifive.sdk.common.BaseConstance.Companion.societyOutId
@@ -139,7 +140,7 @@ class MusicManager(val context: Context) : BaseController() {
                 .request(object : BaseSubscribe<Any>(dataResponse) {
                     override fun onNext(t: Any) {
                         memberOutId = memberId
-                        societyOutId = societyId
+                        societyOutId = null
                         val json = JSONObject(t.toString())
                         val token = json.getString("accessToken")
                         BaseConstance.accessTokenMember = token ?: ""

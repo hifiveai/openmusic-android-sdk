@@ -1,6 +1,10 @@
 
 #不混淆所有的com.czy.bean包下的类和这些类的所有成员变量
 -keep class com.hifive.sdk.entity.** { *; }
+#-keep class com.hifive.sdk.manager.** { *; }
+-keep class com.hifive.sdk.manager.HFLiveApi{*;}
+-keep class com.hifive.sdk.manager.HFLiveApi$Companion{*;}
+-keep class com.hifive.sdk.hInterface.** { *; }
 
  # dagger
 -dontwarn dagger.**
@@ -28,6 +32,21 @@
 }
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
             rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+
+
+#kotlin
+-keep class kotlin.** { *; }
+-keep class kotlin.Metadata { *; }
+-dontwarn kotlin.**
+-keepclassmembers class **$WhenMappings {
+    <fields>;
+}
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+-assumenosideeffects class kotlin.jvm.internal.Intrinsics {
+    static void checkParameterIsNotNull(java.lang.Object, java.lang.String);
 }
 
 
@@ -83,6 +102,20 @@
   public static final android.os.Parcelable$Creator CREATOR;
 }
 
+-keep class * implements java.io.Serializable {
+  public *;
+}
+
+-keepclassmembers class * implements java.io.Serializable {
+  static final long serialVersionUID;
+  private static final java.io.ObjectStreamField[] serialPersistentFields;
+  !static !transient <fields>;
+  private void writeObject(java.io.ObjectOutputStream);
+  private void readObject(java.io.ObjectInputStream);
+  java.lang.Object writeReplace();
+  java.lang.Object readResolve();
+}
+
 -keepclassmembers class **.R$* {
     public static <fields>;
 }
@@ -120,6 +153,16 @@
 
 #忽略警告
 -ignorewarnings
+#保证是独立的jar,没有任何项目引用,如果不写就会认为我们所有的代码是无用的,从而把所有的代码压缩掉,导出一个空的jar
+-dontshrink
+#保护泛型
+-keepattributes Signature
+## 设置是否允许改变作用域
+#-allowaccessmodification
+#
+## 把混淆类中的方法名也混淆了
+#-useuniqueclassmembernames
+
 #以下是不需要混淆的文件
  -keep class com.android.sdk.demo.LogUtils{
      *;
