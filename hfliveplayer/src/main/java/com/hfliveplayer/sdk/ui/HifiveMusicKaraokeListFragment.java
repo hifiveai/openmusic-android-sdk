@@ -211,9 +211,9 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
     //删除会员歌单歌曲
     private void deleteMusic(final int position) {
         try {
-            if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
+            if (HFLiveApi.getInstance() == null || getContext() == null)
                 return;
-            HFLiveApi.Companion.getInstance().deleteMemberSheetMusic(getContext(), String.valueOf(sheetId),
+            HFLiveApi.getInstance().deleteMemberSheetMusic(getContext(), String.valueOf(sheetId),
                     ((HifiveMusicModel)adapter.getDatas().get(position)).getMusicId(), new DataResponse() {
                         @Override
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
@@ -238,9 +238,9 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
     //根据用户歌单id获取歌曲数据
     private void getData() {
         try {
-            if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
+            if (HFLiveApi.getInstance() == null || getContext() == null)
                 return;
-            HFLiveApi.Companion.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, HifiveDialogManageUtil.field,
+            HFLiveApi.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, HifiveDialogManageUtil.field,
                     "100", "1", new DataResponse() {
                         @Override
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {

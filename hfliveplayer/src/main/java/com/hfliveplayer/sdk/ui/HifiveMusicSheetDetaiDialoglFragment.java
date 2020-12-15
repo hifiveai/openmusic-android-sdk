@@ -223,14 +223,14 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
     //添加歌曲到会员歌单列表
     private void addUserSheet(final int position, final int type) {
         try {
-            if (mContext != null && HFLiveApi.Companion.getInstance() != null) {
+            if (mContext != null && HFLiveApi.getInstance() != null) {
                 long sheetId;
                 if (type == Addkaraoke) {//加入到我的K歌
                     sheetId = HifiveDialogManageUtil.getInstance().getUserSheetIdByName(mContext.getString(R.string.hifivesdk_music_karaoke));
                 } else {//加入到我的喜欢
                     sheetId = HifiveDialogManageUtil.getInstance().getUserSheetIdByName(mContext.getString(R.string.hifivesdk_music_like));
                 }
-                HFLiveApi.Companion.getInstance().saveMemberSheetMusic(mContext, String.valueOf(sheetId),
+                HFLiveApi.getInstance().saveMemberSheetMusic(mContext, String.valueOf(sheetId),
                         ((HifiveMusicModel)adapter.getDatas().get(position)).getMusicId(), new DataResponse() {
                             @Override
                             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
@@ -316,9 +316,9 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
     //根据歌单id获取歌曲信息
     private void getData() {
         try {
-            if (HFLiveApi.Companion.getInstance() == null || mContext == null)
+            if (HFLiveApi.getInstance() == null || mContext == null)
                 return;
-            HFLiveApi.Companion.getInstance().getCompanySheetMusicAll(mContext, String.valueOf(sheetId), null,
+            HFLiveApi.getInstance().getCompanySheetMusicAll(mContext, String.valueOf(sheetId), null,
                     HifiveDialogManageUtil.field, new DataResponse() {
                         @Override
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {

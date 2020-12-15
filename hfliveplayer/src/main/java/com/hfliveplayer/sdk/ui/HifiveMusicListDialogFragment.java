@@ -135,9 +135,9 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
     }
     //获取用户歌单列表
     private void getData() {
-        if (HFLiveApi.Companion.getInstance() == null || mContext == null)
+        if (HFLiveApi.getInstance() == null || mContext == null)
             return;
-        HFLiveApi.Companion.getInstance().getMemberSheetList(mContext, "1", "10", new DataResponse() {
+        HFLiveApi.getInstance().getMemberSheetList(mContext, "1", "10", new DataResponse() {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                 HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);

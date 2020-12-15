@@ -204,9 +204,9 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
     //获取电台列表
     private  void  getRadioStationData(){
         try {
-            if (HFLiveApi.Companion.getInstance() == null || mContext == null)
+            if (HFLiveApi.getInstance() == null || mContext == null)
                 return;
-            HFLiveApi.Companion.getInstance().getCompanyChannelList(mContext, new DataResponse() {
+            HFLiveApi.getInstance().getCompanyChannelList(mContext, new DataResponse() {
                 @Override
                 public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                     HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);

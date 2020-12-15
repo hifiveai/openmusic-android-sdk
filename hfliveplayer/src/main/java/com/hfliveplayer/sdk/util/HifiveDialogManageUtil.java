@@ -263,9 +263,9 @@ public class HifiveDialogManageUtil {
     //获取歌曲详情mediaType表示是获取伴奏版本信息还是主版本信息
     public void getMusicDetail(final Activity activity, final HifiveMusicModel musicModel,String mediaType){
         try {
-            if (HFLiveApi.Companion.getInstance() == null)
+            if (HFLiveApi.getInstance() == null)
                 return;
-            HFLiveApi.Companion.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
+            HFLiveApi.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
                     mediaType, null, null, field, new DataResponse() {
                         @Override
                         public void errorMsg(@NotNull String string, @Nullable Integer code) {
@@ -295,9 +295,9 @@ public class HifiveDialogManageUtil {
     public void getMusicDetail(int majorVersion, final Activity activity){
         try {
             String musicId = getMusicId(majorVersion);
-            if (HFLiveApi.Companion.getInstance() == null || TextUtils.isEmpty(musicId))
+            if (HFLiveApi.getInstance() == null || TextUtils.isEmpty(musicId))
                 return;
-            HFLiveApi.Companion.getInstance().getMusicDetail(activity, musicId, null,
+            HFLiveApi.getInstance().getMusicDetail(activity, musicId, null,
                     "2", null, null,field, new DataResponse() {
                         @Override
                         public void errorMsg(@NotNull String string,@Nullable Integer code) {

@@ -172,9 +172,9 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     //根据电台获取歌单数据
     private void getData(final int ty) {
         try {
-            if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
+            if (HFLiveApi.getInstance() == null || getContext() == null)
                 return;
-            HFLiveApi.Companion.getInstance().getCompanySheetList(getContext(), id, null, null,
+            HFLiveApi.getInstance().getCompanySheetList(getContext(), id, null, null,
                     null, null, "sheetTag", "10", String.valueOf(page), new DataResponse() {
                         @Override
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {

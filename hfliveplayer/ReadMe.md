@@ -109,8 +109,9 @@ api 'androidx.recyclerview:recyclerview:1.1.0'
 建议在应用一启动就初始化，例如Application中
 
 ```
-HFLiveApi.Companion.registerApp(Application context);
+HFLiveApi.registerApp(Application context,HFLiveCallback callback);
 ```
+callback将在SDK异常时返回错误信息，可以根据错误信息做相应的措施。
 
 #### 3.3 播放器UI使用
 
@@ -118,7 +119,7 @@ HFLiveApi.Companion.registerApp(Application context);
 - 由于播放器UI基于DialogFragment开发，需要使用播放器UI的Activity务必继承FragmentActivity或FragmentActivity的子类。
 - 使用播放器UI前请确保SDK已初始化，并完成用户登录操作。
 ```
- HFLiveApi.Companion.getInstance().memberLogin()
+ HFLiveApi.getInstance().memberLogin()
 ```
 用户登录参数参考[open_api_android_sdk](https://gitlab.ilongyuan.cn/hifive/open_api_android_sdk/-/blob/master/hifivesdk/ReadMe.md)文档
 

@@ -653,13 +653,13 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     //下载歌曲
     private void downLoadMusic(String file, final String musicId, String expand, final boolean isChangePlayMode) {
         Log.e("TAG", "file==" + file);
-        if (HFLiveApi.Companion.getInstance() == null)
+        if (HFLiveApi.getInstance() == null)
             return;
         if (null != downLoadFileCall) {
             downLoadFileCall.cancel();
             downLoadFileCall = null;
         }
-        downLoadFileCall = HFLiveApi.Companion.getInstance().downLoadFile(mContext, file, mContext.getFilesDir() + "/" + musicId + "." + expand,
+        downLoadFileCall = HFLiveApi.getInstance().downLoadFile(mContext, file, mContext.getFilesDir() + "/" + musicId + "." + expand,
                 new DownLoadResponse() {
                     @Override
                     public void size(long totalBytes) {

@@ -281,14 +281,14 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
     //添加歌曲到会员歌单列表
     private void addUserSheet(final int position, final int type) {
         try {
-            if (mContext != null && HFLiveApi.Companion.getInstance() != null) {
+            if (mContext != null && HFLiveApi.getInstance() != null) {
                 long sheetId;
                 if (type == Addkaraoke) {//加入到我的K歌
                     sheetId = HifiveDialogManageUtil.getInstance().getUserSheetIdByName(mContext.getString(R.string.hifivesdk_music_karaoke));
                 } else {//加入到我的喜欢
                     sheetId = HifiveDialogManageUtil.getInstance().getUserSheetIdByName(mContext.getString(R.string.hifivesdk_music_like));
                 }
-                HFLiveApi.Companion.getInstance().saveMemberSheetMusic(mContext, String.valueOf(sheetId),
+                HFLiveApi.getInstance().saveMemberSheetMusic(mContext, String.valueOf(sheetId),
                         ((HifiveMusicModel)adapter.getDatas().get(position)).getMusicId(), new DataResponse() {
                             @Override
                             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
@@ -393,9 +393,9 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
     //清空搜索历史
     private void deleteSearchHistory() {
         try {
-            if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
+            if (HFLiveApi.getInstance() == null || getContext() == null)
                 return;
-            HFLiveApi.Companion.getInstance().deleteSearchRecord(getContext(), new DataResponse() {
+            HFLiveApi.getInstance().deleteSearchRecord(getContext(), new DataResponse() {
                 @Override
                 public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                     HifiveDialogManageUtil.getInstance().showToast(getActivity(), string);
@@ -415,9 +415,9 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
     //获取搜索历史数据
     private void getHistoryData(final boolean isUpdate) {
         try {
-            if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
+            if (HFLiveApi.getInstance() == null || getContext() == null)
                 return;
-            HFLiveApi.Companion.getInstance().getSearchRecordList(getContext(), "10", "1", new DataResponse() {
+            HFLiveApi.getInstance().getSearchRecordList(getContext(), "10", "1", new DataResponse() {
                 @Override
                 public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                     if (!isUpdate) {
@@ -488,7 +488,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
     //根据名称搜索歌曲
     private void getData(final int ty) {
         try {
-            if (HFLiveApi.Companion.getInstance() == null || getContext() == null)
+            if (HFLiveApi.getInstance() == null || getContext() == null)
                 return;
             if (ty == Refresh) {
                 page = 1;
@@ -496,7 +496,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                 page++;
             }
             Log.e("TAG", "searchPage==" + page);
-            HFLiveApi.Companion.getInstance().getMusicList(getContext(), "2", content, null, HifiveDialogManageUtil.field,
+            HFLiveApi.getInstance().getMusicList(getContext(), "2", content, null, HifiveDialogManageUtil.field,
                     "15", String.valueOf(page), new DataResponse() {
                         @Override
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {

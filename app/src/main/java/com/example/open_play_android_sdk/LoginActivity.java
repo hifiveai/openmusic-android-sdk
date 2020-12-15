@@ -12,8 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
+import com.hifive.sdk.common.HFLiveCallback;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
+import com.hifive.sdk.rx.BaseException;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import org.jetbrains.annotations.NotNull;
@@ -80,7 +82,18 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "请输入appId", Toast.LENGTH_SHORT).show();
                 return;
             }
-            HFLiveApi.Companion.registerApp(getApplication(),appId,secretKey);
+//            HFLiveApi.registerApp(getApplication(),appId,secretKey);
+            HFLiveApi.registerApp(getApplication(),new HFLiveCallback(){
+                @Override
+                public void onError( BaseException exception) {
+                }
+
+                @Override
+                public void onSuccess() {
+
+                }
+            });
+
             HifiveDialogManageUtil.getInstance().showToast(this, "初始化SDK成功");
             SPUtils.put(this, SPUtils.appId, appId);
             SPUtils.put(this, SPUtils.secretKey, secretKey);
@@ -166,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
             HifiveDialogManageUtil.getInstance().showToast(this, "请输入会员id");
             return;
         }
-        HFLiveApi.Companion.getInstance().memberLogin(this, memberName, memberId, sociatyName, sociatyId,
+        HFLiveApi.getInstance().memberLogin(this, memberName, memberId, sociatyName, sociatyId,
                 null , null, null, null, null, null, new DataResponse() {
                     @Override
                     public void errorMsg(@NotNull String string, Integer code) {
