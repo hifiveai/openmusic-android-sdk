@@ -35,6 +35,7 @@ class HFLiveApi {
         //回调
         var callbacks : HFLiveCallback? = null
 
+        @JvmStatic
         fun getInstance(): MusicManager? {
             return when {
                 hiFiveContext == null || APP_ID.isNullOrEmpty() || SECRET.isNullOrEmpty() -> when {
@@ -52,6 +53,7 @@ class HFLiveApi {
             }
         }
 
+        @JvmStatic
         fun registerApp(application: Application?, APP_ID: String, SECRET: String) {
             if(application == null){
                 throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
@@ -61,6 +63,7 @@ class HFLiveApi {
             hiFiveContext = application
         }
 
+        @JvmStatic
         fun registerApp(application: Application?) {
             if(application == null){
                 throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
@@ -71,6 +74,7 @@ class HFLiveApi {
 
         }
 
+        @JvmStatic
         fun registerApp(application: Application?,callbacks: HFLiveCallback?) {
             if(application == null){
                 throw IllegalArgumentException("Failed to obtain information : The application cannot be null")

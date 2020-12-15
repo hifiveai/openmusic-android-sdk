@@ -4,7 +4,10 @@
 #-keep class com.hifive.sdk.manager.** { *; }
 -keep class com.hifive.sdk.manager.HFLiveApi{*;}
 -keep class com.hifive.sdk.manager.HFLiveApi$Companion{*;}
+-keep class com.hifive.sdk.controller.MusicManager{*;}
+-keep class com.hifive.sdk.controller.MusicManager$Companion{*;}
 -keep class com.hifive.sdk.hInterface.** { *; }
+-keep class com.hifive.sdk.protocol.BaseResp{ *; }
 
  # dagger
 -dontwarn dagger.**
@@ -161,7 +164,7 @@
 #-allowaccessmodification
 #
 ## 把混淆类中的方法名也混淆了
-#-useuniqueclassmembernames
+-useuniqueclassmembernames
 
 #以下是不需要混淆的文件
  -keep class com.android.sdk.demo.LogUtils{
