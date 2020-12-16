@@ -168,7 +168,14 @@ public class HFLivePlayer {
             mContainer = null;
         }
         //反注册
-        container.getContext().unregisterReceiver(mReceiver);
+        try {
+            container.getContext().unregisterReceiver(mReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            mReceiver = null;
+        }
+
     }
     //获取容器对象
     private FrameLayout getContainer() {

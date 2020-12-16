@@ -162,37 +162,49 @@ public class HifiveDialogManageUtil {
     }
     //按顺序播放上一首歌
     public void playLastMusic(Activity activity){
-        if(currentList!= null && currentList.size() >1){
-            int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
-            if(positon<0)
-                return;
-            if(positon != 0){//不是第一首
-                setCurrentPlay(activity,currentList.get(positon-1));
-            }else{
-                setCurrentPlay(activity,currentList.get(currentList.size()-1));
+        try {
+            if(currentList!= null && currentList.size() >1){
+                int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
+                if(positon<0)
+                    return;
+                if(positon != 0){//不是第一首
+                    setCurrentPlay(activity,currentList.get(positon-1));
+                }else{
+                    setCurrentPlay(activity,currentList.get(currentList.size()-1));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     //按顺序播放下一首歌
     public void playNextMusic(Activity activity){
-        if(currentList != null && currentList.size()>0){
-            int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
-            if(positon != (currentList.size()-1)){//不是最后一首
-                setCurrentPlay(activity,currentList.get(positon+1));
-            }else{
-                setCurrentPlay(activity,currentList.get(0));
+        try {
+            if(currentList != null && currentList.size()>0){
+                int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
+                if(positon != (currentList.size()-1)){//不是最后一首
+                    setCurrentPlay(activity,currentList.get(positon+1));
+                }else{
+                    setCurrentPlay(activity,currentList.get(0));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     //设置当前播放的歌曲
     public void setCurrentPlay(Activity activity,HifiveMusicModel musicModel){
-        if(musicModel == null ){
-            return;
+        try {
+            if(musicModel == null ){
+                return;
+            }
+            cleanPlayMusic(false);
+            playMusic = musicModel;
+            updateObservable.postNewPublication(UPDATEPALY);
+            getMusicDetail(activity,musicModel,"2");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        cleanPlayMusic(false);
-        playMusic = musicModel;
-        updateObservable.postNewPublication(UPDATEPALY);
-        getMusicDetail(activity,musicModel,"2");
     }
     private  List<HifiveMusicUserSheetModel> userSheetModels;//维护用户歌单列表
 
