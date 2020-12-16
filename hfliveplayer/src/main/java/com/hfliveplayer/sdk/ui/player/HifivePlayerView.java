@@ -1,21 +1,22 @@
 package com.hfliveplayer.sdk.ui.player;
 
 import android.annotation.SuppressLint;
-import android.content.res.Configuration;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.os.Handler;
-import android.os.Looper;
+
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
@@ -228,13 +229,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 if (isPlay) {//正在播放，点击就是暂停播放
                     stopPlay();
                 } else {//暂停点击就是播放
-                    if (HifiveDialogManageUtil.getInstance().getPlayMusic() != null) {
-                        if (isShowAccompany && musicFile != null) {
-                            startPlayMusic(musicFile.getPath(), false);
-                        } else {
-                            startPlayMusic(playUrl, false);
-                        }
-                    }
+                    startPlay();
                 }
             }
         });
@@ -340,6 +335,19 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     }
 
     /**
+     * 开始播放歌曲
+     */
+    public void startPlay() {
+        if (HifiveDialogManageUtil.getInstance().getPlayMusic() != null) {
+            if (isShowAccompany && musicFile != null) {
+                startPlayMusic(musicFile.getPath(), false);
+            } else {
+                startPlayMusic(playUrl, false);
+            }
+        }
+    }
+
+    /**
      * 切换播放歌曲
      *
      * @param path 音频文件路径或者url
@@ -422,7 +430,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     }
 
     //暂停播放
-    private void stopPlay() {
+    public void stopPlay() {
         iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_suspend);
         isPlay = false;
         if (playerUtils != null && playerUtils.isPlaying())

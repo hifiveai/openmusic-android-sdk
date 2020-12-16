@@ -1,13 +1,23 @@
 package com.hfliveplayer.sdk.ui.player;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.AudioManager;
+import android.media.session.MediaSession;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -138,6 +148,8 @@ public class HFLivePlayer {
         }
         mContainer = new WeakReference<>(container);
         container.addView(mPlayerView);
+        //注册
+        registReceiver(container.getContext());
     }
     /**
      * 呼应activity生命周期中onStop方法
@@ -155,6 +167,8 @@ public class HFLivePlayer {
         if (getContainer() == container) {
             mContainer = null;
         }
+        //反注册
+        container.getContext().unregisterReceiver(mReceiver);
     }
     //获取容器对象
     private FrameLayout getContainer() {
@@ -163,4 +177,90 @@ public class HFLivePlayer {
         }
         return mContainer.get();
     }
+
+
+
+    private void registReceiver(Context context){
+        //注册广播接收器，给广播接收器添加可以接收的广播Action
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_MEDIA_BUTTON);
+        filter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        context.registerReceiver(mReceiver, filter);
+    }
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switch (action){
+                case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
+                    //耳机拔出时，可以暂停播放
+                    if (mPlayerView != null){
+                        mPlayerView.stopPlay();
+                    }
+                    break;
+//                case Intent.ACTION_MEDIA_BUTTON:
+//                    KeyEvent event = (KeyEvent)intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+//                    switch (event.getKeyCode()) {
+//                        case KeyEvent.KEYCODE_MEDIA_PLAY:
+//                            if (mPlayerView != null){
+//                                mPlayerView.startPlay();
+//                            }
+//                            break;
+//                        case KeyEvent.KEYCODE_MEDIA_PAUSE:
+//                            if (mPlayerView != null){
+//                                mPlayerView.stopPlay();
+//                            }
+//                            break;
+//                        case KeyEvent.KEYCODE_MEDIA_NEXT:
+//                            if(mContainer != null ){
+//                                HifiveDialogManageUtil.getInstance().playNextMusic((Activity) mContainer.get().getContext());
+//                            }
+//                            break;
+//                        case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+//                            if(mContainer != null ) {
+//                                HifiveDialogManageUtil.getInstance().playLastMusic((Activity) mContainer.get().getContext());
+//                            }
+//                            break;
+//                    }
+//                    Log.e("BroadcastReceiver","-------------"+event.getKeyCode());
+//                    break;
+            }
+        }
+    };
+
+//    /**
+//     * 初始化并激活 MediaSession
+//     */
+//    private void setupMediaSession(Context context) {
+////        第二个参数 tag: 这个是用于调试用的,随便填写即可
+//        MediaSession mMediaSession = new MediaSession(context, "HFLivePlayer");
+//        //指明支持的按键信息类型
+//        mMediaSession.setFlags(
+//                MediaSession.FLAG_HANDLES_MEDIA_BUTTONS |
+//                        MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS
+//        );
+//        mMediaSession.setCallback(callback);
+//        mMediaSession.setActive(true);
+//    }
+
+//
+//    /**
+//     * API 21 以上 耳机多媒体按钮监听 MediaSessionCompat.Callback
+//     */
+//    private MediaSession.Callback callback = new MediaSession.Callback() {
+//        @Override
+//        public boolean onMediaButtonEvent(@NonNull Intent mediaButtonIntent) {
+//            if (Intent.ACTION_MEDIA_BUTTON.equals(mediaButtonIntent.getAction())) {
+//                KeyEvent event = (KeyEvent) mediaButtonIntent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+//                Log.v("mediaButtonIntent", "SessionCallback event= " + event);
+//                if (event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
+//                    ((Activity) mContainer.get().getContext()).onKeyDown(event.getKeyCode(),event);
+//                    ((Activity) mContainer.get().getContext()).onKeyUp(event.getKeyCode(),event);
+//                    return true;
+//                }
+//            }
+//            return false;
+//        }
+//    };
 }
