@@ -1,5 +1,7 @@
 package com.hfliveplayer.sdk.ui.player;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +16,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
@@ -90,7 +93,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private boolean isStatic;//歌词是动态还是静态歌词
     private boolean isError;//判断是否播放出错
     private final FragmentActivity mContext;
-    private Animation rotateAnimation;//音乐图片旋转的动画
+    private ObjectAnimator rotateAnim;//音乐图片旋转的动画
+    private long rotateAnimPlayTime;//音乐图片旋转的动画执行时间
     public HifivePlayerUtils playerUtils;
     private HifiveMusicListDialogFragment dialogFragment;
     public Timer mTimer;
@@ -102,6 +106,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private Call downLoadFileCall;//伴奏下载的Call
     private int initialVersion = -1;//点击列表播放的歌曲版本 1：原唱 2：伴奏
     private boolean isInitialMode = true;//切换模式时是否是初始模式
+
+
 
     public HifivePlayerView(@NonNull FragmentActivity context, int Top, int Bottom) {
         this(context, null, 0);
@@ -145,6 +151,11 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         fl_loading = findViewById(R.id.fl_loading);
         iv_next = findViewById(R.id.iv_next);
         iv_back = findViewById(R.id.iv_back);
+
+
+        ViewGroup.LayoutParams params = fl_lyric.getLayoutParams();
+        params.height = HifiveDisplayUtils.getScreenHeight(mContext)/4;
+        fl_lyric.setLayoutParams(params);
     }
 
     //初始化点击事件
@@ -389,22 +400,13 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 if (playerUtils != null && playerUtils.isPlaying()) {
                     playProgress = playerUtils.progress();
                     pb_play.setProgress(playProgress);
-                    if (mContext != null) {
-                        mContext.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!isStatic) {
-                                    lyric_dynamic_view.setPlayProgress(playProgress);
-                                }
-
-                            }
-                        });
+                    if (!isStatic) {
+                        lyric_dynamic_view.setPlayProgress(playProgress);
                     }
-
                 }
             }
         };
-        mTimer.schedule(mTimerTask, 0, 1);
+        mTimer.schedule(mTimerTask, 0, 100);
     }
 
     //清空播放进度
@@ -421,12 +423,13 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
 
     //开始播放动画
     private void StartAnimationPlay() {
-        if (rotateAnimation == null) {
-            rotateAnimation = AnimationUtils.loadAnimation(mContext, R.anim.hifive_anim_rotate);
-            LinearInterpolator lin = new LinearInterpolator();
-            rotateAnimation.setInterpolator(lin);
-        }
-        iv_music.startAnimation(rotateAnimation);
+        //构造ObjectAnimator对象的方法
+        rotateAnim = ObjectAnimator.ofFloat(iv_music, "rotation", 0.0F, 360.0F);
+        rotateAnim.setRepeatCount(ValueAnimator.INFINITE);
+        rotateAnim.setDuration(4000);
+        rotateAnim.setInterpolator(new LinearInterpolator());
+        rotateAnim.start();
+        rotateAnim.setCurrentPlayTime(rotateAnimPlayTime);
     }
 
     //暂停播放
@@ -435,7 +438,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         isPlay = false;
         if (playerUtils != null && playerUtils.isPlaying())
             playerUtils.onPause();
-        iv_music.clearAnimation();
+        rotateAnimPlayTime = rotateAnim.getCurrentPlayTime();
+        rotateAnim.cancel();
     }
 
     //当前歌曲播放错误回调
@@ -545,6 +549,12 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         fl_play.setVisibility(VISIBLE);
         fl_download.setVisibility(GONE);
         fl_loading.setVisibility(GONE);
+
+        //清空动画
+        if(rotateAnim != null){
+            rotateAnimPlayTime = 0;
+            rotateAnim.cancel();
+        }
     }
 
     //更新view，音乐图片，音乐名称更新

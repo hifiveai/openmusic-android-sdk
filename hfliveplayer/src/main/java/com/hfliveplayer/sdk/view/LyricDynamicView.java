@@ -1,5 +1,6 @@
 package com.hfliveplayer.sdk.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.model.HifiveMusicLyricDetailModel;
@@ -71,31 +73,45 @@ public class LyricDynamicView extends RelativeLayout {
      * @param playProgress
      */
     public void setPlayProgress( int playProgress) {
+        if (getContext() == null)
+            return;
         if (isChange)
             return;
         isChange = true;
         if(lyricDetailModels != null) {
             for (int i = position; i < lyricDetailModels.size(); i++) {
                 if (playProgress <= lyricDetailModels.get(i).getStartTime()) {
-                    String content = lyricDetailModels.get(i).getContent();
+                    final String content = lyricDetailModels.get(i).getContent();
                     if (i % 2 == 0) {
-                        if(!leftLyric.equals(content)){
-                            leftLyric = content;
-                            tv_lyric_left.setTextColor(backgroundTextColor);
-                            tv_lyric_left.setCurrent(false);
-                            tv_lyric_right.setTextColor(foregroundTextColor);
-                            tv_lyric_right.setCurrent(true);
-                            tv_lyric_left.setText(leftLyric);
-                        }
+                        ((Activity)getContext()).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(!leftLyric.equals(content)){
+                                    leftLyric = content;
+                                    tv_lyric_left.setTextColor(backgroundTextColor);
+                                    tv_lyric_left.setCurrent(false);
+                                    tv_lyric_right.setTextColor(foregroundTextColor);
+                                    tv_lyric_right.setCurrent(true);
+                                    tv_lyric_left.setText(leftLyric);
+                                }
+
+                            }
+                        });
                     } else {
-                        if(!rightLyric.equals(content)) {
-                            rightLyric = content;
-                            tv_lyric_left.setTextColor(foregroundTextColor);
-                            tv_lyric_left.setCurrent(true);
-                            tv_lyric_right.setTextColor(backgroundTextColor);
-                            tv_lyric_right.setCurrent(false);
-                            tv_lyric_right.setText(rightLyric);
-                        }
+                        ((Activity)getContext()).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(!rightLyric.equals(content)) {
+                                    rightLyric = content;
+                                    tv_lyric_left.setTextColor(foregroundTextColor);
+                                    tv_lyric_left.setCurrent(true);
+                                    tv_lyric_right.setTextColor(backgroundTextColor);
+                                    tv_lyric_right.setCurrent(false);
+                                    tv_lyric_right.setText(rightLyric);
+                                }
+
+                            }
+                        });
 
                     }
                     position = i;

@@ -123,6 +123,9 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
                     }
                 }
                 HifiveDialogManageUtil.getInstance().getCurrentList().remove(musicModel);
+                if(adapter.getDatas().size()==0){
+                    adapter.addEmptyView(R.layout.hifive_recycler_emptyview);
+                }
                 adapter.notifyDataSetChanged();
                 if(getActivity() != null){
                     HifiveDialogManageUtil.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));

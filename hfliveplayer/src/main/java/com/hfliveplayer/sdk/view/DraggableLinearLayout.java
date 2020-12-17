@@ -21,7 +21,7 @@ import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
  */
 public class DraggableLinearLayout extends LinearLayout {
 
-    private final int MARGIN_EDGE = 13;
+    private int MARGIN_EDGE = 0;
     private float mOriginalRawX;
     private float mOriginalRawY;
     private float mOriginalX;
@@ -57,7 +57,6 @@ public class DraggableLinearLayout extends LinearLayout {
     }
 
     private void init(){
-
     }
 
     public void setDragView(View view,final OnClickEvent clickevent){
@@ -125,7 +124,7 @@ public class DraggableLinearLayout extends LinearLayout {
     public int getMaxScrollY() {
         //判断歌曲选择相关的弹窗是否打开
         if (HifiveDialogManageUtil.dialogFragments != null && HifiveDialogManageUtil.dialogFragments.size()>0) {
-            return mScreenHeight - ((View)getParent()).getHeight() - HifiveDisplayUtils.dip2px(getContext(), 30) - HifiveDisplayUtils.getPlayerHeight(getContext());
+            return mScreenHeight - ((View)getParent()).getHeight() - HifiveDisplayUtils.getScreenHeight(getContext())/24 - HifiveDisplayUtils.getPlayerHeight(getContext());
         } else {
             return mScreenHeight - ((View)getParent()).getHeight() - marginBottom;
         }
@@ -134,7 +133,7 @@ public class DraggableLinearLayout extends LinearLayout {
 
     //歌曲弹窗显示时更新最大可滑动距离
     public void updateViewY() {
-        final int maxScrollY =  mScreenHeight - ((View)getParent()).getHeight() - HifiveDisplayUtils.dip2px(getContext(), 30) - HifiveDisplayUtils.getPlayerHeight(getContext());
+        final int maxScrollY =  mScreenHeight - ((View)getParent()).getHeight() - HifiveDisplayUtils.getScreenHeight(getContext())/24 - HifiveDisplayUtils.getPlayerHeight(getContext());
         if (((View)getParent()).getY() > maxScrollY) {
             TranslateAnimation translateAnimation = new TranslateAnimation(0, 0, 0, maxScrollY - ((View)getParent()).getY());
             translateAnimation.setDuration(500);
