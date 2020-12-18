@@ -5,7 +5,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveMusicSheetAdapter;
-import com.hfliveplayer.sdk.model.HifiveMusicModel;
-import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
-import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.HifiveLoadMoreFooter;
 import com.hfliveplayer.sdk.view.HifiveRefreshHeader;
+import com.hifive.sdk.entity.HifiveMusicBean;
+import com.hifive.sdk.entity.HifiveMusicSheetModel;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -175,7 +173,7 @@ public class HifiveMusicRadioStationFragment extends Fragment {
             if (HFLiveApi.getInstance() == null || getContext() == null)
                 return;
             HFLiveApi.getInstance().getCompanySheetList(getContext(), id, null, null,
-                    null, null, "sheetTag", "10", String.valueOf(page), new DataResponse() {
+                    null, null, "sheetTag", "10", String.valueOf(page), new DataResponse<HifiveMusicBean<HifiveMusicSheetModel>>() {
                         @Override
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                             if (ty != Refresh) {//上拉加载请求失败后，还原页卡
@@ -186,11 +184,11 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                         }
 
                         @Override
-                        public void data(@NotNull Object any) {
+                        public void data(@NotNull HifiveMusicBean<HifiveMusicSheetModel> any) {
 //                            Log.e("TAG","歌单数据=="+any);
 
-                            sheetModels = GsonUtils.getRecords(String.valueOf(any), HifiveMusicSheetModel.class);
-                            totalPage = GsonUtils.getValue(String.valueOf(any),"totalPage").getAsInt();
+                            sheetModels = any.getRecords();
+                            totalPage = any.getTotalPage();
 
                             mHandler.sendEmptyMessage(ty);
                         }

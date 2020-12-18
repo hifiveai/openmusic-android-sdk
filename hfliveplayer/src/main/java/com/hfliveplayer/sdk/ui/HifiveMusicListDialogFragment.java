@@ -26,8 +26,6 @@ import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveViewPagerAdapter;
 import com.hfliveplayer.sdk.listener.HifiveAddMusicListener;
 import com.hfliveplayer.sdk.listener.NoDoubleClickListener;
-import com.hfliveplayer.sdk.model.HifiveMusicUserSheetModel;
-import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.magicindicator.CommonNavigator;
@@ -37,6 +35,8 @@ import com.hfliveplayer.sdk.view.magicindicator.MagicIndicator;
 import com.hfliveplayer.sdk.view.magicindicator.ViewPagerHelper;
 import com.hfliveplayer.sdk.view.magicindicator.abs.IPagerIndicator;
 import com.hfliveplayer.sdk.view.magicindicator.abs.IPagerTitleView;
+import com.hifive.sdk.entity.HifiveMusicBean;
+import com.hifive.sdk.entity.HifiveMusicUserSheetModel;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
 
@@ -48,16 +48,18 @@ import java.util.List;
 
 /**
  * 音乐列表的弹窗
+ *
  * @author huchao
  */
 public class HifiveMusicListDialogFragment extends DialogFragment implements HifiveAddMusicListener {
     private MagicIndicator magicIndicator;
     private ViewPager viewPager;
     private Context mContext;
+
     @Override
     public void onStart() {
         super.onStart();
-        if(getDialog()!= null) {
+        if (getDialog() != null) {
             Window window = getDialog().getWindow();
             if (window != null) {
                 WindowManager.LayoutParams params = window.getAttributes();
@@ -80,7 +82,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mContext = this.getContext();
-        if(getDialog()!= null) {
+        if (getDialog() != null) {
             Window window = getDialog().getWindow();
             if (window != null) {
                 window.setWindowAnimations(R.style.AnimationBottomFade);
@@ -91,20 +93,21 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
             }
         }
         View view = inflater.inflate(R.layout.hifive_dialog_music_list, container);
-        if(HifiveDialogManageUtil.getInstance().updateObservable == null){
+        if (HifiveDialogManageUtil.getInstance().updateObservable == null) {
             HifiveDialogManageUtil.getInstance().updateObservable = new HifiveUpdateObservable();
         }
         initView(view);
-        if(HifiveDialogManageUtil.getInstance().getUserSheetModels() != null
-                && HifiveDialogManageUtil.getInstance().getUserSheetModels().size() >0){
+        if (HifiveDialogManageUtil.getInstance().getUserSheetModels() != null
+                && HifiveDialogManageUtil.getInstance().getUserSheetModels().size() > 0) {
             initMagicIndicator();
             initPage();
-        }else{
+        } else {
             getData();
         }
         HifiveDialogManageUtil.getInstance().addDialog(this);
         return view;
     }
+
     //初始化view
     private void initView(View view) {
         view.findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
@@ -118,7 +121,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
             @Override
             public void onNoDoubleClick(View v) {
                 HifiveMusicSheetDialogFragment dialogFragment = new HifiveMusicSheetDialogFragment();
-                if(getFragmentManager() != null )
+                if (getFragmentManager() != null)
                     dialogFragment.show(getFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
             }
         });
@@ -126,34 +129,34 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
             @Override
             public void onNoDoubleClick(View v) {
                 HifiveMusicSearchDialoglFragment dialogFragment = new HifiveMusicSearchDialoglFragment();
-                if(getFragmentManager() != null )
+                if (getFragmentManager() != null)
                     dialogFragment.show(getFragmentManager(), HifiveMusicSearchDialoglFragment.class.getSimpleName());
             }
         });
         magicIndicator = view.findViewById(R.id.magic_indicator);
         viewPager = view.findViewById(R.id.viewpager);
     }
+
     //获取用户歌单列表
     private void getData() {
         if (HFLiveApi.getInstance() == null || mContext == null)
             return;
-        HFLiveApi.getInstance().getMemberSheetList(mContext, "1", "10", new DataResponse() {
+        HFLiveApi.getInstance().getMemberSheetList(mContext, "1", "10", new DataResponse<HifiveMusicBean<HifiveMusicUserSheetModel>>() {
             @Override
             public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
+                HifiveDialogManageUtil.getInstance().showToast(getActivity(), string);
             }
 
             @Override
-            public void data(@NotNull Object any) {
+            public void data(@NotNull HifiveMusicBean<HifiveMusicUserSheetModel> any) {
                 Log.e("TAG", "我的歌单==" + any);
-
-                List<HifiveMusicUserSheetModel> sheetModels  = GsonUtils.getRecords(String.valueOf(any), HifiveMusicUserSheetModel.class);
-                HifiveDialogManageUtil.getInstance().setUserSheetModels(sheetModels);
+                HifiveDialogManageUtil.getInstance().setUserSheetModels(any.getRecords());
                 initMagicIndicator();
                 initPage();
             }
         });
     }
+
     //初始化指示器
     private void initMagicIndicator() {
         final String[] titleContent = new String[]{
@@ -177,7 +180,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
                 // 初始化
                 final TextView titleText = cptv.findViewById(R.id.tv_indicator);
                 final View vvDown = cptv.findViewById(R.id.vv_line);
-                if(!TextUtils.isEmpty(titleContent[index]))
+                if (!TextUtils.isEmpty(titleContent[index]))
                     titleText.setText(titleContent[index]);
                 cptv.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
                     @Override
@@ -228,6 +231,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewPager);
     }
+
     //初始化viewpager页卡
     private void initPage() {
         List<Fragment> fragments = new ArrayList<>();
@@ -258,7 +262,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
     @Override
     public void onAddMusic() {
         HifiveMusicSheetDialogFragment dialogFragment = new HifiveMusicSheetDialogFragment();
-        if(getFragmentManager() != null)
+        if (getFragmentManager() != null)
             dialogFragment.show(getFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
     }
 }

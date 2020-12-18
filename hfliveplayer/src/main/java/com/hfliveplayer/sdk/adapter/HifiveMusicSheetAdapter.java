@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hfliveplayer.sdk.R;
-import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
+import com.hifive.sdk.entity.HifiveMusicSheetModel;
 
 import java.util.List;
 

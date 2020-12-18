@@ -16,8 +16,8 @@ import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.BaseRecyclerViewAdapter;
 import com.hfliveplayer.sdk.adapter.HifiveMusicListAdapter;
 import com.hfliveplayer.sdk.listener.HifiveAddMusicListener;
-import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
+import com.hifive.sdk.entity.HifiveMusicModel;
 
 import java.util.ArrayList;
 import java.util.Observable;

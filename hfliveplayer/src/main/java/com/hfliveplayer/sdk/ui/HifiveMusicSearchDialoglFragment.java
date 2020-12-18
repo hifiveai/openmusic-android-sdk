@@ -35,13 +35,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.BaseRecyclerViewAdapter;
 import com.hfliveplayer.sdk.adapter.HifiveMusicSheetListAdapter;
-import com.hfliveplayer.sdk.model.HifiveMusicModel;
-import com.hfliveplayer.sdk.model.HifiveMusicSearchrModel;
-import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.HifiveFlowLayout;
 import com.hfliveplayer.sdk.view.HifiveLoadMoreFooter;
+import com.hifive.sdk.entity.HifiveMusicBean;
+import com.hifive.sdk.entity.HifiveMusicModel;
+import com.hifive.sdk.entity.HifiveMusicSearchrModel;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -50,7 +50,6 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -417,7 +416,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
         try {
             if (HFLiveApi.getInstance() == null || getContext() == null)
                 return;
-            HFLiveApi.getInstance().getSearchRecordList(getContext(), "10", "1", new DataResponse() {
+            HFLiveApi.getInstance().getSearchRecordList(getContext(), "10", "1", new DataResponse<HifiveMusicBean<HifiveMusicSearchrModel>>() {
                 @Override
                 public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                     if (!isUpdate) {
@@ -427,9 +426,9 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                 }
 
                 @Override
-                public void data(@NotNull Object any) {
+                public void data(@NotNull HifiveMusicBean<HifiveMusicSearchrModel> any) {
 //                    Log.e("TAG", "==搜索历史==" + any);
-                    historyData = GsonUtils.getRecords(String.valueOf(any), HifiveMusicSearchrModel.class);
+                    historyData = any.getRecords();
                     mHandler.sendEmptyMessage(HistorySuccess);
 
                 }
@@ -497,7 +496,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
             }
             Log.e("TAG", "searchPage==" + page);
             HFLiveApi.getInstance().getMusicList(getContext(), "2", content, null, HifiveDialogManageUtil.field,
-                    "15", String.valueOf(page), new DataResponse() {
+                    "15", String.valueOf(page), new DataResponse<HifiveMusicBean<HifiveMusicModel>>() {
                         @Override
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                             if (ty != Refresh) {//上拉加载请求失败后，还原页卡
@@ -510,13 +509,13 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                         }
 
                         @Override
-                        public void data(@NotNull Object any) {
+                        public void data(@NotNull HifiveMusicBean<HifiveMusicModel> any) {
 //                            Log.e("TAG", "搜索歌曲==" + any);
 
-                            musicModels = GsonUtils.getRecords(String.valueOf(any), HifiveMusicModel.class);
-                            totalPage = GsonUtils.getValue(String.valueOf(any), "totalPage").getAsInt();
+                            musicModels = any.getRecords();
+                            totalPage = any.getTotalPage();
                             if (ty == Refresh) {
-                                isRecommand = GsonUtils.getValue(String.valueOf(any), "isRecommand").getAsBoolean();
+                                isRecommand = any.isRecommand();
                                 getHistoryData(true);
                             }
                             mHandler.sendEmptyMessage(ty);

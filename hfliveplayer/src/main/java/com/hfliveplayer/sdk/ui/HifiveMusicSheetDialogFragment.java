@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,14 +21,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.HifiveViewPagerAdapter;
-import com.hfliveplayer.sdk.model.HifiveMusicChannelModel;
-import com.hfliveplayer.sdk.model.HifiveMusicDetailModel;
-import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
-import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.magicindicator.CommonNavigator;
@@ -39,12 +32,12 @@ import com.hfliveplayer.sdk.view.magicindicator.MagicIndicator;
 import com.hfliveplayer.sdk.view.magicindicator.ViewPagerHelper;
 import com.hfliveplayer.sdk.view.magicindicator.abs.IPagerIndicator;
 import com.hfliveplayer.sdk.view.magicindicator.abs.IPagerTitleView;
+import com.hifive.sdk.entity.HifiveMusicChannelModel;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -206,17 +199,17 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
         try {
             if (HFLiveApi.getInstance() == null || mContext == null)
                 return;
-            HFLiveApi.getInstance().getCompanyChannelList(mContext, new DataResponse() {
+            HFLiveApi.getInstance().getCompanyChannelList(mContext, new DataResponse<List<HifiveMusicChannelModel>>() {
                 @Override
                 public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                     HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
                 }
 
                 @Override
-                public void data(@NotNull Object any) {
+                public void data(@NotNull List<HifiveMusicChannelModel> any) {
 //                    Log.e("TAG", "电台数据==" + any);
 
-                    companyChannelLists = GsonUtils.parseJson(String.valueOf(any), HifiveMusicChannelModel.class);
+                    companyChannelLists = any;
                     initMagicIndicator();
                     initPage();
                 }

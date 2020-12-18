@@ -9,9 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hfliveplayer.sdk.R;
-import com.hfliveplayer.sdk.model.HifiveMusicAuthorModel;
-import com.hfliveplayer.sdk.model.HifiveMusicModel;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
+import com.hifive.sdk.entity.HifiveMusicAuthorModel;
+import com.hifive.sdk.entity.HifiveMusicModel;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class HifiveMusicSheetListAdapter extends BaseRecyclerViewAdapter{
 
     private final boolean showNumber;//判断是否显示序号
 
-    public HifiveMusicSheetListAdapter(Context mContext, List<HifiveMusicModel> news,boolean showNumber) {
+    public HifiveMusicSheetListAdapter(Context mContext, List<HifiveMusicModel> news, boolean showNumber) {
         super(mContext, news);
         this.mContext = mContext;
         this.showNumber = showNumber;

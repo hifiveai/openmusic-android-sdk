@@ -10,10 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 
 import com.hfliveplayer.sdk.R;
-import com.hfliveplayer.sdk.model.HifiveMusicLyricDetailModel;
+import com.hifive.sdk.entity.HifiveMusicLyricDetailModel;
 
 import java.util.List;
 

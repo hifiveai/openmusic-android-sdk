@@ -1,14 +1,10 @@
 package com.hfliveplayer.sdk.util;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.util.Log;
 
-
-import com.hfliveplayer.sdk.model.HifiveMusicLyricDetailModel;
+import com.hifive.sdk.entity.HifiveMusicLyricDetailModel;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;

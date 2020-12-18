@@ -10,14 +10,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.hfliveplayer.sdk.model.HifiveMusicDetailModel;
-import com.hfliveplayer.sdk.model.HifiveMusicModel;
-import com.hfliveplayer.sdk.model.HifiveMusicUserSheetModel;
-import com.hfliveplayer.sdk.model.HifiveMusicVersionModel;
 import com.hfliveplayer.sdk.ui.HifiveUpdateObservable;
 import com.hfliveplayer.sdk.ui.player.HifivePlayerView;
+import com.hifive.sdk.entity.HifiveMusicDetailModel;
+import com.hifive.sdk.entity.HifiveMusicModel;
+import com.hifive.sdk.entity.HifiveMusicUserSheetModel;
+import com.hifive.sdk.entity.HifiveMusicVersionModel;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
 
@@ -276,7 +274,7 @@ public class HifiveDialogManageUtil {
             if (HFLiveApi.getInstance() == null)
                 return;
             HFLiveApi.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
-                    mediaType, null, null, field, new DataResponse() {
+                    mediaType, null, null, field, new DataResponse<HifiveMusicDetailModel>() {
                         @Override
                         public void errorMsg(@NotNull String string, @Nullable Integer code) {
                             showToast(activity,string);
@@ -291,9 +289,9 @@ public class HifiveDialogManageUtil {
                             }
                         }
                         @Override
-                        public void data(@NotNull Object any) {
+                        public void data(@NotNull HifiveMusicDetailModel any) {
                             updatePlayList(musicModel);
-                            updatePlayMusicDetail(String.valueOf(any));
+                            updatePlayMusicDetail(any);
                             updateObservable.postNewPublication(PALYINGMUSIC);
                         }
                     });
@@ -308,15 +306,15 @@ public class HifiveDialogManageUtil {
             if (HFLiveApi.getInstance() == null || TextUtils.isEmpty(musicId))
                 return;
             HFLiveApi.getInstance().getMusicDetail(activity, musicId, null,
-                    "2", null, null,field, new DataResponse() {
+                    "2", null, null,field, new DataResponse<HifiveMusicDetailModel>() {
                         @Override
                         public void errorMsg(@NotNull String string,@Nullable Integer code) {
                             showToast(activity,string);
                         }
 
                         @Override
-                        public void data(@NotNull Object any) {
-                            updatePlayMusicDetail(String.valueOf(any));
+                        public void data(@NotNull HifiveMusicDetailModel any) {
+                            updatePlayMusicDetail(any);
                             updateObservable.postNewPublication(PALYINGCHANGEMUSIC);
                         }
                     });
@@ -327,11 +325,7 @@ public class HifiveDialogManageUtil {
     //保存当前播放类型，根据播放类型查找对应的音乐详情对象，播放相应歌曲
     public int playType;//当前播放的类型 1.主版本 0.伴奏版
     //更新音乐详情model
-    private void updatePlayMusicDetail(String valueOf) {
-
-        Type type = new TypeToken<HifiveMusicDetailModel>(){}.getType();
-        HifiveMusicDetailModel   musicDetailModel = new Gson().fromJson(valueOf,type);
-
+    private void updatePlayMusicDetail(HifiveMusicDetailModel musicDetailModel) {
         if(musicDetailModel != null){
             playType = musicDetailModel.getIsMajor();
             if(playType == 1){

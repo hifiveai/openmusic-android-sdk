@@ -14,9 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,13 +29,13 @@ import com.bumptech.glide.Glide;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.BaseRecyclerViewAdapter;
 import com.hfliveplayer.sdk.adapter.HifiveMusicSheetListAdapter;
-import com.hfliveplayer.sdk.model.HifiveMusicModel;
-import com.hfliveplayer.sdk.model.HifiveMusicSheetModel;
-import com.hfliveplayer.sdk.model.HifiveMusicTagModel;
-import com.hfliveplayer.sdk.util.GsonUtils;
+
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
 import com.hfliveplayer.sdk.view.HifiveRefreshHeader;
+import com.hifive.sdk.entity.HifiveMusicModel;
+import com.hifive.sdk.entity.HifiveMusicSheetModel;
+import com.hifive.sdk.entity.HifiveMusicTagModel;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -48,6 +46,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * 音乐歌单详情的弹窗
@@ -319,7 +318,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
             if (HFLiveApi.getInstance() == null || mContext == null)
                 return;
             HFLiveApi.getInstance().getCompanySheetMusicAll(mContext, String.valueOf(sheetId), null,
-                    HifiveDialogManageUtil.field, new DataResponse() {
+                    HifiveDialogManageUtil.field, new DataResponse<List<HifiveMusicModel>>() {
                         @Override
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                             mHandler.sendEmptyMessage(Fail);
@@ -327,9 +326,8 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                         }
 
                         @Override
-                        public void data(@NotNull Object any) {
-//                            Log.e("TAG", "歌曲==" + any);
-                            musicModels = GsonUtils.parseJson(String.valueOf(any), HifiveMusicModel.class);
+                        public void data(@NotNull List<HifiveMusicModel> any) {
+                            musicModels = any;
                             mHandler.sendEmptyMessage(Success);
                         }
                     });

@@ -7,10 +7,10 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.hfliveplayer.sdk.R;
-import com.hfliveplayer.sdk.model.HifiveMusicAuthorModel;
-import com.hfliveplayer.sdk.model.HifiveMusicModel;
 
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
+import com.hifive.sdk.entity.HifiveMusicAuthorModel;
+import com.hifive.sdk.entity.HifiveMusicModel;
 
 import java.util.List;
 

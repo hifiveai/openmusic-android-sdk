@@ -19,10 +19,10 @@ import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.adapter.BaseRecyclerViewAdapter;
 import com.hfliveplayer.sdk.adapter.HifiveMusicListAdapter;
 import com.hfliveplayer.sdk.listener.HifiveAddMusicListener;
-import com.hfliveplayer.sdk.model.HifiveMusicModel;
-import com.hfliveplayer.sdk.util.GsonUtils;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.view.HifiveRefreshHeader;
+import com.hifive.sdk.entity.HifiveMusicBean;
+import com.hifive.sdk.entity.HifiveMusicModel;
 import com.hifive.sdk.hInterface.DataResponse;
 import com.hifive.sdk.manager.HFLiveApi;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -241,7 +241,7 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
             if (HFLiveApi.getInstance() == null || getContext() == null)
                 return;
             HFLiveApi.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, HifiveDialogManageUtil.field,
-                    "100", "1", new DataResponse() {
+                    "100", "1", new DataResponse<HifiveMusicBean<HifiveMusicModel>>() {
                         @Override
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
                             HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
@@ -249,10 +249,9 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
                         }
 
                         @Override
-                        public void data(@NotNull Object any) {
+                        public void data(@NotNull HifiveMusicBean<HifiveMusicModel> any) {
 //                            Log.e("TAG", "K歌数据==" + any);
-
-                            hifiveMusicModels = GsonUtils.getRecords(String.valueOf(any),HifiveMusicModel.class);
+                            hifiveMusicModels = any.getRecords();
                             mHandler.sendEmptyMessage(RequstSuccess);
                         }
                     });

@@ -3,22 +3,15 @@ package com.hfliveplayer.sdk.ui.player;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -34,11 +27,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.hfliveplayer.sdk.R;
 import com.hfliveplayer.sdk.listener.HifivePlayListener;
-import com.hfliveplayer.sdk.model.HifiveMusicAuthorModel;
-import com.hfliveplayer.sdk.model.HifiveMusicDetailModel;
-import com.hfliveplayer.sdk.model.HifiveMusicLyricDetailModel;
-import com.hfliveplayer.sdk.model.HifiveMusicModel;
-import com.hfliveplayer.sdk.model.HifiveMusiclyricModel;
 import com.hfliveplayer.sdk.ui.HifiveMusicListDialogFragment;
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfliveplayer.sdk.util.HifiveDisplayUtils;
@@ -48,6 +36,11 @@ import com.hfliveplayer.sdk.view.DraggableLinearLayout;
 import com.hfliveplayer.sdk.view.HifiveRoundProgressBar;
 import com.hfliveplayer.sdk.view.LyricDynamicView;
 import com.hfliveplayer.sdk.view.RoundedCornersTransform;
+import com.hifive.sdk.entity.HifiveMusicAuthorModel;
+import com.hifive.sdk.entity.HifiveMusicDetailModel;
+import com.hifive.sdk.entity.HifiveMusicLyricDetailModel;
+import com.hifive.sdk.entity.HifiveMusicModel;
+import com.hifive.sdk.entity.HifiveMusiclyricModel;
 import com.hifive.sdk.hInterface.DownLoadResponse;
 import com.hifive.sdk.manager.HFLiveApi;
 
@@ -661,6 +654,13 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
 
     }
 
+    //设置歌词点击
+    private void enableLyric() {
+        cb_lyric.setEnabled(true);
+        cb_lyric.setAlpha(1f);
+        cb_lyric.setChecked(true);
+    }
+
     //设置歌词不能点击
     private void disabledLyric() {
         cb_lyric.setChecked(false);
@@ -767,15 +767,13 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             if (type == 1) {
                 if (!TextUtils.isEmpty(content)) {
                     lyricDetailModels = HifiveDisplayUtils.getLyricDetailModels(content);
+                    lyric_dynamic_view.setLyricDetailModels(lyricDetailModels);
                 }
                 mContext.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (!TextUtils.isEmpty(content)) {
-                            cb_lyric.setEnabled(true);
-                            cb_lyric.setAlpha(1f);
-                            cb_lyric.setChecked(true);
-                            lyric_dynamic_view.setLyricDetailModels(lyricDetailModels);
+                            enableLyric();
                             lyric_dynamic_view.setVisibility(VISIBLE);
                         } else {
                             disabledLyric();
@@ -787,9 +785,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     @Override
                     public void run() {
                         if (!TextUtils.isEmpty(content)) {
-                            cb_lyric.setEnabled(true);
-                            cb_lyric.setAlpha(1f);
-                            cb_lyric.setChecked(true);
+                            enableLyric();
                             tv_lyric_static.setText(content);
                             fl_lyric.setVisibility(VISIBLE);
                         } else {
