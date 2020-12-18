@@ -398,7 +398,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 }
             }
         };
-        mTimer.schedule(mTimerTask, 0, 100);
+        mTimer.schedule(mTimerTask, 0, 200);
     }
 
     //清空播放进度
