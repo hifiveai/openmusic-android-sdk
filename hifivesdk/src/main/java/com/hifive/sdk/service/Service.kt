@@ -1,5 +1,6 @@
 package com.hifive.sdk.service
 
+import com.hifive.sdk.entity.*
 import io.reactivex.Flowable
 
 /**
@@ -20,7 +21,7 @@ interface Service {
             field: String?,
             pageSize: String?,
             page: String?
-    ): Flowable<Any>
+    ): Flowable<HifiveMusicBean<HifiveMusicSheetModel>>
 
     fun getCompanySheetMusicList(
             sheetId: String?,
@@ -34,9 +35,9 @@ interface Service {
             sheetId: String?,
             language: String?,
             field: String?
-    ): Flowable<Any>
+    ): Flowable<List<HifiveMusicModel>>
 
-    fun getCompanyChannelList(): Flowable<Any>
+    fun getCompanyChannelList(): Flowable<List<HifiveMusicChannelModel>>
     fun token(sign: String,
               appId: String,
               memberName: String,
@@ -65,16 +66,16 @@ interface Service {
     fun bind(memberId: String, societyId: String): Flowable<Any>
     fun delete(memberId: String): Flowable<Any>
     fun deleteSociety(societyId: String): Flowable<Any>
-    fun getMemberSheetList(page: String?, pageSize: String?): Flowable<Any>
-    fun getMemberSheetMusicList(sheetId: String, language: String?, field: String?, pageSize: String?, page: String?): Flowable<Any>
-    fun getMusicDetail(musicId: String, language: String?, mediaType: String, audioFormat: String?, audioRate: String?, field: String?): Flowable<Any>
+    fun getMemberSheetList(page: String?, pageSize: String?): Flowable<HifiveMusicBean<HifiveMusicUserSheetModel>>
+    fun getMemberSheetMusicList(sheetId: String, language: String?, field: String?, pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicModel>>
+    fun getMusicDetail(musicId: String, language: String?, mediaType: String, audioFormat: String?, audioRate: String?, field: String?): Flowable<HifiveMusicDetailModel>
     fun saveMemberSheet(sheetName: String): Flowable<Any>
     fun saveMemberSheetMusic(sheetId: String, musicId: String): Flowable<Any>
     fun deleteMemberSheetMusic(sheetId: String, musicId: String): Flowable<Any>
     fun updateMusicRecord(recordId: String, duration: String, mediaType: String): Flowable<Any>
     fun getConfigList(): Flowable<Any>
-    fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<Any>
-    fun getSearchRecordList(pageSize: String?, page: String?): Flowable<Any>
+    fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicModel>>
+    fun getSearchRecordList(pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicSearchrModel>>
     fun deleteSearchRecord(): Flowable<Any>
     fun getMemberSheetMusicAll(sheetId: String, language: String?, field: String?): Flowable<Any>
 

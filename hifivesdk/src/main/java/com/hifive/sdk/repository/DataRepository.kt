@@ -1,5 +1,7 @@
 package com.hifive.sdk.repository
 
+import com.hifive.sdk.entity.*
+import com.hifive.sdk.ext.convert
 import com.hifive.sdk.net.LiveRetrofitFactory
 import com.hifive.sdk.protocol.BaseResp
 import io.reactivex.Flowable
@@ -26,9 +28,9 @@ class DataRepository constructor() {
             field: String?,
             pageSize: String?,
             page: String?
-    ): Flowable<BaseResp<Any>> {
+    ): Flowable<HifiveMusicBean<HifiveMusicSheetModel>> {
         return LiveRetrofitFactory.api()
-                .getCompanySheetList(groupId, language, recoNum, type, tagIdList, field, pageSize, page)
+                .getCompanySheetList(groupId, language, recoNum, type, tagIdList, field, pageSize, page).convert()
     }
 
 
@@ -47,16 +49,16 @@ class DataRepository constructor() {
             sheetId: String?,
             language: String?,
             field: String?
-    ): Flowable<BaseResp<Any>> {
+    ): Flowable<List<HifiveMusicModel>> {
         return LiveRetrofitFactory.api()
-                .getCompanySheetMusicAll(sheetId, language, field)
+                .getCompanySheetMusicAll(sheetId, language, field).convert()
     }
 
 
     fun getCompanyChannelList(
-    ): Flowable<BaseResp<Any>> {
+    ): Flowable<List<HifiveMusicChannelModel>> {
         return LiveRetrofitFactory.api()
-                .getCompanyChannelList()
+                .getCompanyChannelList().convert()
     }
 
 
@@ -149,21 +151,21 @@ class DataRepository constructor() {
         )
     }
 
-    fun getMemberSheetList(page: String?, pageSize: String?): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().getMemberSheetList(page, pageSize)
+    fun getMemberSheetList(page: String?, pageSize: String?): Flowable<HifiveMusicBean<HifiveMusicUserSheetModel>> {
+        return LiveRetrofitFactory.api().getMemberSheetList(page, pageSize).convert()
     }
 
     fun getMemberSheetMusicList(
             sheetId: String, language: String?, field: String?, pageSize: String?, page: String?
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().getMemberSheetMusicList(sheetId, language, field, pageSize, page)
+    ): Flowable<HifiveMusicBean<HifiveMusicModel>> {
+        return LiveRetrofitFactory.api().getMemberSheetMusicList(sheetId, language, field, pageSize, page).convert()
     }
 
 
     fun getMusicDetail(
             musicId: String, language: String?, mediaType: String, audioFormat: String?, audioRate: String?, field: String?
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().getMusicDetail(musicId, language, mediaType, audioFormat, audioRate, field)
+    ): Flowable<HifiveMusicDetailModel> {
+        return LiveRetrofitFactory.api().getMusicDetail(musicId, language, mediaType, audioFormat, audioRate, field).convert()
     }
 
 
@@ -198,12 +200,12 @@ class DataRepository constructor() {
         return LiveRetrofitFactory.api().getConfigList()
     }
 
-    fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().getMusicList(searchId, keyword, language, field, pageSize, page)
+    fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicModel>> {
+        return LiveRetrofitFactory.api().getMusicList(searchId, keyword, language, field, pageSize, page).convert()
     }
 
-    fun getSearchRecordList(pageSize: String?, page: String?): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().getSearchRecordList(pageSize, page)
+    fun getSearchRecordList(pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicSearchrModel>> {
+        return LiveRetrofitFactory.api().getSearchRecordList(pageSize, page).convert()
     }
 
     fun deleteSearchRecord(): Flowable<BaseResp<Any>> {

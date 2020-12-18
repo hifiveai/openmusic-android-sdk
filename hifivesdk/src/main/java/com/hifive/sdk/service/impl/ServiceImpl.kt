@@ -1,5 +1,6 @@
 package com.hifive.sdk.service.impl
 
+import com.hifive.sdk.entity.*
 import com.hifive.sdk.ext.convert
 import com.hifive.sdk.repository.DataRepository
 import com.hifive.sdk.service.Service
@@ -24,8 +25,8 @@ class ServiceImpl constructor() : Service {
                                      tagIdList: String?,
                                      field: String?,
                                      pageSize: String?,
-                                     page: String?): Flowable<Any> {
-        return dataRepository.getCompanySheetList(groupId, language, recNam, type, tagIdList, field, pageSize, page).convert()
+                                     page: String?): Flowable<HifiveMusicBean<HifiveMusicSheetModel>> {
+        return dataRepository.getCompanySheetList(groupId, language, recNam, type, tagIdList, field, pageSize, page)
     }
 
     override fun getCompanySheetMusicList(sheetId: String?,
@@ -38,12 +39,12 @@ class ServiceImpl constructor() : Service {
 
     override fun getCompanySheetMusicAll(sheetId: String?,
                                           language: String?,
-                                          field: String?): Flowable<Any> {
-        return dataRepository.getCompanySheetMusicAll(sheetId, language, field).convert()
+                                          field: String?): Flowable<List<HifiveMusicModel>> {
+        return dataRepository.getCompanySheetMusicAll(sheetId, language, field)
     }
 
-    override fun getCompanyChannelList(): Flowable<Any> {
-        return dataRepository.getCompanyChannelList().convert()
+    override fun getCompanyChannelList(): Flowable<List<HifiveMusicChannelModel>> {
+        return dataRepository.getCompanyChannelList()
     }
 
     override fun token(sign: String,
@@ -97,18 +98,18 @@ class ServiceImpl constructor() : Service {
         return dataRepository.deleteSociety(societyId).convert()
     }
 
-    override fun getMemberSheetList(page: String?, pageSize: String?): Flowable<Any> {
-        return dataRepository.getMemberSheetList(page, pageSize).convert()
+    override fun getMemberSheetList(page: String?, pageSize: String?): Flowable<HifiveMusicBean<HifiveMusicUserSheetModel>> {
+        return dataRepository.getMemberSheetList(page, pageSize)
+
+    }
+    override fun getMemberSheetMusicList(sheetId: String, language: String?, field: String?, pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicModel>>
+    {
+        return dataRepository.getMemberSheetMusicList(sheetId, language, field, pageSize, page)
 
     }
 
-    override fun getMemberSheetMusicList(sheetId: String, language: String?, field: String?, pageSize: String?, page: String?): Flowable<Any> {
-        return dataRepository.getMemberSheetMusicList(sheetId, language, field, pageSize, page).convert()
-
-    }
-
-    override fun getMusicDetail(musicId: String, language: String?, mediaType: String, audioFormat: String?, audioRate: String?, field: String?): Flowable<Any> {
-        return dataRepository.getMusicDetail(musicId, language, mediaType, audioFormat, audioRate, field).convert()
+    override fun getMusicDetail(musicId: String, language: String?, mediaType: String, audioFormat: String?, audioRate: String?, field: String?): Flowable<HifiveMusicDetailModel> {
+        return dataRepository.getMusicDetail(musicId, language, mediaType, audioFormat, audioRate, field)
 
     }
 
@@ -136,12 +137,12 @@ class ServiceImpl constructor() : Service {
         return dataRepository.getConfigList().convert()
     }
 
-    override fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<Any> {
-        return dataRepository.getMusicList(searchId, keyword, language, field, pageSize, page).convert()
+    override fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicModel>> {
+        return dataRepository.getMusicList(searchId, keyword, language, field, pageSize, page)
     }
 
-    override fun getSearchRecordList(pageSize: String?, page: String?): Flowable<Any> {
-        return dataRepository.getSearchRecordList(pageSize, page).convert()
+    override fun getSearchRecordList(pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicSearchrModel>> {
+        return dataRepository.getSearchRecordList(pageSize, page)
 
     }
 

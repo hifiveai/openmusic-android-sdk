@@ -13,7 +13,9 @@ import java.util.concurrent.TimeoutException
  * @author Dsh  imkobedroid@gmail.com
  * @date 2019-07-09
  */
-open class BaseSubscribe<T>(private val dataResponse: DataResponse?) : ResourceSubscriber<T>() {
+abstract class BaseSubscribe<T>(private val dataResponse: DataResponse<T>?) : ResourceSubscriber<T>() {
+
+//    com.google.gson.JsonSyntaxException
 
     override fun onError(t: Throwable?) {
         t?.printStackTrace()
@@ -50,7 +52,21 @@ open class BaseSubscribe<T>(private val dataResponse: DataResponse?) : ResourceS
     }
 
     override fun onNext(t: T) {
-        val json = HFLiveApi.gson.toJson(t)
-        dataResponse?.data(json)
+        _onNext(t)
     }
+
+    /**
+     * 错误/异常回调
+     *
+     * @author ZhongDaFeng
+     */
+//    protected abstract fun _onError(e: ApiException)
+
+    /**
+     * 成功回调
+     *
+     * @author ZhongDaFeng
+     */
+    protected abstract fun _onNext(t: T)
+
 }

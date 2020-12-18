@@ -1,5 +1,6 @@
 package com.hifive.sdk.net
 
+import com.hifive.sdk.entity.*
 import com.hifive.sdk.protocol.BaseResp
 import io.reactivex.Flowable
 import retrofit2.http.*
@@ -26,7 +27,7 @@ interface Api {
             @Field("field") field: String?,
             @Field("pageSize") pageSize: String?,
             @Field("page") page: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<HifiveMusicBean<HifiveMusicSheetModel>>>
 
     @FormUrlEncoded
     @POST("/livestream/v1/company/getCompanySheetMusicList")
@@ -45,10 +46,10 @@ interface Api {
             @Field("sheetId") sheetId: String?,
             @Field("language") language: String?,
             @Field("field") field: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<List<HifiveMusicModel>>>
 
     @GET("/livestream/v1/company/getCompanyChannelList")
-    fun getCompanyChannelList(): Flowable<BaseResp<Any>>
+    fun getCompanyChannelList(): Flowable<BaseResp<List<HifiveMusicChannelModel>>>
 
 
     //开放平台
@@ -121,7 +122,7 @@ interface Api {
     fun getMemberSheetList(
             @Field("page") page: String?,
             @Field("pageSize") pageSize: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<HifiveMusicBean<HifiveMusicUserSheetModel>>>
 
 
     @FormUrlEncoded
@@ -132,7 +133,7 @@ interface Api {
             @Field("field") field: String?,
             @Field("pageSize") pageSize: String?,
             @Field("page") page: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<HifiveMusicBean<HifiveMusicModel>>>
 
 
     @FormUrlEncoded
@@ -144,7 +145,7 @@ interface Api {
             @Field("audioFormat") audioFormat: String?,
             @Field("audioRate") audioRate: String?,
             @Field("field") field: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<HifiveMusicDetailModel>>
 
 
     @FormUrlEncoded
@@ -192,14 +193,14 @@ interface Api {
             @Field("field") field: String?,
             @Field("pageSize") pageSize: String?,
             @Field("page") page: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<HifiveMusicBean<HifiveMusicModel>>>
 
 
     @GET("/livestream/v1/search/getSearchRecordList")
     fun getSearchRecordList(
             @Query("pageSize") pageSize: String?,
             @Query("page") page: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<HifiveMusicBean<HifiveMusicSearchrModel>>>
 
 
     @POST("/livestream/v1/search/deleteSearchRecord")
