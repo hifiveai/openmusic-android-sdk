@@ -100,7 +100,7 @@ public class HifiveDisplayUtils {
      * @param content 歌词
      */
     public static List<HifiveMusicLyricDetailModel>  getLyricDetailModels(String content) {
-        Log.e("TASG","lyric=="+content);
+//        Log.e("TASG","lyric=="+content);
         List<HifiveMusicLyricDetailModel> detailModels = new ArrayList<>();
         String[] lyric = content.split("\\n");
         String regex = "\\[(.*?)]";

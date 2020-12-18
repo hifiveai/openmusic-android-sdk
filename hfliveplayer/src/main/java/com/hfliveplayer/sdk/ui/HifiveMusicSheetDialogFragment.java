@@ -214,7 +214,7 @@ public class HifiveMusicSheetDialogFragment extends DialogFragment {
 
                 @Override
                 public void data(@NotNull Object any) {
-                    Log.e("TAG", "电台数据==" + any);
+//                    Log.e("TAG", "电台数据==" + any);
 
                     companyChannelLists = GsonUtils.parseJson(String.valueOf(any), HifiveMusicChannelModel.class);
                     initMagicIndicator();

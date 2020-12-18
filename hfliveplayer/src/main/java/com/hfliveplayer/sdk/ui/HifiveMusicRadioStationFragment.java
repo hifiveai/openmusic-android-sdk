@@ -187,7 +187,7 @@ public class HifiveMusicRadioStationFragment extends Fragment {
 
                         @Override
                         public void data(@NotNull Object any) {
-                            Log.e("TAG","歌单数据=="+any);
+//                            Log.e("TAG","歌单数据=="+any);
 
                             sheetModels = GsonUtils.getRecords(String.valueOf(any), HifiveMusicSheetModel.class);
                             totalPage = GsonUtils.getValue(String.valueOf(any),"totalPage").getAsInt();

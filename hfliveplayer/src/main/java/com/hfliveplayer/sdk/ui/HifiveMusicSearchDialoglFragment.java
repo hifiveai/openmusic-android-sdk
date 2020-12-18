@@ -403,7 +403,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
 
                 @Override
                 public void data(@NotNull Object any) {
-                    Log.e("TAG", "==清空搜索历史==");
+//                    Log.e("TAG", "==清空搜索历史==");
                     mHandler.sendEmptyMessage(HistoryDeleteSuccess);
                 }
             });
@@ -428,7 +428,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
 
                 @Override
                 public void data(@NotNull Object any) {
-                    Log.e("TAG", "==搜索历史==" + any);
+//                    Log.e("TAG", "==搜索历史==" + any);
                     historyData = GsonUtils.getRecords(String.valueOf(any), HifiveMusicSearchrModel.class);
                     mHandler.sendEmptyMessage(HistorySuccess);
 
@@ -511,7 +511,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
 
                         @Override
                         public void data(@NotNull Object any) {
-                            Log.e("TAG", "搜索歌曲==" + any);
+//                            Log.e("TAG", "搜索歌曲==" + any);
 
                             musicModels = GsonUtils.getRecords(String.valueOf(any), HifiveMusicModel.class);
                             totalPage = GsonUtils.getValue(String.valueOf(any), "totalPage").getAsInt();

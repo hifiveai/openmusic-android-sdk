@@ -328,7 +328,7 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
 
                         @Override
                         public void data(@NotNull Object any) {
-                            Log.e("TAG", "歌曲==" + any);
+//                            Log.e("TAG", "歌曲==" + any);
                             musicModels = GsonUtils.parseJson(String.valueOf(any), HifiveMusicModel.class);
                             mHandler.sendEmptyMessage(Success);
                         }

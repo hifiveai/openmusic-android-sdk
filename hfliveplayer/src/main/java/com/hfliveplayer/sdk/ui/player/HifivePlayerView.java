@@ -108,7 +108,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private boolean isInitialMode = true;//切换模式时是否是初始模式
 
 
-
     public HifivePlayerView(@NonNull FragmentActivity context, int Top, int Bottom) {
         this(context, null, 0);
         marginTop = Math.max(Top, 0);
@@ -154,7 +153,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
 
 
         ViewGroup.LayoutParams params = fl_lyric.getLayoutParams();
-        params.height = HifiveDisplayUtils.getScreenHeight(mContext)/4;
+        params.height = HifiveDisplayUtils.getScreenHeight(mContext) / 4;
         fl_lyric.setLayoutParams(params);
     }
 
@@ -177,24 +176,24 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 //已是伴奏模式
                 if (isShowAccompany) {
                     setTypeSound();
-                }else{
+                } else {
                     setTypeAccompany();
                 }
 
-                if(isInitialMode){//是初始播放模式
+                if (isInitialMode) {//是初始播放模式
                     //如果缓存歌曲不为空直接切换播放
-                    if (musicFile != null){
+                    if (musicFile != null) {
                         changePlayMusic(musicFile.getPath());
                         isInitialMode = false;
-                    }else{
-                        getMusicDetail(initialVersion==1? 0 : 1);
+                    } else {
+                        getMusicDetail(initialVersion == 1 ? 0 : 1);
                     }
-                }else{
+                } else {
                     if (!TextUtils.isEmpty(playUrl)) {//当前歌曲URL不为空直接切换播放
                         changePlayMusic(playUrl);
                         isInitialMode = true;
                     } else {//为空暂停播放，并开始获取歌曲URL信息
-                        getMusicDetail(initialVersion==1? 0 : 1);
+                        getMusicDetail(initialVersion == 1 ? 0 : 1);
                     }
                 }
 
@@ -452,10 +451,10 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         //重新播放
         updatePlayView(false);
 
-        if(initialVersion==1){
+        if (initialVersion == 1) {
             setTypeSound();
 //            changePlayMusic(playUrl);
-        }else{
+        } else {
             setTypeAccompany();
 //            getMusicDetail(0);
         }
@@ -551,7 +550,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         fl_loading.setVisibility(GONE);
 
         //清空动画
-        if(rotateAnim != null){
+        if (rotateAnim != null) {
             rotateAnimPlayTime = 0;
             rotateAnim.cancel();
         }
@@ -599,6 +598,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
 
     /**
      * 更新播放view，下载歌词，播放音乐isChange表示是否是切换播放模式
+     *
      * @param isChangePlayMode
      */
     private void updatePlayView(boolean isChangePlayMode) {
@@ -609,7 +609,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         //设置信息
         if (playMusicDetail.getIsMajor() == 1) {
             setTypeSound();
-        }else{
+        } else {
             setTypeAccompany();
         }
         if (!isChangePlayMode) {
@@ -638,7 +638,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             } else {
                 HifiveDialogManageUtil.getInstance().showToast(mContext, "歌曲地址有误");
             }
-        }else{
+        } else {
             isInitialMode = playMusicDetail.getIsMajor() == initialVersion;
             if (isInitialMode) {//是列表初始版本
                 if (playMusicDetail.getFile() != null
@@ -764,21 +764,28 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     //更新歌词的view type 歌词类型1.动态歌词2.静态歌词
     private void updateLyricView(final String content, final int type) {
         if (mContext != null) {
-            mContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (type == 1) {
+            if (type == 1) {
+                if (!TextUtils.isEmpty(content)) {
+                    lyricDetailModels = HifiveDisplayUtils.getLyricDetailModels(content);
+                }
+                mContext.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
                         if (!TextUtils.isEmpty(content)) {
                             cb_lyric.setEnabled(true);
                             cb_lyric.setAlpha(1f);
                             cb_lyric.setChecked(true);
-                            lyricDetailModels = HifiveDisplayUtils.getLyricDetailModels(content);
                             lyric_dynamic_view.setLyricDetailModels(lyricDetailModels);
                             lyric_dynamic_view.setVisibility(VISIBLE);
                         } else {
                             disabledLyric();
                         }
-                    } else {
+                    }
+                });
+            } else {
+                mContext.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
                         if (!TextUtils.isEmpty(content)) {
                             cb_lyric.setEnabled(true);
                             cb_lyric.setAlpha(1f);
@@ -789,9 +796,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                             disabledLyric();
                         }
                     }
-                }
-            });
-
+                });
+            }
         }
     }
 

@@ -250,7 +250,7 @@ public class HifiveMusicKaraokeListFragment extends Fragment implements Observer
 
                         @Override
                         public void data(@NotNull Object any) {
-                            Log.e("TAG", "K歌数据==" + any);
+//                            Log.e("TAG", "K歌数据==" + any);
 
                             hifiveMusicModels = GsonUtils.getRecords(String.valueOf(any),HifiveMusicModel.class);
                             mHandler.sendEmptyMessage(RequstSuccess);
