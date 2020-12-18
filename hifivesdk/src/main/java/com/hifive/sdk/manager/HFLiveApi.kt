@@ -2,16 +2,12 @@ package com.hifive.sdk.manager
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.content.ComponentCallbacks
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
+
 import com.google.gson.Gson
-import com.hifive.sdk.BuildConfig
 import com.hifive.sdk.common.HFLiveCallback
 import com.hifive.sdk.controller.MusicManager
 import com.hifive.sdk.utils.MetaDataUtils
-import com.hifive.sdk.utils.StringFilterUtils
 
 /**
  * @author Dsh  imkobedroid@gmail.com
@@ -54,7 +50,7 @@ class HFLiveApi {
         }
 
         @JvmStatic
-        fun registerApp(application: Application?, APP_ID: String, SECRET: String) {
+        fun registerApp(application: Context?, APP_ID: String, SECRET: String) {
             if(application == null){
                 throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
             }

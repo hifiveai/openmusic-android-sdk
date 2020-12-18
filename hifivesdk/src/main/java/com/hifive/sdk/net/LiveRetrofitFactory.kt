@@ -75,7 +75,7 @@ class LiveRetrofitFactory private constructor() {
 
     private fun initLogInterceptor(): Interceptor {
         val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        interceptor.level = HttpLoggingInterceptor.Level.NONE
         return interceptor
     }
 
