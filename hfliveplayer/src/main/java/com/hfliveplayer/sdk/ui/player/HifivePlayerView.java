@@ -430,8 +430,10 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         isPlay = false;
         if (playerUtils != null && playerUtils.isPlaying())
             playerUtils.onPause();
-        rotateAnimPlayTime = rotateAnim.getCurrentPlayTime();
-        rotateAnim.cancel();
+        if(rotateAnim != null){
+            rotateAnimPlayTime = rotateAnim.getCurrentPlayTime();
+            rotateAnim.cancel();
+        }
     }
 
     //当前歌曲播放错误回调
@@ -530,6 +532,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         tv_lyric_static.setText("");
         lyricDetailModels = null;
         lyric_dynamic_view.clearLyric();
+        lyric_dynamic_view.setVisibility(GONE);
         //取消下载
         if (null != downLoadFileCall) {
             downLoadFileCall.cancel();
@@ -775,6 +778,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                         if (!TextUtils.isEmpty(content)) {
                             enableLyric();
                             lyric_dynamic_view.setVisibility(VISIBLE);
+                            fl_lyric.setVisibility(GONE);
                         } else {
                             disabledLyric();
                         }
@@ -788,6 +792,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                             enableLyric();
                             tv_lyric_static.setText(content);
                             fl_lyric.setVisibility(VISIBLE);
+                            lyric_dynamic_view.setVisibility(GONE);
                         } else {
                             disabledLyric();
                         }

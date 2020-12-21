@@ -149,7 +149,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
 
             @Override
             public void data(@NotNull HifiveMusicBean<HifiveMusicUserSheetModel> any) {
-                Log.e("TAG", "我的歌单==" + any);
+//                Log.e("TAG", "我的歌单==" + any);
                 HifiveDialogManageUtil.getInstance().setUserSheetModels(any.getRecords());
                 initMagicIndicator();
                 initPage();

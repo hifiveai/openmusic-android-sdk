@@ -1,12 +1,19 @@
 package com.hfliveplayer.sdk.ui.player;
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioManager.STREAM_MUSIC
 import android.media.MediaPlayer
+import android.os.Build
+import android.os.Handler
 import android.util.Log
 import android.widget.SeekBar
 import com.hfliveplayer.sdk.listener.HifivePlayListener
 import java.io.IOException
+import java.lang.reflect.Constructor
+import java.lang.reflect.Field
+import java.lang.reflect.Method
 
 /**
  * @author huchao
@@ -20,7 +27,7 @@ class HifivePlayerUtils private constructor(){
     private var mediaPlayer: MediaPlayer? = null
 
     companion object {
-        val instance by lazy (mode = LazyThreadSafetyMode.SYNCHRONIZED){ HifivePlayerUtils() }
+        val instance by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED){ HifivePlayerUtils() }
         var isPause = false
         var isMute = false
         var soundA: Float = 1f
@@ -37,7 +44,6 @@ class HifivePlayerUtils private constructor(){
         }
         return mediaPlayer!!
     }
-
 
     /**
      * 设置音量
@@ -71,8 +77,8 @@ class HifivePlayerUtils private constructor(){
      * 开始缓冲播放
      */
     fun prepareAndPlay(
-        url: String,
-        onPreparedListener: MediaPlayer.OnPreparedListener
+            url: String,
+            onPreparedListener: MediaPlayer.OnPreparedListener
     ): HifivePlayerUtils {
         try {
             val play = getMediaPlayer()
@@ -99,6 +105,7 @@ class HifivePlayerUtils private constructor(){
      */
     fun release() {
         try {
+            getMediaPlayer().reset()
             getMediaPlayer().release()
             mediaPlayer = null
         } catch (e: Exception) {

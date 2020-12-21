@@ -321,18 +321,19 @@ public class HifiveMusicSheetDetaiDialoglFragment extends DialogFragment {
                     HifiveDialogManageUtil.field, new DataResponse<List<HifiveMusicModel>>() {
                         @Override
                         public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                            mHandler.sendEmptyMessage(Fail);
                             HifiveDialogManageUtil.getInstance().showToast(getActivity(), string);
+                            if(mHandler == null) return;
+                            mHandler.sendEmptyMessage(Fail);
                         }
 
                         @Override
                         public void data(@NotNull List<HifiveMusicModel> any) {
                             musicModels = any;
+                            if(mHandler == null) return;
                             mHandler.sendEmptyMessage(Success);
                         }
                     });
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
     }
