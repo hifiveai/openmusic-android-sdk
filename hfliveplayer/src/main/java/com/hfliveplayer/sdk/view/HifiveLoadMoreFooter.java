@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.hfliveplayer.sdk.R;
 import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshKernel;
@@ -28,7 +30,8 @@ public class HifiveLoadMoreFooter extends InternalAbstract implements RefreshFoo
         super(context, attrs, defStyleAttr);
         View view = View.inflate(context, R.layout.hifive_loadmore_footer_view, this);
         ImageView  iv_footer = view.findViewById(R.id.iv_footer);
-        Glide.with(context).asGif().load(R.drawable.hifive_loadmore).into(iv_footer);
+        RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+        Glide.with(context).asGif().load(R.drawable.hifive_loadmore).apply(options).into(iv_footer);
     }
 
 

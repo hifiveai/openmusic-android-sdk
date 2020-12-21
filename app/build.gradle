@@ -41,6 +41,13 @@ android {
     }
 }
 
+
+repositories {
+    maven {
+        url 'http://172.16.52.62:8081/repository/hifive_repository'
+    }
+}
+
 dependencies {
 //    api fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -50,7 +57,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation project(path: ':hfliveplayer')
+    api "com.hifive.sdk:liveplayer-androidx:1.0.0"
+
+//    implementation project(path: ':hfliveplayer')
 //    //开发者必须导入的包
 //    api "io.reactivex.rxjava2:rxjava:2.2.10"
 //    api "io.reactivex.rxjava2:rxandroid:2.1.1"

@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.hfliveplayer.sdk.R;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshKernel;
@@ -96,7 +98,8 @@ public class HifiveRefreshHeader extends LinearLayout implements RefreshHeader {
                 iv_header.setImageResource(R.drawable.hifive_refresh);
                 break;
             case Refreshing:
-                Glide.with(mContext).asGif().load(R.drawable.hifive_refresh).into(iv_header);
+                RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                Glide.with(mContext).asGif().load(R.drawable.hifive_refresh).apply(options).into(iv_header);
                 break;
             case ReleaseToRefresh:
                 iv_header.setImageResource(R.drawable.hifive_refresh);

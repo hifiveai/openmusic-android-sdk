@@ -1,11 +1,15 @@
 package com.hfliveplayer.sdk.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideOption;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.hfliveplayer.sdk.R;
 
 import com.hfliveplayer.sdk.util.HifiveDialogManageUtil;
@@ -46,6 +50,7 @@ public class HifiveMusicListAdapter extends BaseRecyclerViewAdapter{
         });
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindContentViewHolder(BaseRecyclerViewHolder holder, final int position) {
         final HifiveMusicModel model = (HifiveMusicModel) getDatas().get(position);
@@ -57,7 +62,12 @@ public class HifiveMusicListAdapter extends BaseRecyclerViewAdapter{
                 && HifiveDialogManageUtil.getInstance().getPlayMusic().getMusicId().equals(model.getMusicId())){
             holder.setVisible(R.id.tv_num, View.GONE);
             holder.setVisible(R.id.iv_play, View.VISIBLE);
-            Glide.with(mContext).asGif().load(R.drawable.hifive_music_play).into((ImageView) holder.get(R.id.iv_play));
+
+            RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+
+            Glide.with(mContext).asGif().load(R.drawable.hifive_music_play)
+                    .apply(options)
+                    .into((ImageView) holder.get(R.id.iv_play));
         }else{
             holder.setVisible(R.id.tv_num, View.VISIBLE);
             holder.setVisible(R.id.iv_play, View.GONE);

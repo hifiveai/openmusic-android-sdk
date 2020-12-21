@@ -1,6 +1,6 @@
 
 
-# HFLivePlayer Android SDK 使用指南
+# Android SDK 使用指南
 ## 一、方案对比
 
 这里提供两种参考：
