@@ -15,8 +15,6 @@ import java.util.concurrent.TimeoutException
  */
 abstract class BaseSubscribe<T>(private val dataResponse: DataResponse<T>?) : ResourceSubscriber<T>() {
 
-//    com.google.gson.JsonSyntaxException
-
     override fun onError(t: Throwable?) {
         t?.printStackTrace()
         when (t) {
