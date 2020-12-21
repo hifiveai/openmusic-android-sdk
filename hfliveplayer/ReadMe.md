@@ -38,16 +38,26 @@ targetSdkVersion : 30
 建议使用Android Studio 3.4 以上版本进行编译。
 
 #### 2.3集成SDK
-##### 2.3.1 下载SDK库文件
-<!--//https://gitlab.ilongyuan.cn/hifive/open_api_android_sdk/-/blob/master/hifivesdk/ReadMe.md-->
- - 下载HFLivePlayer的[Android SDK包]()；
- - 如果您的项目使用了AndroidX，请下载此[Android SDK包]()；
+##### 2.3.1 自动集成
 
-##### 2.3.2 手动集成SDK包
+ - 在Module的build.gradle文件中添加配置：
+```
+repositories {
+    maven {
+        url 'http://172.16.52.62:8081/repository/hifive_repository'
+    }
+}
+```
+- 在Module的build.gradle文件中添加依赖：
+```
+api "com.hifive.sdk:liveplayer:1.0.0"
+```
+- AndroidX请切换为以下依赖：
+```
+api "com.hifive.sdk:liveplayer-androidx:1.0.0"
+```
 
-- 将SDK文件加入到libs中
-- 在项目级的build.gradle中 buildscript的dependencies里面引入kotlin
-
+- 因项目基于Kotlin开发，在项目级的build.gradle中 buildscript的dependencies里面引入kotlin
 ```
  buildscript {
      dependencies {
@@ -55,31 +65,7 @@ targetSdkVersion : 30
      }
  }
 ```
-- 在module的build.gradle中的dependencies里引入aar文件
-```
-api fileTree(include: ['*.jar','*.aar'], dir: 'libs')
-```
 - 同步后可以在External Libraries中查看新加入的包
-
-##### 2.3.3 引入第三方依赖包
-
-- 因为本SDK需要第三方库支持，所以必须添加一下依赖,可根据项目需求本身进行版本选择
-```
-api "io.reactivex.rxjava2:rxjava:2.2.10"
-api "io.reactivex.rxjava2:rxandroid:2.1.1"
-api "com.squareup.retrofit2:retrofit:2.6.0"
-api "com.squareup.retrofit2:adapter-rxjava2:2.6.0"
-api "com.squareup.okhttp3:okhttp:4.9.0"
-api "com.squareup.okhttp3:logging-interceptor:4.9.0"
-api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
-api 'com.github.bumptech.glide:glide:4.8.0'
-api "com.android.support:recyclerview-v7:28.0.0"
-
-//如果您的项目使用了AndroidX，升级对应的support依赖库
-api group: 'com.github.bumptech.glide', name: 'glide', version: '4.11.0'
-api 'androidx.recyclerview:recyclerview:1.1.0'
-```
-
 
 ## 三、SDK使用
 
