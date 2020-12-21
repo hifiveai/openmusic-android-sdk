@@ -3,7 +3,7 @@ apply from: "config.gradle"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-
+apply from: 'aar-upload.gradle'
 
 android {
     compileSdkVersion HiFiveVersion.compileSdkVersion

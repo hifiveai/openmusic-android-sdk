@@ -21,25 +21,31 @@ abstract class BaseSubscribe<T>(private val dataResponse: DataResponse<T>?) : Re
             is BaseException -> {
                 //向开发者抛出errorMsg,交给开发者处理
                 HFLiveApi.callbacks?.onError(BaseException(t.status,t.msg ?: ""))
-                dataResponse?.errorMsg(t.msg ?: "", t.status)
+//                dataResponse?.errorMsg(t.msg ?: "", t.status)
             }
             is TimeoutException -> {
-                dataResponse?.errorMsg(t.message ?: "连接超时", 10002)
+                HFLiveApi.callbacks?.onError(BaseException(10002,"连接超时"))
+//                dataResponse?.errorMsg(t.message ?: "连接超时", 10002)
             }
             is HttpException -> {
-                dataResponse?.errorMsg(t.message ?: "http异常", 10003)
+                HFLiveApi.callbacks?.onError(BaseException(10003,"http异常"))
+//                dataResponse?.errorMsg(t.message ?: "http异常", 10003)
             }
             is SocketException -> {
-                dataResponse?.errorMsg(t.message ?: "链接异常", 10004)
+                HFLiveApi.callbacks?.onError(BaseException(10004,"链接异常"))
+//                dataResponse?.errorMsg(t.message ?: "链接异常", 10004)
             }
             is JSONException -> {
-                dataResponse?.errorMsg(t.message ?: "JSON转换失败",10097)
+                HFLiveApi.callbacks?.onError(BaseException(10097,"JSON转换失败"))
+//                dataResponse?.errorMsg(t.message ?: "JSON转换失败",10097)
             }
             is JsonSyntaxException -> {
-                dataResponse?.errorMsg(t.message ?: "JSON格式不匹配", 10098)
+                HFLiveApi.callbacks?.onError(BaseException(10098,"JSON格式不匹配"))
+//                dataResponse?.errorMsg(t.message ?: "JSON格式不匹配", 10098)
             }
             else -> {
-                dataResponse?.errorMsg(t?.message ?: "未知错误", 10099)
+                HFLiveApi.callbacks?.onError(BaseException(10099,"未知错误"))
+//                dataResponse?.errorMsg(t?.message ?: "未知错误", 10099)
             }
         }
 

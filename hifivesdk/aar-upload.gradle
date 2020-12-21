@@ -1,0 +1,22 @@
+apply plugin:'maven'
+
+uploadArchives {
+    repositories{
+        mavenDeployer {
+            pom.groupId =  'com.hifive.sdk'
+            pom.artifactId = 'api'
+            pom.version = '1.0.0'
+//            pom.version = '1.0.0-SNAPSHOT'
+            String userName = 'huangyong'
+            String password = 'Qq776238'
+            String mavenUrl = 'http://172.16.52.62:8081/repository/hifive_repository/'
+            repository(url: mavenUrl){
+                authentication(userName: userName, password: password)
+            }
+//            snapshotRepository(url: mavenUrl) {
+//                authentication(userName: userName, password: password)
+//            }
+
+        }
+    }
+}

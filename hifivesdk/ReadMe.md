@@ -1,29 +1,7 @@
-## 一、方案对比
 
-这里提供两种参考：
-- jar包
-- arr包
+## 一、SDK集成
 
-他们两者是有区别的，区别在于：
-1. 打包出来的位置不同
-
-```
-AS低版本
-jar: /build/intermediates/bundles/debug(release)/classes.jar
-AS高版本
-jar: /build/intermediates/packaged-classes/release/classes.jar
-
-aar: /build/outputs/aar/libraryname.aar
-```
-2. jar 中只包含了class文件与清单文件,
-aar中除了包含jar中的class文件还包含工程中使用的所有资源，class及res资源文件全部包含
-3. 使用方式不同
-4. 本sdk选择aar的集成方式进行开发
-
-
-## 二、SDK集成
-
-#### 2.1 系统支持
+#### 1.1 系统支持
 
 Android 5.0以上
 
@@ -31,17 +9,17 @@ minSdkVersion    : 21
 
 targetSdkVersion : 28
 
-#### 2.2运行环境
+#### 1.2运行环境
 
 建议使用Android Studio 3.4 以上版本进行编译。
 
-#### 2.3集成SDK
-目前仅提供arr包接入方案
+#### 1.3集成SDK
+目前仅提供jar包接入方案
 
 - 手动集成SDK包
 - 引入第三方依赖包
 
-##### 2.3.1 手动集成SDK包
+##### 1.3.1 手动集成SDK包
 
 - 将SDK文件加入到libs中
 - 在module的build.gradle中与android{}平级下加入
@@ -56,14 +34,13 @@ targetSdkVersion : 28
 - 在module的build.gradle中的dependencies里加入
 
 ```
-   implementation(name: 'demo', ext:'aar')//注意这里加入的名字没有后缀名
+   implementation fileTree(include: ['*.jar'], dir: 'libs')
 
 ```
 - 同步后可以在External Libraries中查看新加入的包
 
-##### 2.3.2 引入第三方依赖包
+##### 1.3.2 引入第三方依赖包
 因为本SDK需要第三方网络库支持，所以必须添加一下依赖,可根据项目需求本身进行版本选择
-
 
 ```
     api HifiveDependencies["javax"]
@@ -79,28 +56,27 @@ targetSdkVersion : 28
 
 
 
-## 三、SDK使用
+## 二、SDK使用
 
-##### 3.1 日志输出与相关说明
+##### 2.1 日志输出与相关说明
 
 控制SDK相关信息打印
 ```
 SDK默认开启debug模式，输出日志可在控制台进行查看。
-
 开发接口以kotlin的方式输出
 ```
 
-##### 3.2 SDK初始化
+##### 2.2 SDK初始化
 建议在应用一启动就初始化，例如Application中
 
 ```
-HFLiveApi.Companion.registerApp(Application context, String APP_ID,String SECRET );
+HFLiveApi.registerApp(Application context, String APP_ID,String SECRET );
 
 ```
 
 
 
-## 四 API文档
+## 三 API文档
 
 > 注意：如下api非必填参数中，如果开发者不想传参数时，应当传入null进行占位
 
@@ -109,7 +85,7 @@ HFLiveApi.Companion.registerApp(Application context, String APP_ID,String SECRET
 > 注意：由于每个接口用到了context跟DataResponse，一个是上下文，一个是回调接口，所以下文不再描述
 
 
-##### 4.1 请求响应回调
+##### 3.1 请求响应回调
 
 本方法是所有接口调用后统一返回数据的回调，接口里面包含了错误的信息跟请求的数据信息，具体模式如下：
 ```
@@ -134,7 +110,7 @@ code | | 错误code
 object | | 返回的数据（string字符串）
 
 
-##### 4.2 SDK初始化
+##### 3.2 SDK初始化
 
 ```
 registerApp(context: Application, APP_ID: String, SECRET: String)
@@ -158,7 +134,7 @@ SECRET | 是| SECRET
 
 
 
-##### 4.3 会员登录
+##### 3.3 会员登录
 
 ```
 memberLogin(context: Context, memberName: String, memberId: String, societyName: String?, societyId: String?, headerUrl: String?, gender: String?, birthday: String?, location: String?, favoriteSinger: String?, phone: String?, dataResponse: DataResponse)
@@ -195,7 +171,7 @@ phone	 | 否| 手机号
  <!-- version | 系统版本-->
 
 
-##### 4.4 公会登录接口
+##### 3.4 公会登录接口
 
 
 
@@ -215,7 +191,7 @@ sociatyId | 是| 公会外部ID
 
 
 
-##### 4.5 解绑会员
+##### 3.5 解绑会员
 
 ```
 unbindingMember(
@@ -234,7 +210,7 @@ sociatyId | 是| 外部公会ID
 
 
 
-##### 4.6 绑定会员
+##### 3.6 绑定会员
 
 ```
     bindingMember(
@@ -251,7 +227,7 @@ memberId	 | 是| 外部会员ID
 societyId | 是| 外部公会ID
 
 
-##### 4.7 注销会员
+##### 3.7 注销会员
 
 ```
 deleteMember(
@@ -266,7 +242,7 @@ deleteMember(
  memberId | 是| 会员外部ID
 
 
-##### 4.8 注销公会
+##### 3.8 注销公会
 
 ```
 deleteSociety(
@@ -281,7 +257,7 @@ deleteSociety(
 societyId | 是| 会员外部ID
 
 
-#####  4.9 获取商户歌单标签列表
+#####  3.9 获取商户歌单标签列表
 
 
 ```
@@ -293,7 +269,7 @@ getCompanySheetTagList(
 
 
 
-##### 4.10 获取商户歌单列表
+##### 3.10 获取商户歌单列表
 
 ```
 getCompanySheetList(
@@ -323,7 +299,7 @@ page | 否| 当前页
 
 
 
-##### 4.11 获取商户歌单歌曲列表
+##### 3.11 获取商户歌单歌曲列表
 
 ```
 getCompanySheetMusicList(
@@ -346,7 +322,7 @@ page | 否| 当前页
 
 
 
-##### 4.12 获取商户电台列表
+##### 3.12 获取商户电台列表
 
 ```
 getCompanyChannelList(
@@ -358,7 +334,7 @@ getCompanyChannelList(
 
 
 
-##### 4.13 获取会员歌单列表
+##### 3.13 获取会员歌单列表
 
 ```
  getMemberSheetList(
@@ -377,7 +353,7 @@ page | 否| 当前页
 
 
 
-##### 4.14 获取会员歌单歌曲列表
+##### 3.14 获取会员歌单歌曲列表
 
 ```
 getMemberSheetMusicList(
@@ -401,7 +377,7 @@ pageSize | 否| 每页显示条数，默认 10
 page | 否| 当前页
 
 
-##### 4.15 获取音乐详情
+##### 3.15 获取音乐详情
 
 ```
 getMusicDetail(
@@ -423,7 +399,7 @@ field | 否| 扩展查询字段，album,musicTag,artist
 
 
 
-##### 4.16 保存会员歌单
+##### 3.16 保存会员歌单
 
 ```
 saveMemberSheet(
@@ -438,7 +414,7 @@ saveMemberSheet(
 sheetName | 是| 歌单名称
 
 
-##### 4.17 保存会员歌单歌曲
+##### 3.17 保存会员歌单歌曲
 
 ```
 saveMemberSheetMusic(
@@ -456,7 +432,7 @@ musicId | 是| 音乐Id
 
 
 
-##### 4.18 删除会员歌单歌曲
+##### 3.18 删除会员歌单歌曲
 
 ```
  abstract fun deleteMemberSheetMusic(
@@ -474,7 +450,7 @@ musicId | 是| 音乐Id
 
 
 
-##### 4.19 获取会员所有歌单歌曲列表
+##### 3.19 获取会员所有歌单歌曲列表
 
 ```
 getMemberSheetMusicAll(
@@ -495,7 +471,7 @@ field | 否| 扩展查询字段，album,musicTag,artist
 
 
 
-##### 4.20 更新播放记录
+##### 3.20 更新播放记录
 
 ```
 updateMusicRecord(
@@ -516,7 +492,7 @@ mediaType | 是| 播放记录类型 1-k歌；2-听歌
 
 
 
-##### 4.21 获取配置列表
+##### 3.21 获取配置列表
 
 ```
 getConfigList(
@@ -527,7 +503,7 @@ getConfigList(
 
 
 
-##### 4.22 所有歌曲中进行搜索
+##### 3.22 所有歌曲中进行搜索
 
 ```
 getMusicList(
@@ -553,7 +529,7 @@ page | 否| 当前页
 
 
 
-##### 4.23 获取搜索历史记录
+##### 3.23 获取搜索历史记录
 
 ```
 getSearchRecordList(
@@ -570,7 +546,7 @@ pageSize | 否| 每页显示条数，默认 10
 page | 否| 当前页
 
 
-##### 4.24 清空历史记录
+##### 3.24 清空历史记录
 
 ```
  deleteSearchRecord(
@@ -581,7 +557,7 @@ page | 否| 当前页
 
 
 
-## 五、API状态码
+## 四、API状态码
 
 <!--所有API的公共错误码-->
 
