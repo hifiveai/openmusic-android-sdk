@@ -97,7 +97,7 @@ api "com.hifive.sdk:liveplayer-androidx:1.0.0"
 ```
 HFLiveApi.registerApp(Application context,HFLiveCallback callback);
 ```
-callback将在SDK异常时返回错误信息，可以根据错误信息做相应的措施。
+HFLiveCallback将在SDK异常时返回错误信息。
 
 #### 3.3 播放器UI使用
 
