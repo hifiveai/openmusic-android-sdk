@@ -14,73 +14,59 @@ targetSdkVersion : 28
 建议使用Android Studio 3.4 以上版本进行编译。
 
 #### 1.3集成SDK
-目前仅提供jar包接入方案
+ 提供aar包接入方案
 
-- 手动集成SDK包
-- 引入第三方依赖包
+##### 1.3.1 自动集成
 
-##### 1.3.1 手动集成SDK包
-
-- 将SDK文件加入到libs中
-- 在module的build.gradle中与android{}平级下加入
-
+ - 在Module的build.gradle文件中添加配置：
 ```
- repositories {
-           flatDir {
-           dirs 'libs'
-               }
-           }
+repositories {
+    maven {
+        url 'http://172.16.52.62:8081/repository/hifive_repository'
+    }
+}
 ```
-- 在module的build.gradle中的dependencies里加入
-
+- 在Module的build.gradle文件中添加依赖：
 ```
-   implementation fileTree(include: ['*.jar'], dir: 'libs')
-
+api "com.hifive.sdk:api:1.0.0"
 ```
 - 同步后可以在External Libraries中查看新加入的包
 
-##### 1.3.2 引入第三方依赖包
-因为本SDK需要第三方网络库支持，所以必须添加一下依赖,可根据项目需求本身进行版本选择
-
-```
-    api HifiveDependencies["javax"]
-    api HifiveDependencies["rxKotlin"]
-    api HifiveDependencies["rxJava"]
-    api HifiveDependencies["rxAndroid"]
-    api HifiveDependencies["retrofit"]
-    api HifiveDependencies["retrofit-converter-gson"]
-    api HifiveDependencies["retrofit-adapter-rxjava2"]
-    api HifiveDependencies["okHttp"]
-    api HifiveDependencies["okHttp-logging-interceptor"]
-```
-
-
-
 ## 二、SDK使用
 
-##### 2.1 日志输出与相关说明
+##### 2.1 参数配置
 
-控制SDK相关信息打印
+- 在“AndroidManifest.xml”的“Application”中添加“meta-data”配置项：
 ```
-SDK默认开启debug模式，输出日志可在控制台进行查看。
-开发接口以kotlin的方式输出
+<meta-data
+    android:name="HIFIVE_APPID"
+    android:value="注册时申请的APPID" >
+</meta-data>
+<meta-data
+    android:name="HIFIVE_SECRET"
+    android:value="注册时申请的SECRET" />
 ```
+
+-添加混淆，在Proguard混淆文件中增加以下配置：
+```
+-dontwarn com.hifive.sdk.**
+-keep public class com.hifive.sdk.**{*;}
+```
+
 
 ##### 2.2 SDK初始化
 建议在应用一启动就初始化，例如Application中
 
 ```
-HFLiveApi.registerApp(Application context, String APP_ID,String SECRET );
-
+HFLiveApi.registerApp(Application context,HFLiveCallback callback);
 ```
-
-
+HFLiveCallback将在SDK异常时返回错误信息。
 
 ## 三 API文档
 
 > 注意：如下api非必填参数中，如果开发者不想传参数时，应当传入null进行占位
 
-> 注意：数据通过DataResponse接口返回，返回结果以string字符串输出，需要开发字自行json转换
+> 注意：数据通过DataResponse接口返回，某些返回结果以string字符串输出，需要开发字自行json转换
 
 > 注意：由于每个接口用到了context跟DataResponse，一个是上下文，一个是回调接口，所以下文不再描述
 
@@ -113,14 +99,12 @@ object | | 返回的数据（string字符串）
 ##### 3.2 SDK初始化
 
 ```
-registerApp(context: Application, APP_ID: String, SECRET: String)
+registerApp(Application context,HFLiveCallback callback);
 ```
 参数  | 必填  |描述|
 ---|---|---
 context | 是| 上下文
-APP_ID | 是| APP_ID
-SECRET | 是| SECRET
-
+callback | 是| callback
 
 返回值强转类型  | 返回形式
 ---|---
