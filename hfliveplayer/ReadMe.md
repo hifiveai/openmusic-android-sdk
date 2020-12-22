@@ -107,7 +107,7 @@ HFLiveCallback将在SDK异常时返回错误信息。
 ```
  HFLiveApi.getInstance().memberLogin()
 ```
-用户登录参数参考[open_api_android_sdk](https://gitlab.ilongyuan.cn/hifive/open_api_android_sdk/-/blob/master/hifivesdk/ReadMe.md)文档
+具体参数参考[open_api_android_sdk](https://gitlab.ilongyuan.cn/hifive/open_api_android_sdk/-/blob/master/hifivesdk/ReadMe.md)文档
 
 ##### 3.3.2 使用
 
@@ -125,6 +125,29 @@ HFLivePlayer.getInstance().add(FragmentActivity activity,int marginTop,int margi
 ```
 HFLivePlayer.getInstance().remove();
 ```
+
+## 四、API状态码
+
+SDK错误码
+
+| 错误码 | 错误描述 | 解决方案 |
+|----------|:--------|:-------- |
+| 10500 | internal fail | 重试 |
+| 10504 | parameter validation error | 检测参数传值 |
+| 10400 | service error |  |
+| 10401 | 未登录（签名错误） | 检测sign签名生成算法，是否正确 |
+| 10602 | 应用账户不存在 | 检测输入appId和secret |
+| 10502 | 登录已超时，请重新登录 | 重新登录 |
+| 10201 | no data |  |
+| 10001 | 网络错误 | 请检查网络连接|
+| 10002 | 连接超时 | 请检查网络连接 |
+
+
+成功响应码
+
+| 响应码 | 描述 |
+|----------|:--------|
+| 200 | success |
 
 
 
