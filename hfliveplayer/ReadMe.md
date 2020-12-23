@@ -97,19 +97,38 @@ api "com.hifive.sdk:liveplayer-androidx:1.0.0"
 ```
 HFLiveApi.registerApp(Application context,HFLiveCallback callback);
 ```
-HFLiveCallback将在SDK异常时返回错误信息。
+参数  | 必填  |描述|
+---|---|---
+activity | 是| 上下文
+callback | 是| SDK回调
 
-#### 3.3 播放器UI使用
 
-##### 3.3.1 注意事项
+#### 3.3 会员登录
+
+```
+HFLiveApi.getInstance().memberLogin(context: Context, memberName: String, memberId: String, societyName: String?, societyId: String?, headerUrl: String?, gender: String?, birthday: String?, location: String?, favoriteSinger: String?, phone: String?, dataResponse: DataResponse)
+```
+
+参数  | 必填  |描述|
+---|---|---
+memberName | 是| 会员名称
+memberId | 是| 外部会员ID
+sociatyName | 否|公会名称
+societyId | 否| 公会外部ID
+headerUrl	 | 否| 头像URL
+gender	 | 否| 性别,未知：0，男：1，女：2
+birthday	 | 否| 生日
+location	 | 否| 经纬度信息，纬度在前(30.779164,103.94547)
+favoriteSinger	 | 否| 喜欢的歌手名，多个用英文逗号隔开
+phone	 | 否| 手机号
+
+#### 3.4 播放器UI使用
+
+##### 3.4.1 注意事项
 - 由于播放器UI基于DialogFragment开发，需要使用播放器UI的Activity务必继承FragmentActivity或FragmentActivity的子类。
 - 使用播放器UI前请确保SDK已初始化，并完成用户登录操作。
-```
- HFLiveApi.getInstance().memberLogin()
-```
-具体参数参考[open_api_android_sdk](https://gitlab.ilongyuan.cn/hifive/open_api_android_sdk/-/blob/master/hifivesdk/ReadMe.md)文档
 
-##### 3.3.2 使用
+##### 3.4.2 播放器使用
 
 - 显示播放器方法
 
@@ -117,10 +136,15 @@ HFLiveCallback将在SDK异常时返回错误信息。
 HFLivePlayer.getInstance().add(FragmentActivity activity);
 或者
 HFLivePlayer.getInstance().add(FragmentActivity activity,int marginTop,int marginBottom);
-参数说明：marginTop表示播放器可移动范围距离屏幕上方的间距。（默认为0，表示可以拖至屏幕最上方）
-         marginBottom表示播放器可移动范围距离屏幕下方的间距。（默认为0，表示可以拖至屏幕最底部，只对未显示音乐列表弹窗时有效）
-注意事项：播放器UI相关接口都是基于登录后的操作，为了正常使用，请确保已完成登录操作。
 ```
+参数  | 必填  |描述|
+---|---|---
+activity | 是| 上下文
+marginTop | 否| 播放器可拖拽范围上限（默认为0，表示可以拖至屏幕最上方）
+marginBottom | 否| 播放器可拖拽范围下限（默认为0，表示可以拖至屏幕最底部，只对未显示音乐列表弹窗时有效）
+
+注意事项：播放器UI相关接口都是基于登录后的操作，为了正常使用，请确保已完成登录操作。
+
 - 关闭播放器方法
 ```
 HFLivePlayer.getInstance().remove();

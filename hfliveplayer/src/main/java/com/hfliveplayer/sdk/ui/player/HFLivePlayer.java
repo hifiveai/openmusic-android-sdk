@@ -53,10 +53,10 @@ public class HFLivePlayer {
         return mInstance;
     }
     //添加播放器view
-    public HFLivePlayer add(FragmentActivity activity) {
-        return add(activity,0,0);
+    public HFLivePlayer showPlayer(FragmentActivity activity) {
+        return showPlayer(activity,0,0);
     }
-    public HFLivePlayer add(FragmentActivity activity, int marginTop, int marginBottom) {
+    public HFLivePlayer showPlayer(FragmentActivity activity, int marginTop, int marginBottom) {
         LifeFragmentManager.Companion.getInstances().addLifeListener(activity, "HFLivePlayer", null);
         synchronized (this) {
             if (mPlayerView != null) {
@@ -85,10 +85,10 @@ public class HFLivePlayer {
     //移除播放器view,清除缓存数据
     public void destory() {
         HifiveDialogManageUtil.getInstance().clearData();
-        remove();
+        removePlayer();
     }
     //移除播放器view
-    public void remove() {
+    public void removePlayer() {
         try {
             if (mPlayerView == null) {
                 return;

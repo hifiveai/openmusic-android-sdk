@@ -23,11 +23,11 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         play.setOnClickListener(view -> {
             if(!flag){
-                HFLivePlayer.getInstance().add(MainActivity.this);
+                HFLivePlayer.getInstance().showPlayer(MainActivity.this);
                 flag = true ;
                 play.setText("关闭播放器");
             }else{
-                HFLivePlayer.getInstance().remove();
+                HFLivePlayer.getInstance().removePlayer();
                 flag = false;
                 play.setText("开启播放器");
             }
