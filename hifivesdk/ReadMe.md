@@ -58,9 +58,8 @@ api "com.hifive.sdk:api:1.0.0"
 建议在应用一启动就初始化，例如Application中
 
 ```
-HFLiveApi.registerApp(Application context,HFLiveCallback callback);
+HFLiveApi.registerApp(Application context);
 ```
-HFLiveCallback将在SDK异常时返回错误信息。
 
 ## 三 API文档
 
@@ -99,21 +98,20 @@ object | | 返回的数据（string字符串）
 ##### 3.2 SDK初始化
 
 ```
-registerApp(Application context,HFLiveCallback callback);
+HFLiveApi.registerApp(Application context);
 ```
 参数  | 必填  |描述|
 ---|---|---
-context | 是| 上下文
-callback | 是| callback
-
-返回值强转类型  | 返回形式
----|---
-无 | 无
+activity | 是| 上下文
 
 
-返回值  | 描述|
----|---
-无 | 无
+设置SDK全局回调
+```
+HFLiveApi.configCallBack(HFLiveCallback callback);
+```
+参数  | 必填  |描述|
+---|---|---
+callback | 是| SDK回调
 
 
 
@@ -136,23 +134,6 @@ birthday	 | 否| 生日
 location	 | 否| 经纬度信息，纬度在前(30.779164,103.94547)
 favoriteSinger	 | 否| 喜欢的歌手名，多个用英文逗号隔开
 phone	 | 否| 手机号
-
-
-
-
-
- <!--  返回值强转类型  | 返回形式  -->
- <!--     ---|----->
- <!--SdkInfo.class | SdkInfo-->
-
-
- <!--  返回值  | 描述|-->
- <!--     ---|----->
- <!--createTime | 应用时间-->
- <!-- icon |  logo 图标-->
- <!--name | 授权名称-->
- <!--releaseVersion | 应用版本-->
- <!-- version | 系统版本-->
 
 
 ##### 3.4 公会登录接口
@@ -543,20 +524,19 @@ page | 否| 当前页
 
 ## 四、API状态码
 
-<!--所有API的公共错误码-->
+SDK错误码
 
-<!--| 错误码 | 错误描述 | 解决方案 |-->
-<!--|----------|:--------|:-------- |-->
-<!--| 10500 | internal fail | 重试 |-->
-<!--| 10504 | parameter validation error | 检测参数传值 |-->
-<!--| 10400 | service error |  |-->
-<!--| 10401 | 未登录（签名错误） | 检测sign签名生成算法，是否正确 |-->
-<!--| 10602 | 应用账户不存在 | 检测输入appId和secret |-->
-<!--| 10502 | 登录已超时，请重新登录 | 重新登录 |-->
-<!--| 10201 | no data |  |-->
-<!--| 10600 | 无效应用 | 请检测输入包名或应用配置参数 |-->
-<!--| 10201 | 非法包名 | 请检测输入包名 |-->
-
+| 错误码 | 错误描述 | 解决方案 |
+|----------|:--------|:-------- |
+| 10500 | internal fail | 重试 |
+| 10504 | parameter validation error | 检测参数传值 |
+| 10400 | service error |  |
+| 10401 | 未登录（签名错误） | 检测sign签名生成算法，是否正确 |
+| 10602 | 应用账户不存在 | 检测输入appId和secret |
+| 10502 | 登录已超时，请重新登录 | 重新登录 |
+| 10201 | no data |  |
+| 10001 | 网络错误 | 请检查网络连接|
+| 10002 | 连接超时 | 请检查网络连接 |
 
 
 成功响应码

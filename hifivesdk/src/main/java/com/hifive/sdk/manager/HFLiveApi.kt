@@ -7,6 +7,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.hifive.sdk.common.HFLiveCallback
 import com.hifive.sdk.controller.MusicManager
+import com.hifive.sdk.rx.BaseException
 import com.hifive.sdk.utils.MetaDataUtils
 
 /**
@@ -71,15 +72,12 @@ class HFLiveApi {
         }
 
         @JvmStatic
-        fun registerApp(application: Application?,callbacks: HFLiveCallback?) {
-            if(application == null){
-                throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
+        fun configCallBack(callbacks: HFLiveCallback?) {
+            if(hiFiveContext == null || APP_ID.isNullOrEmpty() || SECRET.isNullOrEmpty()){
+                callbacks?.onError(BaseException(10000,"SDK未初始化"))
+                return
             }
-
-            hiFiveContext = application
             HFLiveApi.callbacks = callbacks
-            APP_ID = MetaDataUtils.getApplicationMetaData(application,"HIFIVE_APPID")
-            SECRET = MetaDataUtils.getApplicationMetaData(application,"HIFIVE_SECRET")
             callbacks?.onSuccess()
         }
 
