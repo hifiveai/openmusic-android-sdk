@@ -83,7 +83,9 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 //            HFLiveApi.registerApp(getApplication(),appId,secretKey);
-            HFLiveApi.registerApp(getApplication(),new HFLiveCallback(){
+            HFLiveApi.registerApp(getApplication());
+
+            HFLiveApi.configCallBack(new HFLiveCallback(){
                 @Override
                 public void onError( BaseException exception) {
                 }

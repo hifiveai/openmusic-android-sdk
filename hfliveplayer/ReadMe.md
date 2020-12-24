@@ -95,15 +95,21 @@ api "com.hifive.sdk:liveplayer-androidx:1.0.0"
 建议在应用一启动就初始化，例如Application中
 
 ```
-HFLiveApi.registerApp(Application context,HFLiveCallback callback);
+HFLiveApi.registerApp(Application context);
 ```
 参数  | 必填  |描述|
 ---|---|---
 activity | 是| 上下文
+
+#### 3.3 设置SDK全局回调
+```
+HFLiveApi.configCallBack(HFLiveCallback callback);
+```
+参数  | 必填  |描述|
+---|---|---
 callback | 是| SDK回调
 
-
-#### 3.3 会员登录
+#### 3.4 会员登录
 
 ```
 HFLiveApi.getInstance().memberLogin(context: Context, memberName: String, memberId: String, societyName: String?, societyId: String?, headerUrl: String?, gender: String?, birthday: String?, location: String?, favoriteSinger: String?, phone: String?, dataResponse: DataResponse)
@@ -122,13 +128,13 @@ location	 | 否| 经纬度信息，纬度在前(30.779164,103.94547)
 favoriteSinger	 | 否| 喜欢的歌手名，多个用英文逗号隔开
 phone	 | 否| 手机号
 
-#### 3.4 播放器UI使用
+#### 3.5 播放器UI使用
 
-##### 3.4.1 注意事项
+##### 3.5.1 注意事项
 - 由于播放器UI基于DialogFragment开发，需要使用播放器UI的Activity务必继承FragmentActivity或FragmentActivity的子类。
 - 使用播放器UI前请确保SDK已初始化，并完成用户登录操作。
 
-##### 3.4.2 播放器使用
+##### 3.5.2 播放器使用
 
 - 显示播放器方法
 
