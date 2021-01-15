@@ -16,21 +16,50 @@ targetSdkVersion : 28
 #### 1.3集成SDK
  提供aar包接入方案
 
-##### 1.3.1 自动集成
+##### 1.3.1 手动集成
 
- - 在Module的build.gradle文件中添加配置：
+- 下载SDK[点击下载]()
+- 将SDK文件加入到libs中
+- 在module的build.gradle中与android{}平级下加入
+
 ```
-repositories {
-    maven {
-        url 'http://172.16.52.62:8081/repository/hifive_repository'
-    }
-}
+ repositories {
+           flatDir {
+           dirs 'libs'
+               }
+           }
 ```
-- 在Module的build.gradle文件中添加依赖：
+- 在module的build.gradle中的dependencies里加入
+
 ```
-api "com.hifive.sdk:api:1.0.0"
+   implementation(name: 'demo', ext:'aar')//注意这里加入的名字没有后缀名
 ```
-- 同步后可以在External Libraries中查看新加入的包
+- 因为本SDK需要第三方网络库支持，所以必须添加一下依赖,可根据项目需求本身进行版本选择
+```
+api "io.reactivex.rxjava2:rxjava:2.2.10"
+api "io.reactivex.rxjava2:rxandroid:2.1.1"
+api "com.squareup.retrofit2:retrofit:2.6.0"
+api "com.squareup.retrofit2:converter-gson:2.6.0"
+api "com.squareup.retrofit2:adapter-rxjava2:2.6.0"
+api "com.squareup.okhttp3:okhttp:4.9.0"
+api "com.squareup.okhttp3:logging-interceptor:4.9.0"
+```
+
+<!--##### 1.3.2 自动集成-->
+
+<!-- - 在Module的build.gradle文件中添加配置：-->
+<!--```-->
+<!--repositories {-->
+<!--    maven {-->
+<!--        url 'http://172.16.52.62:8081/repository/hifive_repository'-->
+<!--    }-->
+<!--}-->
+<!--```-->
+<!--- 在Module的build.gradle文件中添加依赖：-->
+<!--```-->
+<!--api "com.hifive.sdk:api:1.0.0"-->
+<!--```-->
+<!--- 同步后可以在External Libraries中查看新加入的包-->
 
 ## 二、SDK使用
 
@@ -528,16 +557,13 @@ SDK错误码
 
 | 错误码 | 错误描述 | 解决方案 |
 |----------|:--------|:-------- |
-| 10500 | internal fail | 重试 |
-| 10504 | parameter validation error | 检测参数传值 |
-| 10400 | service error |  |
-| 10401 | 未登录（签名错误） | 检测sign签名生成算法，是否正确 |
-| 10602 | 应用账户不存在 | 检测输入appId和secret |
-| 10502 | 登录已超时，请重新登录 | 重新登录 |
-| 10201 | no data |  |
-| 10001 | 网络错误 | 请检查网络连接|
+| 10000 | 未初始化ADK | 初始化SDK |
+| 10001 | 网络错误 | 请检查网络连接 |
 | 10002 | 连接超时 | 请检查网络连接 |
-
+| 10003 | http异常 | 重试 |
+| 10097 | JSON转换失败 | 重试 |
+| 10098 | JSON格式不匹配 | 检查Json |
+| 10099 | 未知错误 |  |
 
 成功响应码
 

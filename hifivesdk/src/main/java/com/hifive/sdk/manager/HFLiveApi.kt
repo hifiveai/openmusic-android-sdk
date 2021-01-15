@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 
 import com.google.gson.Gson
+import com.hifive.sdk.common.BaseConstance
 import com.hifive.sdk.common.HFLiveCallback
 import com.hifive.sdk.controller.MusicManager
 import com.hifive.sdk.rx.BaseException
@@ -30,16 +31,20 @@ class HFLiveApi {
         var SECRET: String? = null
 
         //回调
-        var callbacks : HFLiveCallback? = null
+        var callbacks: HFLiveCallback? = null
 
         @JvmStatic
         fun getInstance(): MusicManager? {
             return when {
-                hiFiveContext == null || APP_ID.isNullOrEmpty() || SECRET.isNullOrEmpty() -> when {
-                    hiFiveContext == null -> throw IllegalArgumentException("Failed to obtain information : The Context cannot be null")
-                    APP_ID.isNullOrEmpty() -> throw IllegalArgumentException("Failed to obtain information : The HIFive_APPID cannot be null")
-                    SECRET.isNullOrEmpty() -> throw IllegalArgumentException("Failed to obtain information : The HIFive_SECRET cannot be null")
-                    else -> null
+                hiFiveContext == null || APP_ID.isNullOrEmpty() || SECRET.isNullOrEmpty() -> {
+                    callbacks?.onError(BaseException(10000, "SDK未初始化"))
+                    when {
+                        hiFiveContext == null -> throw IllegalArgumentException("Failed to obtain information : The context cannot be null")
+                        APP_ID.isNullOrEmpty() -> throw IllegalArgumentException("Failed to obtain information : The HIFive_APPID cannot be null")
+                        SECRET.isNullOrEmpty() -> throw IllegalArgumentException("Failed to obtain information : The HIFive_SECRET cannot be null")
+                        else -> null
+                    }
+
                 }
                 else -> {
                     val instance by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
@@ -52,7 +57,7 @@ class HFLiveApi {
 
         @JvmStatic
         fun registerApp(application: Context?, APP_ID: String, SECRET: String) {
-            if(application == null){
+            if (application == null) {
                 throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
             }
             HFLiveApi.APP_ID = APP_ID
@@ -62,19 +67,31 @@ class HFLiveApi {
 
         @JvmStatic
         fun registerApp(application: Application?) {
-            if(application == null){
+            if (application == null) {
                 throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
             }
             hiFiveContext = application
-            APP_ID = MetaDataUtils.getApplicationMetaData(application,"HIFIVE_APPID")
-            SECRET = MetaDataUtils.getApplicationMetaData(application,"HIFIVE_SECRET")
+            APP_ID = MetaDataUtils.getApplicationMetaData(application, "HIFIVE_APPID")
+            SECRET = MetaDataUtils.getApplicationMetaData(application, "HIFIVE_SECRET")
+
+        }
+
+        @JvmStatic
+        fun registerApp(application: Application?, domain : String = BaseConstance.BASE_URL_MUSIC) {
+            if (application == null) {
+                throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
+            }
+            BaseConstance.BASE_URL_MUSIC = domain
+            hiFiveContext = application
+            APP_ID = MetaDataUtils.getApplicationMetaData(application, "HIFIVE_APPID")
+            SECRET = MetaDataUtils.getApplicationMetaData(application, "HIFIVE_SECRET")
 
         }
 
         @JvmStatic
         fun configCallBack(callbacks: HFLiveCallback?) {
-            if(hiFiveContext == null || APP_ID.isNullOrEmpty() || SECRET.isNullOrEmpty()){
-                callbacks?.onError(BaseException(10000,"SDK未初始化"))
+            if (hiFiveContext == null || APP_ID.isNullOrEmpty() || SECRET.isNullOrEmpty()) {
+                callbacks?.onError(BaseException(10000, "SDK未初始化"))
                 return
             }
             HFLiveApi.callbacks = callbacks

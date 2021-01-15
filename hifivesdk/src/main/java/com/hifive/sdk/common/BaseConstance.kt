@@ -15,8 +15,10 @@ class BaseConstance {
         const val BASE_URL: String = "http://openmusic-api.hifiveai.com"
         //测试
 //        const val BASE_URL_MUSIC: String = "https://hifive-gateway-test.hifiveai.com"
+        //预发
+//        var BASE_URL_MUSIC: String = "https://hifive-gateway-pre.hifiveai.com"
         //正式
-        const val BASE_URL_MUSIC: String = "https://gateway.open.hifiveai.com"
+        var BASE_URL_MUSIC: String = "https://gateway.open.hifiveai.com"
         var verison : String = BuildConfig.VERSION_NAME
         var accessTokenMember: String? = null
         var accessTokenUnion: String? = null

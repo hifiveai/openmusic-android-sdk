@@ -133,14 +133,14 @@ class MusicManager(val context: Context){
 
 
      fun memberLogin(context: Context, memberName: String, memberId: String, societyName: String?, societyId: String?, headerUrl: String?, gender: String?, birthday: String?, location: String?, favoriteSinger: String?, phone: String?, response: DataResponse<Any>) {
-
+         if (!checkNetWork(context)) {
+             return
+         }
         val time = System.currentTimeMillis().toString()
         val deviceId = Encryption.requestDeviceId(context)
         val message = APP_ID + memberId + deviceId + time
         val sign = BaseConstance.getSign(SECRET!!, message)?.trim()
-        if (!checkNetWork(context)) {
-            return
-        }
+
         mService.token(sign
                 ?: "", APP_ID
                 ?: "", memberName, memberId, societyName, societyId, deviceId, time, headerUrl, gender, birthday, location, favoriteSinger, phone)

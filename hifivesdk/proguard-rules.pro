@@ -5,10 +5,18 @@
 -keep class com.hifive.sdk.manager.HFLiveApi{*;}
 -keep class com.hifive.sdk.manager.HFLiveApi$Companion{*;}
 -keep class com.hifive.sdk.controller.MusicManager{*;}
--keep class com.hifive.sdk.controller.MusicManager$Companion{*;}
--keep class com.hifive.sdk.hInterface.** { *; }
+
+-keep class com.hifive.sdk.hInterface.DataResponse{*;}
+-keep class com.hifive.sdk.hInterface.DataResponse$*{*;}
+
+#-keep interface  com.hifive.sdk.hInterface.DataResponse
+-keep interface com.hifive.sdk.hInterface.DownLoadResponse
 -keep class com.hifive.sdk.protocol.BaseResp{ *; }
--keep class com.hifive.sdk.common.HFLiveCallback{ *; }
+-keep interface com.hifive.sdk.common.HFLiveCallback
+
+
+# 不混淆内部类
+-keepattributes InnerClasses
 
  # dagger
 -dontwarn dagger.**

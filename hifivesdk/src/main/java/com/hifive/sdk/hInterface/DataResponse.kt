@@ -1,9 +1,12 @@
 package com.hifive.sdk.hInterface
 
+
 /**
  * @author Dsh  imkobedroid@gmail.com
  * @date 2019-07-09
  */
+
+
 interface DataResponse<T> {
     /**
      * sdk返回的错误
