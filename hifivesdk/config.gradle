@@ -6,7 +6,7 @@ ext {
             minSdkVersion    : 19,
             targetSdkVersion : 28,
             versionCode      : 1,
-            versionName      : "1.2.0.1",//需要同步修改BaseConstance
+            versionName      : "1.2.0.3",
             appCompat        : "1.2.0",
             junit            : "4.12",
             runner           : "1.3.0",
