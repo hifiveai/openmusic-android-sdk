@@ -1,10 +1,10 @@
 package com.hifive.sdk.repository
 
-import com.hifive.sdk.entity.*
 import com.hifive.sdk.ext.convert
 import com.hifive.sdk.net.LiveRetrofitFactory
-import com.hifive.sdk.protocol.BaseResp
 import io.reactivex.Flowable
+import retrofit2.http.Field
+import retrofit2.http.Query
 
 
 /**
@@ -13,210 +13,147 @@ import io.reactivex.Flowable
  */
 class DataRepository constructor() {
 
+    fun baseLogin(
+            Nickname: String?,
+            Gender: String?,
+            Birthday: String?,
+            Location: String?,
+            Education: String?,
+            Profession: String?,
+            IsOrganization: String?,
+            Reserve: String?,
+            FavoriteSinger: String?,
+            FavoriteGenre: String?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre, "BaseLogin").convert()
+    }
 
-    fun getCompanySheetTagList(): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().getCompanySheetTagList()
+    fun channel(): Flowable<Any> {
+        return LiveRetrofitFactory.api().channel("Channel").convert()
+    }
+
+    fun channelSheet(GroupId: String?,
+                     Language: Int?,
+                     RecoNum: Int?,
+                     Page: Int?,
+                     PageSize: Int?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().channelSheet(GroupId, Language, RecoNum, Page, PageSize, "ChannelSheet").convert()
+    }
+
+    fun sheetMusic(
+            SheetId: String?,
+            Language: Int?,
+            Page: Int?,
+            PageSize: Int?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().sheetMusic(SheetId, Language, Page, PageSize, "SheetMusic").convert()
     }
 
 
-    fun getCompanySheetList(
-            groupId: String?,
-            language: String?,
-            recoNum: String?,
-            type: String?,
-            tagIdList: String?,
-            field: String?,
-            pageSize: String?,
-            page: String?
-    ): Flowable<HifiveMusicBean<HifiveMusicSheetModel>> {
-        return LiveRetrofitFactory.api()
-                .getCompanySheetList(groupId, language, recoNum, type, tagIdList, field, pageSize, page).convert()
+    fun searchMusic(
+            TagIds: String?,
+            priceFromCent: Long?,
+            priceToCent: Long?,
+            Location: Int?,
+            Education: Int?,
+            Profession: Int?,
+            IsOrganization: Int?,
+            Reserve: String?,
+            Language: Int?,
+            Page: Int?,
+            PageSize: Int?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().searchMusic(TagIds, priceFromCent, priceToCent, Location, Education, Profession, IsOrganization, Reserve, Language, Page, PageSize, "SheetMusic").convert()
     }
 
 
-    fun getCompanySheetMusicList(
-            sheetId: String?,
-            language: String?,
-            field: String?,
-            pageSize: String?,
-            page: String?
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api()
-                .getCompanySheetMusicList(sheetId, language, field, pageSize, page)
-    }
-
-    fun getCompanySheetMusicAll(
-            sheetId: String?,
-            language: String?,
-            field: String?
-    ): Flowable<List<HifiveMusicModel>> {
-        return LiveRetrofitFactory.api()
-                .getCompanySheetMusicAll(sheetId, language, field).convert()
+    fun musicConfig(): Flowable<Any> {
+        return LiveRetrofitFactory.api().musicConfig("MusicConfig").convert()
     }
 
 
-    fun getCompanyChannelList(
-    ): Flowable<List<HifiveMusicChannelModel>> {
-        return LiveRetrofitFactory.api()
-                .getCompanyChannelList().convert()
+    fun baseFavorite(Page: Int?,
+                     PageSize: Int?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().baseFavorite(Page, PageSize, "BaseFavorite").convert()
+    }
+
+    fun baseHot(StartTime: Long?,
+                Duration: Int?,
+                Page: Int?,
+                PageSize: Int?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().baseHot(StartTime, Duration, Page, PageSize, "BaseHot").convert()
     }
 
 
-    fun token(
-            sign: String,
-            appId: String,
-            memberName: String,
-            memberId: String,
-            societyName: String?,
-            societyId: String?,
-            deviceId: String,
-            timestamp: String,
-            headerUrl: String?,
-            gender: String?,
-            birthday: String?,
-            location: String?,
-            favoriteSinger: String?,
-            phone: String?
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().token(
-                sign,
-                appId,
-                memberName,
-                memberId,
-                societyName,
-                societyId,
-                deviceId,
-                timestamp,
-                headerUrl,
-                gender,
-                birthday,
-                location,
-                favoriteSinger,
-                phone
-        )
+    fun trial(
+            MusicId: String?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().trial(MusicId, "Trial").convert()
+    }
 
+    fun trafficHQListen(MusicId: String?,
+                        AudioFormat: String?,
+                        AudioRate: String?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().trafficHQListen(MusicId, AudioFormat, AudioRate, "TrafficHQListen").convert()
+    }
+
+    fun trafficListenMixed(MusicId: String?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().trafficListenMixed(MusicId, "TrafficListenMixed").convert()
     }
 
 
-    fun societyLogin(
-            sign: String,
-            appId: String,
-            societyName: String,
-            societyId: String,
-            deviceId: String,
-            timestamp: String
-    ):
-            Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api()
-                .societyLogin(sign, appId, societyName, societyId, deviceId, timestamp)
+    fun orderMusic(Subject: String?,
+                   OrderId: Long?,
+                   Deadline: Int?,
+                   Music: String?,
+                   Language: Int?,
+                   AudioFormat: String?,
+                   AudioRate: String?,
+                   TotalFee: Int?,
+                   Remark: String?,
+                   WorkId: String?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().orderMusic(Subject, OrderId, Deadline, Music, Language, AudioFormat, AudioRate, TotalFee, Remark, WorkId, "OrderMusic").convert()
     }
 
 
-    fun unbindingMember(
-            memberId: String,
-            societyId: String
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().unbendingMember(
-                memberId, societyId
-        )
+    fun orderDetail(
+            OrderId: String?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().orderDetail(OrderId, "OrderDetail").convert()
+    }
+
+    fun orderAuthorization(CompanyName: String?,
+                           ProjectName: String?,
+                           Brand: String?,
+                           Period: Int?,
+                           Area: String?,
+                           orderIds: String?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().orderAuthorization(CompanyName, ProjectName, Brand, Period, Area, orderIds, "OrderAuthorization").convert()
     }
 
 
-    fun bind(
-            memberId: String,
-            societyId: String
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().bind(
-                memberId,
-                societyId
-        )
+    fun baseReport(Action: Int?,
+                   TargetId: String?,
+                   Content: String?,
+                   Location: Int?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().baseReport(Action,TargetId, Content, Location, "BaseReport").convert()
     }
 
 
-    fun delete(
-
-            memberId: String
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().delete(
-                memberId
-        )
+    fun orderPublish(Action: Int?,
+                    OrderId: String?,
+                    WorkId: String?
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().orderPublish(Action,OrderId, WorkId, "OrderPublish").convert()
     }
-
-
-    fun deleteSociety(
-            societyId: String
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().deleteSociaty(
-                societyId
-        )
-    }
-
-    fun getMemberSheetList(page: String?, pageSize: String?): Flowable<HifiveMusicBean<HifiveMusicUserSheetModel>> {
-        return LiveRetrofitFactory.api().getMemberSheetList(page, pageSize).convert()
-    }
-
-    fun getMemberSheetMusicList(
-            sheetId: String, language: String?, field: String?, pageSize: String?, page: String?
-    ): Flowable<HifiveMusicBean<HifiveMusicModel>> {
-        return LiveRetrofitFactory.api().getMemberSheetMusicList(sheetId, language, field, pageSize, page).convert()
-    }
-
-
-    fun getMusicDetail(
-            musicId: String, language: String?, mediaType: String, audioFormat: String?, audioRate: String?, field: String?
-    ): Flowable<HifiveMusicDetailModel> {
-        return LiveRetrofitFactory.api().getMusicDetail(musicId, language, mediaType, audioFormat, audioRate, field).convert()
-    }
-
-
-    fun saveMemberSheet(
-            sheetName: String
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().saveMemberSheet(sheetName)
-    }
-
-
-    fun saveMemberSheetMusic(
-            sheetId: String, musicId: String
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().saveMemberSheetMusic(sheetId, musicId)
-    }
-
-
-    fun deleteMemberSheetMusic(
-            sheetId: String, musicId: String
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().deleteMemberSheetMusic(sheetId, musicId)
-    }
-
-
-    fun updateMusicRecord(
-            recordId: String, duration: String, mediaType: String
-    ): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().updateMusicRecord(recordId, duration, mediaType)
-    }
-
-    fun getConfigList(): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().getConfigList()
-    }
-
-    fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicModel>> {
-        return LiveRetrofitFactory.api().getMusicList(searchId, keyword, language, field, pageSize, page).convert()
-    }
-
-    fun getSearchRecordList(pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicSearchrModel>> {
-        return LiveRetrofitFactory.api().getSearchRecordList(pageSize, page).convert()
-    }
-
-    fun deleteSearchRecord(): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().deleteSearchRecord()
-    }
-
-
-    fun getMemberSheetMusicAll(sheetId: String, language: String?, field: String?): Flowable<BaseResp<Any>> {
-        return LiveRetrofitFactory.api().getMemberSheetMusicAll(sheetId, language, field)
-    }
-
 
 }
 

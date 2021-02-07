@@ -12,19 +12,16 @@ import javax.crypto.spec.SecretKeySpec
 class BaseConstance {
     companion object {
         const val TIME_OUT: Long = 30
-        const val BASE_URL: String = "http://openmusic-api.hifiveai.com"
         //测试
-//        const val BASE_URL_MUSIC: String = "https://hifive-gateway-test.hifiveai.com"
+        var BASE_URL_MUSIC: String = "http://hifive-gateway-test.hifiveai.com/"
         //预发
 //        var BASE_URL_MUSIC: String = "https://hifive-gateway-pre.hifiveai.com"
         //正式
-        var BASE_URL_MUSIC: String = "https://gateway.open.hifiveai.com"
+//        var BASE_URL_MUSIC: String = "https://gateway.open.hifiveai.com"
         var verison : String = BuildConfig.VERSION_NAME
-        var accessTokenMember: String? = null
-        var accessTokenUnion: String? = null
-        var memberOutId: String? = null
-        var societyOutId: String? = null
-        const val SUCCEED = 200
+        var clientId: String = ""
+        var token: String = ""
+        const val SUCCEED = 10200
 
         fun getSign(secret: String, message: String): String? {
             var sign = ""

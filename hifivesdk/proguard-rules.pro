@@ -2,9 +2,9 @@
 #不混淆所有的com.czy.bean包下的类和这些类的所有成员变量
 -keep class com.hifive.sdk.entity.** { *; }
 #-keep class com.hifive.sdk.manager.** { *; }
--keep class com.hifive.sdk.manager.HFLiveApi{*;}
--keep class com.hifive.sdk.manager.HFLiveApi$Companion{*;}
--keep class com.hifive.sdk.controller.MusicManager{*;}
+-keep class com.hifive.sdk.manager.HFOpenApi{*;}
+-keep class com.hifive.sdk.manager.HFOpenApi$Companion{*;}
+-keep class com.hifive.sdk.controller.OpenManager{*;}
 
 -keep class com.hifive.sdk.hInterface.DataResponse{*;}
 -keep class com.hifive.sdk.hInterface.DataResponse$*{*;}

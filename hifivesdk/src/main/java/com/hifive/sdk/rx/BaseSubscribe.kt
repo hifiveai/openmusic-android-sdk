@@ -2,7 +2,7 @@ package com.hifive.sdk.rx
 
 import com.google.gson.JsonSyntaxException
 import com.hifive.sdk.hInterface.DataResponse
-import com.hifive.sdk.manager.HFLiveApi
+import com.hifive.sdk.manager.HFOpenApi
 import io.reactivex.subscribers.ResourceSubscriber
 import org.json.JSONException
 import retrofit2.HttpException
@@ -20,32 +20,32 @@ abstract class BaseSubscribe<T>(private val dataResponse: DataResponse<T>?) : Re
         when (t) {
             is BaseException -> {
                 //向开发者抛出errorMsg,交给开发者处理
-                HFLiveApi.callbacks?.onError(BaseException(t.status,t.msg ?: ""))
-                dataResponse?.errorMsg(t.msg ?: "", t.status)
+                HFOpenApi.callbacks?.onError(BaseException(t.status,t.msg ?: ""))
+                dataResponse?.onError(t.msg ?: "", t.status)
             }
             is TimeoutException -> {
-                HFLiveApi.callbacks?.onError(BaseException(10002,"连接超时"))
-                dataResponse?.errorMsg(t.message ?: "连接超时", 10002)
+                HFOpenApi.callbacks?.onError(BaseException(10002,"连接超时"))
+                dataResponse?.onError(t.message ?: "连接超时", 10002)
             }
             is HttpException -> {
-                HFLiveApi.callbacks?.onError(BaseException(10003,"http异常"))
-                dataResponse?.errorMsg(t.message ?: "http异常", 10003)
+                HFOpenApi.callbacks?.onError(BaseException(10003,"http异常"))
+                dataResponse?.onError(t.message ?: "http异常", 10003)
             }
             is SocketException -> {
-                HFLiveApi.callbacks?.onError(BaseException(10004,"链接异常"))
-                dataResponse?.errorMsg(t.message ?: "链接异常", 10004)
+                HFOpenApi.callbacks?.onError(BaseException(10004,"链接异常"))
+                dataResponse?.onError(t.message ?: "链接异常", 10004)
             }
             is JSONException -> {
-                HFLiveApi.callbacks?.onError(BaseException(10097,"JSON转换失败"))
-                dataResponse?.errorMsg(t.message ?: "JSON转换失败",10097)
+                HFOpenApi.callbacks?.onError(BaseException(10097,"JSON转换失败"))
+                dataResponse?.onError(t.message ?: "JSON转换失败",10097)
             }
             is JsonSyntaxException -> {
-                HFLiveApi.callbacks?.onError(BaseException(10098,"JSON格式不匹配"))
-                dataResponse?.errorMsg(t.message ?: "JSON格式不匹配", 10098)
+                HFOpenApi.callbacks?.onError(BaseException(10098,"JSON格式不匹配"))
+                dataResponse?.onError(t.message ?: "JSON格式不匹配", 10098)
             }
             else -> {
-                HFLiveApi.callbacks?.onError(BaseException(10099,"未知错误"))
-                dataResponse?.errorMsg(t?.message ?: "未知错误", 10099)
+                HFOpenApi.callbacks?.onError(BaseException(10099,"未知错误"))
+                dataResponse?.onError(t?.message ?: "未知错误", 10099)
             }
         }
 

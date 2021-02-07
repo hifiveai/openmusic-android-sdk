@@ -11,10 +11,10 @@ interface DataResponse<T> {
     /**
      * sdk返回的错误
      */
-    fun errorMsg(string: String, code: Int?)
+    fun onError(string: String, code: Int?)
 
     /**
      * sdk返回的数据
      */
-    fun data(any: T)
+    fun onSuccess(any: T)
 }

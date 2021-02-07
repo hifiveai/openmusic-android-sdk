@@ -1,10 +1,11 @@
 package com.hifive.sdk.service.impl
 
-import com.hifive.sdk.entity.*
 import com.hifive.sdk.ext.convert
+import com.hifive.sdk.net.LiveRetrofitFactory
 import com.hifive.sdk.repository.DataRepository
 import com.hifive.sdk.service.Service
 import io.reactivex.Flowable
+
 
 /**
  * @author Dsh  imkobedroid@gmail.com
@@ -14,146 +15,144 @@ class ServiceImpl constructor() : Service {
 
     private val dataRepository by lazy { DataRepository() }
 
-    override fun getCompanySheetTagList(): Flowable<Any> {
-        return dataRepository.getCompanySheetTagList().convert()
-    }
-
-    override fun getCompanySheetList(groupId: String?,
-                                     language: String?,
-                                     recNam: String?,
-                                     type: String?,
-                                     tagIdList: String?,
-                                     field: String?,
-                                     pageSize: String?,
-                                     page: String?): Flowable<HifiveMusicBean<HifiveMusicSheetModel>> {
-        return dataRepository.getCompanySheetList(groupId, language, recNam, type, tagIdList, field, pageSize, page)
-    }
-
-    override fun getCompanySheetMusicList(sheetId: String?,
-                                          language: String?,
-                                          field: String?,
-                                          pageSize: String?,
-                                          page: String?): Flowable<Any> {
-        return dataRepository.getCompanySheetMusicList(sheetId, language, field, pageSize, page).convert()
-    }
-
-    override fun getCompanySheetMusicAll(sheetId: String?,
-                                          language: String?,
-                                          field: String?): Flowable<List<HifiveMusicModel>> {
-        return dataRepository.getCompanySheetMusicAll(sheetId, language, field)
-    }
-
-    override fun getCompanyChannelList(): Flowable<List<HifiveMusicChannelModel>> {
-        return dataRepository.getCompanyChannelList()
-    }
-
-    override fun token(sign: String,
-                       appId: String,
-                       memberName: String,
-                       memberId: String,
-                       societyName: String?,
-                       societyId: String?,
-                       deviceId: String,
-                       timestamp: String,
-                       headerUrl: String?,
-                       gender: String?,
-                       birthday: String?,
-                       location: String?,
-                       favoriteSinger: String?,
-                       phone: String?): Flowable<Any> {
-        return dataRepository.token(sign, appId, memberName, memberId, societyName, societyId, deviceId, timestamp, headerUrl, gender, birthday, location, favoriteSinger, phone).convert()
-    }
-
-
-    override fun societyLogin(sign: String, appId: String, societyName: String, societyId: String, deviceId: String, timestamp: String): Flowable<Any> {
-        return dataRepository.societyLogin(sign, appId, societyName, societyId, deviceId, timestamp).convert()
-
-    }
-
-    override fun unbindMember(
-            memberId: String, societyId: String): Flowable<Any> {
-        return dataRepository.unbindingMember(memberId, societyId).convert()
-
-    }
-
-    override fun bind(
-
-            memberId: String,
-            societyId: String
+    fun baseLogin(
+            Nickname: String?,
+            Gender: String?,
+            Birthday: String?,
+            Location: String?,
+            Education: String?,
+            Profession: String?,
+            IsOrganization: String?,
+            Reserve: String?,
+            FavoriteSinger: String?,
+            FavoriteGenre: String?
     ): Flowable<Any> {
-        return dataRepository.bind(memberId, societyId).convert()
+        return dataRepository.baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre)
     }
 
-    override fun delete(
 
-            memberId: String
+    fun channel(): Flowable<Any> {
+        return dataRepository.channel()
+    }
+
+    fun channelSheet(GroupId: String?,
+                     Language: Int?,
+                     RecoNum: Int?,
+                     Page: Int?,
+                     PageSize: Int?
     ): Flowable<Any> {
-        return dataRepository.delete(memberId).convert()
+        return dataRepository.channelSheet(GroupId, Language, RecoNum, Page, PageSize)
+
     }
 
-
-    override fun deleteSociety(
-            societyId: String
+    fun sheetMusic(
+            SheetId: String?,
+            Language: Int?,
+            Page: Int?,
+            PageSize: Int?
     ): Flowable<Any> {
-        return dataRepository.deleteSociety(societyId).convert()
+        return dataRepository.sheetMusic(SheetId, Language, Page, PageSize)
     }
 
-    override fun getMemberSheetList(page: String?, pageSize: String?): Flowable<HifiveMusicBean<HifiveMusicUserSheetModel>> {
-        return dataRepository.getMemberSheetList(page, pageSize)
 
-    }
-    override fun getMemberSheetMusicList(sheetId: String, language: String?, field: String?, pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicModel>>
-    {
-        return dataRepository.getMemberSheetMusicList(sheetId, language, field, pageSize, page)
-
-    }
-
-    override fun getMusicDetail(musicId: String, language: String?, mediaType: String, audioFormat: String?, audioRate: String?, field: String?): Flowable<HifiveMusicDetailModel> {
-        return dataRepository.getMusicDetail(musicId, language, mediaType, audioFormat, audioRate, field)
-
-    }
-
-    override fun saveMemberSheet(sheetName: String): Flowable<Any> {
-        return dataRepository.saveMemberSheet(sheetName).convert()
-
+    fun searchMusic(
+            TagIds: String?,
+            priceFromCent: Long?,
+            priceToCent: Long?,
+            Location: Int?,
+            Education: Int?,
+            Profession: Int?,
+            IsOrganization: Int?,
+            Reserve: String?,
+            Language: Int?,
+            Page: Int?,
+            PageSize: Int?
+    ): Flowable<Any> {
+        return dataRepository.searchMusic(TagIds, priceFromCent, priceToCent, Location, Education, Profession, IsOrganization, Reserve, Language, Page, PageSize)
     }
 
-    override fun saveMemberSheetMusic(sheetId: String, musicId: String): Flowable<Any> {
-        return dataRepository.saveMemberSheetMusic(sheetId, musicId).convert()
 
+    fun musicConfig(): Flowable<Any> {
+        return dataRepository.musicConfig()
     }
 
-    override fun deleteMemberSheetMusic(sheetId: String, musicId: String): Flowable<Any> {
-        return dataRepository.deleteMemberSheetMusic(sheetId, musicId).convert()
-
+    fun baseFavorite(Page: Int?,
+                     PageSize: Int?
+    ): Flowable<Any> {
+        return dataRepository.baseFavorite(Page, PageSize)
     }
 
-    override fun updateMusicRecord(recordId: String, duration: String, mediaType: String): Flowable<Any> {
-        return dataRepository.updateMusicRecord(recordId, duration, mediaType).convert()
-
+    fun baseHot( StartTime: Long?,
+                 Duration: Int?,
+                 Page: Int?,
+                 PageSize: Int?
+    ): Flowable<Any> {
+        return dataRepository.baseHot(StartTime,Duration,Page, PageSize)
     }
 
-    override fun getConfigList(): Flowable<Any> {
-        return dataRepository.getConfigList().convert()
+    fun trafficHQListen( MusicId: String?,
+                         AudioFormat: String?,
+                         AudioRate: String?
+    ): Flowable<Any> {
+        return dataRepository.trafficHQListen(MusicId,AudioFormat,AudioRate)
     }
 
-    override fun getMusicList(searchId: String, keyword: String?, language: String?, field: String?, pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicModel>> {
-        return dataRepository.getMusicList(searchId, keyword, language, field, pageSize, page)
+    fun trafficListenMixed( MusicId: String?
+    ): Flowable<Any> {
+        return dataRepository.trafficListenMixed(MusicId)
     }
 
-    override fun getSearchRecordList(pageSize: String?, page: String?): Flowable<HifiveMusicBean<HifiveMusicSearchrModel>> {
-        return dataRepository.getSearchRecordList(pageSize, page)
-
+    fun orderMusic(Subject: String?,
+                   OrderId: Long?,
+                   Deadline: Int?,
+                   Music: String?,
+                   Language: Int?,
+                   AudioFormat: String?,
+                   AudioRate: String?,
+                   TotalFee: Int?,
+                   Remark: String?,
+                   WorkId: String?
+    ): Flowable<Any> {
+        return dataRepository.orderMusic(Subject,OrderId,Deadline,Music,Language,AudioFormat,AudioRate,TotalFee,Remark,WorkId)
     }
 
-    override fun deleteSearchRecord(): Flowable<Any> {
-        return dataRepository.deleteSearchRecord().convert()
-
+    fun orderDetail(
+            OrderId: String?
+    ): Flowable<Any> {
+        return dataRepository.orderDetail(OrderId)
     }
 
-    override fun getMemberSheetMusicAll(sheetId: String, language: String?, field: String?): Flowable<Any> {
-        return dataRepository.getMemberSheetMusicAll(sheetId, language, field).convert()
+    fun orderAuthorization( CompanyName: String?,
+                            ProjectName: String?,
+                            Brand: String?,
+                            Period: Int?,
+                            Area: String?,
+                            orderIds: String?
+    ): Flowable<Any> {
+        return dataRepository.orderAuthorization(CompanyName,ProjectName,Brand,Period,Area,orderIds)
     }
 
+    fun baseReport(Action: Int?,
+                   TargetId: String?,
+                   Content: String?,
+                   Location: Int?
+    ): Flowable<Any> {
+        return dataRepository.baseReport(Action,TargetId, Content, Location)
+    }
+
+    fun orderPublish(Action: Int?,
+                     OrderId: String?,
+                     WorkId: String?
+    ): Flowable<Any> {
+        return dataRepository.orderPublish(Action,OrderId, WorkId)
+    }
+
+
+
+    fun trial(
+            MusicId: String?
+    ): Flowable<Any> {
+        return dataRepository.trial(MusicId)
+    }
 
 }
