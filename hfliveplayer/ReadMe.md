@@ -38,34 +38,79 @@ targetSdkVersion : 30
 建议使用Android Studio 3.4 以上版本进行编译。
 
 #### 2.3集成SDK
-##### 2.3.1 自动集成
 
- - 在Module的build.gradle文件中添加配置：
+##### 2.3.1 手动集成
+
+- 下载SDK
+
+support版本SDK[点击下载]()
+
+AndroidX适配版本SDK[点击下载]()
+
+- 将SDK文件加入到libs中
+- 在module的build.gradle中与android{}平级下加入
+
 ```
-repositories {
-    maven {
-        url 'http://172.16.52.62:8081/repository/hifive_repository'
-    }
-}
+ repositories {
+       flatDir {
+       dirs 'libs'
+           }
+       }
 ```
-- 在Module的build.gradle文件中添加依赖：
+- 在module的build.gradle中的dependencies里加入
+
 ```
-api "com.hifive.sdk:liveplayer:1.0.0"
+   implementation(name: 'demo', ext:'aar')//注意这里加入的名字没有后缀名
 ```
-- AndroidX请切换为以下依赖：
+- 因为本SDK需要第三方网络库支持，所以必须添加一下依赖,可根据项目需求本身进行版本选择
 ```
-api "com.hifive.sdk:liveplayer-androidx:1.0.0"
+api "io.reactivex.rxjava2:rxjava:2.2.10"
+api "io.reactivex.rxjava2:rxandroid:2.1.1"
+api "com.squareup.retrofit2:retrofit:2.6.0"
+api "com.squareup.retrofit2:adapter-rxjava2:2.6.0"
+api "com.squareup.okhttp3:okhttp:4.0.0"
+api "com.squareup.okhttp3:logging-interceptor:4.0.0"
+api "com.squareup.okhttp3:okhttp:4.9.0"
+api "com.squareup.okhttp3:logging-interceptor:4.9.0"
+
+//使用以下第三方UI依赖库
+api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
+api 'com.github.bumptech.glide:glide:4.8.0'
+api "com.android.support:recyclerview-v7:28.0.0"
+//AndroidX适配使用以下第三方UI依赖库
+api 'com.github.bumptech.glide:glide:4.11.0'
+api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
+api 'androidx.recyclerview:recyclerview:1.1.0'
 ```
 
-- 因项目基于Kotlin开发，在项目级的build.gradle中 buildscript的dependencies里面引入kotlin
-```
- buildscript {
-     dependencies {
-         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41"
-     }
- }
-```
-- 同步后可以在External Libraries中查看新加入的包
+<!--##### 2.3.2 自动集成-->
+
+<!-- - 在Module的build.gradle文件中添加配置：-->
+<!--```-->
+<!--repositories {-->
+<!--    maven {-->
+<!--        url 'http://172.16.52.62:8081/repository/hifive_repository'-->
+<!--    }-->
+<!--}-->
+<!--```-->
+<!--- 在Module的build.gradle文件中添加依赖：-->
+<!--```-->
+<!--api "com.hifive.sdk:liveplayer:1.0.0"-->
+<!--```-->
+<!--- AndroidX请切换为以下依赖：-->
+<!--```-->
+<!--api "com.hifive.sdk:liveplayer-androidx:1.0.0"-->
+<!--```-->
+
+<!--- 因项目基于Kotlin开发，在项目级的build.gradle中 buildscript的dependencies里面引入kotlin-->
+<!--```-->
+<!-- buildscript {-->
+<!--     dependencies {-->
+<!--         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41"-->
+<!--     }-->
+<!-- }-->
+<!--```-->
+<!--- 同步后可以在External Libraries中查看新加入的包-->
 
 ## 三、SDK使用
 
@@ -139,9 +184,9 @@ phone	 | 否| 手机号
 - 显示播放器方法
 
 ```
-HFLivePlayer.getInstance().add(FragmentActivity activity);
+HFLivePlayer.getInstance().showPlayer(FragmentActivity activity);
 或者
-HFLivePlayer.getInstance().add(FragmentActivity activity,int marginTop,int marginBottom);
+HFLivePlayer.getInstance().showPlayer(FragmentActivity activity,int marginTop,int marginBottom);
 ```
 参数  | 必填  |描述|
 ---|---|---
@@ -153,7 +198,7 @@ marginBottom | 否| 播放器可拖拽范围下限（默认为0，表示可以�
 
 - 关闭播放器方法
 ```
-HFLivePlayer.getInstance().remove();
+HFLivePlayer.getInstance().removePlayer();
 ```
 
 ## 四、API状态码
@@ -162,15 +207,13 @@ SDK错误码
 
 | 错误码 | 错误描述 | 解决方案 |
 |----------|:--------|:-------- |
-| 10500 | internal fail | 重试 |
-| 10504 | parameter validation error | 检测参数传值 |
-| 10400 | service error |  |
-| 10401 | 未登录（签名错误） | 检测sign签名生成算法，是否正确 |
-| 10602 | 应用账户不存在 | 检测输入appId和secret |
-| 10502 | 登录已超时，请重新登录 | 重新登录 |
-| 10201 | no data |  |
-| 10001 | 网络错误 | 请检查网络连接|
+| 10000 | 未初始化ADK | 初始化SDK |
+| 10001 | 网络错误 | 请检查网络连接 |
 | 10002 | 连接超时 | 请检查网络连接 |
+| 10003 | http异常 | 重试 |
+| 10097 | JSON转换失败 | 重试 |
+| 10098 | JSON格式不匹配 | 检查Json |
+| 10099 | 未知错误 |  |
 
 
 成功响应码

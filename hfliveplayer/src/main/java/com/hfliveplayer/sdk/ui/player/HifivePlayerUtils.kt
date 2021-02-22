@@ -1,19 +1,14 @@
 package com.hfliveplayer.sdk.ui.player;
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.media.AudioAttributes
+import android.media.AudioManager
 import android.media.AudioManager.STREAM_MUSIC
 import android.media.MediaPlayer
-import android.os.Build
-import android.os.Handler
 import android.util.Log
 import android.widget.SeekBar
 import com.hfliveplayer.sdk.listener.HifivePlayListener
 import java.io.IOException
-import java.lang.reflect.Constructor
-import java.lang.reflect.Field
-import java.lang.reflect.Method
+
 
 /**
  * @author huchao
@@ -85,12 +80,15 @@ class HifivePlayerUtils private constructor(){
             play.reset()
             play.setDataSource(url)
 
-            //AudioAttributes是一个封装音频各种属性的类
-            val attrBuilder = AudioAttributes.Builder()
-            //设置音频流的合适属性
-            attrBuilder.setLegacyStreamType(STREAM_MUSIC)
-            play.setAudioAttributes(attrBuilder.build())
-//            play.setAudioStreamType(AudioManager.STREAM_MUSIC)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+                //AudioAttributes是一个封装音频各种属性的类
+                val attrBuilder = AudioAttributes.Builder()
+                //设置音频流的合适属性
+                attrBuilder.setLegacyStreamType(STREAM_MUSIC)
+                play.setAudioAttributes(attrBuilder.build())
+            }else{
+                play.setAudioStreamType(AudioManager.STREAM_MUSIC)
+            }
             play.setOnPreparedListener(onPreparedListener!!)
             play.prepareAsync()
         } catch (e: IOException) {

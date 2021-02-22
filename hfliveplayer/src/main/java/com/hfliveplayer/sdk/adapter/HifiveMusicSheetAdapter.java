@@ -57,12 +57,12 @@ public class HifiveMusicSheetAdapter extends RecyclerView.Adapter<HifiveMusicShe
             holder.vv_line.setVisibility(View.GONE);
         }
         if(model.getCover() != null && !TextUtils.isEmpty(model.getCover().getUrl())){
-            Glide.with(mContext).asBitmap().load(model.getCover().getUrl())
+            Glide.with(mContext).load(model.getCover().getUrl())
                     .error(R.mipmap.hifvesdk_sheet_default)
                     .placeholder(R.mipmap.hifvesdk_sheet_default)
                     .into(holder.iv_image);//四周都是圆角的圆角矩形图片。
         }else{
-            Glide.with(mContext).asBitmap().load(R.mipmap.hifvesdk_sheet_default)
+            Glide.with(mContext).load(R.mipmap.hifvesdk_sheet_default)
                     .into(holder.iv_image);//四周都是圆角的圆角矩形图片。
         }
         //点击事件

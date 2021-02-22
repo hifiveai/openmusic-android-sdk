@@ -19,6 +19,7 @@ import com.hifive.sdk.rx.BaseException;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -88,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
             HFLiveApi.configCallBack(new HFLiveCallback(){
                 @Override
                 public void onError( BaseException exception) {
+                    HifiveDialogManageUtil.getInstance().showToast(LoginActivity.this, exception.getMsg());
                 }
 
                 @Override
@@ -197,5 +199,6 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+
     }
 }

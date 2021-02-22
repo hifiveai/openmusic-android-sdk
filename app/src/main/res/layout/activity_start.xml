@@ -128,7 +128,6 @@
             android:hint="请输入会员ID"
             android:maxLines="1"
             android:maxLength="50"
-            android:digits="@string/filter_vcode"
             android:background="@null"/>
     </LinearLayout>
     <LinearLayout
