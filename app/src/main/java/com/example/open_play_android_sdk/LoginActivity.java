@@ -18,8 +18,6 @@ import com.hifive.sdk.manager.HFLiveApi;
 import com.hifive.sdk.rx.BaseException;
 import com.tencent.bugly.crashreport.CrashReport;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -186,12 +184,12 @@ public class LoginActivity extends AppCompatActivity {
         HFLiveApi.getInstance().memberLogin(this, memberName, memberId, sociatyName, sociatyId,
                 null , null, null, null, null, null, new DataResponse() {
                     @Override
-                    public void errorMsg(@NotNull String string, Integer code) {
+                    public void errorMsg( String string, Integer code) {
                         HifiveDialogManageUtil.getInstance().showToast(LoginActivity.this, string);
                     }
 
                     @Override
-                    public void data(@NotNull Object any) {
+                    public void data( Object any) {
                         SPUtils.put(LoginActivity.this,SPUtils.memberName,memberName);
                         SPUtils.put(LoginActivity.this,SPUtils.memberId,memberId);
                         HifiveDialogManageUtil.getInstance().showToast(LoginActivity.this, "会员登录成功");

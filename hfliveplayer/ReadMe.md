@@ -62,6 +62,8 @@ AndroidX适配版本SDK[点击下载]()
 ```
    implementation(name: 'demo', ext:'aar')//注意这里加入的名字没有后缀名
 ```
+
+
 - 因为本SDK需要第三方网络库支持，所以必须添加一下依赖,可根据项目需求本身进行版本选择
 ```
 api "io.reactivex.rxjava2:rxjava:2.2.10"
