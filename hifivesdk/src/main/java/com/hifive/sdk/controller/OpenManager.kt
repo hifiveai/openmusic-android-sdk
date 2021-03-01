@@ -21,8 +21,8 @@ import java.util.concurrent.TimeUnit
 
 
 /**
- * @author Dsh  imkobedroid@gmail.com
- * @date 2019-07-09
+ * @author lsh
+ * @date 2021-3-1
  */
 class OpenManager(val context: Context) {
 

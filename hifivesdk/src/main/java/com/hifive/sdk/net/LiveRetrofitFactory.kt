@@ -59,6 +59,7 @@ class LiveRetrofitFactory private constructor() {
     private fun initClient(): OkHttpClient {
         return OkHttpClient
                 .Builder()
+                .addInterceptor(HandleErrorInterceptor())
                 .addInterceptor(DefaultHeaderInterceptor())
                 .addInterceptor(encryptionInterceptor)
                 .addInterceptor(initLogInterceptor())

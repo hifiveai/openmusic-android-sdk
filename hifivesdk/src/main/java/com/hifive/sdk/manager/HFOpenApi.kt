@@ -12,8 +12,7 @@ import com.hifive.sdk.rx.BaseException
 import com.hifive.sdk.utils.MetaDataUtils
 
 /**
- * @author Dsh  imkobedroid@gmail.com
- * @date 2019-07-09
+ * lsh 2021年3月1日13:42:32
  */
 class HFOpenApi {
 

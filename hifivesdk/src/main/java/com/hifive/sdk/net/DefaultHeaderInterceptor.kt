@@ -13,6 +13,7 @@ import kotlin.collections.HashMap
 
 
 /**
+ * lsh 2021-3-1
  * 参数签名处理
  */
 class DefaultHeaderInterceptor : Interceptor {

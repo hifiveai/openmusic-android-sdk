@@ -3,8 +3,7 @@ package com.hifive.sdk.entity
 import java.io.Serializable
 
 /**
- * @author Dsh  imkobedroid@gmail.com
- * @date 2019-07-09
+ * lsh 2021年3月1日13:44:07
  */
 data class SdkInfo(
     val createTime: String,
