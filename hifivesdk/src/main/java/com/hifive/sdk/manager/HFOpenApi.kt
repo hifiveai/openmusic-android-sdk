@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import com.hifive.sdk.common.BaseConstance
 import com.hifive.sdk.common.HFLiveCallback
 import com.hifive.sdk.controller.OpenManager
+import com.hifive.sdk.net.Encryption
 import com.hifive.sdk.rx.BaseException
 import com.hifive.sdk.utils.MetaDataUtils
 
@@ -46,6 +47,7 @@ class HFOpenApi {
 
                 }
                 else -> {
+
                     val instance by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
                         OpenManager(hiFiveContext!!)
                     }
@@ -55,6 +57,7 @@ class HFOpenApi {
         }
 
         @JvmStatic
+        @Deprecated("manifests")
         fun registerApp(application: Context?, APP_ID: String, SERVER_CODE: String) {
             if (application == null) {
                 throw IllegalArgumentException("Failed to obtain information : The application cannot be null")

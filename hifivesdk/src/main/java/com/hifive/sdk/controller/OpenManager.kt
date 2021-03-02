@@ -7,13 +7,13 @@ import com.hifive.sdk.ext.request
 import com.hifive.sdk.hInterface.DataResponse
 import com.hifive.sdk.hInterface.DownLoadResponse
 import com.hifive.sdk.manager.HFOpenApi
+import com.hifive.sdk.net.Encryption
 import com.hifive.sdk.rx.BaseException
 import com.hifive.sdk.rx.BaseSubscribe
 import com.hifive.sdk.service.impl.ServiceImpl
 import com.hifive.sdk.utils.NetWorkUtils
 import com.tsy.sdk.myokhttp.MyOkHttp
 import com.tsy.sdk.myokhttp.response.DownloadResponseHandler
-import io.reactivex.Flowable
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import java.io.File
@@ -24,13 +24,18 @@ import java.util.concurrent.TimeUnit
  * @author lsh
  * @date 2021-3-1
  */
-class OpenManager(val context: Context) {
+class OpenManager() {
+
+    lateinit var mContext: Context
+
+    constructor(context: Context) : this() {
+        BaseConstance.clientId = Encryption.requestDeviceId(context)
+        this.mContext = context
+    }
 
     private val mService by lazy { ServiceImpl() }
 
     fun baseLogin(
-            context: Context,
-            clientId: String,
             Nickname: String?,
             Gender: String?,
             Birthday: String?,
@@ -43,10 +48,10 @@ class OpenManager(val context: Context) {
             FavoriteGenre: String?,
             response: DataResponse<Any>
     ) {
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
+
 
         mService.baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre)
                 .request(object : BaseSubscribe<Any>(response) {
@@ -56,13 +61,10 @@ class OpenManager(val context: Context) {
                 })
     }
 
-    fun channel(context: Context,
-                    clientId: String,
-                    response: DataResponse<Any>) {
-        if (!checkNetWork(context)) {
+    fun channel(response: DataResponse<Any>) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         mService.channel()
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -71,18 +73,15 @@ class OpenManager(val context: Context) {
                 })
     }
 
-    fun channelSheet(context: Context,
-                    clientId: String,
-                     GroupId: String?,
+    fun channelSheet(GroupId: String?,
                      Language: Int?,
                      RecoNum: Int?,
                      Page: Int?,
                      PageSize: Int?,
                     response: DataResponse<Any>) {
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         mService.channelSheet(GroupId,Language,RecoNum,Page,PageSize)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -98,10 +97,9 @@ class OpenManager(val context: Context) {
                    Page: Int?,
                    PageSize: Int?,
                     response: DataResponse<Any>) {
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         mService.sheetMusic(SheetId,Language,Page,PageSize)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -112,8 +110,6 @@ class OpenManager(val context: Context) {
 
 
     fun searchMusic(
-            context: Context,
-            clientId: String,
             TagIds: String?,
             priceFromCent: Long?,
             priceToCent: Long?,
@@ -127,10 +123,9 @@ class OpenManager(val context: Context) {
             PageSize: Int?,
             response: DataResponse<Any>
     ) {
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
 
         mService.searchMusic(TagIds, priceFromCent, priceToCent, Location, Education, Profession, IsOrganization, Reserve, Language, Page, PageSize)
                 .request(object : BaseSubscribe<Any>(response) {
@@ -140,13 +135,11 @@ class OpenManager(val context: Context) {
                 })
     }
 
-    fun musicConfig(context: Context,
-                    clientId: String,
+    fun musicConfig(
                     response: DataResponse<Any>) {
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         mService.musicConfig()
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -155,16 +148,13 @@ class OpenManager(val context: Context) {
                 })
     }
 
-    fun baseFavorite(context: Context,
-                     clientId: String,
-                     Page: Int?,
+    fun baseFavorite(Page: Int?,
                      PageSize: Int?,
                      response: DataResponse<Any>
     ) {
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
 
         return mService.baseFavorite(Page, PageSize)
                 .request(object : BaseSubscribe<Any>(response) {
@@ -174,18 +164,15 @@ class OpenManager(val context: Context) {
                 })
     }
 
-    fun baseHot(context: Context,
-                clientId: String,
-                StartTime: Long?,
+    fun baseHot(StartTime: Long?,
                 Duration: Int?,
                 Page: Int?,
                 PageSize: Int?,
                 response: DataResponse<Any>
     ) {
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         return mService.baseHot(StartTime, Duration, Page, PageSize)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -195,15 +182,12 @@ class OpenManager(val context: Context) {
     }
 
 
-    fun trial(context: Context,
-              clientId: String,
-              MusicId: String?,
+    fun trial(MusicId: String?,
               response: DataResponse<Any>
     ) {
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         return mService.trial(MusicId)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -212,17 +196,14 @@ class OpenManager(val context: Context) {
                 })
     }
 
-    fun trafficHQListen(context: Context,
-                        clientId: String,
-                        MusicId: String?,
+    fun trafficHQListen(MusicId: String?,
                         AudioFormat: String?,
                         AudioRate: String?,
                         response: DataResponse<Any>
     ) {
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         return mService.trafficHQListen(MusicId, AudioFormat, AudioRate)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -232,15 +213,12 @@ class OpenManager(val context: Context) {
     }
 
 
-    fun trafficListenMixed(context: Context,
-                           clientId: String,
-                           MusicId: String?,
+    fun trafficListenMixed(MusicId: String?,
                            response: DataResponse<Any>
     ) {
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         return mService.trafficListenMixed(MusicId)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -249,9 +227,7 @@ class OpenManager(val context: Context) {
                 })
     }
 
-    fun orderMusic(context: Context,
-                   clientId: String,
-                   Subject: String?,
+    fun orderMusic(Subject: String?,
                    OrderId: Long?,
                    Deadline: Int?,
                    Music: String?,
@@ -263,10 +239,9 @@ class OpenManager(val context: Context) {
                    WorkId: String?,
                    response: DataResponse<Any>
     ) {
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         return mService.orderMusic(Subject, OrderId, Deadline, Music, Language, AudioFormat, AudioRate, TotalFee, Remark, WorkId)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -275,15 +250,12 @@ class OpenManager(val context: Context) {
                 })
     }
 
-    fun orderDetail(context: Context,
-                    clientId: String,
-                    OrderId: String?,
+    fun orderDetail(OrderId: String?,
                     response: DataResponse<Any>
     ){
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         return mService.orderDetail(OrderId)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -293,9 +265,7 @@ class OpenManager(val context: Context) {
 
     }
 
-    fun orderAuthorization(context: Context,
-                           clientId: String,
-                           CompanyName: String?,
+    fun orderAuthorization(CompanyName: String?,
                             ProjectName: String?,
                             Brand: String?,
                             Period: Int?,
@@ -303,10 +273,9 @@ class OpenManager(val context: Context) {
                             orderIds: String?,
                            response: DataResponse<Any>
     ){
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         return mService.orderAuthorization(CompanyName,ProjectName,Brand,Period,Area,orderIds)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -315,18 +284,15 @@ class OpenManager(val context: Context) {
                 })
     }
 
-    fun baseReport(context: Context,
-                   clientId: String,
-                   Action: Int?,
+    fun baseReport(Action: Int?,
                    TargetId: String?,
                    Content: String?,
                    Location: Int?,
                    response: DataResponse<Any>
     ){
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         return mService.baseReport(Action,TargetId, Content, Location)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -335,17 +301,14 @@ class OpenManager(val context: Context) {
                 })
     }
 
-    fun orderPublish(context: Context,
-                     clientId: String,
-                     Action: Int?,
+    fun orderPublish(Action: Int?,
                      OrderId: String?,
                      WorkId: String?,
                      response: DataResponse<Any>
     ) {
-        if (!checkNetWork(context)) {
+        if (!checkNetWork(mContext)) {
             return
         }
-        BaseConstance.clientId = clientId
         return mService.orderPublish(Action,OrderId,WorkId)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
@@ -357,7 +320,7 @@ class OpenManager(val context: Context) {
 
 
 
-    fun downLoadFile(context: Context, url: String,
+    fun downLoadFile(url: String,
                      path: String, response: DownLoadResponse): Call {
         val down by lazy {
             val okHttpClient = OkHttpClient.Builder()
@@ -399,6 +362,10 @@ class OpenManager(val context: Context) {
         //向开发者抛出errorMsg,交给开发者处理
         HFOpenApi.callbacks?.onError(BaseException(10001, "网络错误"))
         return false
+    }
+
+    init {
+        BaseConstance.clientId = Encryption.requestDeviceId(HFOpenApi.hiFiveContext!!)
     }
 
 }
