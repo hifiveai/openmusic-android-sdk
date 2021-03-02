@@ -7,6 +7,7 @@ import io.reactivex.subscribers.ResourceSubscriber
 import org.json.JSONException
 import retrofit2.HttpException
 import java.net.SocketException
+import java.net.SocketTimeoutException
 import java.util.concurrent.TimeoutException
 
 /**
@@ -22,6 +23,10 @@ abstract class BaseSubscribe<T>(private val dataResponse: DataResponse<T>?) : Re
                 //向开发者抛出errorMsg,交给开发者处理
                 HFOpenApi.callbacks?.onError(BaseException(t.status,t.msg ?: ""))
                 dataResponse?.onError(t.msg ?: "", t.status)
+            }
+            is SocketTimeoutException ->{
+                HFOpenApi.callbacks?.onError(BaseException(10002,"连接超时"))
+                dataResponse?.onError(t.message ?: "连接超时", 10002)
             }
             is TimeoutException -> {
                 HFOpenApi.callbacks?.onError(BaseException(10002,"连接超时"))

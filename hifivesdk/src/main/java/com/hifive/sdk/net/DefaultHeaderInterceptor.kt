@@ -49,7 +49,7 @@ class DefaultHeaderInterceptor : Interceptor {
                 request
             }
         }
-        Log.e("requestUrl: ", newRequest.url.toString())
+
         return newRequest
     }
 
@@ -66,7 +66,9 @@ class DefaultHeaderInterceptor : Interceptor {
                 val oidFormBody = request.body as FormBody?
                 val fieldSize = oidFormBody?.size ?: 0
                 for (i in 0 until fieldSize) {
-                    newFormBody.add(oidFormBody!!.encodedName(i), URLDecoder.decode(oidFormBody.encodedValue(i), "UTF-8"))
+                    if(oidFormBody!!.encodedName(i) != "X-HF-Action"){
+                        newFormBody.add(oidFormBody.encodedName(i), URLDecoder.decode(oidFormBody.encodedValue(i), "UTF-8"))
+                    }
                     signParams[oidFormBody.encodedName(i)] = URLDecoder.decode(oidFormBody.encodedValue(i), "UTF-8")
                 }
                 headers["X-HF-Action"] = signParams["X-HF-Action"]!!
@@ -119,6 +121,7 @@ class DefaultHeaderInterceptor : Interceptor {
         //还原Url
         encodedQuery = HiFiveUtils.buildParam(signParams)
         val finalUrl = "$path?$encodedQuery"
+        Log.e("requestUrl: ", finalUrl)
         return builder.url(finalUrl).build()
     }
 

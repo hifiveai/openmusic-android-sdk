@@ -56,6 +56,60 @@ class OpenManager(val context: Context) {
                 })
     }
 
+    fun channel(context: Context,
+                    clientId: String,
+                    response: DataResponse<Any>) {
+        if (!checkNetWork(context)) {
+            return
+        }
+        BaseConstance.clientId = clientId
+        mService.channel()
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
+    fun channelSheet(context: Context,
+                    clientId: String,
+                     GroupId: String?,
+                     Language: Int?,
+                     RecoNum: Int?,
+                     Page: Int?,
+                     PageSize: Int?,
+                    response: DataResponse<Any>) {
+        if (!checkNetWork(context)) {
+            return
+        }
+        BaseConstance.clientId = clientId
+        mService.channelSheet(GroupId,Language,RecoNum,Page,PageSize)
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
+    fun sheetMusic(context: Context,
+                    clientId: String,
+                   SheetId: String?,
+                   Language: Int?,
+                   Page: Int?,
+                   PageSize: Int?,
+                    response: DataResponse<Any>) {
+        if (!checkNetWork(context)) {
+            return
+        }
+        BaseConstance.clientId = clientId
+        mService.sheetMusic(SheetId,Language,Page,PageSize)
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
 
     fun searchMusic(
             context: Context,

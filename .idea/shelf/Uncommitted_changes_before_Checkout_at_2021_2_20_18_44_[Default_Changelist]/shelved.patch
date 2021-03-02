@@ -1,0 +1,23 @@
+Index: hifivesdk/src/main/java/com/hifive/sdk/common/BaseConstance.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.hifive.sdk.common\r\n\r\nimport android.util.Base64\r\nimport com.hifive.sdk.BuildConfig\r\nimport javax.crypto.Mac\r\nimport javax.crypto.spec.SecretKeySpec\r\n\r\n/**\r\n * @author Dsh  imkobedroid@gmail.com\r\n * @date 2019-07-09\r\n */\r\nclass BaseConstance {\r\n    companion object {\r\n        const val TIME_OUT: Long = 30\r\n        //测试\r\n        var BASE_URL_MUSIC: String = \"http://hifive-gateway-test.hifiveai.com/\"\r\n        //预发\r\n//        var BASE_URL_MUSIC: String = \"https://hifive-gateway-pre.hifiveai.com\"\r\n        //正式\r\n//        var BASE_URL_MUSIC: String = \"https://gateway.open.hifiveai.com\"\r\n        var verison : String = BuildConfig.VERSION_NAME\r\n        var clientId: String = \"\"\r\n        var token: String = \"\"\r\n        const val SUCCEED = 10200\r\n\r\n        fun getSign(secret: String, message: String): String? {\r\n            var sign = \"\"\r\n            try {\r\n                val sha256Hmac: Mac = Mac.getInstance(\"HmacSHA256\")\r\n                val secretKey = SecretKeySpec(secret.toByteArray(), \"HmacSHA256\")\r\n                sha256Hmac.init(secretKey)\r\n                sign = Base64.encodeToString(sha256Hmac.doFinal(message.toByteArray()), Base64.DEFAULT)\r\n            } catch (e: Exception) {\r\n                e.printStackTrace()\r\n            }\r\n            return sign\r\n        }\r\n\r\n\r\n        fun getSignToken(secret: String, token: String, time: String): String? {\r\n            if (token.isBlank()) return null\r\n            val message = token + time\r\n            return getSign(secret, message)?.trim()\r\n        }\r\n    }\r\n\r\n\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- hifivesdk/src/main/java/com/hifive/sdk/common/BaseConstance.kt	(revision 16439f9cda0a3ad51ef63dcb19fddfc3f605553f)
++++ hifivesdk/src/main/java/com/hifive/sdk/common/BaseConstance.kt	(date 1613816428159)
+@@ -13,11 +13,11 @@
+     companion object {
+         const val TIME_OUT: Long = 30
+         //测试
+-        var BASE_URL_MUSIC: String = "http://hifive-gateway-test.hifiveai.com/"
++//        var BASE_URL_MUSIC: String = "http://hifive-gateway-test.hifiveai.com/"
+         //预发
+ //        var BASE_URL_MUSIC: String = "https://hifive-gateway-pre.hifiveai.com"
+         //正式
+-//        var BASE_URL_MUSIC: String = "https://gateway.open.hifiveai.com"
++        var BASE_URL_MUSIC: String = "https://gateway.open.hifiveai.com"
+         var verison : String = BuildConfig.VERSION_NAME
+         var clientId: String = ""
+         var token: String = ""
