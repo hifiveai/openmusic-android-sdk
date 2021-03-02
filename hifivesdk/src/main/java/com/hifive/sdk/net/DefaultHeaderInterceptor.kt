@@ -166,6 +166,8 @@ class DefaultHeaderInterceptor : Interceptor {
         //c.将上一步 b 的结果，做md5Hex处理，所得结果全部转为大写，即得到签名值（Signature）
         val signature = hmacSha1byte.md5()
         headers["Authorization"] = "HF3-HMAC-SHA1 Signature=$signature"
+        //移除不必要的X-HF-Action
+        headers.remove("X-HF-Method")
     }
 
 
