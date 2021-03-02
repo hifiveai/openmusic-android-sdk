@@ -1,5 +1,6 @@
 package com.hifive.sdk.repository
 
+import com.hifive.sdk.entity.*
 import com.hifive.sdk.ext.convert
 import com.hifive.sdk.net.LiveRetrofitFactory
 import io.reactivex.Flowable
@@ -24,11 +25,11 @@ class DataRepository constructor() {
             Reserve: String?,
             FavoriteSinger: String?,
             FavoriteGenre: String?
-    ): Flowable<Any> {
+    ): Flowable<LoginBean> {
         return LiveRetrofitFactory.api().baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre, "BaseLogin").convert()
     }
 
-    fun channel(): Flowable<Any> {
+    fun channel(): Flowable<ArrayList<ChannelItem>> {
         return LiveRetrofitFactory.api().channel("Channel").convert()
     }
 
@@ -90,19 +91,19 @@ class DataRepository constructor() {
 
     fun trial(
             MusicId: String?
-    ): Flowable<Any> {
+    ): Flowable<TrialMusic> {
         return LiveRetrofitFactory.api().trial(MusicId, "Trial").convert()
     }
 
     fun trafficHQListen(MusicId: String?,
                         AudioFormat: String?,
                         AudioRate: String?
-    ): Flowable<Any> {
+    ): Flowable<TrafficHQListen> {
         return LiveRetrofitFactory.api().trafficHQListen(MusicId, AudioFormat, AudioRate, "TrafficHQListen").convert()
     }
 
     fun trafficListenMixed(MusicId: String?
-    ): Flowable<Any> {
+    ): Flowable<TrafficListenMixed> {
         return LiveRetrofitFactory.api().trafficListenMixed(MusicId, "TrafficListenMixed").convert()
     }
 

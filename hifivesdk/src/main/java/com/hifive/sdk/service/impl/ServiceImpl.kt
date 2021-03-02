@@ -1,5 +1,6 @@
 package com.hifive.sdk.service.impl
 
+import com.hifive.sdk.entity.*
 import com.hifive.sdk.ext.convert
 import com.hifive.sdk.net.LiveRetrofitFactory
 import com.hifive.sdk.repository.DataRepository
@@ -26,12 +27,12 @@ class ServiceImpl constructor() : Service {
             Reserve: String?,
             FavoriteSinger: String?,
             FavoriteGenre: String?
-    ): Flowable<Any> {
+    ): Flowable<LoginBean> {
         return dataRepository.baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre)
     }
 
 
-    fun channel(): Flowable<Any> {
+    fun channel(): Flowable<ArrayList<ChannelItem>> {
         return dataRepository.channel()
     }
 
@@ -93,12 +94,12 @@ class ServiceImpl constructor() : Service {
     fun trafficHQListen( MusicId: String?,
                          AudioFormat: String?,
                          AudioRate: String?
-    ): Flowable<Any> {
+    ): Flowable<TrafficHQListen> {
         return dataRepository.trafficHQListen(MusicId,AudioFormat,AudioRate)
     }
 
     fun trafficListenMixed( MusicId: String?
-    ): Flowable<Any> {
+    ): Flowable<TrafficListenMixed> {
         return dataRepository.trafficListenMixed(MusicId)
     }
 
@@ -151,7 +152,7 @@ class ServiceImpl constructor() : Service {
 
     fun trial(
             MusicId: String?
-    ): Flowable<Any> {
+    ): Flowable<TrialMusic> {
         return dataRepository.trial(MusicId)
     }
 

@@ -1,5 +1,6 @@
 package com.hifive.sdk.net
 
+import com.hifive.sdk.entity.*
 import com.hifive.sdk.protocol.BaseResp
 import io.reactivex.Flowable
 import retrofit2.http.*
@@ -17,7 +18,7 @@ interface Api {
      * 此接口返回使用者拥有的全部已上架电台。通过电台ID可获取此电台下的已上架歌单。
      */
     @GET("/")
-    fun channel(@Query("X-HF-Action") Action: String?): Flowable<BaseResp<Any>>
+    fun channel(@Query("X-HF-Action") Action: String?): Flowable<BaseResp<ArrayList<ChannelItem>>>
 
     /**
      * 电台获取歌单列表
@@ -102,7 +103,7 @@ interface Api {
      */
     @GET("/")
     fun trial(@Query("MusicId") MusicId: String?,
-              @Query("X-HF-Action") Action: String?): Flowable<BaseResp<Any>>
+              @Query("X-HF-Action") Action: String?): Flowable<BaseResp<TrialMusic>>
 
 
     /**
@@ -113,14 +114,14 @@ interface Api {
                         @Query("AudioFormat") AudioFormat: String?,
                         @Query("AudioRate") AudioRate: String?,
                         @Query("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<TrafficHQListen>>
 
     /**
      * 获取音乐混音播放信息
      */
     @GET("/")
     fun trafficListenMixed(@Query("MusicId") MusicId: String?,
-                           @Query("X-HF-Action") Action: String?): Flowable<BaseResp<Any>>
+                           @Query("X-HF-Action") Action: String?): Flowable<BaseResp<TrafficListenMixed>>
 
 
     /**                        音乐售卖                            */
@@ -180,7 +181,7 @@ interface Api {
                   @Field("FavoriteSinger") FavoriteSinger: String?,
                   @Field("FavoriteGenre") FavoriteGenre: String?,
                   @Field("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<LoginBean>>
 
     /**
      * 行为采集

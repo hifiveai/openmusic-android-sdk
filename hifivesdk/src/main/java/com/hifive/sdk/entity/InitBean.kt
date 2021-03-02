@@ -5,41 +5,48 @@ import java.io.Serializable
 /**
  * lsh 2021年3月1日13:44:07
  */
-data class SdkInfo(
-    val createTime: String,
-    val icon: String,
-    val name: String,
-    val releaseVersion: String,
-    val version: Int
-) : Serializable
+data class LoginBean(
+    val token: String
+)
 
 
-data class MusicInfo(
-    val id: Int?,
-    val albumName: String?,
-    val bpm: Int?,
-    val coverUrl: String?,
-    val createTime: String?,
-    val duration: Int?,
-    val mediaAction: String?,
-    val musicName: String?,
-    val musicNo: String?,
-    val musicSinger: String?,
-    val price: Int?,
-    val size: Int?,
-
-    //自己添加的参数
-    var isPlaying: Boolean?,   //标志是不是正在播放
-    var isKing: Boolean?
-) : Serializable
-
-
-class AddSongBean : Serializable
+data class ChannelItem(
+    val coverUrl: String,
+    val groupId: String,
+    val groupName: String
+)
 
 
 
 
-class DeleteSongBean : Serializable
+
+data class TrialMusic(
+    val expires: Long,
+    val fileSize: Int,
+    val fileUrl: String,
+    val musicId: String,
+    val waveUrl: String
+)
+
+
+data class TrafficHQListen(
+    val expires: Long,
+    val fileSize: Int,
+    val fileUrl: String,
+    val musicId: String
+)
+
+data class TrafficListenMixed(
+    val expires: Long,
+    val fileSize: Int,
+    val fileUrl: String,
+    val musicId: String,
+    val waveUrl: String
+)
+
+
+
+
 
 class MusicTag(val name: String?) : Serializable
 

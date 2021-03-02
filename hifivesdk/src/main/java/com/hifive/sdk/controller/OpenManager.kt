@@ -46,7 +46,7 @@ class OpenManager() {
             Reserve: String?,
             FavoriteSinger: String?,
             FavoriteGenre: String?,
-            response: DataResponse<Any>
+            response: DataResponse<LoginBean>
     ) {
         if (!checkNetWork(mContext)) {
             return
@@ -54,20 +54,20 @@ class OpenManager() {
 
 
         mService.baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<LoginBean>(response) {
+                    override fun _onNext(t: LoginBean) {
                         response.onSuccess(t)
                     }
                 })
     }
 
-    fun channel(response: DataResponse<Any>) {
+    fun channel(response: DataResponse<ArrayList<ChannelItem>>) {
         if (!checkNetWork(mContext)) {
             return
         }
         mService.channel()
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<ArrayList<ChannelItem>>(response) {
+                    override fun _onNext(t: ArrayList<ChannelItem>) {
                         response.onSuccess(t)
                     }
                 })
@@ -183,14 +183,14 @@ class OpenManager() {
 
 
     fun trial(MusicId: String?,
-              response: DataResponse<Any>
+              response: DataResponse<TrialMusic>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
         return mService.trial(MusicId)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<TrialMusic>(response) {
+                    override fun _onNext(t: TrialMusic) {
                         response.onSuccess(t)
                     }
                 })
@@ -199,14 +199,14 @@ class OpenManager() {
     fun trafficHQListen(MusicId: String?,
                         AudioFormat: String?,
                         AudioRate: String?,
-                        response: DataResponse<Any>
+                        response: DataResponse<TrafficHQListen>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
         return mService.trafficHQListen(MusicId, AudioFormat, AudioRate)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<TrafficHQListen>(response) {
+                    override fun _onNext(t: TrafficHQListen) {
                         response.onSuccess(t)
                     }
                 })
@@ -214,14 +214,14 @@ class OpenManager() {
 
 
     fun trafficListenMixed(MusicId: String?,
-                           response: DataResponse<Any>
+                           response: DataResponse<TrafficListenMixed>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
         return mService.trafficListenMixed(MusicId)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<TrafficListenMixed>(response) {
+                    override fun _onNext(t: TrafficListenMixed) {
                         response.onSuccess(t)
                     }
                 })
