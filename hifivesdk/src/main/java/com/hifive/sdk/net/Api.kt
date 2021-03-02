@@ -31,7 +31,7 @@ interface Api {
                      @Query("Page") Page: Int?,
                      @Query("PageSize") PageSize: Int?,
                      @Query("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<ChannelSheet>>
 
     /**
      * 电台获取歌单列表
@@ -43,7 +43,7 @@ interface Api {
                    @Query("Page") Page: Int?,
                    @Query("PageSize") PageSize: Int?,
                    @Query("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<SheetMusic>>
 
 
     /**                        音乐搜索                           */
@@ -64,7 +64,7 @@ interface Api {
                     @Query("Page") Page: Int?,
                     @Query("PageSize") PageSize: Int?,
                     @Query("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<SearchMusic>>
 
 
     /**

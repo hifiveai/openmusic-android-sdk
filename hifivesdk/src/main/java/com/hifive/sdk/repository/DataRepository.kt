@@ -38,7 +38,7 @@ class DataRepository constructor() {
                      RecoNum: Int?,
                      Page: Int?,
                      PageSize: Int?
-    ): Flowable<Any> {
+    ): Flowable<ChannelSheet> {
         return LiveRetrofitFactory.api().channelSheet(GroupId, Language, RecoNum, Page, PageSize, "ChannelSheet").convert()
     }
 
@@ -47,7 +47,7 @@ class DataRepository constructor() {
             Language: Int?,
             Page: Int?,
             PageSize: Int?
-    ): Flowable<Any> {
+    ): Flowable<SheetMusic> {
         return LiveRetrofitFactory.api().sheetMusic(SheetId, Language, Page, PageSize, "SheetMusic").convert()
     }
 
@@ -64,7 +64,7 @@ class DataRepository constructor() {
             Language: Int?,
             Page: Int?,
             PageSize: Int?
-    ): Flowable<Any> {
+    ): Flowable<SearchMusic> {
         return LiveRetrofitFactory.api().searchMusic(TagIds, priceFromCent, priceToCent, Location, Education, Profession, IsOrganization, Reserve, Language, Page, PageSize, "SheetMusic").convert()
     }
 

@@ -78,13 +78,13 @@ class OpenManager() {
                      RecoNum: Int?,
                      Page: Int?,
                      PageSize: Int?,
-                    response: DataResponse<Any>) {
+                    response: DataResponse<ChannelSheet>) {
         if (!checkNetWork(mContext)) {
             return
         }
         mService.channelSheet(GroupId,Language,RecoNum,Page,PageSize)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<ChannelSheet>(response) {
+                    override fun _onNext(t: ChannelSheet) {
                         response.onSuccess(t)
                     }
                 })
@@ -96,13 +96,13 @@ class OpenManager() {
                    Language: Int?,
                    Page: Int?,
                    PageSize: Int?,
-                    response: DataResponse<Any>) {
+                    response: DataResponse<SheetMusic>) {
         if (!checkNetWork(mContext)) {
             return
         }
         mService.sheetMusic(SheetId,Language,Page,PageSize)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<SheetMusic>(response) {
+                    override fun _onNext(t: SheetMusic) {
                         response.onSuccess(t)
                     }
                 })
@@ -121,15 +121,15 @@ class OpenManager() {
             Language: Int?,
             Page: Int?,
             PageSize: Int?,
-            response: DataResponse<Any>
+            response: DataResponse<SearchMusic>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
 
         mService.searchMusic(TagIds, priceFromCent, priceToCent, Location, Education, Profession, IsOrganization, Reserve, Language, Page, PageSize)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<SearchMusic>(response) {
+                    override fun _onNext(t: SearchMusic) {
                         response.onSuccess(t)
                     }
                 })

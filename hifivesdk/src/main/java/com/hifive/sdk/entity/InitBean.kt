@@ -17,9 +17,6 @@ data class ChannelItem(
 )
 
 
-
-
-
 data class TrialMusic(
     val expires: Long,
     val fileSize: Int,
@@ -45,98 +42,39 @@ data class TrafficListenMixed(
 )
 
 
+data class SearchMusic(
+    val meta: Meta,
+    val record: List<Record>
+)
 
-
-
-class MusicTag(val name: String?) : Serializable
-
-
-data class SearchMusicInfo(
-    val albumName: String,
-    val duration: Int,
-    val mediaAction: String,
-    val musicName: String,
-    val musicNo: String,
-    val musicSinger: String,
-    val coverUrl: String,
-
-    //自己添加的参数
-    var isPlayType: Boolean = false,
-    var isPlaying: Boolean?,   //标志是不是正在播放
-    var isKing: Boolean?,  //正在k歌
-    var isExpend: Boolean? = false   //更多是不是扩展开的
-) : Serializable
-
-
-data class MusicResource(
-    val accompanyUrl: String,
-    val lyricUrl: String,
-    val majorUrl: String,
-    val outTradeNo: String,
-    //自己添加的参数
-    var type: String?,
-    var musicNo: String?,   //播放的音乐编号
-    var coverUrl: String
-) : Serializable
-
-data class RecommendMusic(
-    val albumName: String,
-    val dayTime: String,
-    val mediaAction: String,
-    val musicName: String,
-    val musicNo: String,
-    val musicSinger: String
-) : Serializable
-
-data class AddSongJson(
-        val userId: String,
-        val roomId: String?,
-        val musicNo: String,
-        val mediaAction: String
-) : Serializable
-
-data class MusicCount(
-        val total: Int,
-        val pnum: Int,
-        val knum: Int
+data class MusicConfig(
+        val prices: IntArray,
+        val tagList: List<Tag>
 )
 
 
-data class SheetTagListItem(
-        val child: List<Child1>,
-        val coverUrl: String,
-        val pid: Int,
-        val tagId: Int,
-        val tagName: String
+
+data class ChannelSheet(
+        val meta: Meta,
+        val record: List<Record>
 )
 
-data class Child(
-        val child: List<Any>,
-        val coverUrl: String,
-        val pid: Int,
-        val tagId: Int,
-        val tagName: String
+data class SheetMusic(
+    val meta: Meta,
+    val record: List<Record>
 )
 
 
-data class Token(
-        val accessToken: String
-)
-
-
-data class CompanySheetList(
+data class Meta(
         val currentPage: Int,
-        val pageSize: Int,
-        val records: List<Record>,
-        val totalCount: Int,
-        val totalPage: Int
+        val totalCount: Int
 )
 
 data class Record(
-        val cover: Cover,
+        val cover: List<Cover>,
         val describe: String,
         val free: Int,
-        val music: List<Any>,
+        val music: List<Music>,
         val musicTotal: Int,
         val price: Int,
         val sheetId: Int,
@@ -146,121 +84,68 @@ data class Record(
 )
 
 data class Cover(
-        val size: String,
+        val size: Any,
         val url: String
 )
 
-data class Tag(
-        val child: List<Child1>,
-        val coverUrl: Any,
-        val pid: Int,
-        val tagId: Int,
-        val tagName: String
-)
-
-data class Child1(
-        val child: List<Any>,
-        val coverUrl: Any,
-        val pid: Int,
-        val tagId: Int,
-        val tagName: String
-)
-
-
-data class CompanySheetMusicList(
-        val currentPage: Int,
-        val pageSize: Int,
-        val records: List<Any>,
-        val totalCount: Int,
-        val totalPage: Int
-)
-
-data class CompanyChannelList(
-        val channelId: String,
-        val channelName: String,
-        val channelUrl: String
-)
-
-
-data class SheetList(
-        val currentPage: Int,
-        val pageSize: Int,
-        val records: List<RecordInfo>,
-        val totalCount: Int,
-        val totalPage: Int
-)
-
-data class RecordInfo(
-        val createTime: String,
-        val sheetId: Int,
-        val sheetName: String,
-        val type: Int
-)
-
-
-data class SheetMusicList(
-        val currentPage: Int,
-        val pageSize: Int,
-        val records: List<RecordInformation>,
-        val totalCount: Int,
-        val totalPage: Int
-)
-
-data class RecordInformation(
-        val album: Album,
+data class Music(
+        val albumId: String,
+        val albumName: String,
         val arranger: List<Any>,
         val artist: List<Artist>,
         val auditionBegin: Int,
         val auditionEnd: Int,
-        val authType: Int,
-        val author: List<Any>,
+        val author: List<Author>,
         val bpm: Int,
         val composer: List<Composer>,
-        val cover: CoverInfo,
+        val cover: List<Cover>,
         val duration: Int,
-        val forSale: Int,
-        val majorVersion: String,
-        val maker: List<Any>,
-        val mastery: List<Any>,
         val musicId: String,
         val musicName: String,
-        val price: Int,
-        val tag: List<Any>,
-        val version: List<Version>,
-        val versionName: String,
-        val waveUrl: Any
+        val tag: List<Tag>,
+        val version: List<Version>
 )
 
-data class Album(
+
+data class Artist(
+        val avatar: String,
         val code: String,
-        val id: Int,
         val name: String
 )
 
-data class Artist(
+data class Author(
+        val avatar: String,
         val code: String,
-        val icon: String,
-        val id: Int,
         val name: String
 )
 
 data class Composer(
+        val avatar: String,
         val code: String,
-        val icon: String,
-        val id: Int,
         val name: String
 )
 
-data class CoverInfo(
-        val size: String,
-        val url: String
+data class Tag(
+        val child: List<Child>,
+        val tagId: Int,
+        val tagName: String
 )
 
 data class Version(
+        val auditionBegin: Int,
+        val auditionEnd: Int,
         val duration: Int,
         val free: Int,
-        val majorVersion: Int,
+        val majorVersion: Boolean,
         val musicId: String,
         val name: String,
         val price: Int
 )
+
+data class Child(
+        val child: List<Any>,
+        val tagId: Int,
+        val tagName: String
+)
+
+

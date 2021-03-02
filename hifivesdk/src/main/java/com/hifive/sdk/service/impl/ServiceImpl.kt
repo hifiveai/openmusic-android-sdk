@@ -41,7 +41,7 @@ class ServiceImpl constructor() : Service {
                      RecoNum: Int?,
                      Page: Int?,
                      PageSize: Int?
-    ): Flowable<Any> {
+    ): Flowable<ChannelSheet> {
         return dataRepository.channelSheet(GroupId, Language, RecoNum, Page, PageSize)
 
     }
@@ -51,7 +51,7 @@ class ServiceImpl constructor() : Service {
             Language: Int?,
             Page: Int?,
             PageSize: Int?
-    ): Flowable<Any> {
+    ): Flowable<SheetMusic> {
         return dataRepository.sheetMusic(SheetId, Language, Page, PageSize)
     }
 
@@ -68,7 +68,7 @@ class ServiceImpl constructor() : Service {
             Language: Int?,
             Page: Int?,
             PageSize: Int?
-    ): Flowable<Any> {
+    ): Flowable<SearchMusic> {
         return dataRepository.searchMusic(TagIds, priceFromCent, priceToCent, Location, Education, Profession, IsOrganization, Reserve, Language, Page, PageSize)
     }
 
