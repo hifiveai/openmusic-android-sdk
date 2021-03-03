@@ -73,13 +73,13 @@ class ServiceImpl constructor() : Service {
     }
 
 
-    fun musicConfig(): Flowable<Any> {
+    fun musicConfig(): Flowable<MusicConfig> {
         return dataRepository.musicConfig()
     }
 
     fun baseFavorite(Page: Int?,
                      PageSize: Int?
-    ): Flowable<Any> {
+    ): Flowable<BaseFavorite> {
         return dataRepository.baseFavorite(Page, PageSize)
     }
 
@@ -87,7 +87,7 @@ class ServiceImpl constructor() : Service {
                  Duration: Int?,
                  Page: Int?,
                  PageSize: Int?
-    ): Flowable<Any> {
+    ): Flowable<BaseHot> {
         return dataRepository.baseHot(StartTime,Duration,Page, PageSize)
     }
 
@@ -113,13 +113,13 @@ class ServiceImpl constructor() : Service {
                    TotalFee: Int?,
                    Remark: String?,
                    WorkId: String?
-    ): Flowable<Any> {
+    ): Flowable<OrderMusic> {
         return dataRepository.orderMusic(Subject,OrderId,Deadline,Music,Language,AudioFormat,AudioRate,TotalFee,Remark,WorkId)
     }
 
     fun orderDetail(
             OrderId: String?
-    ): Flowable<Any> {
+    ): Flowable<OrderMusic> {
         return dataRepository.orderDetail(OrderId)
     }
 
@@ -129,7 +129,7 @@ class ServiceImpl constructor() : Service {
                             Period: Int?,
                             Area: String?,
                             orderIds: String?
-    ): Flowable<Any> {
+    ): Flowable<OrderAuthorization> {
         return dataRepository.orderAuthorization(CompanyName,ProjectName,Brand,Period,Area,orderIds)
     }
 
@@ -137,14 +137,14 @@ class ServiceImpl constructor() : Service {
                    TargetId: String?,
                    Content: String?,
                    Location: Int?
-    ): Flowable<Any> {
+    ): Flowable<TaskId> {
         return dataRepository.baseReport(Action,TargetId, Content, Location)
     }
 
     fun orderPublish(Action: Int?,
                      OrderId: String?,
                      WorkId: String?
-    ): Flowable<Any> {
+    ): Flowable<OrderPublish> {
         return dataRepository.orderPublish(Action,OrderId, WorkId)
     }
 

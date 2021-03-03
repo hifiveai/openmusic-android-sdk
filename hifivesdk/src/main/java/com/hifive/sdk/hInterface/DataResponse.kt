@@ -1,5 +1,7 @@
 package com.hifive.sdk.hInterface
 
+import com.hifive.sdk.rx.BaseException
+
 
 /**
  * @author Dsh  imkobedroid@gmail.com
@@ -11,7 +13,7 @@ interface DataResponse<T> {
     /**
      * sdk返回的错误
      */
-    fun onError(string: String, code: Int?)
+    fun onError(exception : BaseException)
 
     /**
      * sdk返回的数据

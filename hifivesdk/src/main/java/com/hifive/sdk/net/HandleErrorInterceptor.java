@@ -35,6 +35,17 @@ public class HandleErrorInterceptor extends ResponseBodyInterceptor {
                         ResponseBody boy = ResponseBody.create(response.body().contentType(), json);
                         return response.newBuilder().body(boy).build();
                     }
+                }else{
+                    String taskId = jsonObject.getString("taskId");
+                    if(!taskId.isEmpty()){
+                        String json = response.body().string();
+                        json.replace("\"data\":null", "\"data\":{}");
+                        int index = json.lastIndexOf("},");
+                        String sb = json.substring(0, index) + ",\"taskId\":\"" + taskId + "\"}" +
+                                ",\"taskId\":\"" + taskId + "\"}";
+                        ResponseBody boy = ResponseBody.create(response.body().contentType(), sb);
+                        return response.newBuilder().body(boy).build();
+                    }
                 }
             } catch (JSONException | IOException e) {
                 e.printStackTrace();

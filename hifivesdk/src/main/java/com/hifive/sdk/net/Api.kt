@@ -72,7 +72,7 @@ interface Api {
      * 此接口返回使用者拥有的全部已上架电台。通过电台ID可获取此电台下的已上架歌单。
      */
     @GET("/")
-    fun musicConfig(@Query("X-HF-Action") Action: String?): Flowable<BaseResp<Any>>
+    fun musicConfig(@Query("X-HF-Action") Action: String?): Flowable<BaseResp<MusicConfig>>
 
 
     /**                        音乐推荐                            */
@@ -83,7 +83,7 @@ interface Api {
     fun baseFavorite(@Query("Page") Page: Int?,
                      @Query("PageSize") PageSize: Int?,
                      @Query("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<BaseFavorite>>
 
     /**
      * 热门推荐
@@ -94,7 +94,7 @@ interface Api {
                 @Query("Page") Page: Int?,
                 @Query("PageSize") PageSize: Int?,
                 @Query("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<BaseHot>>
 
 
     /**                        音乐播放                             */
@@ -141,14 +141,14 @@ interface Api {
                    @Field("Remark") Remark: String?,
                    @Field("WorkId") WorkId: String?,
                    @Field("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<OrderMusic>>
 
     /**
      * 查询订单
      */
     @GET("/")
     fun orderDetail(@Query("OrderId") OrderId: String?,
-                    @Query("X-HF-Action") Action: String?): Flowable<BaseResp<Any>>
+                    @Query("X-HF-Action") Action: String?): Flowable<BaseResp<OrderMusic>>
 
     /**
      * 下载授权书
@@ -161,7 +161,7 @@ interface Api {
                            @Query("Area") Area: String?,
                            @Query("orderIds") orderIds: String?,
                            @Query("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<OrderAuthorization>>
 
 
     /**                        数据上报                            */
@@ -193,7 +193,7 @@ interface Api {
                    @Field("Content") Content: String?,
                    @Field("Location") Location: Int?,
                    @Field("X-HF-Action") Actions: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<TaskId>>
 
     /**
      * 发布作品
@@ -204,7 +204,7 @@ interface Api {
                      @Field("OrderId") OrderId: String?,
                      @Field("WorkId") WorkId: String?,
                      @Field("X-HF-Action") Actions: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<OrderPublish>>
 
 
 }

@@ -136,13 +136,13 @@ class OpenManager() {
     }
 
     fun musicConfig(
-                    response: DataResponse<Any>) {
+                    response: DataResponse<MusicConfig>) {
         if (!checkNetWork(mContext)) {
             return
         }
         mService.musicConfig()
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<MusicConfig>(response) {
+                    override fun _onNext(t: MusicConfig) {
                         response.onSuccess(t)
                     }
                 })
@@ -150,15 +150,15 @@ class OpenManager() {
 
     fun baseFavorite(Page: Int?,
                      PageSize: Int?,
-                     response: DataResponse<Any>
+                     response: DataResponse<BaseFavorite>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
 
         return mService.baseFavorite(Page, PageSize)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<BaseFavorite>(response) {
+                    override fun _onNext(t: BaseFavorite) {
                         response.onSuccess(t)
                     }
                 })
@@ -168,14 +168,14 @@ class OpenManager() {
                 Duration: Int?,
                 Page: Int?,
                 PageSize: Int?,
-                response: DataResponse<Any>
+                response: DataResponse<BaseHot>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
         return mService.baseHot(StartTime, Duration, Page, PageSize)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<BaseHot>(response) {
+                    override fun _onNext(t: BaseHot) {
                         response.onSuccess(t)
                     }
                 })
@@ -237,28 +237,28 @@ class OpenManager() {
                    TotalFee: Int?,
                    Remark: String?,
                    WorkId: String?,
-                   response: DataResponse<Any>
+                   response: DataResponse<OrderMusic>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
         return mService.orderMusic(Subject, OrderId, Deadline, Music, Language, AudioFormat, AudioRate, TotalFee, Remark, WorkId)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<OrderMusic>(response) {
+                    override fun _onNext(t: OrderMusic) {
                         response.onSuccess(t)
                     }
                 })
     }
 
     fun orderDetail(OrderId: String?,
-                    response: DataResponse<Any>
+                    response: DataResponse<OrderMusic>
     ){
         if (!checkNetWork(mContext)) {
             return
         }
         return mService.orderDetail(OrderId)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<OrderMusic>(response) {
+                    override fun _onNext(t: OrderMusic) {
                         response.onSuccess(t)
                     }
                 })
@@ -271,14 +271,14 @@ class OpenManager() {
                             Period: Int?,
                             Area: String?,
                             orderIds: String?,
-                           response: DataResponse<Any>
+                           response: DataResponse<OrderAuthorization>
     ){
         if (!checkNetWork(mContext)) {
             return
         }
         return mService.orderAuthorization(CompanyName,ProjectName,Brand,Period,Area,orderIds)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<OrderAuthorization>(response) {
+                    override fun _onNext(t: OrderAuthorization) {
                         response.onSuccess(t)
                     }
                 })
@@ -288,14 +288,14 @@ class OpenManager() {
                    TargetId: String?,
                    Content: String?,
                    Location: Int?,
-                   response: DataResponse<Any>
+                   response: DataResponse<TaskId>
     ){
         if (!checkNetWork(mContext)) {
             return
         }
         return mService.baseReport(Action,TargetId, Content, Location)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<TaskId>(response) {
+                    override fun _onNext(t: TaskId) {
                         response.onSuccess(t)
                     }
                 })
@@ -304,14 +304,14 @@ class OpenManager() {
     fun orderPublish(Action: Int?,
                      OrderId: String?,
                      WorkId: String?,
-                     response: DataResponse<Any>
+                     response: DataResponse<OrderPublish>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
         return mService.orderPublish(Action,OrderId,WorkId)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<OrderPublish>(response) {
+                    override fun _onNext(t: OrderPublish) {
                         response.onSuccess(t)
                     }
                 })

@@ -69,14 +69,14 @@ class DataRepository constructor() {
     }
 
 
-    fun musicConfig(): Flowable<Any> {
+    fun musicConfig(): Flowable<MusicConfig> {
         return LiveRetrofitFactory.api().musicConfig("MusicConfig").convert()
     }
 
 
     fun baseFavorite(Page: Int?,
                      PageSize: Int?
-    ): Flowable<Any> {
+    ): Flowable<BaseFavorite> {
         return LiveRetrofitFactory.api().baseFavorite(Page, PageSize, "BaseFavorite").convert()
     }
 
@@ -84,7 +84,7 @@ class DataRepository constructor() {
                 Duration: Int?,
                 Page: Int?,
                 PageSize: Int?
-    ): Flowable<Any> {
+    ): Flowable<BaseHot> {
         return LiveRetrofitFactory.api().baseHot(StartTime, Duration, Page, PageSize, "BaseHot").convert()
     }
 
@@ -118,14 +118,14 @@ class DataRepository constructor() {
                    TotalFee: Int?,
                    Remark: String?,
                    WorkId: String?
-    ): Flowable<Any> {
+    ): Flowable<OrderMusic> {
         return LiveRetrofitFactory.api().orderMusic(Subject, OrderId, Deadline, Music, Language, AudioFormat, AudioRate, TotalFee, Remark, WorkId, "OrderMusic").convert()
     }
 
 
     fun orderDetail(
             OrderId: String?
-    ): Flowable<Any> {
+    ): Flowable<OrderMusic> {
         return LiveRetrofitFactory.api().orderDetail(OrderId, "OrderDetail").convert()
     }
 
@@ -135,7 +135,7 @@ class DataRepository constructor() {
                            Period: Int?,
                            Area: String?,
                            orderIds: String?
-    ): Flowable<Any> {
+    ): Flowable<OrderAuthorization> {
         return LiveRetrofitFactory.api().orderAuthorization(CompanyName, ProjectName, Brand, Period, Area, orderIds, "OrderAuthorization").convert()
     }
 
@@ -144,7 +144,7 @@ class DataRepository constructor() {
                    TargetId: String?,
                    Content: String?,
                    Location: Int?
-    ): Flowable<Any> {
+    ): Flowable<TaskId> {
         return LiveRetrofitFactory.api().baseReport(Action,TargetId, Content, Location, "BaseReport").convert()
     }
 
@@ -152,7 +152,7 @@ class DataRepository constructor() {
     fun orderPublish(Action: Int?,
                     OrderId: String?,
                     WorkId: String?
-    ): Flowable<Any> {
+    ): Flowable<OrderPublish> {
         return LiveRetrofitFactory.api().orderPublish(Action,OrderId, WorkId, "OrderPublish").convert()
     }
 

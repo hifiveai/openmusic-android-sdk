@@ -103,7 +103,7 @@ class DefaultHeaderInterceptor : Interceptor {
         var encodedQuery = url.encodedQuery
 
         val separatorIndex = url.toString().lastIndexOf("?")
-        val path = url.toString().subSequence(0,separatorIndex)
+        val path = url.toString().substring(0,separatorIndex)
 
         val signParams = hashMapOf<String, Any>()
         val paramsArr = encodedQuery?.split("&")!!
