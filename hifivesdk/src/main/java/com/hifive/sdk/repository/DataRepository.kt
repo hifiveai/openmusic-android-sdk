@@ -108,7 +108,7 @@ class DataRepository constructor() {
 
 
     fun orderMusic(Subject: String?,
-                   OrderId: Long?,
+                   OrderId: String?,
                    Deadline: Int?,
                    Music: String?,
                    Language: Int?,
@@ -142,13 +142,13 @@ class DataRepository constructor() {
     fun baseReport(Action: Int?,
                    TargetId: String?,
                    Content: String?,
-                   Location: Int?
+                   Location: String?
     ): Flowable<TaskId> {
         return LiveRetrofitFactory.api().baseReport(Action, TargetId, Content, Location, "BaseReport").convert()
     }
 
 
-    fun orderPublish(Action: Int?,
+    fun orderPublish(Action: String?,
                      OrderId: String?,
                      WorkId: String?
     ): Flowable<OrderPublish> {

@@ -13,8 +13,7 @@ data class LoginBean(
 data class ChannelItem(
     val coverUrl: String,
     val groupId: String,
-    val groupName: String,
-    val taskId: String
+    val groupName: String
 )
 
 
@@ -23,8 +22,7 @@ data class TrialMusic(
     val fileSize: Int,
     val fileUrl: String,
     val musicId: String,
-    val waveUrl: String,
-    val taskId: String
+    val waveUrl: String
 
 )
 
@@ -33,8 +31,7 @@ data class TrafficHQListen(
     val expires: Long,
     val fileSize: Int,
     val fileUrl: String,
-    val musicId: String,
-    val taskId: String
+    val musicId: String
 )
 
 data class TrafficListenMixed(
@@ -42,34 +39,29 @@ data class TrafficListenMixed(
     val fileSize: Int,
     val fileUrl: String,
     val musicId: String,
-    val waveUrl: String,
-    val taskId: String
+    val waveUrl: String
 )
 
 
 data class SearchMusic(
     val meta: Meta,
-    val record: List<Record>,
-    val taskId: String
+    val record: List<Record>
 )
 
 data class MusicConfig(
         val prices: List<Int>,
-        val tagList: List<Tag>,
-        val taskId: String
+        val tagList: List<Tag>
 )
 
 
 data class BaseFavorite(
     val meta: Meta,
-    val record: List<Record>,
-    val taskId: String
+    val record: List<Record>
 )
 
 data class BaseHot(
         val meta: Meta,
-        val record: List<Record>,
-        val taskId: String
+        val record: List<Record>
 )
 
 
@@ -80,19 +72,16 @@ data class OrderMusic(
     val music: List<Music>,
     val orderId: String,
     val subject: String,
-    val totalFee: Int,
-    val taskId: String
+    val totalFee: Int
 )
 
 data class OrderAuthorization(
-    val fileUrl: List<String>,
-    val taskId: String
+    val fileUrl: List<String>
 )
 
 data class OrderPublish(
     val orderId: String,
-    val workId: String,
-    val taskId: String
+    val workId: String
 )
 
 data class TaskId(
@@ -102,14 +91,12 @@ data class TaskId(
 
 data class ChannelSheet(
         val meta: Meta,
-        val record: List<Record>,
-        val taskId: String
+        val record: List<Record>
 )
 
 data class SheetMusic(
     val meta: Meta,
-    val record: List<Record>,
-    val taskId: String
+    val record: List<Record>
 )
 
 

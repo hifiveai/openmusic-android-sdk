@@ -104,7 +104,7 @@ class ServiceImpl constructor() : Service {
     }
 
     fun orderMusic(Subject: String?,
-                   OrderId: Long?,
+                   OrderId: String?,
                    Deadline: Int?,
                    Music: String?,
                    Language: Int?,
@@ -136,12 +136,12 @@ class ServiceImpl constructor() : Service {
     fun baseReport(Action: Int?,
                    TargetId: String?,
                    Content: String?,
-                   Location: Int?
+                   Location: String?
     ): Flowable<TaskId> {
         return dataRepository.baseReport(Action,TargetId, Content, Location)
     }
 
-    fun orderPublish(Action: Int?,
+    fun orderPublish(Action: String?,
                      OrderId: String?,
                      WorkId: String?
     ): Flowable<OrderPublish> {

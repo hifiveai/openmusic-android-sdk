@@ -51,12 +51,11 @@ class OpenManager() {
         if (!checkNetWork(mContext)) {
             return
         }
-
-
         mService.baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre)
                 .request(object : BaseSubscribe<LoginBean>(response) {
                     override fun _onNext(t: LoginBean) {
                         response.onSuccess(t)
+                        BaseConstance.token = t.token
                     }
                 })
     }
@@ -224,7 +223,7 @@ class OpenManager() {
     }
 
     fun orderMusic(Subject: String?,
-                   OrderId: Long?,
+                   OrderId: String?,
                    Deadline: Int?,
                    Music: String?,
                    Language: Int?,
@@ -283,7 +282,7 @@ class OpenManager() {
     fun baseReport(Action: Int?,
                    TargetId: String?,
                    Content: String?,
-                   Location: Int?,
+                   Location: String?,
                    response: DataResponse<TaskId>
     ) {
         if (!checkNetWork(mContext)) {
@@ -297,7 +296,7 @@ class OpenManager() {
                 })
     }
 
-    fun orderPublish(Action: Int?,
+    fun orderPublish(Action: String?,
                      OrderId: String?,
                      WorkId: String?,
                      response: DataResponse<OrderPublish>

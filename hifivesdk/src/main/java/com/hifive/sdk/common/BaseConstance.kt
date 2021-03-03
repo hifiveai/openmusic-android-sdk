@@ -8,7 +8,9 @@ class BaseConstance {
     companion object {
         const val TIME_OUT: Long = 30
         //测试
-        var BASE_URL_MUSIC: String = "https://hifive-gateway-test.hifiveai.com"
+//        var BASE_URL_MUSIC: String = "https://hifive-gateway-test.hifiveai.com"
+        //沙箱环境
+        var BASE_URL_MUSIC: String = "https://hifive-openapi-qa.hifiveai.com"
         //预发
 //        var BASE_URL_MUSIC: String = "https://hifive-gateway-pre.hifiveai.com"
         //正式

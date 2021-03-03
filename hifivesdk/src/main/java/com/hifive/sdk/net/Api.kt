@@ -131,7 +131,7 @@ interface Api {
     @FormUrlEncoded
     @POST("/")
     fun orderMusic(@Field("Subject") Subject: String?,
-                   @Field("OrderId") OrderId: Long?,
+                   @Field("OrderId") OrderId: String?,
                    @Field("Deadline") Deadline: Int?,
                    @Field("Music") Music: String?,
                    @Field("Language") Language: Int?,
@@ -191,7 +191,7 @@ interface Api {
     fun baseReport(@Field("Action") Action: Int?,
                    @Field("TargetId") TargetId: String?,
                    @Field("Content") Content: String?,
-                   @Field("Location") Location: Int?,
+                   @Field("Location") Location: String?,
                    @Field("X-HF-Action") Actions: String?
     ): Flowable<BaseResp<TaskId>>
 
@@ -200,7 +200,7 @@ interface Api {
      */
     @FormUrlEncoded
     @POST("/")
-    fun orderPublish(@Field("Action") Action: Int?,
+    fun orderPublish(@Field("Action") Action: String?,
                      @Field("OrderId") OrderId: String?,
                      @Field("WorkId") WorkId: String?,
                      @Field("X-HF-Action") Actions: String?
