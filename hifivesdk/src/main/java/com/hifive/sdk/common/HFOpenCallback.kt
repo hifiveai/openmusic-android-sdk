@@ -6,7 +6,7 @@ import com.hifive.sdk.rx.BaseException
  * 全局错误监听
  * @author lsh
  */
-interface HFLiveCallback {
+interface HFOpenCallback {
     fun onError(exception : BaseException) //出错
     fun onSuccess() //完成
 }

@@ -60,16 +60,16 @@ class ServiceImpl constructor() : Service {
             TagIds: String?,
             priceFromCent: Long?,
             priceToCent: Long?,
-            Location: Int?,
-            Education: Int?,
-            Profession: Int?,
-            IsOrganization: Int?,
-            Reserve: String?,
+            BpmForm: Int?,
+            BpmTo: Int?,
+            DurationFrom: Int?,
+            DurationTo: Int?,
+            Keyword: String?,
             Language: Int?,
             Page: Int?,
             PageSize: Int?
     ): Flowable<SearchMusic> {
-        return dataRepository.searchMusic(TagIds, priceFromCent, priceToCent, Location, Education, Profession, IsOrganization, Reserve, Language, Page, PageSize)
+        return dataRepository.searchMusic(TagIds, priceFromCent, priceToCent, BpmForm, BpmTo, DurationFrom, DurationTo, Keyword, Language, Page, PageSize)
     }
 
 

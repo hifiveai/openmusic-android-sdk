@@ -6,9 +6,8 @@ import android.content.Context
 
 import com.google.gson.Gson
 import com.hifive.sdk.common.BaseConstance
-import com.hifive.sdk.common.HFLiveCallback
+import com.hifive.sdk.common.HFOpenCallback
 import com.hifive.sdk.controller.OpenManager
-import com.hifive.sdk.net.Encryption
 import com.hifive.sdk.rx.BaseException
 import com.hifive.sdk.utils.MetaDataUtils
 
@@ -31,7 +30,7 @@ class HFOpenApi {
         var SERVER_CODE: String? = null
 
         //回调
-        var callbacks: HFLiveCallback? = null
+        var callbacks: HFOpenCallback? = null
 
         @JvmStatic
         fun getInstance(): OpenManager? {
@@ -85,7 +84,7 @@ class HFOpenApi {
         }
 
         @JvmStatic
-        fun configCallBack(callbacks: HFLiveCallback?) {
+        fun configCallBack(callbacks: HFOpenCallback?) {
             if (hiFiveContext == null || APP_ID.isNullOrEmpty() || SERVER_CODE.isNullOrEmpty()) {
                 callbacks?.onError(BaseException(10000, "SDK未初始化"))
                 return

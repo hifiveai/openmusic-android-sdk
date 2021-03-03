@@ -12,7 +12,7 @@
 #-keep interface  com.hifive.sdk.hInterface.DataResponse
 -keep interface com.hifive.sdk.hInterface.DownLoadResponse
 -keep class com.hifive.sdk.protocol.BaseResp{ *; }
--keep interface com.hifive.sdk.common.HFLiveCallback
+-keep interface com.hifive.sdk.common.HFOpenCallback
 
 
 # 不混淆内部类

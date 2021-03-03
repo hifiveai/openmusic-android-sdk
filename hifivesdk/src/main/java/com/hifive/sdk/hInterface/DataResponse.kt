@@ -18,5 +18,5 @@ interface DataResponse<T> {
     /**
      * sdk返回的数据
      */
-    fun onSuccess(any: T)
+    fun onSuccess(data : T)
 }

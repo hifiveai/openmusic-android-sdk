@@ -78,11 +78,11 @@ class OpenManager() {
                      RecoNum: Int?,
                      Page: Int?,
                      PageSize: Int?,
-                    response: DataResponse<ChannelSheet>) {
+                     response: DataResponse<ChannelSheet>) {
         if (!checkNetWork(mContext)) {
             return
         }
-        mService.channelSheet(GroupId,Language,RecoNum,Page,PageSize)
+        mService.channelSheet(GroupId, Language, RecoNum, Page, PageSize)
                 .request(object : BaseSubscribe<ChannelSheet>(response) {
                     override fun _onNext(t: ChannelSheet) {
                         response.onSuccess(t)
@@ -90,17 +90,15 @@ class OpenManager() {
                 })
     }
 
-    fun sheetMusic(context: Context,
-                    clientId: String,
-                   SheetId: String?,
+    fun sheetMusic(SheetId: String?,
                    Language: Int?,
                    Page: Int?,
                    PageSize: Int?,
-                    response: DataResponse<SheetMusic>) {
+                   response: DataResponse<SheetMusic>) {
         if (!checkNetWork(mContext)) {
             return
         }
-        mService.sheetMusic(SheetId,Language,Page,PageSize)
+        mService.sheetMusic(SheetId, Language, Page, PageSize)
                 .request(object : BaseSubscribe<SheetMusic>(response) {
                     override fun _onNext(t: SheetMusic) {
                         response.onSuccess(t)
@@ -109,25 +107,24 @@ class OpenManager() {
     }
 
 
-    fun searchMusic(
-            TagIds: String?,
-            priceFromCent: Long?,
-            priceToCent: Long?,
-            Location: Int?,
-            Education: Int?,
-            Profession: Int?,
-            IsOrganization: Int?,
-            Reserve: String?,
-            Language: Int?,
-            Page: Int?,
-            PageSize: Int?,
-            response: DataResponse<SearchMusic>
+    fun searchMusic(TagIds: String?,
+                    priceFromCent: Long?,
+                    priceToCent: Long?,
+                    BpmForm: Int?,
+                    BpmTo: Int?,
+                    DurationFrom: Int?,
+                    DurationTo: Int?,
+                    Keyword: String?,
+                    Language: Int?,
+                    Page: Int?,
+                    PageSize: Int?,
+                    response: DataResponse<SearchMusic>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
 
-        mService.searchMusic(TagIds, priceFromCent, priceToCent, Location, Education, Profession, IsOrganization, Reserve, Language, Page, PageSize)
+        mService.searchMusic(TagIds, priceFromCent, priceToCent, BpmForm, BpmTo, DurationFrom, DurationTo, Keyword, Language, Page, PageSize)
                 .request(object : BaseSubscribe<SearchMusic>(response) {
                     override fun _onNext(t: SearchMusic) {
                         response.onSuccess(t)
@@ -135,8 +132,7 @@ class OpenManager() {
                 })
     }
 
-    fun musicConfig(
-                    response: DataResponse<MusicConfig>) {
+    fun musicConfig(response: DataResponse<MusicConfig>) {
         if (!checkNetWork(mContext)) {
             return
         }
@@ -252,7 +248,7 @@ class OpenManager() {
 
     fun orderDetail(OrderId: String?,
                     response: DataResponse<OrderMusic>
-    ){
+    ) {
         if (!checkNetWork(mContext)) {
             return
         }
@@ -266,17 +262,17 @@ class OpenManager() {
     }
 
     fun orderAuthorization(CompanyName: String?,
-                            ProjectName: String?,
-                            Brand: String?,
-                            Period: Int?,
-                            Area: String?,
-                            orderIds: String?,
+                           ProjectName: String?,
+                           Brand: String?,
+                           Period: Int?,
+                           Area: String?,
+                           orderIds: String?,
                            response: DataResponse<OrderAuthorization>
-    ){
+    ) {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.orderAuthorization(CompanyName,ProjectName,Brand,Period,Area,orderIds)
+        return mService.orderAuthorization(CompanyName, ProjectName, Brand, Period, Area, orderIds)
                 .request(object : BaseSubscribe<OrderAuthorization>(response) {
                     override fun _onNext(t: OrderAuthorization) {
                         response.onSuccess(t)
@@ -289,11 +285,11 @@ class OpenManager() {
                    Content: String?,
                    Location: Int?,
                    response: DataResponse<TaskId>
-    ){
+    ) {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.baseReport(Action,TargetId, Content, Location)
+        return mService.baseReport(Action, TargetId, Content, Location)
                 .request(object : BaseSubscribe<TaskId>(response) {
                     override fun _onNext(t: TaskId) {
                         response.onSuccess(t)
@@ -309,15 +305,13 @@ class OpenManager() {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.orderPublish(Action,OrderId,WorkId)
+        return mService.orderPublish(Action, OrderId, WorkId)
                 .request(object : BaseSubscribe<OrderPublish>(response) {
                     override fun _onNext(t: OrderPublish) {
                         response.onSuccess(t)
                     }
                 })
     }
-
-
 
 
     fun downLoadFile(url: String,

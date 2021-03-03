@@ -45,22 +45,6 @@ api "com.squareup.okhttp3:okhttp:4.9.0"
 api "com.squareup.okhttp3:logging-interceptor:4.9.0"
 ```
 
-<!--##### 1.3.2 自动集成-->
-
-<!-- - 在Module的build.gradle文件中添加配置：-->
-<!--```-->
-<!--repositories {-->
-<!--    maven {-->
-<!--        url 'http://172.16.52.62:8081/repository/hifive_repository'-->
-<!--    }-->
-<!--}-->
-<!--```-->
-<!--- 在Module的build.gradle文件中添加依赖：-->
-<!--```-->
-<!--api "com.hifive.sdk:api:1.0.0"-->
-<!--```-->
-<!--- 同步后可以在External Libraries中查看新加入的包-->
-
 ## 二、SDK使用
 
 ##### 2.1 参数配置
@@ -87,7 +71,7 @@ api "com.squareup.okhttp3:logging-interceptor:4.9.0"
 建议在应用一启动就初始化，例如Application中
 
 ```
-HFLiveApi.registerApp(Application context);
+HFOpenApi.registerApp(Application context);
 ```
 
 ## 三 API文档
@@ -107,12 +91,12 @@ interface DataResponse {
        /**
         * sdk返回的错误
         */
-       void errorMsg(String msg,int code)
+       void errorMsg(BaseException exception)
 
        /**
         * sdk返回的数据
         */
-       void data(Object object )
+       void data(Object data )
 }
 ```
 
@@ -120,14 +104,15 @@ interface DataResponse {
 参数  | 必填  |描述|
 ---|---|---
 msg | | 错误描述
+taskId | | 任务id
 code | | 错误code
-object | | 返回的数据（string字符串）
+data | | 返回的数据
 
 
 ##### 3.2 SDK初始化
 
 ```
-HFLiveApi.registerApp(Application context);
+HFOpenApi.registerApp(Application context);
 ```
 参数  | 必填  |描述|
 ---|---|---
@@ -136,7 +121,7 @@ activity | 是| 上下文
 
 设置SDK全局回调
 ```
-HFLiveApi.configCallBack(HFLiveCallback callback);
+HFOpenApi.configCallBack(HFOpenCallback callback);
 ```
 参数  | 必填  |描述|
 ---|---|---
@@ -145,409 +130,305 @@ callback | 是| SDK回调
 
 
 
-##### 3.3 会员登录
+##### 3.3 获取Token
 
 ```
-memberLogin(context: Context, memberName: String, memberId: String, societyName: String?, societyId: String?, headerUrl: String?, gender: String?, birthday: String?, location: String?, favoriteSinger: String?, phone: String?, dataResponse: DataResponse)
+baseLogin(Nickname: String?,
+            Gender: String?,
+            Birthday: String?,
+            Location: String?,
+            Education: String?,
+            Profession: String?,
+            IsOrganization: String?,
+            Reserve: String?,
+            FavoriteSinger: String?,
+            FavoriteGenre: String?,
+            response: DataResponse<LoginBean>
+    )
 ```
 
-参数  | 必填  |描述|
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+Nickname | 否| 昵称 |
+Gender | 否| 性别，默认0 | 0:未知,1:男,2:女
+Birthday | 否|出生日期，10位秒级时间戳|
+Location | 否| 经纬度信息，纬度在前|
+Education	 | 否| 所受教育水平 | 详见[教育水平定义]
+Profession	 | 否| 职业 | 详见[用户职业定义]
+IsOrganization	 | 否| 是否属于组织机构类型用户（to B），默认false|
+Reserve	 | 否| json字符串，保留字段用于扩展用户其他信息|
+favoriteSinger	 | 否| 喜欢的歌手名，多个用英文逗号隔开|
+FavoriteGenre	 | 否| 喜欢的音乐流派Id，多个用英文逗号拼接|
+
+
+
+##### 3.4 电台列表
+
+
+```
+channel(response: DataResponse<ArrayList<ChannelItem>>)
+```
+
+
+##### 3.5 电台获取歌单列表
+
+```
+channelSheet(GroupId: String?,
+                     Language: Int?,
+                     RecoNum: Int?,
+                     Page: Int?,
+                     PageSize: Int?,
+                    response: DataResponse<ChannelSheet>)
+```
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+GroupId | 否| 电台id |
+Language | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文
+RecoNum | 否|推荐音乐数|0～10 |
+Page | 否| 当前页码，默认为1|大于0的整数
+PageSize	 | 否| 每页显示条数，默认为10 | 1～100
+
+
+
+##### 3.6 歌单获取音乐列表
+
+```
+    sheetMusic( SheetId: String?,
+                       Language: Int?,
+                       Page: Int?,
+                       PageSize: Int?,
+                        response: DataResponse<SheetMusic>)
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+SheetId | 是| 歌单id |
+Language | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文
+Page | 否| 当前页码，默认为1|大于0的整数
+PageSize	 | 否| 每页显示条数，默认为10 | 1～100
+
+
+##### 3.7 组合搜索
+
+```
+searchMusic(TagIds: String?,
+                    priceFromCent: Long?,
+                    priceToCent: Long?,
+                    BpmForm: Int?,
+                    BpmTo: Int?,
+                    DurationFrom: Int?,
+                    DurationTo: Int?,
+                    Keyword: String?,
+                    Language: Int?,
+                    Page: Int?,
+                    PageSize: Int?,
+                    response: DataResponse<SearchMusic>
+    )
+```
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+TagIds | 否| 标签Id，多个Id以“,”拼接 |
+priceFromCent | 否| 价格区间的最低值，单位分 | 
+priceToCent | 否| 价格区间的最高值，单位分 |
+BpmForm | 否| BPM区间的最低值|
+BpmTo	 | 否| BPM区间的最高值|
+DurationFrom	 | 否| 时长区间的最低值,单位秒 | 
+DurationTo	 | 否| 时长区间的最高值,单位秒|
+Keyword	 | 否| 搜索关键词，搜索条件歌名、专辑名、艺人名、标签名|
+Language | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文
+Page | 否| 当前页码，默认为1|大于0的整数
+PageSize	 | 否| 每页显示条数，默认为10 | 1～100
+
+
+##### 3.8 音乐配置信息
+
+```
+musicConfig(response: DataResponse<MusicConfig>)
+```
+
+
+#####  3.9 猜你喜欢
+
+
+```
+baseFavorite(Page: Int?,
+                     PageSize: Int?,
+                     response: DataResponse<BaseFavorite>
+    )
+```
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+Page | 否| 当前页码，默认为1|大于0的整数
+PageSize	 | 否| 每页显示条数，默认为10 | 1～100
+
+
+##### 3.10 热门推荐
+
+```
+baseHot(StartTime: Long?,
+                Duration: Int?,
+                Page: Int?,
+                PageSize: Int?,
+                response: DataResponse<BaseHot>
+    )
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+StartTime | 是| 10位秒级时间戳
+Duration	 | 是| 距离StartTime过去的天数 | 1～365
+Page | 否| 当前页码，默认为1|大于0的整数
+PageSize	 | 否| 每页显示条数，默认为10 | 1～100
+
+
+##### 3.11 歌曲试听
+
+```
+trial(MusicId: String?,
+              response: DataResponse<TrialMusic>
+    )
+```
+参数  | 必填  |描述| 
 ---|---|---
-memberName | 是| 会员名称
-memberId | 是| 外部会员ID
-sociatyName | 否|公会名称
-societyId | 否| 公会外部ID
-headerUrl	 | 否| 头像URL
-gender	 | 否| 性别,未知：0，男：1，女：2
-birthday	 | 否| 生日
-location	 | 否| 经纬度信息，纬度在前(30.779164,103.94547)
-favoriteSinger	 | 否| 喜欢的歌手名，多个用英文逗号隔开
-phone	 | 否| 手机号
+MusicId | 是| 音乐id
 
 
-##### 3.4 公会登录接口
-
-
+##### 3.12 获取音乐HQ播放信息
 
 ```
-   societyLogin(
-            context: Context,
-            societyName: String,
-            societyId: String,
-            dataResponse: DataResponse)
+trafficHQListen(MusicId: String?,
+                        AudioFormat: String?,
+                        AudioRate: String?,
+                        response: DataResponse<TrafficHQListen>
+    )
+
 ```
-参数  | 必填  |描述|
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+MusicId | 是| 音乐id |
+AudioFormat	 | 否| 文件编码,默认mp3 | mp3 / aac
+AudioRate | 否| 音质，音乐播放时的比特率，默认320 |320 / 128
+
+
+##### 3.13 获取音乐混音播放信息
+
+```
+trafficListenMixed(MusicId: String?,
+                           response: DataResponse<TrafficListenMixed>
+    )
+
+```
+
+参数  | 必填  |描述| 
 ---|---|---
-sociatyName | 是|公会名称
-sociatyId | 是| 公会外部ID
+MusicId | 是| 音乐id 
 
 
 
-
-
-##### 3.5 解绑会员
+##### 3.14 购买音乐
 
 ```
-unbindingMember(
-            context: Context,
-            memberId: String,
-            societyId: String,
-            dataResponse: DataResponse
+orderMusic(Subject: String?,
+                   OrderId: Long?,
+                   Deadline: Int?,
+                   Music: String?,
+                   Language: Int?,
+                   AudioFormat: String?,
+                   AudioRate: String?,
+                   TotalFee: Int?,
+                   Remark: String?,
+                   WorkId: String?,
+                   response: DataResponse<OrderMusic>
     )
 ```
-参数  | 必填  |描述|
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+Subject | 是| 商品描述 |
+OrderId	 | 是| 公司自己生成的订单id | 
+Deadline | 是| 作品授权时长，以天为单位，0代表永久授权 |
+Music | 是| 购买详情，encode转化后的json字符串 （musicId->音乐id；price->音乐单价，单位分；num->购买数量） |
+Language	 | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文
+AudioFormat | 否| 文件编码,默认mp3 | mp3 / aac
+AudioRate | 否| 音质，音乐播放时的比特率，默认320 |320 / 128
+TotalFee	 | 是| 售出总价，单位：分 | 
+Remark | 否| 备注，最多不超过255字符 |
+WorkId | 否| 公司自己生成的作品id,多个以“,”拼接 |
+
+
+##### 3.15 查询订单
+
+```
+orderDetail(OrderId: String?,
+                    response: DataResponse<OrderMusic>
+    ) 
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+OrderId	 | 是| 公司自己生成的订单id | 
+
+
+
+##### 3.16 下载授权书
+
+```
+orderAuthorization(CompanyName: String?,
+                           ProjectName: String?,
+                           Brand: String?,
+                           Period: Int?,
+                           Area: String?,
+                           orderIds: String?,
+                           response: DataResponse<OrderAuthorization>
+    )
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+CompanyName | 是 | 公司名称 |
+ProjectName	 | 是 | 项目名称 | 
+Brand | 是 | 项目品牌 |
+Period | 是 |授权期限（0:半年、1:1年、2:2年、3:3年、4:随片永久） | （0:半年、1:1年、2:2年、3:3年、4:随片永久）|
+Area	 |  是 | 授权地区（0:中国大陆、1:大中华、2:全球） | （0:中国大陆、1:大中华、2:全球）
+orderIds |  是 | 授权订单ID列表，多个ID用","隔开 | 
+
+
+
+##### 3.17 行为采集
+
+```
+baseReport(Action: Int?,
+                   TargetId: String?,
+                   Content: String?,
+                   Location: Int?,
+                   response: DataResponse<TaskId>
+    ) 
+```
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+Action | 是 | 枚举定义用户行为 | 详见[用户行为定义]
+TargetId	 | 是 | 行为操作的对象（音乐或分类id） | 
+Content | 否 | 根据action传入格式 | 详见[用户行为定义]和[行为内容定义]|
+Location | 否 |经纬度信息，纬度在前 | 
+
+
+##### 3.18 发布作品
+
+```
+ orderPublish(Action: Int?,
+                      OrderId: String?,
+                      WorkId: String?,
+                      response: DataResponse<OrderPublish>
+     )
+```
+
+参数  | 必填  |描述
 ---|---|---
-memberId | 是| 外部会员ID
-sociatyId | 是| 外部公会ID
+Action | 是 | 公共参数，操作的接口名称 
+OrderId	 | 是 | 公司自己生成的订单id 
+WorkId | 否 | 公司自己生成的作品id,多个以“,”拼接 
 
-
-
-
-
-##### 3.6 绑定会员
-
-```
-    bindingMember(
-            context: Context,
-            memberId: String,
-            societyId: String,
-            dataResponse: DataResponse
-    )
-```
-
-参数  | 必填  |描述|
----|---|---
-memberId	 | 是| 外部会员ID
-societyId | 是| 外部公会ID
-
-
-##### 3.7 注销会员
-
-```
-deleteMember(
-            context: Context,
-            memberId: String,
-            dataResponse: DataResponse
-    )
-```
-
-参数  | 必填  |描述|
----|---|---
- memberId | 是| 会员外部ID
-
-
-##### 3.8 注销公会
-
-```
-deleteSociety(
-            context: Context,
-            societyId: String,
-            dataResponse: DataResponse
-    )
-```
-
-参数  | 必填  |描述|
----|---|---
-societyId | 是| 会员外部ID
-
-
-#####  3.9 获取商户歌单标签列表
-
-
-```
-getCompanySheetTagList(
-            context: Context,
-            response: DataResponse
-    )
-```
-
-
-
-##### 3.10 获取商户歌单列表
-
-```
-getCompanySheetList(
-            context: Context,
-            groupId: String?,
-            language: String?,
-            recoNum: String?,
-            type: String?,
-            tagIdList: String?,
-            field: String?,
-            pageSize: String?,
-            page: String?,
-            response: DataResponse
-    )
-```
-
-参数  | 必填  |描述|
----|---|---
-groupId | 否| 电台id
-language | 否| 0-中文,1-英文
-recoNum | 否| 推荐音乐数 0～10
-type | 否| 歌单类别
-tagIdList | 否| 标签Id列表
-field | 否| 歌曲信息扩展查询字段，sheetTag,album,musicTag,artist
-pageSize | 否| 每页显示条数，默认 10
-page | 否| 当前页
-
-
-
-##### 3.11 获取商户歌单歌曲列表
-
-```
-getCompanySheetMusicList(
-            context: Context,
-            sheetId: String?,
-            language: String?,
-            field: String?,
-            pageSize: String?,
-            page: String?,
-            response: DataResponse
-    )
-```
-参数  | 必填  |描述|
----|---|---
-sheetId | 否| 歌单Id
-language | 否| 0-中文,1-英文
-field | 否| 扩展查询字段，album,musicTag,artist
-pageSize | 否| 每页显示条数，默认 10
-page | 否| 当前页
-
-
-
-##### 3.12 获取商户电台列表
-
-```
-getCompanyChannelList(
-            context: Context,
-            response: DataResponse
-    )
-
-```
-
-
-
-##### 3.13 获取会员歌单列表
-
-```
- getMemberSheetList(
-            context: Context,
-            page: String?,
-            pageSize: String?,
-            dataResponse: DataResponse
-    )
-
-```
-
-参数  | 必填  |描述|
----|---|---
-pageSize | 否| 每页显示条数，默认 10
-page | 否| 当前页
-
-
-
-##### 3.14 获取会员歌单歌曲列表
-
-```
-getMemberSheetMusicList(
-            context: Context,
-            sheetId: String,
-            language: String?,
-            field: String?,
-            pageSize: String?,
-            page: String?,
-            dataResponse: DataResponse
-    )
-
-```
-
-参数  | 必填  |描述|
----|---|---
-sheetId | 否| 歌单Id
-language | 否| 0-中文,1-英文
-field | 否| 扩展查询字段，album,musicTag,artist
-pageSize | 否| 每页显示条数，默认 10
-page | 否| 当前页
-
-
-##### 3.15 获取音乐详情
-
-```
-getMusicDetail(
-            context: Context,
-            musicId: String, language: String?, mediaType: String,
-            audioFormat: String?, audioRate: String?, field: String?,
-            dataResponse: DataResponse
-    )
-```
-
-参数  | 必填  |描述|
----|---|---
-musicId | 是| 歌曲Id
-language | 否| 0-中文,1-英文
-mediaType | 是|类型：1-k歌；2-听歌
-audioFormat | 否| 文件编码,默认mp3 可选(mp3 / aac)
-audioRate | 否| 音质，音乐播放时的比特率，默认320 可选(320 / 128)
-field | 否| 扩展查询字段，album,musicTag,artist
-
-
-
-##### 3.16 保存会员歌单
-
-```
-saveMemberSheet(
-            context: Context,
-            sheetName: String,
-            dataResponse: DataResponse
-    )
-```
-
-参数  | 必填  |描述|
----|---|---
-sheetName | 是| 歌单名称
-
-
-##### 3.17 保存会员歌单歌曲
-
-```
-saveMemberSheetMusic(
-            context: Context,
-            sheetId: String,
-            musicId: String,
-            dataResponse: DataResponse
-    )
-```
-
-参数  | 必填  |描述|
----|---|---
-sheetId | 是| 会员歌单Id
-musicId | 是| 音乐Id
-
-
-
-##### 3.18 删除会员歌单歌曲
-
-```
- abstract fun deleteMemberSheetMusic(
-            context: Context,
-            sheetId: String,
-            musicId: String,
-            dataResponse: DataResponse
-    )
-```
-
-参数  | 必填  |描述|
----|---|---
-sheetId | 是| 会员歌单Id
-musicId | 是| 音乐Id
-
-
-
-##### 3.19 获取会员所有歌单歌曲列表
-
-```
-getMemberSheetMusicAll(
-            context: Context,
-            sheetId: String,
-            language: String?,
-            field: String?,
-            dataResponse: DataResponse
-    )
-```
-
-参数  | 必填  |描述|
----|---|---
-sheetId | 是| 会员歌单Id
-language | 否| 0-中文,1-英文
-field | 否| 扩展查询字段，album,musicTag,artist
-
-
-
-
-##### 3.20 更新播放记录
-
-```
-updateMusicRecord(
-            context: Context,
-            recordId: String,
-            duration: String,
-            mediaType: String,
-            dataResponse: DataResponse
-    )
-```
-
-参数  | 必填  |描述|
----|---|---
-recordId | 是| 播放记录Id
-duration | 是| 播放记录时长
-mediaType | 是| 播放记录类型 1-k歌；2-听歌
-
-
-
-
-##### 3.21 获取配置列表
-
-```
-getConfigList(
-            context: Context,
-            dataResponse: DataResponse
-    )
-```
-
-
-
-##### 3.22 所有歌曲中进行搜索
-
-```
-getMusicList(
-            context: Context,
-            searchId: String,
-            keyword: String?,
-            language: String?,
-            field: String?,
-            pageSize: String?,
-            page: String?,
-            dataResponse: DataResponse
-    )
-```
-
-参数  | 必填  |描述|
----|---|---
-searchId | 是| 搜索类型Id
-keyword | 否| 搜索关键字
-language | 否| 0-中文,1-英文
-field | 否| 扩展查询字段，album,musicTag,artist
-pageSize | 否| 每页显示条数，默认 10
-page | 否| 当前页
-
-
-
-##### 3.23 获取搜索历史记录
-
-```
-getSearchRecordList(
-            context: Context,
-            pageSize: String?,
-            page: String?,
-            dataResponse: DataResponse
-    )
-```
-
-参数  | 必填  |描述|
----|---|---
-pageSize | 否| 每页显示条数，默认 10
-page | 否| 当前页
-
-
-##### 3.24 清空历史记录
-
-```
- deleteSearchRecord(
-            context: Context,
-            dataResponse: DataResponse
-    )
-```
 
 
 

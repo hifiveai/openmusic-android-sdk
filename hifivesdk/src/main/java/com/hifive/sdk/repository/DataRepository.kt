@@ -52,20 +52,19 @@ class DataRepository constructor() {
     }
 
 
-    fun searchMusic(
-            TagIds: String?,
-            priceFromCent: Long?,
-            priceToCent: Long?,
-            Location: Int?,
-            Education: Int?,
-            Profession: Int?,
-            IsOrganization: Int?,
-            Reserve: String?,
-            Language: Int?,
-            Page: Int?,
-            PageSize: Int?
+    fun searchMusic(TagIds: String?,
+                    priceFromCent: Long?,
+                    priceToCent: Long?,
+                    BpmForm: Int?,
+                    BpmTo: Int?,
+                    DurationFrom: Int?,
+                    DurationTo: Int?,
+                    Keyword: String?,
+                    Language: Int?,
+                    Page: Int?,
+                    PageSize: Int?
     ): Flowable<SearchMusic> {
-        return LiveRetrofitFactory.api().searchMusic(TagIds, priceFromCent, priceToCent, Location, Education, Profession, IsOrganization, Reserve, Language, Page, PageSize, "SheetMusic").convert()
+        return LiveRetrofitFactory.api().searchMusic(TagIds, priceFromCent, priceToCent, BpmForm, BpmTo, DurationFrom, DurationTo, Keyword, Language, Page, PageSize, "SheetMusic").convert()
     }
 
 
@@ -145,15 +144,15 @@ class DataRepository constructor() {
                    Content: String?,
                    Location: Int?
     ): Flowable<TaskId> {
-        return LiveRetrofitFactory.api().baseReport(Action,TargetId, Content, Location, "BaseReport").convert()
+        return LiveRetrofitFactory.api().baseReport(Action, TargetId, Content, Location, "BaseReport").convert()
     }
 
 
     fun orderPublish(Action: Int?,
-                    OrderId: String?,
-                    WorkId: String?
+                     OrderId: String?,
+                     WorkId: String?
     ): Flowable<OrderPublish> {
-        return LiveRetrofitFactory.api().orderPublish(Action,OrderId, WorkId, "OrderPublish").convert()
+        return LiveRetrofitFactory.api().orderPublish(Action, OrderId, WorkId, "OrderPublish").convert()
     }
 
 }
