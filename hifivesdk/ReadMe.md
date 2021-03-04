@@ -258,6 +258,7 @@ musicConfig(response: DataResponse<MusicConfig>)
 
 #####  3.9 猜你喜欢
 
+> 注意：此接口需先调用BaseLogin接口获取token
 
 ```
 baseFavorite(Page: Int?,
