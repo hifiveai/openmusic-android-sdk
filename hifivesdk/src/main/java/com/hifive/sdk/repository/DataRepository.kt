@@ -143,7 +143,7 @@ class DataRepository constructor() {
                    TargetId: String?,
                    Content: String?,
                    Location: String?
-    ): Flowable<TaskId> {
+    ): Flowable<Any> {
         return LiveRetrofitFactory.api().baseReport(Action, TargetId, Content, Location, "BaseReport").convert()
     }
 

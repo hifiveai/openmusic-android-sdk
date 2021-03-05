@@ -283,14 +283,14 @@ class OpenManager() {
                    TargetId: String?,
                    Content: String?,
                    Location: String?,
-                   response: DataResponse<TaskId>
+                   response: DataResponse<Any>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
         return mService.baseReport(Action, TargetId, Content, Location)
-                .request(object : BaseSubscribe<TaskId>(response) {
-                    override fun _onNext(t: TaskId) {
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
                         response.onSuccess(t)
                     }
                 })

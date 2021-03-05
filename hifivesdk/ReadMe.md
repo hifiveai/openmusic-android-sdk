@@ -146,18 +146,18 @@ HFOpenApi.getInstance().baseLogin(Nickname: String?,
     )
 ```
 
-参数  | 必填  |描述| 可选值|
----|---|---|---
-Nickname | 否| 昵称 | - |
-Gender | 否| 性别，默认0 | 0:未知,1:男,2:女|
-Birthday | 否|出生日期，10位秒级时间戳| - |
-Location | 否| 经纬度信息，纬度在前| - |
-Education	 | 否| 所受教育水平 | 详见[教育水平定义]|
-Profession	 | 否| 职业 | 详见[用户职业定义]|
-IsOrganization	 | 否| 是否属于组织机构类型用户（to B），默认false| - |
-Reserve	 | 否| json字符串，保留字段用于扩展用户其他信息| - |
-favoriteSinger	 | 否| 喜欢的歌手名，多个用英文逗号隔开| - |
-FavoriteGenre	 | 否| 喜欢的音乐流派Id，多个用英文逗号拼接| - |
+参数  | 必填  |描述| 可选值| 示例|
+---|---|---|---|---
+Nickname | 否| 昵称 | - | - |
+Gender | 否| 性别，默认0 | 0:未知,1:男,2:女| -|
+Birthday | 否|出生日期，10位秒级时间戳| - |1594639058|
+Location | 否| 经纬度信息，纬度在前| - | 30.779164,103.94547|
+Education	 | 否| 所受教育水平 | 详见[教育水平定义]|0|
+Profession	 | 否| 职业 | 详见[用户职业定义]|0|
+IsOrganization	 | 否| 是否属于组织机构类型用户（to B），默认false| - |false|
+Reserve	 | 否| json字符串，保留字段用于扩展用户其他信息| - |{"language":"English"}|
+favoriteSinger	 | 否| 喜欢的歌手名，多个用英文逗号隔开| - |Queen,The Beatles|
+FavoriteGenre	 | 否| 喜欢的音乐流派Id，多个用英文逗号拼接| - |7,8,10|
 
 **教育水平定义**
 
@@ -407,20 +407,22 @@ orderIds |  是 | 授权订单ID列表，多个ID用","隔开 |  - |
 
 ##### 3.17 行为采集
 
+> 注意：此接口需先调用BaseLogin接口获取token
+
 ```
 HFOpenApi.getInstance().baseReport(Action: Int?,
                    TargetId: String?,
                    Content: String?,
                    Location: Int?,
-                   response: DataResponse<TaskId>
+                   response: DataResponse<Object>
     ) 
 ```
-参数  | 必填  |描述| 可选值|
----|---|---|---
-Action | 是 | 枚举定义用户行为 | 详见[用户行为定义] | - |
-TargetId	 | 是 | 行为操作的对象（音乐或分类id） |  - |
-Content | 否 | 根据action传入格式 | 详见[用户行为定义]和[行为内容定义]| - |
-Location | 否 |经纬度信息，纬度在前 |  - |
+参数  | 必填  |描述| 可选值| 示例|
+---|---|---|---|---
+Action | 是 | 枚举定义用户行为 | 详见[用户行为定义] | - |1001|
+TargetId	 | 是 | 行为操作的对象（音乐或分类id） |  - |B75C80A41E3A|
+Content | 否 | 根据action传入格式 | 详见[用户行为定义]和[行为内容定义]| - |{"point":"15","duration":"52","musicId":"B7B610A7537A"}|
+Location | 否 |经纬度信息，纬度在前 |  - |30.779164,103.94547|
 
 **用户行为定义**
 

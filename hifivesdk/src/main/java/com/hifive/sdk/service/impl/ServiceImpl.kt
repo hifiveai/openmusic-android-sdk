@@ -137,7 +137,7 @@ class ServiceImpl constructor() : Service {
                    TargetId: String?,
                    Content: String?,
                    Location: String?
-    ): Flowable<TaskId> {
+    ): Flowable<Any> {
         return dataRepository.baseReport(Action,TargetId, Content, Location)
     }
 

@@ -193,7 +193,7 @@ interface Api {
                    @Field("Content") Content: String?,
                    @Field("Location") Location: String?,
                    @Field("X-HF-Action") Actions: String?
-    ): Flowable<BaseResp<TaskId>>
+    ): Flowable<BaseResp<Any>>
 
     /**
      * 发布作品

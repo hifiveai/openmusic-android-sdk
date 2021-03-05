@@ -109,7 +109,7 @@ class DefaultHeaderInterceptor : Interceptor {
         val paramsArr = encodedQuery?.split("&")!!
         for (param in paramsArr){
             val split = param.split("=")
-            signParams[split[0]] = split[1]
+            signParams[split[0]] = URLDecoder.decode(split[1], "UTF-8")
         }
         headers["X-HF-Action"] = signParams["X-HF-Action"]!!
         //移除不必要的X-HF-Action

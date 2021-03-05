@@ -84,10 +84,6 @@ data class OrderPublish(
     val workId: String
 )
 
-data class TaskId(
-        val taskId: String
-)
-
 
 data class ChannelSheet(
         val meta: Meta,
