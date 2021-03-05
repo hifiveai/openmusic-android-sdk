@@ -18,7 +18,7 @@ targetSdkVersion : 30
 
 ##### 1.3.1 手动集成
 
-- 下载SDK[点击下载]()
+- [下载SDK]()
 - 将SDK文件加入到libs中
 - 在module的build.gradle中与android{}平级下加入
 
@@ -100,7 +100,7 @@ interface DataResponse {
 ```
 
 
-BaseException参数   |描述|
+BaseException字段   |描述|
 ---|---
 msg |  错误描述|
 code |  错误code|
@@ -118,15 +118,13 @@ HFOpenApi.registerApp(Application context);
 context | 是| 上下文|
 
 
-设置SDK全局回调
+**设置SDK全局回调**
 ```
 HFOpenApi.configCallBack(HFOpenCallback callback);
 ```
 参数  | 必填  |描述|
 ---|---|---
 callback | 是| SDK全局回调|
-
-
 
 
 ##### 3.3 获取Token
@@ -170,14 +168,12 @@ FavoriteGenre	 | 否| 喜欢的音乐流派Id，多个用英文逗号拼接| - |
 大学	 | 4| - |
 硕士及以上	 | 5| - |
 
-
 ##### 3.4 电台列表
 
 
 ```
 HFOpenApi.getInstance().channel(response: DataResponse<ArrayList<ChannelItem>>)
 ```
-
 
 ##### 3.5 电台获取歌单列表
 
@@ -196,7 +192,6 @@ Language | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文|
 RecoNum | 否|推荐音乐数|0～10 | - |
 Page | 否| 当前页码，默认为1|大于0的整数| - |
 PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
-
 
 
 ##### 3.6 歌单获取音乐列表
@@ -378,7 +373,6 @@ HFOpenApi.getInstance().orderDetail(OrderId: String?,
 参数  | 必填  |描述| 可选值|
 ---|---|---|---
 OrderId	 | 是| 公司自己生成的订单id |  - |
-
 
 
 ##### 3.16 下载授权书

@@ -51,19 +51,20 @@ interface Api {
      * 组合搜索
      * 此接口提供歌曲名、艺人、标签名称、标签ID、BPM区间、时长区间等多维度的搜索功能，使用到的标签ID、歌曲价格等信息可以在音乐配置信息接口中获取
      */
-    @GET("/")
-    fun searchMusic(@Query("TagIds") TagIds: String?,
-                    @Query("priceFromCent") priceFromCent: Long?,
-                    @Query("priceToCent") priceToCent: Long?,
-                    @Query("BpmForm") BpmForm: Int?,
-                    @Query("BpmTo") BpmTo: Int?,
-                    @Query("DurationFrom") DurationFrom: Int?,
-                    @Query("DurationTo") DurationTo: Int?,
-                    @Query("Keyword") Keyword: String?,
-                    @Query("Language") Language: Int?,
-                    @Query("Page") Page: Int?,
-                    @Query("PageSize") PageSize: Int?,
-                    @Query("X-HF-Action") Action: String?
+    @FormUrlEncoded
+    @POST("/")
+    fun searchMusic(@Field("TagIds") TagIds: String?,
+                    @Field("priceFromCent") priceFromCent: Long?,
+                    @Field("priceToCent") priceToCent: Long?,
+                    @Field("BpmForm") BpmForm: Int?,
+                    @Field("BpmTo") BpmTo: Int?,
+                    @Field("DurationFrom") DurationFrom: Int?,
+                    @Field("DurationTo") DurationTo: Int?,
+                    @Field("Keyword") Keyword: String?,
+                    @Field("Language") Language: Int?,
+                    @Field("Page") Page: Int?,
+                    @Field("PageSize") PageSize: Int?,
+                    @Field("X-HF-Action") Action: String?
     ): Flowable<BaseResp<SearchMusic>>
 
 
