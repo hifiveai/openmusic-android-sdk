@@ -45,7 +45,7 @@ data class TrafficListenMixed(
 
 data class SearchMusic(
     val meta: Meta,
-    val record: List<Record>
+    val record: List<MusicRecord>
 )
 
 data class MusicConfig(
@@ -56,12 +56,12 @@ data class MusicConfig(
 
 data class BaseFavorite(
     val meta: Meta,
-    val record: List<Record>
+    val record: List<MusicRecord>
 )
 
 data class BaseHot(
         val meta: Meta,
-        val record: List<Record>
+        val record: List<MusicRecord>
 )
 
 
@@ -96,7 +96,7 @@ data class ChannelSheet(
 
 data class SheetMusic(
     val meta: Meta,
-    val record: List<Record>
+    val record: List<MusicRecord>
 )
 
 
@@ -116,6 +116,24 @@ data class Record(
         val sheetName: String,
         val tag: List<Tag>,
         val type: Int
+)
+
+data class MusicRecord(
+        val albumId: String,
+        val albumName: String,
+        val arranger: List<Any>,
+        val artist: List<Any>,
+        val auditionBegin: Int,
+        val auditionEnd: Int,
+        val author: List<Any>,
+        val bpm: Int,
+        val composer: List<Composer>,
+        val cover: List<Cover>,
+        val duration: Int,
+        val musicId: String,
+        val musicName: String,
+        val tag: List<Tag>,
+        val version: List<Version>
 )
 
 data class Cover(

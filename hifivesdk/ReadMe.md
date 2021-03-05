@@ -32,7 +32,7 @@ targetSdkVersion : 30
 - 在module的build.gradle中的dependencies里加入
 
 ```
-   implementation(name: 'demo', ext:'aar')//注意这里加入的名字没有后缀名
+   implementation(name: 'hfopenapi', ext:'aar')//注意这里加入的名字没有后缀名
 ```
 - 因为本SDK需要第三方网络库支持，所以必须添加一下依赖,可根据项目需求本身进行版本选择
 ```
@@ -132,7 +132,7 @@ callback | 是| SDK全局回调|
 ##### 3.3 获取Token
 
 ```
-baseLogin(Nickname: String?,
+HFOpenApi.getInstance().baseLogin(Nickname: String?,
             Gender: String?,
             Birthday: String?,
             Location: String?,
@@ -175,14 +175,14 @@ FavoriteGenre	 | 否| 喜欢的音乐流派Id，多个用英文逗号拼接| - |
 
 
 ```
-channel(response: DataResponse<ArrayList<ChannelItem>>)
+HFOpenApi.getInstance().channel(response: DataResponse<ArrayList<ChannelItem>>)
 ```
 
 
 ##### 3.5 电台获取歌单列表
 
 ```
-channelSheet(GroupId: String?,
+HFOpenApi.getInstance().channelSheet(GroupId: String?,
                      Language: Int?,
                      RecoNum: Int?,
                      Page: Int?,
@@ -202,7 +202,7 @@ PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
 ##### 3.6 歌单获取音乐列表
 
 ```
-    sheetMusic( SheetId: String?,
+HFOpenApi.getInstance().sheetMusic( SheetId: String?,
                        Language: Int?,
                        Page: Int?,
                        PageSize: Int?,
@@ -220,7 +220,7 @@ PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
 ##### 3.7 组合搜索
 
 ```
-searchMusic(TagIds: String?,
+HFOpenApi.getInstance().searchMusic(TagIds: String?,
                     priceFromCent: Long?,
                     priceToCent: Long?,
                     BpmForm: Int?,
@@ -252,7 +252,7 @@ PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
 ##### 3.8 音乐配置信息
 
 ```
-musicConfig(response: DataResponse<MusicConfig>)
+HFOpenApi.getInstance().musicConfig(response: DataResponse<MusicConfig>)
 ```
 
 
@@ -261,7 +261,7 @@ musicConfig(response: DataResponse<MusicConfig>)
 > 注意：此接口需先调用BaseLogin接口获取token
 
 ```
-baseFavorite(Page: Int?,
+HFOpenApi.getInstance().baseFavorite(Page: Int?,
                      PageSize: Int?,
                      response: DataResponse<BaseFavorite>
     )
@@ -275,7 +275,7 @@ PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
 ##### 3.10 热门推荐
 
 ```
-baseHot(StartTime: Long?,
+HFOpenApi.getInstance().baseHot(StartTime: Long?,
                 Duration: Int?,
                 Page: Int?,
                 PageSize: Int?,
@@ -294,7 +294,7 @@ PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
 ##### 3.11 歌曲试听
 
 ```
-trial(MusicId: String?,
+HFOpenApi.getInstance().trial(MusicId: String?,
               response: DataResponse<TrialMusic>
     )
 ```
@@ -306,7 +306,7 @@ MusicId | 是| 音乐id|
 ##### 3.12 获取音乐HQ播放信息
 
 ```
-trafficHQListen(MusicId: String?,
+HFOpenApi.getInstance().trafficHQListen(MusicId: String?,
                         AudioFormat: String?,
                         AudioRate: String?,
                         response: DataResponse<TrafficHQListen>
@@ -324,7 +324,7 @@ AudioRate | 否| 音质，音乐播放时的比特率，默认320 |320 / 128|
 ##### 3.13 获取音乐混音播放信息
 
 ```
-trafficListenMixed(MusicId: String?,
+HFOpenApi.getInstance().trafficListenMixed(MusicId: String?,
                            response: DataResponse<TrafficListenMixed>
     )
 
@@ -339,7 +339,7 @@ MusicId | 是| 音乐id |
 ##### 3.14 购买音乐
 
 ```
-orderMusic(Subject: String?,
+HFOpenApi.getInstance().orderMusic(Subject: String?,
                    OrderId: Long?,
                    Deadline: Int?,
                    Music: String?,
@@ -370,7 +370,7 @@ WorkId | 否| 公司自己生成的作品id,多个以“,”拼接 | - |
 ##### 3.15 查询订单
 
 ```
-orderDetail(OrderId: String?,
+HFOpenApi.getInstance().orderDetail(OrderId: String?,
                     response: DataResponse<OrderMusic>
     ) 
 ```
@@ -384,7 +384,7 @@ OrderId	 | 是| 公司自己生成的订单id |  - |
 ##### 3.16 下载授权书
 
 ```
-orderAuthorization(CompanyName: String?,
+HFOpenApi.getInstance().orderAuthorization(CompanyName: String?,
                            ProjectName: String?,
                            Brand: String?,
                            Period: Int?,
@@ -408,7 +408,7 @@ orderIds |  是 | 授权订单ID列表，多个ID用","隔开 |  - |
 ##### 3.17 行为采集
 
 ```
-baseReport(Action: Int?,
+HFOpenApi.getInstance().baseReport(Action: Int?,
                    TargetId: String?,
                    Content: String?,
                    Location: Int?,
@@ -452,7 +452,7 @@ to	 | Int|用于变化的操作，该值代表进度变化后的值(秒)|
 ##### 3.18 发布作品
 
 ```
- orderPublish(Action: Int?,
+HFOpenApi.getInstance().orderPublish(Action: Int?,
                       OrderId: String?,
                       WorkId: String?,
                       response: DataResponse<OrderPublish>
