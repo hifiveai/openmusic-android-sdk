@@ -28,7 +28,7 @@ class DefaultHeaderInterceptor : Interceptor {
         headers["X-HF-AppId"] = HFOpenApi.APP_ID ?: ""
         headers["X-HF-Timestamp"] = time
         headers["X-HF-Nonce"] = HiFiveUtils.randomString()
-        headers["X-HF-ClientId"] = BaseConstance.clientId
+        headers["X-HF-ClientId"] = HFOpenApi.CLIENT_ID
         headers["Authorization"] = "HF3-HMAC-SHA1"
 
         val request = chain.request()

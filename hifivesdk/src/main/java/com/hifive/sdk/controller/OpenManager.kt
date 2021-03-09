@@ -29,7 +29,6 @@ class OpenManager() {
     lateinit var mContext: Context
 
     constructor(context: Context) : this() {
-        BaseConstance.clientId = Encryption.requestDeviceId(context)
         this.mContext = context
     }
 
@@ -355,10 +354,6 @@ class OpenManager() {
         //向开发者抛出errorMsg,交给开发者处理
         HFOpenApi.callbacks?.onError(BaseException(10001, "网络错误"))
         return false
-    }
-
-    init {
-        BaseConstance.clientId = Encryption.requestDeviceId(HFOpenApi.hiFiveContext!!)
     }
 
 }

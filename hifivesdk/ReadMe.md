@@ -68,11 +68,18 @@ api "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
 
 ##### 2.2 SDK初始化
-建议在应用一启动就初始化，例如Application中
+>  注意：初始化需要clientId，建议在用户登录之后进行初始化
 
 ```
-HFOpenApi.registerApp(Application context);
+HFOpenApi.registerApp(Application context,String clientId);
 ```
+
+参数  | 必填  |描述|
+---|---|---
+context | 是| 上下文|
+clientId | 是| 用户唯一标识（公司自有的用户ID）。|
+
+##### 2.3 SDK初始化
 
 ## 三 API文档
 

@@ -29,6 +29,9 @@ class HFOpenApi {
         //密钥
         var SERVER_CODE: String? = null
 
+        //clientid
+        var CLIENT_ID: String = ""
+
         //回调
         var callbacks: HFOpenCallback? = null
 
@@ -55,6 +58,15 @@ class HFOpenApi {
             }
         }
 
+
+        @JvmStatic
+        fun setVersion(VERSION: String)  = apply{
+            if (VERSION.isEmpty()) {
+                throw IllegalArgumentException("Failed to obtain information : The VERSION cannot be null")
+            }
+            BaseConstance.verison = VERSION
+        }
+
         @JvmStatic
         @Deprecated("manifests")
         fun registerApp(application: Context?, APP_ID: String, SERVER_CODE: String) {
@@ -67,20 +79,21 @@ class HFOpenApi {
         }
 
         @JvmStatic
-        fun registerApp(application: Application?) {
+        fun registerApp(application: Application?, clientId: String) {
             if (application == null) {
                 throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
             }
             hiFiveContext = application
+            CLIENT_ID = clientId
             APP_ID = MetaDataUtils.getApplicationMetaData(application, "HIFIVE_APPID")
             SERVER_CODE = MetaDataUtils.getApplicationMetaData(application, "HIFIVE_SERVERCODE")
 
         }
 
         @JvmStatic
-        fun registerApp(application: Application?, domain : String? = BaseConstance.BASE_URL_MUSIC) {
+        fun registerApp(application: Application?, CLIENT_ID: String, domain : String? = BaseConstance.BASE_URL_MUSIC) {
             BaseConstance.BASE_URL_MUSIC = domain!!
-            registerApp(application)
+            registerApp(application,CLIENT_ID)
         }
 
         @JvmStatic
