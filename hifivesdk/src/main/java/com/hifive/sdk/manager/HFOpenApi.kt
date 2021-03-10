@@ -69,20 +69,15 @@ class HFOpenApi {
 
         @JvmStatic
         @Deprecated("manifests")
-        fun registerApp(application: Context?, APP_ID: String, SERVER_CODE: String) {
-            if (application == null) {
-                throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
-            }
+        fun registerApp(application: Context, APP_ID: String, SERVER_CODE: String, clientId: String) {
             HFOpenApi.APP_ID = APP_ID
             HFOpenApi.SERVER_CODE = SERVER_CODE
+            CLIENT_ID = clientId
             hiFiveContext = application
         }
 
         @JvmStatic
-        fun registerApp(application: Application?, clientId: String) {
-            if (application == null) {
-                throw IllegalArgumentException("Failed to obtain information : The application cannot be null")
-            }
+        fun registerApp(application: Application, clientId: String) {
             hiFiveContext = application
             CLIENT_ID = clientId
             APP_ID = MetaDataUtils.getApplicationMetaData(application, "HIFIVE_APPID")
@@ -91,17 +86,17 @@ class HFOpenApi {
         }
 
         @JvmStatic
-        fun registerApp(application: Application?, CLIENT_ID: String, domain : String? = BaseConstance.BASE_URL_MUSIC) {
+        fun registerApp(application: Application, CLIENT_ID: String, domain : String? = BaseConstance.BASE_URL_MUSIC) {
             BaseConstance.BASE_URL_MUSIC = domain!!
             registerApp(application,CLIENT_ID)
         }
 
         @JvmStatic
-        fun configCallBack(callbacks: HFOpenCallback?) {
-            if (hiFiveContext == null || APP_ID.isNullOrEmpty() || SERVER_CODE.isNullOrEmpty()) {
-                callbacks?.onError(BaseException(10000, "SDK未初始化"))
-                return
-            }
+        fun configCallBack(callbacks: HFOpenCallback) {
+//            if (hiFiveContext == null || APP_ID.isNullOrEmpty() || SERVER_CODE.isNullOrEmpty()) {
+//                callbacks?.onError(BaseException(10000, "SDK未初始化"))
+//                return
+//            }
             HFOpenApi.callbacks = callbacks
             callbacks?.onSuccess()
         }

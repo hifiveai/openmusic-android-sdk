@@ -79,7 +79,13 @@ HFOpenApi.registerApp(Application context,String clientId);
 context | 是| 上下文|
 clientId | 是| 用户唯一标识（公司自有的用户ID）。|
 
-##### 2.3 SDK初始化
+##### 2.3 设置SDK版本
+
+HFOpenApi.setVersion(String version);
+
+参数  | 必填  |描述| 示例|
+---|---|---|---
+version | 是| 操作的 API 的版本。| V4.0.1 |
 
 ## 三 API文档
 
