@@ -91,11 +91,20 @@ class ServiceImpl constructor() : Service {
         return dataRepository.baseHot(StartTime,Duration,Page, PageSize)
     }
 
+
+    fun trial(
+            MusicId: String?,
+            Action :String
+    ): Flowable<TrialMusic> {
+        return dataRepository.trial(MusicId,Action)
+    }
+
     fun trafficHQListen( MusicId: String?,
                          AudioFormat: String?,
-                         AudioRate: String?
+                         AudioRate: String?,
+                         Action :String
     ): Flowable<TrafficHQListen> {
-        return dataRepository.trafficHQListen(MusicId,AudioFormat,AudioRate)
+        return dataRepository.trafficHQListen(MusicId,AudioFormat,AudioRate,Action)
     }
 
     fun trafficListenMixed( MusicId: String?
@@ -150,10 +159,5 @@ class ServiceImpl constructor() : Service {
 
 
 
-    fun trial(
-            MusicId: String?
-    ): Flowable<TrialMusic> {
-        return dataRepository.trial(MusicId)
-    }
 
 }

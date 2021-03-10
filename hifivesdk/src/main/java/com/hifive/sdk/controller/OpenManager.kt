@@ -182,13 +182,71 @@ class OpenManager() {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.trial(MusicId)
+        return mService.trial(MusicId,"Trial")
                 .request(object : BaseSubscribe<TrialMusic>(response) {
                     override fun _onNext(t: TrialMusic) {
                         response.onSuccess(t)
                     }
                 })
     }
+
+
+    fun trafficTrial(MusicId: String?,
+              response: DataResponse<TrialMusic>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.trial(MusicId,"TrafficTrial")
+                .request(object : BaseSubscribe<TrialMusic>(response) {
+                    override fun _onNext(t: TrialMusic) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
+    fun ugcTrial(MusicId: String?,
+                     response: DataResponse<TrialMusic>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.trial(MusicId,"UGCTrial")
+                .request(object : BaseSubscribe<TrialMusic>(response) {
+                    override fun _onNext(t: TrialMusic) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
+    fun kTrial(MusicId: String?,
+                     response: DataResponse<TrialMusic>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.trial(MusicId,"KTrial")
+                .request(object : BaseSubscribe<TrialMusic>(response) {
+                    override fun _onNext(t: TrialMusic) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
+    fun orderTrial(MusicId: String?,
+               response: DataResponse<TrialMusic>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.trial(MusicId,"OrderTrial")
+                .request(object : BaseSubscribe<TrialMusic>(response) {
+                    override fun _onNext(t: TrialMusic) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
 
     fun trafficHQListen(MusicId: String?,
                         AudioFormat: String?,
@@ -198,7 +256,39 @@ class OpenManager() {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.trafficHQListen(MusicId, AudioFormat, AudioRate)
+        return mService.trafficHQListen(MusicId, AudioFormat, AudioRate,"TrafficHQListen")
+                .request(object : BaseSubscribe<TrafficHQListen>(response) {
+                    override fun _onNext(t: TrafficHQListen) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
+    fun ugcListen(MusicId: String?,
+                        AudioFormat: String?,
+                        AudioRate: String?,
+                        response: DataResponse<TrafficHQListen>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.trafficHQListen(MusicId, AudioFormat, AudioRate,"UGCListen")
+                .request(object : BaseSubscribe<TrafficHQListen>(response) {
+                    override fun _onNext(t: TrafficHQListen) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
+    fun kListen(MusicId: String?,
+                        AudioFormat: String?,
+                        AudioRate: String?,
+                        response: DataResponse<TrafficHQListen>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.trafficHQListen(MusicId, AudioFormat, AudioRate,"KListen")
                 .request(object : BaseSubscribe<TrafficHQListen>(response) {
                     override fun _onNext(t: TrafficHQListen) {
                         response.onSuccess(t)

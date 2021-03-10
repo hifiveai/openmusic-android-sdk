@@ -89,16 +89,20 @@ class DataRepository constructor() {
 
 
     fun trial(
-            MusicId: String?
+            MusicId: String?,
+            Action :String
     ): Flowable<TrialMusic> {
-        return LiveRetrofitFactory.api().trial(MusicId, "Trial").convert()
+        return LiveRetrofitFactory.api().trial(MusicId, Action).convert()
     }
+
+
 
     fun trafficHQListen(MusicId: String?,
                         AudioFormat: String?,
-                        AudioRate: String?
+                        AudioRate: String?,
+                        Action :String
     ): Flowable<TrafficHQListen> {
-        return LiveRetrofitFactory.api().trafficHQListen(MusicId, AudioFormat, AudioRate, "TrafficHQListen").convert()
+        return LiveRetrofitFactory.api().trafficHQListen(MusicId, AudioFormat, AudioRate, Action).convert()
     }
 
     fun trafficListenMixed(MusicId: String?

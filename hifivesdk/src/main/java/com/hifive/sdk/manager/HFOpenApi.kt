@@ -36,7 +36,7 @@ class HFOpenApi {
         var callbacks: HFOpenCallback? = null
 
         @JvmStatic
-        fun getInstance(): OpenManager? {
+        fun getInstance(): OpenManager {
             return when {
                 hiFiveContext == null || APP_ID.isNullOrEmpty() || SERVER_CODE.isNullOrEmpty() -> {
                     callbacks?.onError(BaseException(10000, "SDK未初始化"))
@@ -44,12 +44,15 @@ class HFOpenApi {
                         hiFiveContext == null -> throw IllegalArgumentException("Failed to obtain information : The context cannot be null")
                         APP_ID.isNullOrEmpty() -> throw IllegalArgumentException("Failed to obtain information : The HIFive_APPID cannot be null")
                         SERVER_CODE.isNullOrEmpty() -> throw IllegalArgumentException("Failed to obtain information : The HIFive_SERVERCODE cannot be null")
-                        else -> null
+                        else -> {
+                            val instance by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+                                OpenManager(hiFiveContext!!)
+                            }
+                            instance
+                        }
                     }
-
                 }
                 else -> {
-
                     val instance by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
                         OpenManager(hiFiveContext!!)
                     }
