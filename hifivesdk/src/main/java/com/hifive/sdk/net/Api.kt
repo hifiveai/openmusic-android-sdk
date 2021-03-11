@@ -172,12 +172,12 @@ interface Api {
     @FormUrlEncoded
     @POST("/")
     fun baseLogin(@Field("Nickname") Nickname: String?,
-                  @Field("Gender") Gender: String?,
-                  @Field("Birthday") Birthday: String?,
+                  @Field("Gender") Gender: Int?,
+                  @Field("Birthday") Birthday: Long?,
                   @Field("Location") Location: String?,
-                  @Field("Education") Education: String?,
-                  @Field("Profession") Profession: String?,
-                  @Field("IsOrganization") IsOrganization: String?,
+                  @Field("Education") Education: Int?,
+                  @Field("Profession") Profession: Int?,
+                  @Field("IsOrganization") IsOrganization: Boolean?,
                   @Field("Reserve") Reserve: String?,
                   @Field("FavoriteSinger") FavoriteSinger: String?,
                   @Field("FavoriteGenre") FavoriteGenre: String?,

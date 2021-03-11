@@ -21,8 +21,8 @@ abstract class BaseSubscribe<T>(private val dataResponse: DataResponse<T>?) : Re
         when (t) {
             is BaseException -> {
                 //向开发者抛出errorMsg,交给开发者处理
-                HFOpenApi.callbacks?.onError(BaseException(t.code,t.msg ?: "",t.taskId))
-                dataResponse?.onError(BaseException(t.code,t.msg ?: "",t.taskId))
+                HFOpenApi.callbacks?.onError(BaseException(t.code,t.msg ?: ""))
+                dataResponse?.onError(BaseException(t.code,t.msg ?: ""))
             }
             is SocketTimeoutException ->{
                 HFOpenApi.callbacks?.onError(BaseException(10002,"连接超时"))
@@ -30,7 +30,7 @@ abstract class BaseSubscribe<T>(private val dataResponse: DataResponse<T>?) : Re
             }
             is TimeoutException -> {
                 HFOpenApi.callbacks?.onError(BaseException(10002,"连接超时"))
-                dataResponse?.onError(BaseException(10002,"连接超时",""))
+                dataResponse?.onError(BaseException(10002,"连接超时"))
             }
             is HttpException -> {
                 HFOpenApi.callbacks?.onError(BaseException(10003,"http异常"))

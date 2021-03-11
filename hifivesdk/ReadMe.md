@@ -103,12 +103,12 @@ interface DataResponse {
        /**
         * sdk返回的错误
         */
-       void errorMsg(BaseException exception)
+       void onError(BaseException exception)
 
        /**
         * sdk返回的数据
         */
-       void data(Object data )
+       void onSuccess(Object data )
 }
 ```
 
@@ -117,8 +117,6 @@ BaseException字段   |描述|
 ---|---
 msg |  错误描述|
 code |  错误code|
-taskId  | 任务id|
-
 
 
 ##### 3.2 SDK初始化
@@ -476,6 +474,25 @@ WorkId | 否 | 公司自己生成的作品id,多个以“,”拼接 |
 
 
 
+##### 3.19 Report
+
+```
+HFOpenApi.getInstance().trafficReportListen(musicId: String?,
+                                                    duration: Long,
+                                                    timestamp: Long,
+                                                    audioFormat: String?,
+                                                    audioRate: String?,
+                                                    response: DataResponse<Any>
+                            )
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+musicId | 是 |  音乐id | - |
+duration	 | 是 | 播放时长 |  - |
+timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
+audioFormat | 否 |音频格式 文件编码, | mp3 / aac |
+audioRate	 |  否 | 音频码率 音质 | 320 / 128|
 
 ## 四、API状态码
 
