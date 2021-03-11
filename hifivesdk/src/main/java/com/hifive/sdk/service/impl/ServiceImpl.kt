@@ -17,16 +17,16 @@ class ServiceImpl constructor() : Service {
     private val dataRepository by lazy { DataRepository() }
 
     fun baseLogin(
-            Nickname: String?,
-            Gender: String?,
-            Birthday: String?,
-            Location: String?,
-            Education: String?,
-            Profession: String?,
-            IsOrganization: String?,
-            Reserve: String?,
-            FavoriteSinger: String?,
-            FavoriteGenre: String?
+            Nickname: String,
+            Gender: String,
+            Birthday: String,
+            Location: String,
+            Education: String,
+            Profession: String,
+            IsOrganization: String,
+            Reserve: String,
+            FavoriteSinger: String,
+            FavoriteGenre: String
     ): Flowable<LoginBean> {
         return dataRepository.baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre)
     }
@@ -36,7 +36,7 @@ class ServiceImpl constructor() : Service {
         return dataRepository.channel()
     }
 
-    fun channelSheet(GroupId: String?,
+    fun channelSheet(GroupId: String,
                      Language: Int?,
                      RecoNum: Int?,
                      Page: Int?,
@@ -47,7 +47,7 @@ class ServiceImpl constructor() : Service {
     }
 
     fun sheetMusic(
-            SheetId: String?,
+            SheetId: String,
             Language: Int?,
             Page: Int?,
             PageSize: Int?
@@ -57,14 +57,14 @@ class ServiceImpl constructor() : Service {
 
 
     fun searchMusic(
-            TagIds: String?,
-            priceFromCent: Long?,
-            priceToCent: Long?,
+            TagIds: String,
+            priceFromCent: Long,
+            priceToCent: Long,
             BpmForm: Int?,
             BpmTo: Int?,
             DurationFrom: Int?,
             DurationTo: Int?,
-            Keyword: String?,
+            Keyword: String,
             Language: Int?,
             Page: Int?,
             PageSize: Int?
@@ -83,7 +83,7 @@ class ServiceImpl constructor() : Service {
         return dataRepository.baseFavorite(Page, PageSize)
     }
 
-    fun baseHot( StartTime: Long?,
+    fun baseHot( StartTime: Long,
                  Duration: Int?,
                  Page: Int?,
                  PageSize: Int?
@@ -93,71 +93,77 @@ class ServiceImpl constructor() : Service {
 
 
     fun trial(
-            MusicId: String?,
+            MusicId: String,
             Action :String
     ): Flowable<TrialMusic> {
         return dataRepository.trial(MusicId,Action)
     }
 
-    fun trafficHQListen( MusicId: String?,
-                         AudioFormat: String?,
-                         AudioRate: String?,
+    fun trafficHQListen( MusicId: String,
+                         AudioFormat: String,
+                         AudioRate: String,
                          Action :String
     ): Flowable<TrafficHQListen> {
         return dataRepository.trafficHQListen(MusicId,AudioFormat,AudioRate,Action)
     }
 
-    fun trafficListenMixed( MusicId: String?
+    fun trafficListenMixed( MusicId: String
     ): Flowable<TrafficListenMixed> {
         return dataRepository.trafficListenMixed(MusicId)
     }
 
-    fun orderMusic(Subject: String?,
-                   OrderId: String?,
+    fun orderMusic(Subject: String,
+                   OrderId: String,
                    Deadline: Int?,
-                   Music: String?,
+                   Music: String,
                    Language: Int?,
-                   AudioFormat: String?,
-                   AudioRate: String?,
+                   AudioFormat: String,
+                   AudioRate: String,
                    TotalFee: Int?,
-                   Remark: String?,
-                   WorkId: String?
+                   Remark: String,
+                   WorkId: String
     ): Flowable<OrderMusic> {
         return dataRepository.orderMusic(Subject,OrderId,Deadline,Music,Language,AudioFormat,AudioRate,TotalFee,Remark,WorkId)
     }
 
     fun orderDetail(
-            OrderId: String?
+            OrderId: String
     ): Flowable<OrderMusic> {
         return dataRepository.orderDetail(OrderId)
     }
 
-    fun orderAuthorization( CompanyName: String?,
-                            ProjectName: String?,
-                            Brand: String?,
+    fun orderAuthorization( CompanyName: String,
+                            ProjectName: String,
+                            Brand: String,
                             Period: Int?,
-                            Area: String?,
-                            orderIds: String?
+                            Area: String,
+                            orderIds: String
     ): Flowable<OrderAuthorization> {
         return dataRepository.orderAuthorization(CompanyName,ProjectName,Brand,Period,Area,orderIds)
     }
 
     fun baseReport(Action: Int?,
-                   TargetId: String?,
-                   Content: String?,
-                   Location: String?
+                   TargetId: String,
+                   Content: String,
+                   Location: String
     ): Flowable<Any> {
         return dataRepository.baseReport(Action,TargetId, Content, Location)
     }
 
-    fun orderPublish(Action: String?,
-                     OrderId: String?,
-                     WorkId: String?
+    fun orderPublish(Action: String,
+                     OrderId: String,
+                     WorkId: String
     ): Flowable<OrderPublish> {
         return dataRepository.orderPublish(Action,OrderId, WorkId)
     }
 
-
-
-
+    fun report(musicId: String,
+               duration: Long,
+               timestamp: Long,
+               audioFormat: String,
+               audioRate: String,
+               Action :String
+    ): Flowable<Any> {
+        return dataRepository.report(musicId, duration, timestamp, audioFormat,audioRate, Action)
+    }
 }

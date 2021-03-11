@@ -15,16 +15,16 @@ import retrofit2.http.Query
 class DataRepository constructor() {
 
     fun baseLogin(
-            Nickname: String?,
-            Gender: String?,
-            Birthday: String?,
-            Location: String?,
-            Education: String?,
-            Profession: String?,
-            IsOrganization: String?,
-            Reserve: String?,
-            FavoriteSinger: String?,
-            FavoriteGenre: String?
+            Nickname: String,
+            Gender: String,
+            Birthday: String,
+            Location: String,
+            Education: String,
+            Profession: String,
+            IsOrganization: String,
+            Reserve: String,
+            FavoriteSinger: String,
+            FavoriteGenre: String
     ): Flowable<LoginBean> {
         return LiveRetrofitFactory.api().baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre, "BaseLogin").convert()
     }
@@ -33,7 +33,7 @@ class DataRepository constructor() {
         return LiveRetrofitFactory.api().channel("Channel").convert()
     }
 
-    fun channelSheet(GroupId: String?,
+    fun channelSheet(GroupId: String,
                      Language: Int?,
                      RecoNum: Int?,
                      Page: Int?,
@@ -43,7 +43,7 @@ class DataRepository constructor() {
     }
 
     fun sheetMusic(
-            SheetId: String?,
+            SheetId: String,
             Language: Int?,
             Page: Int?,
             PageSize: Int?
@@ -52,14 +52,14 @@ class DataRepository constructor() {
     }
 
 
-    fun searchMusic(TagIds: String?,
-                    priceFromCent: Long?,
-                    priceToCent: Long?,
+    fun searchMusic(TagIds: String,
+                    priceFromCent: Long,
+                    priceToCent: Long,
                     BpmForm: Int?,
                     BpmTo: Int?,
                     DurationFrom: Int?,
                     DurationTo: Int?,
-                    Keyword: String?,
+                    Keyword: String,
                     Language: Int?,
                     Page: Int?,
                     PageSize: Int?
@@ -79,7 +79,7 @@ class DataRepository constructor() {
         return LiveRetrofitFactory.api().baseFavorite(Page, PageSize, "BaseFavorite").convert()
     }
 
-    fun baseHot(StartTime: Long?,
+    fun baseHot(StartTime: Long,
                 Duration: Int?,
                 Page: Int?,
                 PageSize: Int?
@@ -89,7 +89,7 @@ class DataRepository constructor() {
 
 
     fun trial(
-            MusicId: String?,
+            MusicId: String,
             Action :String
     ): Flowable<TrialMusic> {
         return LiveRetrofitFactory.api().trial(MusicId, Action).convert()
@@ -97,66 +97,78 @@ class DataRepository constructor() {
 
 
 
-    fun trafficHQListen(MusicId: String?,
-                        AudioFormat: String?,
-                        AudioRate: String?,
+    fun trafficHQListen(MusicId: String,
+                        AudioFormat: String,
+                        AudioRate: String,
                         Action :String
     ): Flowable<TrafficHQListen> {
         return LiveRetrofitFactory.api().trafficHQListen(MusicId, AudioFormat, AudioRate, Action).convert()
     }
 
-    fun trafficListenMixed(MusicId: String?
+    fun trafficListenMixed(MusicId: String
     ): Flowable<TrafficListenMixed> {
         return LiveRetrofitFactory.api().trafficListenMixed(MusicId, "TrafficListenMixed").convert()
     }
 
 
-    fun orderMusic(Subject: String?,
-                   OrderId: String?,
+    fun orderMusic(Subject: String,
+                   OrderId: String,
                    Deadline: Int?,
-                   Music: String?,
+                   Music: String,
                    Language: Int?,
-                   AudioFormat: String?,
-                   AudioRate: String?,
+                   AudioFormat: String,
+                   AudioRate: String,
                    TotalFee: Int?,
-                   Remark: String?,
-                   WorkId: String?
+                   Remark: String,
+                   WorkId: String
     ): Flowable<OrderMusic> {
         return LiveRetrofitFactory.api().orderMusic(Subject, OrderId, Deadline, Music, Language, AudioFormat, AudioRate, TotalFee, Remark, WorkId, "OrderMusic").convert()
     }
 
 
     fun orderDetail(
-            OrderId: String?
+            OrderId: String
     ): Flowable<OrderMusic> {
         return LiveRetrofitFactory.api().orderDetail(OrderId, "OrderDetail").convert()
     }
 
-    fun orderAuthorization(CompanyName: String?,
-                           ProjectName: String?,
-                           Brand: String?,
+    fun orderAuthorization(CompanyName: String,
+                           ProjectName: String,
+                           Brand: String,
                            Period: Int?,
-                           Area: String?,
-                           orderIds: String?
+                           Area: String,
+                           orderIds: String
     ): Flowable<OrderAuthorization> {
         return LiveRetrofitFactory.api().orderAuthorization(CompanyName, ProjectName, Brand, Period, Area, orderIds, "OrderAuthorization").convert()
     }
 
 
     fun baseReport(Action: Int?,
-                   TargetId: String?,
-                   Content: String?,
-                   Location: String?
+                   TargetId: String,
+                   Content: String,
+                   Location: String
     ): Flowable<Any> {
         return LiveRetrofitFactory.api().baseReport(Action, TargetId, Content, Location, "BaseReport").convert()
     }
 
 
-    fun orderPublish(Action: String?,
-                     OrderId: String?,
-                     WorkId: String?
+    fun orderPublish(Action: String,
+                     OrderId: String,
+                     WorkId: String
     ): Flowable<OrderPublish> {
         return LiveRetrofitFactory.api().orderPublish(Action, OrderId, WorkId, "OrderPublish").convert()
+    }
+
+
+    fun report(musicId: String,
+               duration: Long,
+               timestamp: Long,
+               audioFormat: String,
+               audioRate: String,
+               Action :String
+    ): Flowable<Any> {
+        return LiveRetrofitFactory.api().report(musicId, duration, timestamp,if(audioFormat.isEmpty()) "mp3" else audioFormat,
+                if(audioRate.isEmpty()) "320" else audioFormat, Action).convert()
     }
 
 }

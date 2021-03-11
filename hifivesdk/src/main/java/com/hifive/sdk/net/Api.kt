@@ -208,4 +208,17 @@ interface Api {
     ): Flowable<BaseResp<OrderPublish>>
 
 
+    /**
+     * report
+     */
+    @GET("/")
+    fun report(@Query("MusicId") musicId: String?,
+               @Query("Duration") duration: Long?,
+               @Query("Timestamp") timestamp: Long?,
+               @Query("AudioFormat") audioFormat: String?,
+               @Query("AudioRate") audioRate: String?,
+               @Query("X-HF-Action") Actions: String?
+    ): Flowable<BaseResp<Any>>
+
+
 }

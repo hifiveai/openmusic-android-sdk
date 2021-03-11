@@ -14,6 +14,7 @@ import com.hifive.sdk.service.impl.ServiceImpl
 import com.hifive.sdk.utils.NetWorkUtils
 import com.tsy.sdk.myokhttp.MyOkHttp
 import com.tsy.sdk.myokhttp.response.DownloadResponseHandler
+import io.reactivex.Flowable
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import java.io.File
@@ -35,16 +36,16 @@ class OpenManager() {
     private val mService by lazy { ServiceImpl() }
 
     fun baseLogin(
-            Nickname: String?,
-            Gender: String?,
-            Birthday: String?,
-            Location: String?,
-            Education: String?,
-            Profession: String?,
-            IsOrganization: String?,
-            Reserve: String?,
-            FavoriteSinger: String?,
-            FavoriteGenre: String?,
+            Nickname: String,
+            Gender: String,
+            Birthday: String,
+            Location: String,
+            Education: String,
+            Profession: String,
+            IsOrganization: String,
+            Reserve: String,
+            FavoriteSinger: String,
+            FavoriteGenre: String,
             response: DataResponse<LoginBean>
     ) {
         if (!checkNetWork(mContext)) {
@@ -71,7 +72,7 @@ class OpenManager() {
                 })
     }
 
-    fun channelSheet(GroupId: String?,
+    fun channelSheet(GroupId: String,
                      Language: Int?,
                      RecoNum: Int?,
                      Page: Int?,
@@ -88,7 +89,7 @@ class OpenManager() {
                 })
     }
 
-    fun sheetMusic(SheetId: String?,
+    fun sheetMusic(SheetId: String,
                    Language: Int?,
                    Page: Int?,
                    PageSize: Int?,
@@ -105,14 +106,14 @@ class OpenManager() {
     }
 
 
-    fun searchMusic(TagIds: String?,
-                    priceFromCent: Long?,
-                    priceToCent: Long?,
+    fun searchMusic(TagIds: String,
+                    priceFromCent: Long,
+                    priceToCent: Long,
                     BpmForm: Int?,
                     BpmTo: Int?,
                     DurationFrom: Int?,
                     DurationTo: Int?,
-                    Keyword: String?,
+                    Keyword: String,
                     Language: Int?,
                     Page: Int?,
                     PageSize: Int?,
@@ -158,7 +159,7 @@ class OpenManager() {
                 })
     }
 
-    fun baseHot(StartTime: Long?,
+    fun baseHot(StartTime: Long,
                 Duration: Int?,
                 Page: Int?,
                 PageSize: Int?,
@@ -176,13 +177,13 @@ class OpenManager() {
     }
 
 
-    fun trial(MusicId: String?,
+    fun trial(MusicId: String,
               response: DataResponse<TrialMusic>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.trial(MusicId,"Trial")
+        return mService.trial(MusicId, "Trial")
                 .request(object : BaseSubscribe<TrialMusic>(response) {
                     override fun _onNext(t: TrialMusic) {
                         response.onSuccess(t)
@@ -191,27 +192,13 @@ class OpenManager() {
     }
 
 
-    fun trafficTrial(MusicId: String?,
-              response: DataResponse<TrialMusic>
-    ) {
-        if (!checkNetWork(mContext)) {
-            return
-        }
-        return mService.trial(MusicId,"TrafficTrial")
-                .request(object : BaseSubscribe<TrialMusic>(response) {
-                    override fun _onNext(t: TrialMusic) {
-                        response.onSuccess(t)
-                    }
-                })
-    }
-
-    fun ugcTrial(MusicId: String?,
+    fun trafficTrial(MusicId: String,
                      response: DataResponse<TrialMusic>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.trial(MusicId,"UGCTrial")
+        return mService.trial(MusicId, "TrafficTrial")
                 .request(object : BaseSubscribe<TrialMusic>(response) {
                     override fun _onNext(t: TrialMusic) {
                         response.onSuccess(t)
@@ -219,13 +206,13 @@ class OpenManager() {
                 })
     }
 
-    fun kTrial(MusicId: String?,
-                     response: DataResponse<TrialMusic>
+    fun ugcTrial(MusicId: String,
+                 response: DataResponse<TrialMusic>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.trial(MusicId,"KTrial")
+        return mService.trial(MusicId, "UGCTrial")
                 .request(object : BaseSubscribe<TrialMusic>(response) {
                     override fun _onNext(t: TrialMusic) {
                         response.onSuccess(t)
@@ -233,13 +220,27 @@ class OpenManager() {
                 })
     }
 
-    fun orderTrial(MusicId: String?,
+    fun kTrial(MusicId: String,
                response: DataResponse<TrialMusic>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.trial(MusicId,"OrderTrial")
+        return mService.trial(MusicId, "KTrial")
+                .request(object : BaseSubscribe<TrialMusic>(response) {
+                    override fun _onNext(t: TrialMusic) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
+    fun orderTrial(MusicId: String,
+                   response: DataResponse<TrialMusic>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.trial(MusicId, "OrderTrial")
                 .request(object : BaseSubscribe<TrialMusic>(response) {
                     override fun _onNext(t: TrialMusic) {
                         response.onSuccess(t)
@@ -248,15 +249,15 @@ class OpenManager() {
     }
 
 
-    fun trafficHQListen(MusicId: String?,
-                        AudioFormat: String?,
-                        AudioRate: String?,
+    fun trafficHQListen(MusicId: String,
+                        AudioFormat: String,
+                        AudioRate: String,
                         response: DataResponse<TrafficHQListen>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.trafficHQListen(MusicId, AudioFormat, AudioRate,"TrafficHQListen")
+        return mService.trafficHQListen(MusicId, AudioFormat, AudioRate, "TrafficHQListen")
                 .request(object : BaseSubscribe<TrafficHQListen>(response) {
                     override fun _onNext(t: TrafficHQListen) {
                         response.onSuccess(t)
@@ -264,15 +265,15 @@ class OpenManager() {
                 })
     }
 
-    fun ugcListen(MusicId: String?,
-                        AudioFormat: String?,
-                        AudioRate: String?,
-                        response: DataResponse<TrafficHQListen>
+    fun ugcListen(MusicId: String,
+                  AudioFormat: String,
+                  AudioRate: String,
+                  response: DataResponse<TrafficHQListen>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.trafficHQListen(MusicId, AudioFormat, AudioRate,"UGCListen")
+        return mService.trafficHQListen(MusicId, AudioFormat, AudioRate, "UGCListen")
                 .request(object : BaseSubscribe<TrafficHQListen>(response) {
                     override fun _onNext(t: TrafficHQListen) {
                         response.onSuccess(t)
@@ -280,15 +281,15 @@ class OpenManager() {
                 })
     }
 
-    fun kListen(MusicId: String?,
-                        AudioFormat: String?,
-                        AudioRate: String?,
-                        response: DataResponse<TrafficHQListen>
+    fun kListen(MusicId: String,
+                AudioFormat: String,
+                AudioRate: String,
+                response: DataResponse<TrafficHQListen>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.trafficHQListen(MusicId, AudioFormat, AudioRate,"KListen")
+        return mService.trafficHQListen(MusicId, AudioFormat, AudioRate, "KListen")
                 .request(object : BaseSubscribe<TrafficHQListen>(response) {
                     override fun _onNext(t: TrafficHQListen) {
                         response.onSuccess(t)
@@ -297,7 +298,7 @@ class OpenManager() {
     }
 
 
-    fun trafficListenMixed(MusicId: String?,
+    fun trafficListenMixed(MusicId: String,
                            response: DataResponse<TrafficListenMixed>
     ) {
         if (!checkNetWork(mContext)) {
@@ -311,16 +312,16 @@ class OpenManager() {
                 })
     }
 
-    fun orderMusic(Subject: String?,
-                   OrderId: String?,
+    fun orderMusic(Subject: String,
+                   OrderId: String,
                    Deadline: Int?,
-                   Music: String?,
+                   Music: String,
                    Language: Int?,
-                   AudioFormat: String?,
-                   AudioRate: String?,
+                   AudioFormat: String,
+                   AudioRate: String,
                    TotalFee: Int?,
-                   Remark: String?,
-                   WorkId: String?,
+                   Remark: String,
+                   WorkId: String,
                    response: DataResponse<OrderMusic>
     ) {
         if (!checkNetWork(mContext)) {
@@ -334,7 +335,7 @@ class OpenManager() {
                 })
     }
 
-    fun orderDetail(OrderId: String?,
+    fun orderDetail(OrderId: String,
                     response: DataResponse<OrderMusic>
     ) {
         if (!checkNetWork(mContext)) {
@@ -349,12 +350,12 @@ class OpenManager() {
 
     }
 
-    fun orderAuthorization(CompanyName: String?,
-                           ProjectName: String?,
-                           Brand: String?,
+    fun orderAuthorization(CompanyName: String,
+                           ProjectName: String,
+                           Brand: String,
                            Period: Int?,
-                           Area: String?,
-                           orderIds: String?,
+                           Area: String,
+                           orderIds: String,
                            response: DataResponse<OrderAuthorization>
     ) {
         if (!checkNetWork(mContext)) {
@@ -369,9 +370,9 @@ class OpenManager() {
     }
 
     fun baseReport(Action: Int?,
-                   TargetId: String?,
-                   Content: String?,
-                   Location: String?,
+                   TargetId: String,
+                   Content: String,
+                   Location: String,
                    response: DataResponse<Any>
     ) {
         if (!checkNetWork(mContext)) {
@@ -385,9 +386,9 @@ class OpenManager() {
                 })
     }
 
-    fun orderPublish(Action: String?,
-                     OrderId: String?,
-                     WorkId: String?,
+    fun orderPublish(Action: String,
+                     OrderId: String,
+                     WorkId: String,
                      response: DataResponse<OrderPublish>
     ) {
         if (!checkNetWork(mContext)) {
@@ -396,6 +397,51 @@ class OpenManager() {
         return mService.orderPublish(Action, OrderId, WorkId)
                 .request(object : BaseSubscribe<OrderPublish>(response) {
                     override fun _onNext(t: OrderPublish) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
+    fun trafficReportListen(musicId: String,
+                            duration: Long,
+                            timestamp: Long,
+                            audioFormat: String,
+                            audioRate: String,
+                            response: DataResponse<Any>
+    ) {
+        return mService.report(musicId, duration, timestamp, audioFormat, audioRate, "TrafficReportListen")
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
+    fun ugcReportListen(musicId: String,
+                        duration: Long,
+                        timestamp: Long,
+                        audioFormat: String,
+                        audioRate: String,
+                        response: DataResponse<Any>
+    ) {
+        return mService.report(musicId, duration, timestamp, audioFormat, audioRate, "UGCReportListen")
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
+                        response.onSuccess(t)
+                    }
+                })
+    }
+
+    fun kReportListen(musicId: String,
+                      duration: Long,
+                      timestamp: Long,
+                      audioFormat: String,
+                      audioRate: String,
+                      response: DataResponse<Any>
+    ) {
+        return mService.report(musicId, duration, timestamp, audioFormat, audioRate, "KReportListen")
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
                         response.onSuccess(t)
                     }
                 })
