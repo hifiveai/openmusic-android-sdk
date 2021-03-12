@@ -1,6 +1,7 @@
 package com.hifive.sdk.controller
 
 import android.content.Context
+import android.util.Log
 import com.hifive.sdk.common.BaseConstance
 import com.hifive.sdk.entity.*
 import com.hifive.sdk.ext.request
@@ -54,7 +55,7 @@ class OpenManager() {
         mService.baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre)
                 .request(object : BaseSubscribe<LoginBean>(response) {
                     override fun _onNext(t: LoginBean) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                         BaseConstance.token = t.token
                     }
                 })
@@ -67,16 +68,16 @@ class OpenManager() {
         mService.channel()
                 .request(object : BaseSubscribe<ArrayList<ChannelItem>>(response) {
                     override fun _onNext(t: ArrayList<ChannelItem>) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
 
     fun channelSheet(GroupId: String?,
-                     Language: Int??,
-                     RecoNum: Int??,
-                     Page: Int??,
-                     PageSize: Int??,
+                     Language: Int?,
+                     RecoNum: Int?,
+                     Page: Int?,
+                     PageSize: Int?,
                      response: DataResponse<ChannelSheet>) {
         if (!checkNetWork(mContext)) {
             return
@@ -84,15 +85,15 @@ class OpenManager() {
         mService.channelSheet(GroupId, Language, RecoNum, Page, PageSize)
                 .request(object : BaseSubscribe<ChannelSheet>(response) {
                     override fun _onNext(t: ChannelSheet) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
 
     fun sheetMusic(SheetId: String?,
-                   Language: Int??,
-                   Page: Int??,
-                   PageSize: Int??,
+                   Language: Int?,
+                   Page: Int?,
+                   PageSize: Int?,
                    response: DataResponse<SheetMusic>) {
         if (!checkNetWork(mContext)) {
             return
@@ -100,7 +101,7 @@ class OpenManager() {
         mService.sheetMusic(SheetId, Language, Page, PageSize)
                 .request(object : BaseSubscribe<SheetMusic>(response) {
                     override fun _onNext(t: SheetMusic) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -109,14 +110,14 @@ class OpenManager() {
     fun searchMusic(TagIds: String?,
                     priceFromCent: Long,
                     priceToCent: Long,
-                    BpmForm: Int??,
-                    BpmTo: Int??,
-                    DurationFrom: Int??,
-                    DurationTo: Int??,
+                    BpmForm: Int?,
+                    BpmTo: Int?,
+                    DurationFrom: Int?,
+                    DurationTo: Int?,
                     Keyword: String?,
-                    Language: Int??,
-                    Page: Int??,
-                    PageSize: Int??,
+                    Language: Int?,
+                    Page: Int?,
+                    PageSize: Int?,
                     response: DataResponse<SearchMusic>
     ) {
         if (!checkNetWork(mContext)) {
@@ -126,7 +127,7 @@ class OpenManager() {
         mService.searchMusic(TagIds, priceFromCent, priceToCent, BpmForm, BpmTo, DurationFrom, DurationTo, Keyword, Language, Page, PageSize)
                 .request(object : BaseSubscribe<SearchMusic>(response) {
                     override fun _onNext(t: SearchMusic) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -138,13 +139,13 @@ class OpenManager() {
         mService.musicConfig()
                 .request(object : BaseSubscribe<MusicConfig>(response) {
                     override fun _onNext(t: MusicConfig) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
 
-    fun baseFavorite(Page: Int??,
-                     PageSize: Int??,
+    fun baseFavorite(Page: Int?,
+                     PageSize: Int?,
                      response: DataResponse<BaseFavorite>
     ) {
         if (!checkNetWork(mContext)) {
@@ -154,15 +155,15 @@ class OpenManager() {
         return mService.baseFavorite(Page, PageSize)
                 .request(object : BaseSubscribe<BaseFavorite>(response) {
                     override fun _onNext(t: BaseFavorite) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
 
     fun baseHot(StartTime: Long,
-                Duration: Int??,
-                Page: Int??,
-                PageSize: Int??,
+                Duration: Int?,
+                Page: Int?,
+                PageSize: Int?,
                 response: DataResponse<BaseHot>
     ) {
         if (!checkNetWork(mContext)) {
@@ -171,7 +172,7 @@ class OpenManager() {
         return mService.baseHot(StartTime, Duration, Page, PageSize)
                 .request(object : BaseSubscribe<BaseHot>(response) {
                     override fun _onNext(t: BaseHot) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -186,7 +187,7 @@ class OpenManager() {
         return mService.trial(MusicId, "Trial")
                 .request(object : BaseSubscribe<TrialMusic>(response) {
                     override fun _onNext(t: TrialMusic) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -201,7 +202,7 @@ class OpenManager() {
         return mService.trial(MusicId, "TrafficTrial")
                 .request(object : BaseSubscribe<TrialMusic>(response) {
                     override fun _onNext(t: TrialMusic) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -215,7 +216,7 @@ class OpenManager() {
         return mService.trial(MusicId, "UGCTrial")
                 .request(object : BaseSubscribe<TrialMusic>(response) {
                     override fun _onNext(t: TrialMusic) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -229,7 +230,7 @@ class OpenManager() {
         return mService.trial(MusicId, "KTrial")
                 .request(object : BaseSubscribe<TrialMusic>(response) {
                     override fun _onNext(t: TrialMusic) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -243,7 +244,7 @@ class OpenManager() {
         return mService.trial(MusicId, "OrderTrial")
                 .request(object : BaseSubscribe<TrialMusic>(response) {
                     override fun _onNext(t: TrialMusic) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -260,7 +261,7 @@ class OpenManager() {
         return mService.trafficHQListen(MusicId, AudioFormat, AudioRate, "TrafficHQListen")
                 .request(object : BaseSubscribe<TrafficHQListen>(response) {
                     override fun _onNext(t: TrafficHQListen) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -276,7 +277,7 @@ class OpenManager() {
         return mService.trafficHQListen(MusicId, AudioFormat, AudioRate, "UGCListen")
                 .request(object : BaseSubscribe<TrafficHQListen>(response) {
                     override fun _onNext(t: TrafficHQListen) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -292,7 +293,7 @@ class OpenManager() {
         return mService.trafficHQListen(MusicId, AudioFormat, AudioRate, "KListen")
                 .request(object : BaseSubscribe<TrafficHQListen>(response) {
                     override fun _onNext(t: TrafficHQListen) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -307,19 +308,19 @@ class OpenManager() {
         return mService.trafficListenMixed(MusicId)
                 .request(object : BaseSubscribe<TrafficListenMixed>(response) {
                     override fun _onNext(t: TrafficListenMixed) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
 
     fun orderMusic(Subject: String?,
                    OrderId: String?,
-                   Deadline: Int??,
+                   Deadline: Int?,
                    Music: String?,
-                   Language: Int??,
+                   Language: Int?,
                    AudioFormat: String?,
                    AudioRate: String?,
-                   TotalFee: Int??,
+                   TotalFee: Int?,
                    Remark: String?,
                    WorkId: String?,
                    response: DataResponse<OrderMusic>
@@ -330,7 +331,7 @@ class OpenManager() {
         return mService.orderMusic(Subject, OrderId, Deadline, Music, Language, AudioFormat, AudioRate, TotalFee, Remark, WorkId)
                 .request(object : BaseSubscribe<OrderMusic>(response) {
                     override fun _onNext(t: OrderMusic) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -344,7 +345,7 @@ class OpenManager() {
         return mService.orderDetail(OrderId)
                 .request(object : BaseSubscribe<OrderMusic>(response) {
                     override fun _onNext(t: OrderMusic) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
 
@@ -353,7 +354,7 @@ class OpenManager() {
     fun orderAuthorization(CompanyName: String?,
                            ProjectName: String?,
                            Brand: String?,
-                           Period: Int??,
+                           Period: Int?,
                            Area: String?,
                            orderIds: String?,
                            response: DataResponse<OrderAuthorization>
@@ -364,12 +365,12 @@ class OpenManager() {
         return mService.orderAuthorization(CompanyName, ProjectName, Brand, Period, Area, orderIds)
                 .request(object : BaseSubscribe<OrderAuthorization>(response) {
                     override fun _onNext(t: OrderAuthorization) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
 
-    fun baseReport(Action: Int??,
+    fun baseReport(Action: Int?,
                    TargetId: String?,
                    Content: String?,
                    Location: String?,
@@ -381,7 +382,7 @@ class OpenManager() {
         return mService.baseReport(Action, TargetId, Content, Location)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -397,7 +398,7 @@ class OpenManager() {
         return mService.orderPublish(Action, OrderId, WorkId)
                 .request(object : BaseSubscribe<OrderPublish>(response) {
                     override fun _onNext(t: OrderPublish) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -412,7 +413,7 @@ class OpenManager() {
         return mService.report(musicId, duration, timestamp, audioFormat, audioRate, "TrafficReportListen")
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -427,7 +428,7 @@ class OpenManager() {
         return mService.report(musicId, duration, timestamp, audioFormat, audioRate, "UGCReportListen")
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }
@@ -442,7 +443,7 @@ class OpenManager() {
         return mService.report(musicId, duration, timestamp, audioFormat, audioRate, "KReportListen")
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
-                        response.onSuccess(t)
+                        response.onSuccess(t,BaseConstance.taskId)
                     }
                 })
     }

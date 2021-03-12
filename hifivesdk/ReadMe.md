@@ -101,14 +101,15 @@ version | 是| 操作的 API 的版本。| V4.0.1 |
 ```
 interface DataResponse {
        /**
-        * sdk返回的错误
+        * exception：sdk返回的错误
         */
        void onError(BaseException exception)
 
        /**
-        * sdk返回的数据
+        * data：sdk返回的数据
+        * taskId：任务ID
         */
-       void onSuccess(Object data )
+       void onSuccess(Object data , String taskId)
 }
 ```
 

@@ -17,6 +17,8 @@ class BaseConstance {
 //        var BASE_URL_MUSIC: String = "https://gateway.open.hifiveai.com"
         var verison : String = "V4.0.1"
         var token: String = ""
+        @JvmField
+        var taskId: String = ""
         const val SUCCEED = 10200
 
 //        fun getSign(secret: String, message: String): String? {

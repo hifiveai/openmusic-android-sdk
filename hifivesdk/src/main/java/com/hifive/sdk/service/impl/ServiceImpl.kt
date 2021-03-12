@@ -37,10 +37,10 @@ class ServiceImpl constructor() : Service {
     }
 
     fun channelSheet(GroupId: String?,
-                     Language: Int??,
-                     RecoNum: Int??,
-                     Page: Int??,
-                     PageSize: Int??
+                     Language: Int?,
+                     RecoNum: Int?,
+                     Page: Int?,
+                     PageSize: Int?
     ): Flowable<ChannelSheet> {
         return dataRepository.channelSheet(GroupId, Language, RecoNum, Page, PageSize)
 
@@ -48,9 +48,9 @@ class ServiceImpl constructor() : Service {
 
     fun sheetMusic(
             SheetId: String?,
-            Language: Int??,
-            Page: Int??,
-            PageSize: Int??
+            Language: Int?,
+            Page: Int?,
+            PageSize: Int?
     ): Flowable<SheetMusic> {
         return dataRepository.sheetMusic(SheetId, Language, Page, PageSize)
     }
@@ -60,14 +60,14 @@ class ServiceImpl constructor() : Service {
             TagIds: String?,
             priceFromCent: Long,
             priceToCent: Long,
-            BpmForm: Int??,
-            BpmTo: Int??,
-            DurationFrom: Int??,
-            DurationTo: Int??,
+            BpmForm: Int?,
+            BpmTo: Int?,
+            DurationFrom: Int?,
+            DurationTo: Int?,
             Keyword: String?,
-            Language: Int??,
-            Page: Int??,
-            PageSize: Int??
+            Language: Int?,
+            Page: Int?,
+            PageSize: Int?
     ): Flowable<SearchMusic> {
         return dataRepository.searchMusic(TagIds, priceFromCent, priceToCent, BpmForm, BpmTo, DurationFrom, DurationTo, Keyword, Language, Page, PageSize)
     }
@@ -77,16 +77,16 @@ class ServiceImpl constructor() : Service {
         return dataRepository.musicConfig()
     }
 
-    fun baseFavorite(Page: Int??,
-                     PageSize: Int??
+    fun baseFavorite(Page: Int?,
+                     PageSize: Int?
     ): Flowable<BaseFavorite> {
         return dataRepository.baseFavorite(Page, PageSize)
     }
 
     fun baseHot( StartTime: Long,
-                 Duration: Int??,
-                 Page: Int??,
-                 PageSize: Int??
+                 Duration: Int?,
+                 Page: Int?,
+                 PageSize: Int?
     ): Flowable<BaseHot> {
         return dataRepository.baseHot(StartTime,Duration,Page, PageSize)
     }
@@ -114,12 +114,12 @@ class ServiceImpl constructor() : Service {
 
     fun orderMusic(Subject: String?,
                    OrderId: String?,
-                   Deadline: Int??,
+                   Deadline: Int?,
                    Music: String?,
-                   Language: Int??,
+                   Language: Int?,
                    AudioFormat: String?,
                    AudioRate: String?,
-                   TotalFee: Int??,
+                   TotalFee: Int?,
                    Remark: String?,
                    WorkId: String?
     ): Flowable<OrderMusic> {
@@ -135,14 +135,14 @@ class ServiceImpl constructor() : Service {
     fun orderAuthorization( CompanyName: String?,
                             ProjectName: String?,
                             Brand: String?,
-                            Period: Int??,
+                            Period: Int?,
                             Area: String?,
                             orderIds: String?
     ): Flowable<OrderAuthorization> {
         return dataRepository.orderAuthorization(CompanyName,ProjectName,Brand,Period,Area,orderIds)
     }
 
-    fun baseReport(Action: Int??,
+    fun baseReport(Action: Int?,
                    TargetId: String?,
                    Content: String?,
                    Location: String?

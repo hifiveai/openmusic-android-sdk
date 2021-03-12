@@ -4,8 +4,6 @@ import com.hifive.sdk.entity.*
 import com.hifive.sdk.ext.convert
 import com.hifive.sdk.net.LiveRetrofitFactory
 import io.reactivex.Flowable
-import retrofit2.http.Field
-import retrofit2.http.Query
 
 
 /**
@@ -17,7 +15,7 @@ class DataRepository constructor() {
     fun baseLogin(
             Nickname: String?,
             Gender: Int?,
-            Birthday: Long?,
+            Birthday: Long??,
             Location: String?,
             Education: Int?,
             Profession: Int?,
@@ -34,35 +32,35 @@ class DataRepository constructor() {
     }
 
     fun channelSheet(GroupId: String?,
-                     Language: Int??,
-                     RecoNum: Int??,
-                     Page: Int??,
-                     PageSize: Int??
+                     Language: Int?,
+                     RecoNum: Int?,
+                     Page: Int?,
+                     PageSize: Int?
     ): Flowable<ChannelSheet> {
         return LiveRetrofitFactory.api().channelSheet(GroupId, Language, RecoNum, Page, PageSize, "ChannelSheet").convert()
     }
 
     fun sheetMusic(
             SheetId: String?,
-            Language: Int??,
-            Page: Int??,
-            PageSize: Int??
+            Language: Int?,
+            Page: Int?,
+            PageSize: Int?
     ): Flowable<SheetMusic> {
         return LiveRetrofitFactory.api().sheetMusic(SheetId, Language, Page, PageSize, "SheetMusic").convert()
     }
 
 
     fun searchMusic(TagIds: String?,
-                    priceFromCent: Long,
-                    priceToCent: Long,
-                    BpmForm: Int??,
-                    BpmTo: Int??,
-                    DurationFrom: Int??,
-                    DurationTo: Int??,
+                    priceFromCent: Long?,
+                    priceToCent: Long?,
+                    BpmForm: Int?,
+                    BpmTo: Int?,
+                    DurationFrom: Int?,
+                    DurationTo: Int?,
                     Keyword: String?,
-                    Language: Int??,
-                    Page: Int??,
-                    PageSize: Int??
+                    Language: Int?,
+                    Page: Int?,
+                    PageSize: Int?
     ): Flowable<SearchMusic> {
         return LiveRetrofitFactory.api().searchMusic(TagIds, priceFromCent, priceToCent, BpmForm, BpmTo, DurationFrom, DurationTo, Keyword, Language, Page, PageSize, "SearchMusic").convert()
     }
@@ -73,16 +71,16 @@ class DataRepository constructor() {
     }
 
 
-    fun baseFavorite(Page: Int??,
-                     PageSize: Int??
+    fun baseFavorite(Page: Int?,
+                     PageSize: Int?
     ): Flowable<BaseFavorite> {
         return LiveRetrofitFactory.api().baseFavorite(Page, PageSize, "BaseFavorite").convert()
     }
 
-    fun baseHot(StartTime: Long,
-                Duration: Int??,
-                Page: Int??,
-                PageSize: Int??
+    fun baseHot(StartTime: Long?,
+                Duration: Int?,
+                Page: Int?,
+                PageSize: Int?
     ): Flowable<BaseHot> {
         return LiveRetrofitFactory.api().baseHot(StartTime, Duration, Page, PageSize, "BaseHot").convert()
     }
@@ -113,12 +111,12 @@ class DataRepository constructor() {
 
     fun orderMusic(Subject: String?,
                    OrderId: String?,
-                   Deadline: Int??,
+                   Deadline: Int?,
                    Music: String?,
-                   Language: Int??,
+                   Language: Int?,
                    AudioFormat: String?,
                    AudioRate: String?,
-                   TotalFee: Int??,
+                   TotalFee: Int?,
                    Remark: String?,
                    WorkId: String?
     ): Flowable<OrderMusic> {
@@ -135,7 +133,7 @@ class DataRepository constructor() {
     fun orderAuthorization(CompanyName: String?,
                            ProjectName: String?,
                            Brand: String?,
-                           Period: Int??,
+                           Period: Int?,
                            Area: String?,
                            orderIds: String?
     ): Flowable<OrderAuthorization> {
@@ -143,7 +141,7 @@ class DataRepository constructor() {
     }
 
 
-    fun baseReport(Action: Int??,
+    fun baseReport(Action: Int?,
                    TargetId: String?,
                    Content: String?,
                    Location: String?
@@ -161,8 +159,8 @@ class DataRepository constructor() {
 
 
     fun report(musicId: String?,
-               duration: Long?,
-               timestamp: Long?,
+               duration: Long??,
+               timestamp: Long??,
                audioFormat: String?,
                audioRate: String?,
                Action :String?
