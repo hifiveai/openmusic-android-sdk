@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         initView();
     }
     private void initView() {
+        HFLivePlayer.getInstance().showPlayer(MainActivity.this);
         play.setOnClickListener(view -> {
             if(!flag){
                 HFLivePlayer.getInstance().showPlayer(MainActivity.this);

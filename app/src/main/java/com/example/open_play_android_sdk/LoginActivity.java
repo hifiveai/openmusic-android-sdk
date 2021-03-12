@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      *  正式 300a44d050c942eebeae8765a878b0ee   0e31fe11b31247fca8
      *  测试 1998ca60c18a42b38fa03b80cce1832a   259e23ea0c684bd7be
-     *
+     *  沙箱 6jg58jx4aa9t7305dyck4ckvbyhk7duk   wnzwnkevnc74uym5
      */
     private void initView() {
         et_appid = findViewById(R.id.et_appid);
@@ -54,11 +54,11 @@ public class LoginActivity extends AppCompatActivity {
         et_secretkey.setText(secretKey);
 
         et_member_name = findViewById(R.id.et_member_name);
-        memberName = (String) SPUtils.get(this, SPUtils.memberName, "");
+        memberName = (String) SPUtils.get(this, SPUtils.memberName, "hifivetest");
         et_member_name.setText(memberName);
 
         et_member_id = findViewById(R.id.et_member_id);
-        memberId = (String) SPUtils.get(this, SPUtils.memberId, "");
+        memberId = (String) SPUtils.get(this, SPUtils.memberId, "hifivetest");
         et_member_id.setText(memberId);
 
         et_sociaty_name = findViewById(R.id.et_sociaty_name);
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         et_sociaty_id.setText(sociatyId);
 
         btn_initialize = findViewById(R.id.btn_initialize);
-        btn_initialize.setOnClickListener(view -> {
+//        btn_initialize.setOnClickListener(view -> {
             secretKey = et_secretkey.getText().toString().trim();
             appId = et_appid.getText().toString().trim();
             if (TextUtils.isEmpty(secretKey)) {
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 //            HFLiveApi.registerApp(getApplication(),appId,secretKey);
-            HFLiveApi.registerApp(getApplication());
+            HFLiveApi.registerApp(getApplication(),"https://hifive-openapi-qa.hifiveai.com");
 
             HFLiveApi.configCallBack(new HFLiveCallback(){
                 @Override
@@ -96,11 +96,13 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
-            HifiveDialogManageUtil.getInstance().showToast(this, "初始化SDK成功");
+//            HifiveDialogManageUtil.getInstance().showToast(this, "初始化SDK成功");
             SPUtils.put(this, SPUtils.appId, appId);
             SPUtils.put(this, SPUtils.secretKey, secretKey);
             flag = true;
-        });
+//        });
+        Login();
+
         btn_login = findViewById(R.id.btn_login);
         btn_login.setOnClickListener(view -> {
             if (!flag) {
@@ -192,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void data( Object any) {
                         SPUtils.put(LoginActivity.this,SPUtils.memberName,memberName);
                         SPUtils.put(LoginActivity.this,SPUtils.memberId,memberId);
-                        HifiveDialogManageUtil.getInstance().showToast(LoginActivity.this, "会员登录成功");
+//                        HifiveDialogManageUtil.getInstance().showToast(LoginActivity.this, "会员登录成功");
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
                         finish();
                     }

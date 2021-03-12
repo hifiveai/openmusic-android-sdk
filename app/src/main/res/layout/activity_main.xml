@@ -7,6 +7,12 @@
     android:orientation="vertical"
     android:alpha="0.7">
 
+    <ImageView
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:src="@mipmap/ssl"
+        android:layout_height="match_parent"/>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/play"
         android:layout_width="match_parent"
@@ -16,6 +22,7 @@
         android:layout_marginEnd="20dp"
         android:gravity="center"
         android:text="开启直播"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />

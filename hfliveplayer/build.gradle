@@ -11,7 +11,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
-        versionName "1.2.1.4"
+        versionName "1.2.1.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -19,13 +19,12 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            buildConfigField "String", "VERSION_NAME", "\"1.2.1.1\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 repositories {
@@ -36,7 +35,6 @@ repositories {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-
     api 'androidx.appcompat:appcompat:1.2.0'
 
     //开发者必须导入的包
@@ -45,7 +43,7 @@ dependencies {
     api "com.squareup.retrofit2:retrofit:2.9.0"
     api "com.squareup.retrofit2:converter-gson:2.9.0"
     api "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
-    api "com.squareup.okhttp3:okhttp:4.0.0"
+//    api "com.squareup.okhttp3:okhttp:3.9.0"
     api "com.squareup.okhttp3:logging-interceptor:4.0.0"
 
     api group: 'com.github.bumptech.glide', name: 'glide', version: '4.11.0'
