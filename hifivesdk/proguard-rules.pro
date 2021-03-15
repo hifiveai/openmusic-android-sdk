@@ -1,18 +1,18 @@
 
 #不混淆所有的com.czy.bean包下的类和这些类的所有成员变量
--keep class com.hifive.sdk.entity.** { *; }
+-keep class com.hfopen.sdk.entity.** { *; }
 #-keep class com.hifive.sdk.manager.** { *; }
--keep class com.hifive.sdk.manager.HFOpenApi{*;}
--keep class com.hifive.sdk.manager.HFOpenApi$Companion{*;}
--keep class com.hifive.sdk.controller.OpenManager{*;}
+-keep class com.hfopen.sdk.manager.HFOpenApi{*;}
+-keep class com.hfopen.sdk.manager.HFOpenApi$Companion{*;}
+-keep class com.hfopen.sdk.controller.OpenManager{*;}
 
--keep class com.hifive.sdk.hInterface.DataResponse{*;}
--keep class com.hifive.sdk.hInterface.DataResponse$*{*;}
+-keep class com.hfopen.sdk.hInterface.DataResponse{*;}
+-keep class com.hfopen.sdk.hInterface.DataResponse$*{*;}
 
 #-keep interface  com.hifive.sdk.hInterface.DataResponse
--keep interface com.hifive.sdk.hInterface.DownLoadResponse
--keep class com.hifive.sdk.protocol.BaseResp{ *; }
--keep interface com.hifive.sdk.common.HFOpenCallback
+-keep interface com.hfopen.sdk.hInterface.DownLoadResponse
+-keep class com.hfopen.sdk.protocol.BaseResp{ *; }
+-keep interface com.hfopen.sdk.common.HFOpenCallback
 
 
 # 不混淆内部类
