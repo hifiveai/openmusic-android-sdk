@@ -4,11 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.hfliveplayer.sdk.ui.player.HFLivePlayer;
-import com.hifive.sdk.hInterface.DataResponse;
-import com.hifive.sdk.manager.HFLiveApi;
+import com.hfopenplayer.sdk.ui.player.HFLivePlayer;
 
 public class MainActivity extends AppCompatActivity {
     private boolean flag;

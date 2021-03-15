@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_lyric_dynamic"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.hfopenplayer.sdk.view.MarqueeTextView
+        android:id="@+id/tv_lyric_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFF69643"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <com.hfopenplayer.sdk.view.MarqueeTextView
+        android:id="@+id/tv_lyric_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_lyric_left"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentEnd="true"
+        android:textColor="#FFF69643"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+</RelativeLayout>

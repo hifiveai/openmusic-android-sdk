@@ -7,9 +7,9 @@
     android:orientation="vertical"
     tools:ignore="MissingDefaultResource">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+<!--    <ImageView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,44 +70,6 @@
             android:background="@null"/>
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_initialize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:text="初始化SDK"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:paddingStart="20dp"
-        android:layout_marginTop="30dp"
-        android:paddingEnd="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#FF282828"
-            android:text="会员名称:"/>
-
-        <EditText
-            android:id="@+id/et_member_name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:textSize="14sp"
-            android:maxLength="50"
-            android:maxLines="1"
-            android:textColor="#FF282828"
-            android:hint="请输入会员名称"
-            android:background="@null"/>
-    </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -120,7 +82,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="#FF282828"
-            android:text="会员ID:"/>
+            android:text="用户ID:"/>
 
         <EditText
             android:id="@+id/et_member_id"
@@ -128,73 +90,21 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:textSize="14sp"
-            android:textColor="#FF282828"
-            android:hint="请输入会员ID"
-            android:maxLines="1"
             android:maxLength="50"
+            android:maxLines="1"
+            android:textColor="#FF282828"
+            android:hint="请输入用户ID"
             android:background="@null"/>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#FF282828"
-            android:text="公会名称:"/>
 
-        <EditText
-            android:id="@+id/et_sociaty_name"
-            android:layout_width="match_parent"
-            android:layout_height="71dp"
-            android:background="@null"
-            android:maxLength="50"
-            android:gravity="center_vertical"
-            android:hint="请输入公会名称"
-            android:maxLines="1"
-            android:textColor="#FF282828"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#FF282828"
-            android:text="公会ID:"/>
-
-        <EditText
-            android:id="@+id/et_sociaty_id"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:textSize="14sp"
-            android:textColor="#FF282828"
-            android:maxLines="1"
-            android:maxLength="50"
-            android:digits="@string/filter_vcode"
-            android:hint="请输入公会ID"
-            android:background="@null"/>
-    </LinearLayout>
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_initialize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="登录"/>
+        android:text="初始化SDK"/>
+
 </LinearLayout>
