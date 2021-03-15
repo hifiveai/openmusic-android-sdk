@@ -12,12 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenplayer.sdk.R;
 import com.hfopenplayer.sdk.adapter.BaseRecyclerViewAdapter;
 import com.hfopenplayer.sdk.adapter.HifiveMusicListAdapter;
 import com.hfopenplayer.sdk.listener.HifiveAddMusicListener;
 import com.hfopenplayer.sdk.util.HifiveDialogManageUtil;
-import com.hifive.sdk.entity.HifiveMusicModel;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -43,7 +44,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         @Override
         public boolean handleMessage(Message msg) {
             if (msg.what == UPDATE_CURRENT_SONG) {
-                HifiveMusicModel hifiveMusicModel = (HifiveMusicModel) msg.obj;
+                MusicRecord hifiveMusicModel = (MusicRecord) msg.obj;
                 HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(), hifiveMusicModel, "2");
             }
             return true;
@@ -65,12 +66,12 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
     }
     //初始化view
     private void initRecyclerView() {
-        adapter = new HifiveMusicListAdapter(getActivity(), new ArrayList<HifiveMusicModel>());
+        adapter = new HifiveMusicListAdapter(getActivity(), new ArrayList<MusicRecord>());
         adapter.setOnRecyclerViewContentClick(new BaseRecyclerViewAdapter.OnRecyclerViewContentClick(){
             @Override
             public void OnContentClick(int position) {
                 mHandler.removeMessages(UPDATE_CURRENT_SONG);
-                HifiveMusicModel hifiveMusicModel = (HifiveMusicModel) adapter.getDatas().get(position);
+                MusicRecord hifiveMusicModel = (MusicRecord) adapter.getDatas().get(position);
                 Message message = mHandler.obtainMessage();
                 message.obj = hifiveMusicModel;
                 message.what = UPDATE_CURRENT_SONG;
@@ -82,7 +83,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         adapter.setOnItemDeleteClickListener(new HifiveMusicListAdapter.OnItemDeleteClickListener() {
             @Override
             public void onClick(View v, int position) {
-                showConfirmDialog((HifiveMusicModel) adapter.getDatas().get(position));
+                showConfirmDialog((MusicRecord) adapter.getDatas().get(position));
             }
         });
         adapter.setOnEmptyViewClickListener(new HifiveMusicListAdapter.OnEmptyViewClickListener() {
@@ -105,7 +106,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         }
     }
     //弹窗删除二次确认框
-    private void showConfirmDialog(final HifiveMusicModel musicModel) {
+    private void showConfirmDialog(final MusicRecord musicModel) {
         HifiveComfirmDialogFragment dialog = new HifiveComfirmDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString(HifiveComfirmDialogFragment.ContentTx, getString(R.string.hifivesdk_comfirm_delete_music));

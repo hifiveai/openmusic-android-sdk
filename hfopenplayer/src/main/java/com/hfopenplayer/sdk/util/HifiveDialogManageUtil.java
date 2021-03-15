@@ -7,19 +7,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.hfopen.sdk.entity.MusicRecord;
+import com.hfopen.sdk.entity.Version;
+import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopenplayer.sdk.ui.HifiveUpdateObservable;
 import com.hfopenplayer.sdk.ui.player.HifivePlayerView;
-import com.hifive.sdk.entity.HifiveMusicDetailModel;
-import com.hifive.sdk.entity.HifiveMusicModel;
-import com.hifive.sdk.entity.HifiveMusicUserSheetModel;
-import com.hifive.sdk.entity.HifiveMusicVersionModel;
-import com.hifive.sdk.hInterface.DataResponse;
-import com.hifive.sdk.manager.HFLiveApi;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -87,25 +82,25 @@ public class HifiveDialogManageUtil {
             e.printStackTrace();
         }
     }
-    public HifiveMusicModel playMusic;//维护当前所播放的音乐，方便当前播放、K歌、喜欢页面显示播放效果。
+    public MusicRecord playMusic;//维护当前所播放的音乐，方便当前播放、K歌、喜欢页面显示播放效果。
 
-    public HifiveMusicModel getPlayMusic() {
+    public MusicRecord getPlayMusic() {
         return playMusic;
     }
 
-    public void setPlayMusic(HifiveMusicModel playMusic) {
+    public void setPlayMusic(MusicRecord playMusic) {
         this.playMusic = playMusic;
     }
     //因为同一首歌原声版和伴奏版的歌名可能不一样，所以需要同时维护两个对象，方便切换播放模式时，改变歌曲名字，
-    public HifiveMusicDetailModel playMusicDetail;//主版本的详情
-    public HifiveMusicDetailModel accompanyDetail;//伴奏的详情
-    private  List<HifiveMusicModel> currentList;//维护当前播放的音乐列表
-    public List<HifiveMusicModel> getCurrentList() {
+    public MusicRecord playMusicDetail;//主版本的详情
+    public MusicRecord accompanyDetail;//伴奏的详情
+    private  List<MusicRecord> currentList;//维护当前播放的音乐列表
+    public List<MusicRecord> getCurrentList() {
         return currentList;
     }
 
     //更新当前播放列表
-    public void updateCurrentList(Activity activity,List<HifiveMusicModel> musicModels){
+    public void updateCurrentList(Activity activity,List<MusicRecord> musicModels){
         if(musicModels == null || musicModels.size() == 0)
             return;
         currentList = new ArrayList<>();
@@ -114,7 +109,7 @@ public class HifiveDialogManageUtil {
         updateObservable.postNewPublication(UPDATEPALYLIST);
     }
     //添加某一首歌曲到当前播放中mediaType	类型：1-k歌；2-听歌
-    public void addCurrentSingle(Activity activity,HifiveMusicModel musicModel,String mediaType){
+    public void addCurrentSingle(Activity activity, MusicRecord musicModel, String mediaType){
         if(musicModel == null ){
             return;
         }
@@ -126,7 +121,7 @@ public class HifiveDialogManageUtil {
     }
 
     //获取歌曲详情成功后才添加到播放列表以及播放
-    private void updatePlayList(HifiveMusicModel musicModel){
+    private void updatePlayList(MusicRecord musicModel){
         cleanPlayMusic(false);
         playMusic = musicModel;
         updateObservable.postNewPublication(UPDATEPALY);
@@ -188,7 +183,7 @@ public class HifiveDialogManageUtil {
         }
     }
     //设置当前播放的歌曲
-    public void setCurrentPlay(Activity activity,HifiveMusicModel musicModel){
+    public void setCurrentPlay(Activity activity,MusicRecord musicModel){
         try {
             if(musicModel == null ){
                 return;
@@ -201,36 +196,36 @@ public class HifiveDialogManageUtil {
             e.printStackTrace();
         }
     }
-    private  List<HifiveMusicUserSheetModel> userSheetModels;//维护用户歌单列表
+    private  List<MusicRecord> userSheetModels;//维护用户歌单列表
 
-    public List<HifiveMusicUserSheetModel> getUserSheetModels() {
+    public List<MusicRecord> getUserSheetModels() {
         return userSheetModels;
     }
 
-    public void setUserSheetModels(List<HifiveMusicUserSheetModel> userSheetModels) {
+    public void setUserSheetModels(List<MusicRecord> userSheetModels) {
         this.userSheetModels = userSheetModels;
     }
     //根据歌单名称获取会员歌单id
     public long getUserSheetIdByName(String name) {
-        if(!TextUtils.isEmpty(name) && userSheetModels != null && userSheetModels.size() >0){
-            for(HifiveMusicUserSheetModel musicUserSheetModel : userSheetModels){
-                if(musicUserSheetModel.getSheetName().contains(name)){
-                    return musicUserSheetModel.getSheetId();
-                }
-            }
-        }
+//        if(!TextUtils.isEmpty(name) && userSheetModels != null && userSheetModels.size() >0){
+//            for(MusicRecord musicUserSheetModel : userSheetModels){
+//                if(musicUserSheetModel.getSheetName().contains(name)){
+//                    return musicUserSheetModel.getSheetId();
+//                }
+//            }
+//        }
         return -1;
     }
-    private  List<HifiveMusicModel> likeList;//维护喜欢的音乐列表
-    public List<HifiveMusicModel> getLikeList() {
+    private  List<MusicRecord> likeList;//维护喜欢的音乐列表
+    public List<MusicRecord> getLikeList() {
         return likeList;
     }
 
-    public void setLikeList(List<HifiveMusicModel> likeList) {
+    public void setLikeList(List<MusicRecord> likeList) {
         this.likeList = likeList;
     }
     //添加某一首歌曲到我喜欢的列表中
-    public void addLikeSingle(HifiveMusicModel musicModel){
+    public void addLikeSingle(MusicRecord musicModel){
         if(musicModel == null ){
             return;
         }
@@ -244,16 +239,16 @@ public class HifiveDialogManageUtil {
         }
         updateObservable.postNewPublication(UPDATELIKELIST);
     }
-    private  List<HifiveMusicModel> KaraokeList;//维护K歌的音乐列表
-    public List<HifiveMusicModel> getKaraokeList() {
+    private  List<MusicRecord> KaraokeList;//维护K歌的音乐列表
+    public List<MusicRecord> getKaraokeList() {
         return KaraokeList;
     }
 
-    public void setKaraokeList(List<HifiveMusicModel> karaokeList) {
+    public void setKaraokeList(List<MusicRecord> karaokeList) {
         KaraokeList = karaokeList;
     }
     //添加某一首歌曲到我的K歌的列表中
-    public void addKaraokeSingle(HifiveMusicModel musicModel){
+    public void addKaraokeSingle(MusicRecord musicModel){
         if(musicModel == null ){
             return;
         }
@@ -268,32 +263,32 @@ public class HifiveDialogManageUtil {
         updateObservable.postNewPublication(UPDATEKARAOKLIST);
     }
     //获取歌曲详情mediaType表示是获取伴奏版本信息还是主版本信息
-    public void getMusicDetail(final Activity activity, final HifiveMusicModel musicModel,String mediaType){
+    public void getMusicDetail(final Activity activity, final MusicRecord musicModel,String mediaType){
         try {
-            if (HFLiveApi.getInstance() == null)
+            if (HFOpenApi.getInstance() == null)
                 return;
-            HFLiveApi.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
-                    mediaType, null, null, field, new DataResponse<HifiveMusicDetailModel>() {
-                        @Override
-                        public void errorMsg(@NotNull String string, @Nullable Integer code) {
-                            showToast(activity,string);
-                            //454 版权过期
-                            if(code != null && code == 454 && currentList != null){
-                                currentList.remove(musicModel);
-                            }
-                            if(currentList != null && currentList.size() >0 && code != null && code == 454 ){
-                                playNextMusic(activity);
-                            }else{
-                                cleanPlayMusic(true);
-                            }
-                        }
-                        @Override
-                        public void data(@NotNull HifiveMusicDetailModel any) {
-                            updatePlayList(musicModel);
-                            updatePlayMusicDetail(any);
-                            updateObservable.postNewPublication(PALYINGMUSIC);
-                        }
-                    });
+//            HFLiveApi.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
+//                    mediaType, null, null, field, new DataResponse<HifiveMusicDetailModel>() {
+//                        @Override
+//                        public void errorMsg(@NotNull String string, @Nullable Integer code) {
+//                            showToast(activity,string);
+//                            //454 版权过期
+//                            if(code != null && code == 454 && currentList != null){
+//                                currentList.remove(musicModel);
+//                            }
+//                            if(currentList != null && currentList.size() >0 && code != null && code == 454 ){
+//                                playNextMusic(activity);
+//                            }else{
+//                                cleanPlayMusic(true);
+//                            }
+//                        }
+//                        @Override
+//                        public void data(@NotNull HifiveMusicDetailModel any) {
+//                            updatePlayList(musicModel);
+//                            updatePlayMusicDetail(any);
+//                            updateObservable.postNewPublication(PALYINGMUSIC);
+//                        }
+//                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -302,21 +297,21 @@ public class HifiveDialogManageUtil {
     public void getMusicDetail(int majorVersion, final Activity activity){
         try {
             String musicId = getMusicId(majorVersion);
-            if (HFLiveApi.getInstance() == null || TextUtils.isEmpty(musicId))
+            if (TextUtils.isEmpty(musicId))
                 return;
-            HFLiveApi.getInstance().getMusicDetail(activity, musicId, null,
-                    "2", null, null,field, new DataResponse<HifiveMusicDetailModel>() {
-                        @Override
-                        public void errorMsg(@NotNull String string,@Nullable Integer code) {
-                            showToast(activity,string);
-                        }
-
-                        @Override
-                        public void data(@NotNull HifiveMusicDetailModel any) {
-                            updatePlayMusicDetail(any);
-                            updateObservable.postNewPublication(PALYINGCHANGEMUSIC);
-                        }
-                    });
+//            HFLiveApi.getInstance().getMusicDetail(activity, musicId, null,
+//                    "2", null, null,field, new DataResponse<HifiveMusicDetailModel>() {
+//                        @Override
+//                        public void errorMsg(@NotNull String string,@Nullable Integer code) {
+//                            showToast(activity,string);
+//                        }
+//
+//                        @Override
+//                        public void data(@NotNull HifiveMusicDetailModel any) {
+//                            updatePlayMusicDetail(any);
+//                            updateObservable.postNewPublication(PALYINGCHANGEMUSIC);
+//                        }
+//                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -324,18 +319,18 @@ public class HifiveDialogManageUtil {
     //保存当前播放类型，根据播放类型查找对应的音乐详情对象，播放相应歌曲
     public int playType;//当前播放的类型 1.主版本 0.伴奏版
     //更新音乐详情model
-    private void updatePlayMusicDetail(HifiveMusicDetailModel musicDetailModel) {
+    private void updatePlayMusicDetail(MusicRecord musicDetailModel) {
         if(musicDetailModel != null){
-            playType = musicDetailModel.getIsMajor();
-            if(playType == 1){
-                playMusicDetail = musicDetailModel;
-            }else{
-                accompanyDetail = musicDetailModel;
-            }
+//            playType = musicDetailModel.getIsMajor();
+//            if(playType == 1){
+//                playMusicDetail = musicDetailModel;
+//            }else{
+//                accompanyDetail = musicDetailModel;
+//            }
         }
     }
     //获取当前播放的音乐详情对象
-    public HifiveMusicDetailModel getPlayMusicDetail() {
+    public MusicRecord getPlayMusicDetail() {
         if(playType ==1){
             return playMusicDetail;
         }else{
@@ -345,7 +340,7 @@ public class HifiveDialogManageUtil {
     //根据版本获取音乐id
     public String getMusicId(int majorVersion) {
         if(playMusic != null && playMusic.getVersion() !=null && playMusic.getVersion().size() >0){
-            for(HifiveMusicVersionModel versionModel : playMusic.getVersion()){
+            for(Version versionModel : playMusic.getVersion()){
                 if(versionModel.getMajorVersion() == majorVersion ){
                     return  versionModel.getMusicId();
                 }

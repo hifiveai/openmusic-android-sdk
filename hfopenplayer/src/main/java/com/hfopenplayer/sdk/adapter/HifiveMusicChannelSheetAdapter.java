@@ -13,24 +13,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.hfopen.sdk.entity.Record;
 import com.hfopenplayer.sdk.R;
 import com.hfopenplayer.sdk.util.HifiveDisplayUtils;
-import com.hifive.sdk.entity.HifiveMusicSheetModel;
 
 import java.util.List;
 
 /**
  * 歌单适配器
  */
-public class HifiveMusicSheetAdapter extends RecyclerView.Adapter<HifiveMusicSheetAdapter.MusicSheetHolder> {
-    private List<HifiveMusicSheetModel> dataList;
+public class HifiveMusicChannelSheetAdapter extends RecyclerView.Adapter<HifiveMusicChannelSheetAdapter.MusicSheetHolder> {
+    private List<Record> dataList;
     private final Context mContext;
     private OnItemClickListener onItemClickListener;
     //点击回调
     public interface OnItemClickListener {
         void onClick(View v, int position);
     }
-    public HifiveMusicSheetAdapter(Context ctx, List<HifiveMusicSheetModel> news) {
+    public HifiveMusicChannelSheetAdapter(Context ctx, List<Record> news) {
         this.mContext = ctx;
         this.dataList = news;
     }
@@ -49,15 +49,15 @@ public class HifiveMusicSheetAdapter extends RecyclerView.Adapter<HifiveMusicShe
 
     @Override
     public void onBindViewHolder(@NonNull MusicSheetHolder holder, final int position) {
-        HifiveMusicSheetModel model = dataList.get(position);
+        Record model = dataList.get(position);
         holder.tv_name.setText(model.getSheetName());
         if(position < 3){
             holder.vv_line.setVisibility(View.VISIBLE);
         }else{
             holder.vv_line.setVisibility(View.GONE);
         }
-        if(model.getCover() != null && !TextUtils.isEmpty(model.getCover().getUrl())){
-            Glide.with(mContext).load(model.getCover().getUrl())
+        if(model.getCover() != null && !TextUtils.isEmpty(model.getCover().get(0).getUrl())){
+            Glide.with(mContext).load(model.getCover().get(0).getUrl())
                     .error(R.mipmap.hifvesdk_sheet_default)
                     .placeholder(R.mipmap.hifvesdk_sheet_default)
                     .into(holder.iv_image);//四周都是圆角的圆角矩形图片。
@@ -81,17 +81,17 @@ public class HifiveMusicSheetAdapter extends RecyclerView.Adapter<HifiveMusicShe
         return (dataList != null) ? dataList.size()  : 0;
     }
 
-    public void updateDatas(List<HifiveMusicSheetModel> newDatas) {
+    public void updateDatas(List<Record> newDatas) {
         dataList = newDatas;
         notifyDataSetChanged();
     }
 
-    public void addDatas(List<HifiveMusicSheetModel> addDatas) {
+    public void addDatas(List<Record> addDatas) {
         dataList.addAll(addDatas);
         notifyDataSetChanged();
     }
 
-    public List<HifiveMusicSheetModel> getDatas() {
+    public List<Record> getDatas() {
         return dataList;
     }
 

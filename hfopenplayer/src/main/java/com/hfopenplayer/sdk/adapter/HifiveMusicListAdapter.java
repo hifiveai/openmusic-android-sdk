@@ -9,6 +9,10 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.hfopen.sdk.entity.Author;
+import com.hfopen.sdk.entity.Composer;
+import com.hfopen.sdk.entity.Desc;
+import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenplayer.sdk.R;
 
 import com.hfopenplayer.sdk.util.HifiveDialogManageUtil;
@@ -27,7 +31,7 @@ public class HifiveMusicListAdapter extends BaseRecyclerViewAdapter{
     private OnEmptyViewClickListener onEmptyViewClickListener;
 
 
-    public HifiveMusicListAdapter(Context mContext, List<HifiveMusicModel> news) {
+    public HifiveMusicListAdapter(Context mContext, List<MusicRecord> news) {
         super(mContext, news);
         this.mContext = mContext;
     }
@@ -52,7 +56,7 @@ public class HifiveMusicListAdapter extends BaseRecyclerViewAdapter{
     @SuppressLint("CheckResult")
     @Override
     public void onBindContentViewHolder(BaseRecyclerViewHolder holder, final int position) {
-        final HifiveMusicModel model = (HifiveMusicModel) getDatas().get(position);
+        final MusicRecord model = (MusicRecord) getDatas().get(position);
 
         holder.setText(R.id.tv_num,String.valueOf(position+1));
         holder.setText(R.id.tv_name,model.getMusicName());
@@ -73,8 +77,9 @@ public class HifiveMusicListAdapter extends BaseRecyclerViewAdapter{
 
         }
         StringBuilder stringBuffer = new StringBuilder();
+
         if(model.getArtist() != null && model.getArtist().size() >0){
-            for(HifiveMusicAuthorModel authorModel:model.getArtist()){
+            for(Desc authorModel:model.getArtist()){
                 if(stringBuffer.length() >0){
                     stringBuffer.append("-");
                 }
@@ -82,7 +87,7 @@ public class HifiveMusicListAdapter extends BaseRecyclerViewAdapter{
             }
         }else{
             if(model.getComposer()!= null && model.getComposer().size() >0){
-                for(HifiveMusicAuthorModel authorModel:model.getComposer()){
+                for(Composer authorModel:model.getComposer()){
                     if(stringBuffer.length() >0){
                         stringBuffer.append("-");
                     }
@@ -90,18 +95,24 @@ public class HifiveMusicListAdapter extends BaseRecyclerViewAdapter{
                 }
             }
         }
-        if(model.getAlbum()!= null && !TextUtils.isEmpty(model.getAlbum().getName())){
-            if(stringBuffer.length() >0){
-                stringBuffer.append("-");
+        if(model.getAuthor() != null && model.getAuthor().size() >0){
+            for(Author authorModel:model.getAuthor()){
+                if(stringBuffer.length() >0){
+                    stringBuffer.append("-");
+                }
+                stringBuffer.append(authorModel.getName());
             }
-            stringBuffer.append(model.getAlbum().getName());
         }
-        if(!TextUtils.isEmpty(model.getIntro())){
-            if(stringBuffer.length() >0){
-                stringBuffer.append("-");
+
+        if(model.getArranger()!= null &&  model.getArranger().size() >0){
+            for(Desc authorModel:model.getArranger()){
+                if(stringBuffer.length() >0){
+                    stringBuffer.append("-");
+                }
+                stringBuffer.append(authorModel.getName());
             }
-            stringBuffer.append(model.getIntro());
         }
+
         holder.setText(R.id.tv_detail,stringBuffer.toString());
 
 

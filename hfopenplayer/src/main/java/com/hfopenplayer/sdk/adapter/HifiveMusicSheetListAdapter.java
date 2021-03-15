@@ -1,17 +1,17 @@
 package com.hfopenplayer.sdk.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.View;
 
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hfopen.sdk.entity.Author;
+import com.hfopen.sdk.entity.Composer;
+import com.hfopen.sdk.entity.Desc;
+import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenplayer.sdk.R;
-import com.hfopenplayer.sdk.util.HifiveDialogManageUtil;
-import com.hifive.sdk.entity.HifiveMusicAuthorModel;
-import com.hifive.sdk.entity.HifiveMusicModel;
 
 import java.util.List;
 
@@ -20,12 +20,10 @@ public class HifiveMusicSheetListAdapter extends BaseRecyclerViewAdapter{
     private OnAddLikeClickListener OnAddLikeClickListener;
     private OnAddkaraokeClickListener onAddkaraokeClickListener;
 
-    private final boolean showNumber;//判断是否显示序号
 
-    public HifiveMusicSheetListAdapter(Context mContext, List<HifiveMusicModel> news, boolean showNumber) {
+    public HifiveMusicSheetListAdapter(Context mContext, List<MusicRecord> news) {
         super(mContext, news);
         this.mContext = mContext;
-        this.showNumber = showNumber;
     }
 
     @Override
@@ -35,30 +33,24 @@ public class HifiveMusicSheetListAdapter extends BaseRecyclerViewAdapter{
 
     @Override
     public void onBindContentViewHolder(BaseRecyclerViewHolder holder, final int position) {
-        final HifiveMusicModel model = (HifiveMusicModel) getDatas().get(position);
+        final MusicRecord model = (MusicRecord) getDatas().get(position);
 
-        holder.setText(R.id.tv_num,String.valueOf(position+1));
-        if(showNumber){//判断是否显示歌曲序号搜索页面不显示
-            holder.setVisible(R.id.tv_num,View.VISIBLE);
-        }else{
-            holder.setVisible(R.id.tv_num,View.GONE);
-        }
-        if(HifiveDialogManageUtil.getInstance().getKaraokeList() != null
-                && HifiveDialogManageUtil.getInstance().getKaraokeList().contains(model)){
-            holder.setImageResource(R.id.iv_add_karaoke,R.mipmap.hifivesdk_icon_add_karaoke_select);
-        }else{
-            holder.setImageResource(R.id.iv_add_karaoke,R.mipmap.hifivesdk_icon_add_karaoke);
-        }
-        if (HifiveDialogManageUtil.getInstance().getLikeList() != null &&
-                HifiveDialogManageUtil.getInstance().getLikeList().contains(model)) {
-            holder.setImageResource(R.id.iv_add_like,R.mipmap.hifivesdk_icon_add_like_select);
-        } else {
-            holder.setImageResource(R.id.iv_add_like,R.mipmap.hifivesdk_icon_add_like);
-        }
+//        if(HifiveDialogManageUtil.getInstance().getKaraokeList() != null
+//                && HifiveDialogManageUtil.getInstance().getKaraokeList().contains(model)){
+//            holder.setImageResource(R.id.iv_add_karaoke,R.mipmap.hifivesdk_icon_add_karaoke_select);
+//        }else{
+//            holder.setImageResource(R.id.iv_add_karaoke,R.mipmap.hifivesdk_icon_add_karaoke);
+//        }
+//        if (HifiveDialogManageUtil.getInstance().getLikeList() != null &&
+//                HifiveDialogManageUtil.getInstance().getLikeList().contains(model)) {
+//            holder.setImageResource(R.id.iv_add_like,R.mipmap.hifivesdk_icon_add_like_select);
+//        } else {
+//            holder.setImageResource(R.id.iv_add_like,R.mipmap.hifivesdk_icon_add_like);
+//        }
         holder.setText(R.id.tv_name,model.getMusicName());
         StringBuilder stringBuffer = new StringBuilder();
         if(model.getArtist() != null && model.getArtist().size() >0){
-            for(HifiveMusicAuthorModel authorModel:model.getArtist()){
+            for(Desc authorModel:model.getArtist()){
                 if(stringBuffer.length() >0){
                     stringBuffer.append("-");
                 }
@@ -66,7 +58,7 @@ public class HifiveMusicSheetListAdapter extends BaseRecyclerViewAdapter{
             }
         }else{
             if(model.getComposer()!= null && model.getComposer().size() >0){
-                for(HifiveMusicAuthorModel authorModel:model.getComposer()){
+                for(Composer authorModel:model.getComposer()){
                     if(stringBuffer.length() >0){
                         stringBuffer.append("-");
                     }
@@ -74,17 +66,22 @@ public class HifiveMusicSheetListAdapter extends BaseRecyclerViewAdapter{
                 }
             }
         }
-        if(model.getAlbum()!= null && !TextUtils.isEmpty(model.getAlbum().getName())){
-            if(stringBuffer.length() >0){
-                stringBuffer.append("-");
+        if(model.getAuthor() != null && model.getAuthor().size() >0){
+            for(Author authorModel:model.getAuthor()){
+                if(stringBuffer.length() >0){
+                    stringBuffer.append("-");
+                }
+                stringBuffer.append(authorModel.getName());
             }
-            stringBuffer.append(model.getAlbum().getName());
         }
-        if(!TextUtils.isEmpty(model.getIntro())){
-            if(stringBuffer.length() >0){
-                stringBuffer.append("-");
+
+        if(model.getArranger()!= null &&  model.getArranger().size() >0){
+            for(Desc authorModel:model.getArranger()){
+                if(stringBuffer.length() >0){
+                    stringBuffer.append("-");
+                }
+                stringBuffer.append(authorModel.getName());
             }
-            stringBuffer.append(model.getIntro());
         }
         holder.setText(R.id.tv_detail,stringBuffer.toString());
 

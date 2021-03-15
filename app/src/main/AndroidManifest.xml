@@ -26,7 +26,7 @@
             android:value="300a44d050c942eebeae8765a878b0ee" >
         </meta-data>
         <meta-data
-            android:name="HIFIVE_SECRET"
+            android:name="HIFIVE_SERVERCODE"
             android:value="0e31fe11b31247fca8" />
 
 

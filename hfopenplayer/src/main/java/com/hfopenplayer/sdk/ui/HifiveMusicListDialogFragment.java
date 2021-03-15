@@ -115,7 +115,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
         view.findViewById(R.id.iv_sheet).setOnClickListener(new NoDoubleClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
-                HifiveMusicSheetDialogFragment dialogFragment = new HifiveMusicSheetDialogFragment();
+                HifiveMusicChannelFragment dialogFragment = new HifiveMusicChannelFragment();
                 if (getFragmentManager() != null)
                     dialogFragment.show(getFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
             }
@@ -257,7 +257,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
 
     @Override
     public void onAddMusic() {
-        HifiveMusicSheetDialogFragment dialogFragment = new HifiveMusicSheetDialogFragment();
+        HifiveMusicChannelFragment dialogFragment = new HifiveMusicChannelFragment();
         if (getFragmentManager() != null)
             dialogFragment.show(getFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
     }

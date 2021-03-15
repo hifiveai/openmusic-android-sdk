@@ -32,6 +32,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenplayer.sdk.R;
 import com.hfopenplayer.sdk.adapter.BaseRecyclerViewAdapter;
 import com.hfopenplayer.sdk.adapter.HifiveMusicSheetListAdapter;
@@ -153,13 +154,13 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
                     case AddLike:
                         isAddLike = false;
                         showToast(R.string.hifivesdk_music_add_like_msg);
-                        HifiveDialogManageUtil.getInstance().addLikeSingle((HifiveMusicModel) msg.obj);
+//                        HifiveDialogManageUtil.getInstance().addLikeSingle((HifiveMusicModel) msg.obj);
                         adapter.notifyContentItemChanged(msg.arg1,0);
                         break;
                     case Addkaraoke:
                         isAddkaraoke = false;
                         showToast(R.string.hifivesdk_music_add_karaoke_msg);
-                        HifiveDialogManageUtil.getInstance().addKaraokeSingle((HifiveMusicModel) msg.obj);
+//                        HifiveDialogManageUtil.getInstance().addKaraokeSingle((HifiveMusicModel) msg.obj);
                         adapter.notifyContentItemChanged(msg.arg1,1);
                         break;
                 }
@@ -238,7 +239,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
 
     //初始化ReclyView
     private void ininReclyView() {
-        adapter = new HifiveMusicSheetListAdapter(getContext(), new ArrayList<HifiveMusicModel>(), false);
+        adapter = new HifiveMusicSheetListAdapter(getContext(), new ArrayList<MusicRecord>());
         adapter.setOnAddkaraokeClickListener(new HifiveMusicSheetListAdapter.OnAddkaraokeClickListener() {
             @Override
             public void onClick(View v, int position) {
@@ -260,7 +261,7 @@ public class HifiveMusicSearchDialoglFragment extends DialogFragment {
 
             @Override
             public void OnContentClick(int position) {
-                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(), (HifiveMusicModel) adapter.getDatas().get(position), "2");
+//                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(), (HifiveMusicModel) adapter.getDatas().get(position), "2");
             }
         });
 

@@ -29,21 +29,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#FFEBEBEB"/>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="135dp"
-            android:background="@drawable/hifive_dialog_music_bg"
-            android:alpha="0.25"/>
+        android:background="#666666"/>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </FrameLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
 </LinearLayout>

@@ -26,6 +26,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.hfopen.sdk.entity.Desc;
+import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenplayer.sdk.R;
 import com.hfopenplayer.sdk.listener.HifivePlayListener;
 import com.hfopenplayer.sdk.ui.HifiveMusicListDialogFragment;
@@ -267,14 +269,14 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     }
 
     //设置歌曲名称
-    private void setMusicName(HifiveMusicDetailModel playMusicDetail) {
+    private void setMusicName(MusicRecord playMusicDetail) {
         if (playMusicDetail != null) {
             StringBuilder info = new StringBuilder();
             if (!TextUtils.isEmpty(playMusicDetail.getMusicName())) {
                 info.append(playMusicDetail.getMusicName());
             }
             if (playMusicDetail.getArtist() != null && playMusicDetail.getArtist().size() > 0) {
-                for (HifiveMusicAuthorModel authorModel : playMusicDetail.getArtist()) {
+                for (Desc authorModel : playMusicDetail.getArtist()) {
                     if (info.length() > 0) {
                         info.append("-");
                     }
@@ -555,13 +557,13 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
 
     //更新view，音乐图片，音乐名称更新
     private void updateView() {
-        HifiveMusicModel playMusic = HifiveDialogManageUtil.getInstance().getPlayMusic();
+        MusicRecord playMusic = HifiveDialogManageUtil.getInstance().getPlayMusic();
         StringBuilder info = new StringBuilder();
         if (!TextUtils.isEmpty(playMusic.getMusicName())) {
             info.append(playMusic.getMusicName());
         }
         if (playMusic.getArtist() != null && playMusic.getArtist().size() > 0) {
-            for (HifiveMusicAuthorModel authorModel : playMusic.getArtist()) {
+            for (Desc authorModel : playMusic.getArtist()) {
                 if (info.length() > 0) {
                     info.append("-");
                 }
@@ -571,8 +573,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         tv_music_info.setText(info.toString());
         if (mContext != null) {
             RoundedCornersTransform transform = new RoundedCornersTransform(mContext, HifiveDisplayUtils.dip2px(mContext, 25));
-            if (playMusic.getCover() != null && !TextUtils.isEmpty(playMusic.getCover().getUrl())) {
-                Glide.with(mContext).asBitmap().load(playMusic.getCover().getUrl())
+            if (playMusic.getCover() != null && !TextUtils.isEmpty(playMusic.getCover().get(0).getUrl())) {
+                Glide.with(mContext).asBitmap().load(playMusic.getCover().get(0).getUrl())
                         .error(R.mipmap.hifivesdk_icon_music_player_defaut)
                         .placeholder(R.mipmap.hifivesdk_icon_music_player_defaut)
                         .apply(new RequestOptions().transform(transform))
@@ -599,62 +601,62 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
      * @param isChangePlayMode
      */
     private void updatePlayView(boolean isChangePlayMode) {
-        HifiveMusicDetailModel playMusicDetail = HifiveDialogManageUtil.getInstance().getPlayMusicDetail();
+        MusicRecord playMusicDetail = HifiveDialogManageUtil.getInstance().getPlayMusicDetail();
         if (playMusicDetail == null) {
             return;
         }
         //设置信息
-        if (playMusicDetail.getIsMajor() == 1) {
+        if (playMusicDetail.getVersion().get(0).getMajorVersion() == 1) {
             setTypeSound();
         } else {
             setTypeAccompany();
         }
-        if (!isChangePlayMode) {
-            HifiveMusiclyricModel lyric = playMusicDetail.getLyric();
-            initialVersion = playMusicDetail.getIsMajor();
-
-            //没有歌词的时候
-            if (lyric == null || (TextUtils.isEmpty(lyric.getDynamicUrl()) && TextUtils.isEmpty(lyric.getStaticUrl()))) {
-                disabledLyric();
-            } else {
-                //动态歌词不等于空就下载动态歌词否则下载静态歌词
-                if (!TextUtils.isEmpty(lyric.getDynamicUrl())) {
-                    isStatic = false;
-                    downloadLyric(lyric.getDynamicUrl(), 1);
-                } else {
-                    isStatic = true;
-                    downloadLyric(lyric.getStaticUrl(), 2);
-                }
-            }
-
-            //切换歌曲
-            if (playMusicDetail.getFile() != null
-                    && !TextUtils.isEmpty(playMusicDetail.getFile().getUrl())) {
-                playUrl = playMusicDetail.getFile().getUrl();
-                startPlayMusic(playUrl, true);//开始播放新歌曲
-            } else {
-                HifiveDialogManageUtil.getInstance().showToast(mContext, "歌曲地址有误");
-            }
-        } else {
-            isInitialMode = playMusicDetail.getIsMajor() == initialVersion;
-            if (isInitialMode) {//是列表初始版本
-                if (playMusicDetail.getFile() != null
-                        && !TextUtils.isEmpty(playMusicDetail.getFile().getUrl())) {
-                    playUrl = playMusicDetail.getFile().getUrl();
-                    changePlayMusic(playUrl);//切换播放歌曲
-                } else {
-                    HifiveDialogManageUtil.getInstance().showToast(mContext, "歌曲地址有误");
-                }
-            } else {
-                if (playMusicDetail.getFile() != null
-                        && !TextUtils.isEmpty(playMusicDetail.getFile().getUrl())) {
-                    showDownLoadView();
-                    downLoadMusic(playMusicDetail.getFile().getUrl(), playMusicDetail.getMusicId(), playMusicDetail.getFile().getExt(), isChangePlayMode);
-                } else {
-                    HifiveDialogManageUtil.getInstance().showToast(mContext, "伴奏文件有误");
-                }
-            }
-        }
+//        if (!isChangePlayMode) {
+//            HifiveMusiclyricModel lyric = playMusicDetail.getLyric();
+//            initialVersion = playMusicDetail.getIsMajor();
+//
+//            //没有歌词的时候
+//            if (lyric == null || (TextUtils.isEmpty(lyric.getDynamicUrl()) && TextUtils.isEmpty(lyric.getStaticUrl()))) {
+//                disabledLyric();
+//            } else {
+//                //动态歌词不等于空就下载动态歌词否则下载静态歌词
+//                if (!TextUtils.isEmpty(lyric.getDynamicUrl())) {
+//                    isStatic = false;
+//                    downloadLyric(lyric.getDynamicUrl(), 1);
+//                } else {
+//                    isStatic = true;
+//                    downloadLyric(lyric.getStaticUrl(), 2);
+//                }
+//            }
+//
+//            //切换歌曲
+//            if (playMusicDetail.getFile() != null
+//                    && !TextUtils.isEmpty(playMusicDetail.getFile().getUrl())) {
+//                playUrl = playMusicDetail.getFile().getUrl();
+//                startPlayMusic(playUrl, true);//开始播放新歌曲
+//            } else {
+//                HifiveDialogManageUtil.getInstance().showToast(mContext, "歌曲地址有误");
+//            }
+//        } else {
+//            isInitialMode = playMusicDetail.getIsMajor() == initialVersion;
+//            if (isInitialMode) {//是列表初始版本
+//                if (playMusicDetail.getFile() != null
+//                        && !TextUtils.isEmpty(playMusicDetail.getFile().getUrl())) {
+//                    playUrl = playMusicDetail.getFile().getUrl();
+//                    changePlayMusic(playUrl);//切换播放歌曲
+//                } else {
+//                    HifiveDialogManageUtil.getInstance().showToast(mContext, "歌曲地址有误");
+//                }
+//            } else {
+//                if (playMusicDetail.getFile() != null
+//                        && !TextUtils.isEmpty(playMusicDetail.getFile().getUrl())) {
+//                    showDownLoadView();
+//                    downLoadMusic(playMusicDetail.getFile().getUrl(), playMusicDetail.getMusicId(), playMusicDetail.getFile().getExt(), isChangePlayMode);
+//                } else {
+//                    HifiveDialogManageUtil.getInstance().showToast(mContext, "伴奏文件有误");
+//                }
+//            }
+//        }
 
     }
 

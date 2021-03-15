@@ -11,11 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="160dp">
 
-        <View
+        <ImageView
+            android:id="@+id/root_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha="0.25"
-            android:background="@drawable/hifive_dialog_sheet_detail_bg"/>
+            android:alpha="0.25"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_image"
                 android:layout_alignTop="@id/iv_image"
-                android:textColor="#FF282828"
+                android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"/>
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_name"
                 android:layout_alignLeft="@id/tv_name"
-                android:textColor="#FF8E8E93"
+                android:textColor="#999999"
                 android:layout_marginTop="6dp"
                 android:maxLines="2"
                 android:ellipsize="end"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_image"
                 android:layout_alignBottom="@id/iv_image"
-                android:textColor="#FF282828"
+                android:textColor="#FFFFFF"
                 android:textSize="11sp"
                 android:ellipsize="end"
                 android:lines="1"

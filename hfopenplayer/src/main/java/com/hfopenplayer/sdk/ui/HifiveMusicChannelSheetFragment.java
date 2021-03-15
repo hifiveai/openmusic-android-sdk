@@ -17,16 +17,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.hfopen.sdk.entity.ChannelSheet;
+import com.hfopen.sdk.entity.Record;
+import com.hfopen.sdk.manager.HFOpenApi;
+import com.hfopen.sdk.rx.BaseException;
 import com.hfopenplayer.sdk.R;
-import com.hfopenplayer.sdk.adapter.HifiveMusicSheetAdapter;
+import com.hfopenplayer.sdk.adapter.HifiveMusicChannelSheetAdapter;
 import com.hfopenplayer.sdk.util.HifiveDialogManageUtil;
 import com.hfopenplayer.sdk.util.HifiveDisplayUtils;
 import com.hfopenplayer.sdk.view.HifiveLoadMoreFooter;
 import com.hfopenplayer.sdk.view.HifiveRefreshHeader;
-import com.hifive.sdk.entity.HifiveMusicBean;
-import com.hifive.sdk.entity.HifiveMusicSheetModel;
-import com.hifive.sdk.hInterface.DataResponse;
-import com.hifive.sdk.manager.HFLiveApi;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author huchao
  */
-public class HifiveMusicRadioStationFragment extends Fragment {
+public class HifiveMusicChannelSheetFragment extends Fragment {
     public final static String TYPE_ID = "station_id";
     protected static final int Refresh =11;//刷新
     protected static final int LoadMore= 12;//加载
@@ -53,11 +53,11 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     private LinearLayout ll_empty;
     private SmartRefreshLayout refreshLayout;
     private RecyclerView mRecyclerView;
-    private HifiveMusicSheetAdapter adapter;
-    private List<HifiveMusicSheetModel> sheetModels = new ArrayList<>();
+    private HifiveMusicChannelSheetAdapter adapter;
+    private List<Record> sheetModels = new ArrayList<>();
     private int page = 1;
     private Context mContext;
-    private int totalPage =1;//总页卡
+    private int totalCount = 0;
     protected Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -69,13 +69,13 @@ public class HifiveMusicRadioStationFragment extends Fragment {
                         if(sheetModels != null)
                             adapter.updateDatas(sheetModels);
                         updateView();
-                        refreshLayout.setEnableLoadMore(page<totalPage);
+                        refreshLayout.setEnableLoadMore(adapter.getDatas().size()<totalCount);
                         break;
                     case LoadMore:
                         isLoadMore = false;
                         if(sheetModels != null)
                             adapter.addDatas(sheetModels);
-                        if(page < totalPage){
+                        if(adapter.getDatas().size()<totalCount){
                             refreshLayout.finishLoadMore();
                         }else{
                             refreshLayout.finishLoadMoreWithNoMoreData();
@@ -121,16 +121,16 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     }
     //初始化view
     private void initRecyclerView() {
-        adapter = new HifiveMusicSheetAdapter(getActivity(), new ArrayList<HifiveMusicSheetModel>());
-        adapter.setOnItemClickListener(new HifiveMusicSheetAdapter.OnItemClickListener() {
+        adapter = new HifiveMusicChannelSheetAdapter(getActivity(), new ArrayList<Record>());
+        adapter.setOnItemClickListener(new HifiveMusicChannelSheetAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                HifiveMusicSheetDetaiDialoglFragment dialogFragment = new HifiveMusicSheetDetaiDialoglFragment();
+                HifiveMusicChannelSheetDetailFragment dialogFragment = new HifiveMusicChannelSheetDetailFragment();
                 Bundle recommendBundle = new Bundle();
-                recommendBundle.putSerializable(HifiveMusicSheetDetaiDialoglFragment.MODEL,adapter.getDatas().get(position));
+                recommendBundle.putSerializable(HifiveMusicChannelSheetDetailFragment.MODEL,adapter.getDatas().get(position));
                 dialogFragment.setArguments(recommendBundle);
                 if(getFragmentManager() != null)
-                    dialogFragment.show(getFragmentManager(), HifiveMusicSheetDetaiDialoglFragment.class.getSimpleName());
+                    dialogFragment.show(getFragmentManager(), HifiveMusicChannelSheetDetailFragment.class.getSimpleName());
             }
         });
         //设置布局管理器
@@ -170,29 +170,25 @@ public class HifiveMusicRadioStationFragment extends Fragment {
     //根据电台获取歌单数据
     private void getData(final int ty) {
         try {
-            if (HFLiveApi.getInstance() == null || getContext() == null)
+            if (getContext() == null)
                 return;
-            HFLiveApi.getInstance().getCompanySheetList(getContext(), id, null, null,
-                    null, null, "sheetTag", "10", String.valueOf(page), new DataResponse<HifiveMusicBean<HifiveMusicSheetModel>>() {
-                        @Override
-                        public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-                            if (ty != Refresh) {//上拉加载请求失败后，还原页卡
-                                page--;
-                            }
-                            HifiveDialogManageUtil.getInstance().showToast(getActivity(),string);
-                            mHandler.sendEmptyMessage(RequstFail);
-                        }
+            HFOpenApi.getInstance().channelSheet(id, 0, null, page, 10, new com.hfopen.sdk.hInterface.DataResponse<ChannelSheet>() {
+                @Override
+                public void onError(@NotNull BaseException e) {
+                    if (ty != Refresh) {//上拉加载请求失败后，还原页卡
+                        page--;
+                    }
+                    HifiveDialogManageUtil.getInstance().showToast(getActivity(),e.getMsg());
+                    mHandler.sendEmptyMessage(RequstFail);
+                }
 
-                        @Override
-                        public void data(@NotNull HifiveMusicBean<HifiveMusicSheetModel> any) {
-//                            Log.e("TAG","歌单数据=="+any);
-
-                            sheetModels = any.getRecords();
-                            totalPage = any.getTotalPage();
-
-                            mHandler.sendEmptyMessage(ty);
-                        }
-                    });
+                @Override
+                public void onSuccess(ChannelSheet channelSheet, @NotNull String s) {
+                    sheetModels = channelSheet.getRecord();
+                    totalCount = channelSheet.getMeta().getTotalCount();
+                    mHandler.sendEmptyMessage(ty);
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
