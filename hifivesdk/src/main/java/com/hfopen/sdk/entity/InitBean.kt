@@ -1,5 +1,7 @@
 package com.hfopen.sdk.entity
 
+import java.io.Serializable
+
 /**
  * lsh 2021年3月1日13:44:07
  */
@@ -100,7 +102,7 @@ data class Meta(
 )
 
 data class Record(
-        val cover: List<Cover>,
+        val cover: List<Cover>?,
         val describe: String,
         val free: Int,
         val music: List<Music>,
