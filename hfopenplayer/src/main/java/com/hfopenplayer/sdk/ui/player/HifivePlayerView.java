@@ -606,7 +606,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             return;
         }
         //设置信息
-        if (playMusicDetail.getVersion().get(0).getMajorVersion() == 1) {
+        if (playMusicDetail.getVersion().get(0).getMajorVersion()) {
             setTypeSound();
         } else {
             setTypeAccompany();

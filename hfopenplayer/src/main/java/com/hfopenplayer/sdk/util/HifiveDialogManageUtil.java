@@ -341,7 +341,7 @@ public class HifiveDialogManageUtil {
     public String getMusicId(int majorVersion) {
         if(playMusic != null && playMusic.getVersion() !=null && playMusic.getVersion().size() >0){
             for(Version versionModel : playMusic.getVersion()){
-                if(versionModel.getMajorVersion() == majorVersion ){
+                if(versionModel.getMajorVersion()){
                     return  versionModel.getMusicId();
                 }
             }

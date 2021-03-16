@@ -31,7 +31,6 @@ import com.hfopenplayer.sdk.util.HifiveDialogManageUtil
 import com.hfopenplayer.sdk.util.HifiveDisplayUtils
 import com.hfopenplayer.sdk.util.RoundedCornersTransform
 import com.hfopenplayer.sdk.view.HifiveRefreshHeader
-import com.hifive.sdk.entity.HifiveMusicModel
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import java.util.*
 
@@ -210,9 +209,9 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
 
     //获取标签名称
     private fun getTipsText(tip: StringBuilder, tag: List<Tag>?) {
-        if (tag != null && tag.size > 0) {
+        if (tag != null && tag.isNotEmpty()) {
             for ((child, _, tagName) in tag) {
-                if (tip.length > 0) {
+                if (tip.isNotEmpty()) {
                     tip.append(",")
                 }
                 tip.append(tagName)

@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-
+//,"https://gateway.open.hifiveai.com"
             HFOpenApi.registerApp(getApplication(), memberId);
 //        HifiveDialogManageUtil.getInstance().showToast(this, "初始化SDK成功");
 

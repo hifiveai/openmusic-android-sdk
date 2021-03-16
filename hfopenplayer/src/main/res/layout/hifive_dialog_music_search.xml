@@ -40,9 +40,9 @@
                 android:maxLength="50"
                 android:background="@null"
                 android:textSize="14sp"
-                android:textColorHint="#FFC7C7CC"
+                android:textColorHint="#666666"
                 android:hint="@string/hifivesdk_music_search_hint"
-                android:textColor="#FF282828"
+                android:textColor="#FFFFFF"
                 android:layout_weight="1"/>
 
 
@@ -59,7 +59,7 @@
             android:id="@+id/tv_cancle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FF282828"
+            android:textColor="#FFFFFF"
             android:textSize="14sp"
             android:layout_gravity="center_vertical"
             android:text="@string/hifivesdk_music_search_cancel"
@@ -69,21 +69,23 @@
     <LinearLayout
         android:id="@+id/ll_history"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
+        android:visibility="gone"
         android:paddingStart="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:layout_marginBottom="5dp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="#FF282828"
+                android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:text="@string/hifivesdk_music_search_history"/>
@@ -101,10 +103,36 @@
         <com.hfopenplayer.sdk.view.HifiveFlowLayout
             android:id="@+id/fl_history"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"/>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_hot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:padding="15dp"
+            android:layout_marginStart="5dp"
+            android:textStyle="bold"
+            android:text="@string/hifivesdk_music_search_hot"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_hot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/ll_result"
