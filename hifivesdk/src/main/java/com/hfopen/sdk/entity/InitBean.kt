@@ -69,7 +69,7 @@ data class OrderMusic(
     val HForderId: String,
     val createTime: String,
     val deadline: String,
-    val music: List<Music>,
+    val music: List<MusicRecord>,
     val orderId: String,
     val subject: String,
     val totalFee: Int
@@ -105,58 +105,58 @@ data class Record(
         val cover: List<Cover>?,
         val describe: String,
         val free: Int,
-        val music: List<Music>,
+        val music: List<MusicRecord>?,
         val musicTotal: Int,
         val price: Int,
         val sheetId: Int,
         val sheetName: String,
-        val tag: List<Tag>,
+        val tag: List<Tag>?,
         val type: Int
-)
+) : Serializable
 
 data class MusicRecord(
         val albumId: String,
         val albumName: String,
-        val arranger: List<Any>,
-        val artist: List<Any>,
+        val arranger: List<Desc>?,
+        val artist: List<Desc>?,
         val auditionBegin: Int,
         val auditionEnd: Int,
-        val author: List<Any>,
+        val author: List<Author>?,
         val bpm: Int,
-        val composer: List<Composer>,
-        val cover: List<Cover>,
+        val composer: List<Composer>?,
+        val cover: List<Cover>?,
         val duration: Int,
         val musicId: String,
         val musicName: String,
-        val tag: List<Tag>,
-        val version: List<Version>
+        val tag: List<Tag>?,
+        val version: List<Version>?
 )
 
 data class Cover(
-        val size: Any,
+        val size: String,
         val url: String
 )
 
-data class Music(
-        val albumId: String,
-        val albumName: String,
-        val arranger: List<Any>,
-        val artist: List<Artist>,
-        val auditionBegin: Int,
-        val auditionEnd: Int,
-        val author: List<Author>,
-        val bpm: Int,
-        val composer: List<Composer>,
-        val cover: List<Cover>,
-        val duration: Int,
-        val musicId: String,
-        val musicName: String,
-        val tag: List<Tag>,
-        val version: List<Version>
-)
+//data class Music(
+//        val albumId: String,
+//        val albumName: String,
+//        val arranger: List<Desc>,
+//        val artist: List<Desc>,
+//        val auditionBegin: Int,
+//        val auditionEnd: Int,
+//        val author: List<Author>,
+//        val bpm: Int,
+//        val composer: List<Composer>,
+//        val cover: List<Cover>,
+//        val duration: Int,
+//        val musicId: String,
+//        val musicName: String,
+//        val tag: List<Tag>,
+//        val version: List<Version>
+//)
 
 
-data class Artist(
+data class Desc(
         val avatar: String,
         val code: String,
         val name: String
@@ -175,7 +175,7 @@ data class Composer(
 )
 
 data class Tag(
-        val child: List<Child>,
+        val child: List<Tag>,
         val tagId: Int,
         val tagName: String
 )
@@ -189,12 +189,6 @@ data class Version(
         val musicId: String,
         val name: String,
         val price: Int
-)
-
-data class Child(
-        val child: List<Any>,
-        val tagId: Int,
-        val tagName: String
 )
 
 

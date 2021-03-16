@@ -209,7 +209,7 @@ PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
 ##### 3.6 歌单获取音乐列表
 
 ```
-HFOpenApi.getInstance().sheetMusic( SheetId: String?,
+HFOpenApi.getInstance().sheetMusic( SheetId: Long?,
                        Language: Int?,
                        Page: Int?,
                        PageSize: Int?,

@@ -19,7 +19,7 @@ class DataRepository constructor() {
             Location: String?,
             Education: Int?,
             Profession: Int?,
-            IsOrganization: Boolean,
+            IsOrganization: Boolean?,
             Reserve: String?,
             FavoriteSinger: String?,
             FavoriteGenre: String?
@@ -41,7 +41,7 @@ class DataRepository constructor() {
     }
 
     fun sheetMusic(
-            SheetId: String?,
+            SheetId: Long?,
             Language: Int?,
             Page: Int?,
             PageSize: Int?

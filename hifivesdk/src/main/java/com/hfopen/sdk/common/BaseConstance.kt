@@ -11,7 +11,7 @@ class BaseConstance {
 //        var BASE_URL_MUSIC: String = "https://hifive-gateway-test.hifiveai.com"
         //沙箱环境
 //        var BASE_URL_MUSIC: String = "https://hifive-openapi-qa.hifiveai.com"
-        //预发
+//        预发
 //        var BASE_URL_MUSIC: String = "https://hifive-gateway-pre.hifiveai.com"
         //正式
         var BASE_URL_MUSIC: String = "https://gateway.open.hifiveai.com"

@@ -21,7 +21,7 @@ class ServiceImpl constructor() : Service {
             Location: String?,
             Education: Int?,
             Profession: Int?,
-            IsOrganization: Boolean,
+            IsOrganization: Boolean?,
             Reserve: String?,
             FavoriteSinger: String?,
             FavoriteGenre: String?
@@ -45,7 +45,7 @@ class ServiceImpl constructor() : Service {
     }
 
     fun sheetMusic(
-            SheetId: String?,
+            SheetId: Long?,
             Language: Int?,
             Page: Int?,
             PageSize: Int?
@@ -56,8 +56,8 @@ class ServiceImpl constructor() : Service {
 
     fun searchMusic(
             TagIds: String?,
-            priceFromCent: Long,
-            priceToCent: Long,
+            priceFromCent: Long?,
+            priceToCent: Long?,
             BpmForm: Int?,
             BpmTo: Int?,
             DurationFrom: Int?,

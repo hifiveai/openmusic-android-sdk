@@ -41,11 +41,11 @@ class OpenManager() {
             Location: String?,
             Education: Int?,
             Profession: Int?,
-            IsOrganization: Boolean,
+            IsOrganization: Boolean?,
             Reserve: String?,
             FavoriteSinger: String?,
             FavoriteGenre: String?,
-            response: DataResponse<LoginBean>
+            response: DataResponse<LoginBean>?
     ) {
         if (!checkNetWork(mContext)) {
             return
@@ -53,7 +53,7 @@ class OpenManager() {
         mService.baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre)
                 .request(object : BaseSubscribe<LoginBean>(response) {
                     override fun _onNext(t: LoginBean) {
-                        response.onSuccess(t,BaseConstance.taskId)
+                        response?.onSuccess(t,BaseConstance.taskId)
                         BaseConstance.token = t.token
                     }
                 })
@@ -88,7 +88,7 @@ class OpenManager() {
                 })
     }
 
-    fun sheetMusic(SheetId: String?,
+    fun sheetMusic(SheetId: Long?,
                    Language: Int?,
                    Page: Int?,
                    PageSize: Int?,
@@ -106,8 +106,8 @@ class OpenManager() {
 
 
     fun searchMusic(TagIds: String?,
-                    priceFromCent: Long,
-                    priceToCent: Long,
+                    priceFromCent: Long?,
+                    priceToCent: Long?,
                     BpmForm: Int?,
                     BpmTo: Int?,
                     DurationFrom: Int?,

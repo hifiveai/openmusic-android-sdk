@@ -38,7 +38,7 @@ interface Api {
      * 通过电台ID可获取此电台下全部已上架的歌单列表，列表信息包括歌单名、歌单封面、歌曲数量、歌单描述、歌单推荐音乐等信息。
      */
     @GET("/")
-    fun sheetMusic(@Query("SheetId") SheetId: String?,
+    fun sheetMusic(@Query("SheetId") SheetId: Long?,
                    @Query("Language") Language: Int?,
                    @Query("Page") Page: Int?,
                    @Query("PageSize") PageSize: Int?,
@@ -211,13 +211,14 @@ interface Api {
     /**
      * report
      */
-    @GET("/")
-    fun report(@Query("MusicId") musicId: String?,
-               @Query("Duration") duration: Long?,
-               @Query("Timestamp") timestamp: Long?,
-               @Query("AudioFormat") audioFormat: String?,
-               @Query("AudioRate") audioRate: String?,
-               @Query("X-HF-Action") Actions: String?
+    @FormUrlEncoded
+    @POST("/")
+    fun report(@Field("MusicId") musicId: String?,
+               @Field("Duration") duration: Long?,
+               @Field("Timestamp") timestamp: Long?,
+               @Field("AudioFormat") audioFormat: String?,
+               @Field("AudioRate") audioRate: String?,
+               @Field("X-HF-Action") Actions: String?
     ): Flowable<BaseResp<Any>>
 
 
