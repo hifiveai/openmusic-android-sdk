@@ -152,7 +152,7 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
         adapter!!.setOnAddLikeClickListener { v: View?, position: Int -> }
         adapter!!.setOnRecyclerViewContentClick { position: Int -> HifiveDialogManageUtil.getInstance().addCurrentSingle(activity, adapter!!.datas[position] as MusicRecord?, "2") }
         adapter!!.setOnRecyclerViewHeaderClick {
-            //                HifiveDialogManageUtil.getInstance().updateCurrentList(getActivity(), (List<HifiveMusicModel>)adapter.getDatas());
+                            HifiveDialogManageUtil.getInstance().updateCurrentList(activity, adapter!!.datas as List<MusicRecord>)
         }
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向

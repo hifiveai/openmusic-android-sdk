@@ -84,9 +84,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private ImageView iv_next;
     private ImageView iv_back;
     private LyricDynamicView lyric_dynamic_view;
-    private boolean isShowAccompany;//是否是伴奏模式
     private boolean isPlay;//是否正在播放
-    private boolean isStatic;//歌词是动态还是静态歌词
     private boolean isError;//判断是否播放出错
     private final FragmentActivity mContext;
     private ObjectAnimator rotateAnim;//音乐图片旋转的动画
@@ -98,10 +96,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private String playUrl;//播放歌曲的url
     public static File musicFile;//播放伴奏的文件
     private int playProgress;//播放的进度
-    private List<HifiveMusicLyricDetailModel> lyricDetailModels;
-    private Call downLoadFileCall;//伴奏下载的Call
-    private int initialVersion = -1;//点击列表播放的歌曲版本 1：原唱 2：伴奏
-    private boolean isInitialMode = true;//切换模式时是否是初始模式
 
 
     public HifivePlayerView(@NonNull FragmentActivity context, int Top, int Bottom) {
@@ -168,49 +162,11 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             @Override
             public void onNoDoubleClick(View v) {
                 cleanTimer();
-                if (playerUtils.isPlaying()) playerUtils.onStop();
-                //已是伴奏模式
-                if (isShowAccompany) {
-                    setTypeSound();
-                } else {
-                    setTypeAccompany();
-                }
-
-                if (isInitialMode) {//是初始播放模式
-                    //如果缓存歌曲不为空直接切换播放
-                    if (musicFile != null) {
-                        changePlayMusic(musicFile.getPath());
-                        isInitialMode = false;
-                    } else {
-                        getMusicDetail(initialVersion == 1 ? 0 : 1);
-                    }
-                } else {
-                    if (!TextUtils.isEmpty(playUrl)) {//当前歌曲URL不为空直接切换播放
-                        changePlayMusic(playUrl);
-                        isInitialMode = true;
-                    } else {//为空暂停播放，并开始获取歌曲URL信息
-                        getMusicDetail(initialVersion == 1 ? 0 : 1);
-                    }
-                }
-
             }
         });
         cb_lyric.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (isStatic) {
-                        fl_lyric.setVisibility(VISIBLE);
-                    } else {
-                        lyric_dynamic_view.setVisibility(VISIBLE);
-                    }
-                } else {
-                    if (isStatic) {
-                        fl_lyric.setVisibility(GONE);
-                    } else {
-                        lyric_dynamic_view.setVisibility(GONE);
-                    }
-                }
             }
         });
 
@@ -248,25 +204,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         });
     }
 
-    //获取音乐详情type ：0.伴奏1.主版本
-    private void getMusicDetail(int type) {
-        showLoadView();
-        HifiveDialogManageUtil.getInstance().getMusicDetail(type, mContext);
-    }
 
-    //设置播放器原声模式
-    private void setTypeSound() {
-        tv_accompany.setText(mContext.getString(R.string.hifivesdk_music_player_accompany));
-        isShowAccompany = false;
-        setMusicName(HifiveDialogManageUtil.getInstance().playMusicDetail);
-    }
-
-    //设置播放器伴奏模式
-    private void setTypeAccompany() {
-        tv_accompany.setText(mContext.getString(R.string.hifivesdk_music_player_sound));
-        isShowAccompany = true;
-        setMusicName(HifiveDialogManageUtil.getInstance().accompanyDetail);
-    }
 
     //设置歌曲名称
     private void setMusicName(MusicRecord playMusicDetail) {
@@ -345,11 +283,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
      */
     public void startPlay() {
         if (HifiveDialogManageUtil.getInstance().getPlayMusic() != null) {
-            if (isShowAccompany && musicFile != null) {
-                startPlayMusic(musicFile.getPath(), false);
-            } else {
-                startPlayMusic(playUrl, false);
-            }
+            startPlayMusic(playUrl, false);
         }
     }
 
@@ -359,14 +293,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
      * @param path 音频文件路径或者url
      */
     private void changePlayMusic(String path) {
-        //取消下载
-        if (null != downLoadFileCall) {
-            downLoadFileCall.cancel();
-            downLoadFileCall = null;
-        }
-        //清空伴奏下载进度
-        tv_download.setText("");
-
         if (playerUtils != null) {
             playerUtils.prepareAndPlay(path, new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -395,9 +321,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 if (playerUtils != null && playerUtils.isPlaying()) {
                     playProgress = playerUtils.progress();
                     pb_play.setProgress(playProgress);
-                    if (!isStatic) {
-                        lyric_dynamic_view.setPlayProgress(playProgress);
-                    }
                 }
             }
         };
@@ -448,14 +371,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         clear();
         //重新播放
         updatePlayView(false);
-
-        if (initialVersion == 1) {
-            setTypeSound();
-//            changePlayMusic(playUrl);
-        } else {
-            setTypeAccompany();
-//            getMusicDetail(0);
-        }
     }
 
     //当前歌曲播放完成回调
@@ -497,7 +412,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     showLoadView();
                     updateView();
                 } else {//重置播放器
-                    disabledLyric();
                     tv_music_info.setText("");
                     tv_accompany.setEnabled(false);
                     tv_accompany.setAlpha(0.45f);
@@ -527,27 +441,11 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         cleanTimer();
         playProgress = 0;//重置播放进度
         musicFile = null;//重置文件
-        initialVersion = -1;
-        isInitialMode = true;
         playUrl = "";//重置播放链接
         pb_play.setProgress(0);
-        //歌词置空
-        tv_lyric_static.setText("");
-        lyricDetailModels = null;
-        lyric_dynamic_view.clearLyric();
-        lyric_dynamic_view.setVisibility(GONE);
-        //取消下载
-        if (null != downLoadFileCall) {
-            downLoadFileCall.cancel();
-            downLoadFileCall = null;
-        }
-        //清空伴奏下载进度
-        tv_download.setText("");
-
         fl_play.setVisibility(VISIBLE);
         fl_download.setVisibility(GONE);
         fl_loading.setVisibility(GONE);
-
         //清空动画
         if (rotateAnim != null) {
             rotateAnimPlayTime = 0;
@@ -601,209 +499,12 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
      * @param isChangePlayMode
      */
     private void updatePlayView(boolean isChangePlayMode) {
-        MusicRecord playMusicDetail = HifiveDialogManageUtil.getInstance().getPlayMusicDetail();
-        if (playMusicDetail == null) {
-            return;
-        }
-        //设置信息
-        if (playMusicDetail.getVersion().get(0).getMajorVersion()) {
-            setTypeSound();
-        } else {
-            setTypeAccompany();
-        }
-//        if (!isChangePlayMode) {
-//            HifiveMusiclyricModel lyric = playMusicDetail.getLyric();
-//            initialVersion = playMusicDetail.getIsMajor();
-//
-//            //没有歌词的时候
-//            if (lyric == null || (TextUtils.isEmpty(lyric.getDynamicUrl()) && TextUtils.isEmpty(lyric.getStaticUrl()))) {
-//                disabledLyric();
-//            } else {
-//                //动态歌词不等于空就下载动态歌词否则下载静态歌词
-//                if (!TextUtils.isEmpty(lyric.getDynamicUrl())) {
-//                    isStatic = false;
-//                    downloadLyric(lyric.getDynamicUrl(), 1);
-//                } else {
-//                    isStatic = true;
-//                    downloadLyric(lyric.getStaticUrl(), 2);
-//                }
-//            }
-//
-//            //切换歌曲
-//            if (playMusicDetail.getFile() != null
-//                    && !TextUtils.isEmpty(playMusicDetail.getFile().getUrl())) {
-//                playUrl = playMusicDetail.getFile().getUrl();
-//                startPlayMusic(playUrl, true);//开始播放新歌曲
-//            } else {
-//                HifiveDialogManageUtil.getInstance().showToast(mContext, "歌曲地址有误");
-//            }
-//        } else {
-//            isInitialMode = playMusicDetail.getIsMajor() == initialVersion;
-//            if (isInitialMode) {//是列表初始版本
-//                if (playMusicDetail.getFile() != null
-//                        && !TextUtils.isEmpty(playMusicDetail.getFile().getUrl())) {
-//                    playUrl = playMusicDetail.getFile().getUrl();
-//                    changePlayMusic(playUrl);//切换播放歌曲
-//                } else {
-//                    HifiveDialogManageUtil.getInstance().showToast(mContext, "歌曲地址有误");
-//                }
-//            } else {
-//                if (playMusicDetail.getFile() != null
-//                        && !TextUtils.isEmpty(playMusicDetail.getFile().getUrl())) {
-//                    showDownLoadView();
-//                    downLoadMusic(playMusicDetail.getFile().getUrl(), playMusicDetail.getMusicId(), playMusicDetail.getFile().getExt(), isChangePlayMode);
-//                } else {
-//                    HifiveDialogManageUtil.getInstance().showToast(mContext, "伴奏文件有误");
-//                }
-//            }
+//        MusicRecord playMusicDetail = HifiveDialogManageUtil.getInstance().getPlayMusicDetail();
+//        if (playMusicDetail == null) {
+//            return;
 //        }
-
     }
 
-    //设置歌词点击
-    private void enableLyric() {
-        cb_lyric.setEnabled(true);
-        cb_lyric.setAlpha(1f);
-        cb_lyric.setChecked(true);
-    }
-
-    //设置歌词不能点击
-    private void disabledLyric() {
-        cb_lyric.setChecked(false);
-        cb_lyric.setEnabled(false);
-        cb_lyric.setAlpha(0.45f);
-    }
-
-    //下载歌曲
-    private void downLoadMusic(String file, final String musicId, String expand, final boolean isChangePlayMode) {
-        Log.e("TAG", "file==" + file);
-        if (HFLiveApi.getInstance() == null)
-            return;
-        if (null != downLoadFileCall) {
-            downLoadFileCall.cancel();
-            downLoadFileCall = null;
-        }
-        downLoadFileCall = HFLiveApi.getInstance().downLoadFile(mContext, file, mContext.getFilesDir() + "/" + musicId + "." + expand,
-                new DownLoadResponse() {
-                    @Override
-                    public void size(long totalBytes) {
-
-                    }
-
-                    @Override
-                    public void succeed(@NotNull File file) {
-                        //下载完成后，防止在下载过程中已经切歌，或者歌曲已经删除
-                        if (HifiveDialogManageUtil.getInstance().getPlayMusicDetail() != null
-                                && musicId.equals(HifiveDialogManageUtil.getInstance().getPlayMusicDetail().getMusicId())) {
-                            musicFile = file;
-                            downLoadFileCall = null;
-                            if (isChangePlayMode) {
-                                changePlayMusic(musicFile.getPath());
-                            } else {
-                                startPlayMusic(musicFile.getPath(), true);
-                            }
-                        } else {//如果已切歌就删掉文件
-                            if (file.exists() && file.isFile()) {
-                                if (file.delete()) Log.e("TAG", "文件删除成功");
-                                else Log.e("TAG", "文件删除失败");
-                            }
-                            fl_play.setVisibility(VISIBLE);
-                            fl_download.setVisibility(GONE);
-                        }
-
-                    }
-
-                    @Override
-                    public void fail(@NotNull String error_msg) {
-                        HifiveDialogManageUtil.getInstance().showToast(mContext, error_msg);
-                        stopPlay();
-                        clear();
-                    }
-
-                    @Override
-                    public void progress(long currentBytes, long totalBytes) {
-                        if (null != downLoadFileCall && downLoadFileCall.isExecuted()) {
-                            updateDownLoadProgress(currentBytes, totalBytes);
-                        } else {
-//                            stopPlay();
-                        }
-                    }
-                });
-
-    }
-
-    //更新下载进度
-    @SuppressLint("SetTextI18n")
-    private void updateDownLoadProgress(final long currentBytes, final long totalBytes) {
-        if (tv_download != null) {
-            tv_download.setText((int) (HifiveDisplayUtils.div(currentBytes, totalBytes, 2) * 100) + "%");
-        }
-    }
-
-    /**
-     * 下载歌词
-     *
-     * @param lyricUrl 歌词的url
-     * @param type     歌词类型1.动态歌词2.静态歌词
-     * @author huchao
-     */
-    private void downloadLyric(String lyricUrl, final int type) {
-        HifiveDownloadUtile.downloadFile(lyricUrl, new HifiveDownloadUtile.NetCallback() {
-            @Override
-            public void reqYes(Object o, String s) {
-                updateLyricView(s, type);
-            }
-
-            @Override
-            public void reqNo(Object o, Exception e) {
-                mContext.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        disabledLyric();
-                    }
-                });
-                HifiveDialogManageUtil.getInstance().showToast(mContext, "未找到歌词");
-            }
-        });
-    }
-
-    //更新歌词的view type 歌词类型1.动态歌词2.静态歌词
-    private void updateLyricView(final String content, final int type) {
-        if (mContext != null) {
-            if (type == 1) {
-                if (!TextUtils.isEmpty(content)) {
-                    lyricDetailModels = HifiveDisplayUtils.getLyricDetailModels(content);
-                    lyric_dynamic_view.setLyricDetailModels(lyricDetailModels);
-                }
-                mContext.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!TextUtils.isEmpty(content)) {
-                            enableLyric();
-                            lyric_dynamic_view.setVisibility(VISIBLE);
-                            fl_lyric.setVisibility(GONE);
-                        } else {
-                            disabledLyric();
-                        }
-                    }
-                });
-            } else {
-                mContext.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!TextUtils.isEmpty(content)) {
-                            enableLyric();
-                            tv_lyric_static.setText(content);
-                            fl_lyric.setVisibility(VISIBLE);
-                            lyric_dynamic_view.setVisibility(GONE);
-                        } else {
-                            disabledLyric();
-                        }
-                    }
-                });
-            }
-        }
-    }
 
     //显示歌曲列表弹窗
     public void showDialog() {
