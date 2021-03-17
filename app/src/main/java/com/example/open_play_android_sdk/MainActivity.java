@@ -5,7 +5,7 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.os.Bundle;
 
-import com.hfopenplayer.sdk.ui.player.HFLivePlayer;
+import com.hfopenmusic.sdk.ui.player.HFLivePlayer;
 
 public class MainActivity extends AppCompatActivity {
     private boolean flag;

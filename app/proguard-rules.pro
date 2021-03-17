@@ -21,7 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 -dontwarn com.hfliveplayer.sdk.**
--keep public class com.hfopenplayer.sdk.**{*;}
+-keep public class com.hfopenmusic.sdk.**{*;}
 
 -dontwarn com.hifive.sdk.**
 -keep public class com.hifive.sdk.**{*;}

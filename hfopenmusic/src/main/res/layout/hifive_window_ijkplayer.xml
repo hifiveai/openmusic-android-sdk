@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.hfopenplayer.sdk.view.DraggableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.hfopenmusic.sdk.view.DraggableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:textStyle="bold" />
     </FrameLayout>
 
-    <com.hfopenplayer.sdk.view.LyricDynamicView
+    <com.hfopenmusic.sdk.view.LyricDynamicView
         android:id="@+id/lyric_dynamic_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -215,4 +215,4 @@
     </FrameLayout>
 
 
-</com.hfopenplayer.sdk.view.DraggableLinearLayout>
+</com.hfopenmusic.sdk.view.DraggableLinearLayout>

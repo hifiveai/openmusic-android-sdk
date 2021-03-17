@@ -31,7 +31,7 @@
                 android:padding="10dp"
                 android:src="@mipmap/hifivesdk_icon_dialog_back"/>
 
-            <com.hfopenplayer.sdk.view.RoundImageView
+            <com.hfopenmusic.sdk.view.RoundImageView
                 android:id="@+id/iv_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"

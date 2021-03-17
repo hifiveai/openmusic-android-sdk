@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.hfopen.sdk.rx.BaseException;
-import com.hfopenplayer.sdk.util.HifiveDialogManageUtil;
+import com.hfopenmusic.sdk.util.HifiveDialogManageUtil;
 import com.hfopen.sdk.common.HFOpenCallback;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.tencent.bugly.crashreport.CrashReport;
