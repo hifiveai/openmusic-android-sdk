@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HifiveSdk</string>
+    <string name="hifivesdk_comfirm_delete_history">确定删除搜索历史？</string>
+    <string name="hifivesdk_comfirm_delete_music">确定将所选音乐从列表中删除？</string>
+    <string name="hifivesdk_comfirm_dialog_cancel">取消</string>
+    <string name="hifivesdk_comfirm_dialog_comfirm">确认删除</string>
+    <string name="hifivesdk_comfirm_dialog_delete">已删除</string>
+    <string name="hifivesdk_music_add_karaoke_msg">加入K歌列表成功</string>
+    <string name="hifivesdk_music_add_like_msg">加入喜欢列表成功</string>
+    <string name="hifivesdk_music_add_music">添加歌曲</string>
+    <string name="hifivesdk_music_all_play">全部播放(%1$d)</string>
+    <string name="hifivesdk_music_current_play">当前播放</string>
+    <string name="hifivesdk_music_karaoke">我的K歌</string>
+    <string name="hifivesdk_music_like">我的喜欢</string>
+    <string name="hifivesdk_music_player_accompany">伴奏</string>
+    <string name="hifivesdk_music_player_lyric">词</string>
+    <string name="hifivesdk_music_player_sound">原声</string>
+    <string name="hifivesdk_music_search_cancel">取消</string>
+    <string name="hifivesdk_music_search_hint">搜索歌曲名/歌手</string>
+    <string name="hifivesdk_music_search_history">搜索历史</string>
+    <string name="hifivesdk_music_search_history_empty">未找到与“%1$s”相关的内容，向您推荐</string>
+    <string name="hifivesdk_music_search_toast">请输入歌曲名/歌手</string>
+    <style name="AnimationBottomFade">
+        <item name="android:windowEnterAnimation">@anim/hifive_anim_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/hifive_anim_bottom_out</item>
+    </style>
+    <style name="AnimationRightFade">
+        <item name="android:windowEnterAnimation">@anim/hifive_anim_right_in</item>
+        <item name="android:windowExitAnimation">@anim/hifive_anim_right_out</item>
+    </style>
+    <style name="HifiveSdkDialogStyly" parent="@android:style/Animation.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>//默认为false，设置了这个为true会出现闪屏
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!--透明背景-->
+        <item name="android:background">@android:color/transparent</item>
+        <!--窗口背景透明-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item><!--activity不变暗-->
+    </style>
+    <style name="HifiveSdkProgressbarStyle">
+        <item name="android:maxWidth">30dp</item>
+        <item name="android:maxHeight">30dp</item>
+        <item name="android:indeterminateDrawable">@drawable/hifive_download_anim</item>
+        <item name="android:minWidth">30dp</item>
+        <item name="android:minHeight">30dp</item>
+    </style>
+    <declare-styleable name="RotateLoading">
+        <attr format="dimension" name="loading_width"/>
+        <attr format="color" name="loading_color"/>
+        <attr format="dimension" name="shadow_offset"/>
+        <attr format="boolean" name="loading_visible"/>
+    </declare-styleable>
+    <declare-styleable name="RoundCornerImageView">
+        <attr format="dimension" name="radius"/>
+        <attr format="dimension" name="left_top_radius"/>
+        <attr format="dimension" name="right_top_radius"/>
+        <attr format="dimension" name="right_bottom_radius"/>
+        <attr format="dimension" name="left_bottom_radius"/>
+    </declare-styleable>
+    <declare-styleable name="RoundProgressBar">
+        <attr format="color" name="roundColor"/>
+        <attr format="color" name="roundProgressColor"/>
+        <attr format="dimension" name="roundWidth"/>
+        <attr format="integer" name="max"/>
+    </declare-styleable>
+</resources>
