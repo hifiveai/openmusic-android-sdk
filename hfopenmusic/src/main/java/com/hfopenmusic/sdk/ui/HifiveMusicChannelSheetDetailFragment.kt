@@ -148,14 +148,12 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
     //初始化ReclyView
     private fun ininReclyView() {
         adapter = HifiveMusicSheetListAdapter(context, ArrayList())
-        adapter!!.setOnAddkaraokeClickListener { _: View?, position: Int -> }
-        adapter!!.setOnAddLikeClickListener { v: View?, position: Int -> }
         adapter!!.setOnRecyclerViewContentClick { position: Int -> HifiveDialogManageUtil.getInstance().addCurrentSingle(activity, adapter!!.datas[position] as MusicRecord?) }
         adapter!!.setOnRecyclerViewHeaderClick {
                             HifiveDialogManageUtil.getInstance().updateCurrentList(activity, adapter!!.datas as List<MusicRecord>)
         }
         mRecyclerView!!.adapter = adapter
-        mRecyclerView!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向
+        mRecyclerView!!.layoutManager = LinearLayoutManager(context)
         refreshLayout.setOnRefreshListener { getData(Refresh) }
         refreshLayout.setOnLoadMoreListener {
             if (!isLoadMore) {

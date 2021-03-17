@@ -189,8 +189,8 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
     //初始化ReclyView
     private fun ininReclyView() {
         adapter = HifiveMusicSheetListAdapter(context, ArrayList())
-        adapter!!.setOnRecyclerViewContentClick {
-            //                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(), (HifiveMusicModel) adapter.getDatas().get(position), "2");
+        adapter!!.setOnRecyclerViewContentClick { position: Int ->
+            HifiveDialogManageUtil.getInstance().addCurrentSingle(activity, adapter!!.datas[position] as MusicRecord?)
         }
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向
@@ -202,7 +202,8 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
         }
 
         hotAdapter = HifiveHotMusicAdapter(context, ArrayList())
-        hotAdapter!!.setOnRecyclerViewContentClick { }
+        hotAdapter!!.setOnRecyclerViewContentClick { position: Int ->
+            HifiveDialogManageUtil.getInstance().addCurrentSingle(activity, hotAdapter!!.datas[position] as MusicRecord?)}
         mHotRv!!.adapter = hotAdapter
         mHotRv!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向
     }

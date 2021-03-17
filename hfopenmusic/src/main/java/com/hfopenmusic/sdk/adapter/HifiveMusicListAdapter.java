@@ -58,12 +58,10 @@ public class HifiveMusicListAdapter extends BaseRecyclerViewAdapter{
     public void onBindContentViewHolder(BaseRecyclerViewHolder holder, final int position) {
         final MusicRecord model = (MusicRecord) getDatas().get(position);
 
-        holder.setText(R.id.tv_num,String.valueOf(position+1));
         holder.setText(R.id.tv_name,model.getMusicName());
 
         if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null
                 && HifiveDialogManageUtil.getInstance().getPlayMusic().getMusicId().equals(model.getMusicId())){
-            holder.setVisible(R.id.tv_num, View.GONE);
             holder.setVisible(R.id.iv_play, View.VISIBLE);
 
             RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
@@ -72,7 +70,6 @@ public class HifiveMusicListAdapter extends BaseRecyclerViewAdapter{
                     .apply(options)
                     .into((ImageView) holder.get(R.id.iv_play));
         }else{
-            holder.setVisible(R.id.tv_num, View.VISIBLE);
             holder.setVisible(R.id.iv_play, View.GONE);
 
         }
