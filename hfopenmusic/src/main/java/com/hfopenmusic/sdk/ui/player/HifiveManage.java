@@ -1,22 +1,17 @@
 package com.hfopenmusic.sdk.ui.player;
 
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
-
 import com.hfopen.sdk.entity.HQListen;
 import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopen.sdk.hInterface.DataResponse;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopen.sdk.rx.BaseException;
 import com.hfopenmusic.sdk.ui.HifiveUpdateObservable;
-
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;

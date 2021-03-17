@@ -2,14 +2,9 @@ package com.example.open_play_android_sdk;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-
 import android.os.Bundle;
-
 import com.hfopenmusic.sdk.ui.player.HFLivePlayer;
-import com.hfopenmusic.sdk.ui.player.HifiveManage;
 
-import java.util.Observable;
-import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity{
     private boolean flag;

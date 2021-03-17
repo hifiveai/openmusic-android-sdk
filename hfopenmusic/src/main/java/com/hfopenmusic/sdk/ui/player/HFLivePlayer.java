@@ -1,10 +1,5 @@
 package com.hfopenmusic.sdk.ui.player;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.media.AudioManager;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -13,11 +8,9 @@ import android.widget.RelativeLayout;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import com.hfopenmusic.sdk.ui.HifiveUpdateObservable;
 import com.hfopenmusic.sdk.util.HifiveDisplayUtils;
 
 import java.lang.ref.WeakReference;
-import java.util.Observer;
 
 /**
  * @ClassName HifivePlayerManger
@@ -149,8 +142,6 @@ public class HFLivePlayer {
         }
         mContainer = new WeakReference<>(container);
         container.addView(mPlayerView);
-        //注册
-        registReceiver(container.getContext());
     }
     /**
      * 呼应activity生命周期中onStop方法
@@ -168,14 +159,6 @@ public class HFLivePlayer {
         if (getContainer() == container) {
             mContainer = null;
         }
-        //反注册
-        try {
-            container.getContext().unregisterReceiver(mReceiver);
-        } catch (Exception e) {
-        } finally {
-            mReceiver = null;
-        }
-
     }
     //获取容器对象
     private FrameLayout getContainer() {
@@ -184,29 +167,4 @@ public class HFLivePlayer {
         }
         return mContainer.get();
     }
-
-
-
-    private void registReceiver(Context context){
-        //注册广播接收器，给广播接收器添加可以接收的广播Action
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_MEDIA_BUTTON);
-        filter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
-        context.registerReceiver(mReceiver, filter);
-    }
-
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            switch (action){
-                case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
-                    //耳机拔出时，可以暂停播放
-                    if (mPlayerView != null){
-                        mPlayerView.stopPlay();
-                    }
-                    break;
-            }
-        }
-    };
 }
