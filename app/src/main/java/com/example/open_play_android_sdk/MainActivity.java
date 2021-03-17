@@ -6,8 +6,12 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.os.Bundle;
 
 import com.hfopenmusic.sdk.ui.player.HFLivePlayer;
+import com.hfopenmusic.sdk.ui.player.HifiveManage;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Observable;
+import java.util.Observer;
+
+public class MainActivity extends AppCompatActivity{
     private boolean flag;
     private AppCompatButton play;
     @Override
@@ -15,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         play =  findViewById(R.id.play);
+
         initView();
     }
     private void initView() {

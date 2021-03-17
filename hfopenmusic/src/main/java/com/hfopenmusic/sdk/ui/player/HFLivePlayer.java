@@ -14,10 +14,10 @@ import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.hfopenmusic.sdk.ui.HifiveUpdateObservable;
-import com.hfopenmusic.sdk.util.HifiveDialogManageUtil;
 import com.hfopenmusic.sdk.util.HifiveDisplayUtils;
 
 import java.lang.ref.WeakReference;
+import java.util.Observer;
 
 /**
  * @ClassName HifivePlayerManger
@@ -74,12 +74,8 @@ public class HFLivePlayer {
             params.gravity = Gravity.START | Gravity.BOTTOM;
             params.setMargins(0, params.topMargin, params.rightMargin, HifiveDisplayUtils.getScreenHeight(activity)/24 + HifiveDisplayUtils.getPlayerHeight(activity));
             mPlayerView.setLayoutParams(params);
-            //初始化被观察者
-            if(HifiveDialogManageUtil.getInstance().updateObservable == null){
-                HifiveDialogManageUtil.getInstance().updateObservable = new HifiveUpdateObservable();
-            }
             //将播放器view添加为观察者
-            HifiveDialogManageUtil.getInstance().updateObservable.addObserver(mPlayerView);
+            HifiveManage.getInstance().addObserver(mPlayerView);
             if (getContainer() != null) {
                 getContainer().addView(mPlayerView);
             }
@@ -89,7 +85,7 @@ public class HFLivePlayer {
 
     //移除播放器view,清除缓存数据
     public void destory() {
-        HifiveDialogManageUtil.getInstance().clearData();
+        HifiveManage.getInstance().clearData();
         removePlayer();
     }
     //移除播放器view
@@ -103,8 +99,8 @@ public class HFLivePlayer {
             }
             recyclePlayer();
             mPlayerView = null;
-            HifiveDialogManageUtil.getInstance().setPlayMusic(null);//清空当前播放的歌曲
-            HifiveDialogManageUtil.getInstance().CloseDialog();
+            HifiveManage.getInstance().setPlayMusic(null);//清空当前播放的歌曲
+            HifiveManage.getInstance().CloseDialog();
         } catch (Exception e) {
             e.printStackTrace();
         }

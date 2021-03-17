@@ -1,4 +1,4 @@
-package com.hfopenmusic.sdk.util;
+package com.hfopenmusic.sdk.ui.player;
 
 
 import android.annotation.SuppressLint;
@@ -13,39 +13,38 @@ import com.hfopen.sdk.hInterface.DataResponse;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopen.sdk.rx.BaseException;
 import com.hfopenmusic.sdk.ui.HifiveUpdateObservable;
-import com.hfopenmusic.sdk.ui.player.HFLivePlayer;
 
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 
 /**
  * 弹窗管理工具
  *
  * @author huchao
  */
-public class HifiveDialogManageUtil {
+public class HifiveManage {
     public HifiveUpdateObservable updateObservable;
     public static final int UPDATEPALY = 1;//通知相关页面更新当前播放歌曲
     public static final int UPDATEPALYLIST = 2;//通知相关页面更新当前播放列表
     public static final int CHANGEMUSIC = 5;//通知播放器开始播放新歌曲
-    private  static volatile  HifiveDialogManageUtil singleManage;
+    private  static volatile HifiveManage singleManage;
     private Toast toast;
     private MusicRecord playMusic;//维护当前所播放的音乐，方便当前播放显示播放效果。
     private HQListen playMusicDetail;//歌曲播放信息
     private List<MusicRecord> currentList;//维护当前播放的音乐列表
 
-    private HifiveDialogManageUtil(){
+    private HifiveManage(){
 
     }
-    public static  HifiveDialogManageUtil getInstance(){
+    public static HifiveManage getInstance(){
         if (singleManage == null) {
-            synchronized (HifiveDialogManageUtil.class) {
+            synchronized (HifiveManage.class) {
                 if (singleManage == null) {
-                    singleManage = new HifiveDialogManageUtil();
+                    singleManage = new HifiveManage();
                 }
             }
         }
@@ -65,6 +64,14 @@ public class HifiveDialogManageUtil {
             }
             dialogFragments = null;
     }
+
+    //添加Observer
+    public void addObserver(Observer o){
+        if(updateObservable == null )
+            updateObservable = new HifiveUpdateObservable();
+        updateObservable.addObserver(o);
+    }
+
     //添加dialog
     public void addDialog(DialogFragment dialogFragment){
         if(dialogFragments == null )

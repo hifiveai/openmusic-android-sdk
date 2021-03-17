@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 
 import com.hfopenmusic.sdk.R;
-import com.hifive.sdk.entity.HifiveMusicLyricDetailModel;
 
 import java.util.List;
 
@@ -21,8 +20,8 @@ import java.util.List;
  */
 public class LyricDynamicView extends RelativeLayout {
 
-    //歌词数组
-    private List<HifiveMusicLyricDetailModel> lyricDetailModels;
+//    //歌词数组
+//    private List<HifiveMusicLyricDetailModel> lyricDetailModels;
 
     private boolean isChange;//判断歌词是否正在改变
     private int position = 0;//保留歌词下标，下次从下标开始查找歌词
@@ -76,64 +75,64 @@ public class LyricDynamicView extends RelativeLayout {
         if (isChange)
             return;
         isChange = true;
-        if(lyricDetailModels != null) {
-            for (int i = position; i < lyricDetailModels.size(); i++) {
-                if (playProgress <= lyricDetailModels.get(i).getStartTime()) {
-                    final String content = lyricDetailModels.get(i).getContent();
-                    if (i % 2 == 0) {
-                        ((Activity)getContext()).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(!leftLyric.equals(content)){
-                                    leftLyric = content;
-                                    tv_lyric_left.setTextColor(backgroundTextColor);
-                                    tv_lyric_left.setCurrent(false);
-                                    tv_lyric_right.setTextColor(foregroundTextColor);
-                                    tv_lyric_right.setCurrent(true);
-                                    tv_lyric_left.setText(leftLyric);
-                                }
-
-                            }
-                        });
-                    } else {
-                        ((Activity)getContext()).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(!rightLyric.equals(content)) {
-                                    rightLyric = content;
-                                    tv_lyric_left.setTextColor(foregroundTextColor);
-                                    tv_lyric_left.setCurrent(true);
-                                    tv_lyric_right.setTextColor(backgroundTextColor);
-                                    tv_lyric_right.setCurrent(false);
-                                    tv_lyric_right.setText(rightLyric);
-                                }
-
-                            }
-                        });
-
-                    }
-                    position = i;
-                    break;
-                }
-            }
-        }
+//        if(lyricDetailModels != null) {
+//            for (int i = position; i < lyricDetailModels.size(); i++) {
+//                if (playProgress <= lyricDetailModels.get(i).getStartTime()) {
+//                    final String content = lyricDetailModels.get(i).getContent();
+//                    if (i % 2 == 0) {
+//                        ((Activity)getContext()).runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if(!leftLyric.equals(content)){
+//                                    leftLyric = content;
+//                                    tv_lyric_left.setTextColor(backgroundTextColor);
+//                                    tv_lyric_left.setCurrent(false);
+//                                    tv_lyric_right.setTextColor(foregroundTextColor);
+//                                    tv_lyric_right.setCurrent(true);
+//                                    tv_lyric_left.setText(leftLyric);
+//                                }
+//
+//                            }
+//                        });
+//                    } else {
+//                        ((Activity)getContext()).runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if(!rightLyric.equals(content)) {
+//                                    rightLyric = content;
+//                                    tv_lyric_left.setTextColor(foregroundTextColor);
+//                                    tv_lyric_left.setCurrent(true);
+//                                    tv_lyric_right.setTextColor(backgroundTextColor);
+//                                    tv_lyric_right.setCurrent(false);
+//                                    tv_lyric_right.setText(rightLyric);
+//                                }
+//
+//                            }
+//                        });
+//
+//                    }
+//                    position = i;
+//                    break;
+//                }
+//            }
+//        }
         isChange = false;
     }
 
     public void clearLyric(){
         isChange = false;
         position = 0;
-        this.lyricDetailModels=null;
+//        this.lyricDetailModels=null;
         this.leftLyric = "";
         this.rightLyric = "";
         tv_lyric_left.setText(leftLyric);
         tv_lyric_right.setText(rightLyric);
     }
 
-    public void setLyricDetailModels(List<HifiveMusicLyricDetailModel> lyricDetailModels) {
-        this.lyricDetailModels = lyricDetailModels;
-        setPlayProgress(0);
-    }
+//    public void setLyricDetailModels(List<HifiveMusicLyricDetailModel> lyricDetailModels) {
+//        this.lyricDetailModels = lyricDetailModels;
+//        setPlayProgress(0);
+//    }
 
     public void setBackgroundTextColor(int backgroundTextColor) {
         this.backgroundTextColor = backgroundTextColor;

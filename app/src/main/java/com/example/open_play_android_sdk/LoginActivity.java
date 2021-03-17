@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.hfopen.sdk.rx.BaseException;
-import com.hfopenmusic.sdk.util.HifiveDialogManageUtil;
+import com.hfopenmusic.sdk.ui.player.HifiveManage;
 import com.hfopen.sdk.common.HFOpenCallback;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -64,19 +64,19 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
             if (TextUtils.isEmpty(memberId)) {
-                HifiveDialogManageUtil.getInstance().showToast(this, "请输入会员id");
+                HifiveManage.getInstance().showToast(this, "请输入会员id");
                 return;
             }
 
 //,"https://gateway.open.hifiveai.com"
             HFOpenApi.registerApp(getApplication(), memberId);
-//        HifiveDialogManageUtil.getInstance().showToast(this, "初始化SDK成功");
+//        HifiveManage.getInstance().showToast(this, "初始化SDK成功");
 
 
             HFOpenApi.configCallBack(new HFOpenCallback() {
                 @Override
                 public void onError(BaseException exception) {
-                    HifiveDialogManageUtil.getInstance().showToast(LoginActivity.this, exception.getMsg());
+                    HifiveManage.getInstance().showToast(LoginActivity.this, exception.getMsg());
                 }
 
                 @Override

@@ -18,7 +18,7 @@ import com.hfopenmusic.sdk.R;
 import com.hfopenmusic.sdk.adapter.BaseRecyclerViewAdapter;
 import com.hfopenmusic.sdk.adapter.HifiveMusicListAdapter;
 import com.hfopenmusic.sdk.listener.HifiveAddMusicListener;
-import com.hfopenmusic.sdk.util.HifiveDialogManageUtil;
+import com.hfopenmusic.sdk.ui.player.HifiveManage;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -45,7 +45,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         public boolean handleMessage(Message msg) {
             if (msg.what == UPDATE_CURRENT_SONG) {
                 MusicRecord hifiveMusicModel = (MusicRecord) msg.obj;
-                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(), hifiveMusicModel);
+                HifiveManage.getInstance().addCurrentSingle(getActivity(), hifiveMusicModel);
             }
             return true;
         }
@@ -76,7 +76,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
                 message.obj = hifiveMusicModel;
                 message.what = UPDATE_CURRENT_SONG;
                 mHandler.sendMessageDelayed(message,200);
-//                HifiveDialogManageUtil.getInstance().addCurrentSingle(getActivity(), (HifiveMusicModel) adapter.getDatas().get(position), "2");
+//                HifiveManage.getInstance().addCurrentSingle(getActivity(), (HifiveMusicModel) adapter.getDatas().get(position), "2");
             }
         });
 
@@ -98,9 +98,9 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));//调整RecyclerView的排列方向
 
-        if(HifiveDialogManageUtil.getInstance().getCurrentList() !=null
-                && HifiveDialogManageUtil.getInstance().getCurrentList().size() >0){
-            adapter.updateDatas(HifiveDialogManageUtil.getInstance().getCurrentList());
+        if(HifiveManage.getInstance().getCurrentList() !=null
+                && HifiveManage.getInstance().getCurrentList().size() >0){
+            adapter.updateDatas(HifiveManage.getInstance().getCurrentList());
         }else{
             adapter.addEmptyView(R.layout.hifive_recycler_emptyview2);
         }
@@ -115,21 +115,21 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
             @Override
             public void sureClick() {
                 //如果删除的是正在播放的歌曲
-                if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null
-                        && HifiveDialogManageUtil.getInstance().getPlayMusic().getMusicId().equals(musicModel.getMusicId())){
+                if(HifiveManage.getInstance().getPlayMusic() != null
+                        && HifiveManage.getInstance().getPlayMusic().getMusicId().equals(musicModel.getMusicId())){
                     if(adapter.getItemCount() > 1){
-                        HifiveDialogManageUtil.getInstance().playNextMusic(getActivity());
+                        HifiveManage.getInstance().playNextMusic(getActivity());
                     }else{
-                        HifiveDialogManageUtil.getInstance().cleanPlayMusic(true);
+                        HifiveManage.getInstance().cleanPlayMusic(true);
                     }
                 }
-                HifiveDialogManageUtil.getInstance().getCurrentList().remove(musicModel);
+                HifiveManage.getInstance().getCurrentList().remove(musicModel);
                 if(adapter.getDatas().size()==0){
                     adapter.addEmptyView(R.layout.hifive_recycler_emptyview);
                 }
                 adapter.notifyDataSetChanged();
                 if(getActivity() != null){
-                    HifiveDialogManageUtil.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
+                    HifiveManage.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
                 }
             }
         });
@@ -152,10 +152,10 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         try{
             int type = (int) arg;
             if(adapter != null){
-                if(type == HifiveDialogManageUtil.UPDATEPALY){
+                if(type == HifiveManage.UPDATEPALY){
                     adapter.notifyDataSetChanged();
-                }else  if(type == HifiveDialogManageUtil.UPDATEPALYLIST){
-                    adapter.updateDatas(HifiveDialogManageUtil.getInstance().getCurrentList());
+                }else  if(type == HifiveManage.UPDATEPALYLIST){
+                    adapter.updateDatas(HifiveManage.getInstance().getCurrentList());
                 }
             }
         }catch (Exception e){

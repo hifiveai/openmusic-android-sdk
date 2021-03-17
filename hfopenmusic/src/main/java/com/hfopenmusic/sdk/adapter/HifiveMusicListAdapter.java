@@ -2,7 +2,6 @@ package com.hfopenmusic.sdk.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,9 +14,7 @@ import com.hfopen.sdk.entity.Desc;
 import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenmusic.sdk.R;
 
-import com.hfopenmusic.sdk.util.HifiveDialogManageUtil;
-import com.hifive.sdk.entity.HifiveMusicAuthorModel;
-import com.hifive.sdk.entity.HifiveMusicModel;
+import com.hfopenmusic.sdk.ui.player.HifiveManage;
 
 import java.util.List;
 
@@ -60,8 +57,8 @@ public class HifiveMusicListAdapter extends BaseRecyclerViewAdapter{
 
         holder.setText(R.id.tv_name,model.getMusicName());
 
-        if(HifiveDialogManageUtil.getInstance().getPlayMusic() != null
-                && HifiveDialogManageUtil.getInstance().getPlayMusic().getMusicId().equals(model.getMusicId())){
+        if(HifiveManage.getInstance().getPlayMusic() != null
+                && HifiveManage.getInstance().getPlayMusic().getMusicId().equals(model.getMusicId())){
             holder.setVisible(R.id.iv_play, View.VISIBLE);
 
             RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);

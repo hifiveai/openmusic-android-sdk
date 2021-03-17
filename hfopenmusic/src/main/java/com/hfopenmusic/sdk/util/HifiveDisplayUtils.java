@@ -4,13 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.hifive.sdk.entity.HifiveMusicLyricDetailModel;
-
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -91,32 +88,32 @@ public class HifiveDisplayUtils {
         //默认保留两位会有错误，这里设置保留小数点后4位
         return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).floatValue();
     }
-    /**
-     * 提供动态歌词获取歌词详细信息
-     * @param content 歌词
-     */
-    public static List<HifiveMusicLyricDetailModel>  getLyricDetailModels(String content) {
-//        Log.e("TASG","lyric=="+content);
-        List<HifiveMusicLyricDetailModel> detailModels = new ArrayList<>();
-        String[] lyric = content.split("\\n");
-        String regex = "\\[(.*?)]";
-        for (String s1 : lyric) {
-            HifiveMusicLyricDetailModel detailModel = new HifiveMusicLyricDetailModel();
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(s1);
-            while (matcher.find()) {
-                long time = getStartTime(matcher.group(1));
-                if(time != -1) {
-                    detailModel.setStartTime(getStartTime(matcher.group(1)));
-                    detailModel.setContent(s1.replace("[" + matcher.group(1) + "]", "").trim());
-                    if (!TextUtils.isEmpty(detailModel.getContent())) {
-                        detailModels.add(detailModel);
-                    }
-                }
-            }
-        }
-        return detailModels;
-    }
+//    /**
+//     * 提供动态歌词获取歌词详细信息
+//     * @param content 歌词
+//     */
+//    public static List<HifiveMusicLyricDetailModel>  getLyricDetailModels(String content) {
+////        Log.e("TASG","lyric=="+content);
+//        List<HifiveMusicLyricDetailModel> detailModels = new ArrayList<>();
+//        String[] lyric = content.split("\\n");
+//        String regex = "\\[(.*?)]";
+//        for (String s1 : lyric) {
+//            HifiveMusicLyricDetailModel detailModel = new HifiveMusicLyricDetailModel();
+//            Pattern pattern = Pattern.compile(regex);
+//            Matcher matcher = pattern.matcher(s1);
+//            while (matcher.find()) {
+//                long time = getStartTime(matcher.group(1));
+//                if(time != -1) {
+//                    detailModel.setStartTime(getStartTime(matcher.group(1)));
+//                    detailModel.setContent(s1.replace("[" + matcher.group(1) + "]", "").trim());
+//                    if (!TextUtils.isEmpty(detailModel.getContent())) {
+//                        detailModels.add(detailModel);
+//                    }
+//                }
+//            }
+//        }
+//        return detailModels;
+//    }
     //将时间字符转为时间戳
     private static long getStartTime(String time) {
         try {
