@@ -169,7 +169,7 @@ public class HifiveDialogManageUtil {
         playMusic = musicModel;
         updateObservable.postNewPublication(UPDATEPALY);
         if(currentList != null && currentList.size() >0){
-            if(!currentList.contains(playMusic)){
+            if(currentList.contains(playMusic)){
                 currentList.add(0,playMusic);
                 updateObservable.postNewPublication(UPDATEPALYLIST);
             }
