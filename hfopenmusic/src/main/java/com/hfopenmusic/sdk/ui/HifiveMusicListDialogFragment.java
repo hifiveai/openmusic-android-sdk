@@ -92,13 +92,14 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
             HifiveDialogManageUtil.getInstance().updateObservable = new HifiveUpdateObservable();
         }
         initView(view);
-        if (HifiveDialogManageUtil.getInstance().getUserSheetModels() != null
-                && HifiveDialogManageUtil.getInstance().getUserSheetModels().size() > 0) {
-            initMagicIndicator();
-            initPage();
-        } else {
-            getData();
-        }
+        initMagicIndicator();
+        initPage();
+//        if (HifiveDialogManageUtil.getInstance().getUserSheetModels() != null
+//                && HifiveDialogManageUtil.getInstance().getUserSheetModels().size() > 0) {
+//
+//        } else {
+//            getData();
+//        }
         HifiveDialogManageUtil.getInstance().addDialog(this);
         return view;
     }

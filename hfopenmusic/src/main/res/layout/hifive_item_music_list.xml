@@ -43,8 +43,8 @@
 
         <ImageView
             android:id="@+id/iv_delete"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:paddingVertical="10dp"
             android:paddingStart="20dp"
             android:src="@mipmap/hifivesdk_icon_music_delete" />

@@ -94,7 +94,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     public Timer mTimer;
     public TimerTask mTimerTask;
     private String playUrl;//播放歌曲的url
-    public static File musicFile;//播放伴奏的文件
     private int playProgress;//播放的进度
 
 
@@ -384,16 +383,11 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
             if (type == HifiveDialogManageUtil.UPDATEPALY) {
                 stopPlay();
                 clear();
-                //隐藏歌词
-                lyric_dynamic_view.setVisibility(GONE);
-                fl_lyric.setVisibility(GONE);
                 if (HifiveDialogManageUtil.getInstance().getPlayMusic() != null) {
                     showLoadView();
                     updateView();
-                } else {//重置播放器
+                } else {//出错重置播放器
                     tv_music_info.setText("");
-                    tv_accompany.setEnabled(false);
-                    tv_accompany.setAlpha(0.45f);
                     if (mContext != null) {
                         RoundedCornersTransform transform = new RoundedCornersTransform(mContext, HifiveDisplayUtils.dip2px(mContext, 25));
                         Glide.with(mContext).asBitmap().load(R.mipmap.hifivesdk_icon_music_player_defaut)
@@ -401,9 +395,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                                 .into(iv_music);
                     }
                 }
-            } else if (type == HifiveDialogManageUtil.PALYINGMUSIC) {
-                updatePlayView();
-            } else if (type == HifiveDialogManageUtil.PALYINGCHANGEMUSIC) {
+            }else if (type == HifiveDialogManageUtil.CHANGEMUSIC) {
                 updatePlayView();
             }
         } catch (Exception e) {
@@ -415,7 +407,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private void clear() {
         cleanTimer();
         playProgress = 0;//重置播放进度
-        musicFile = null;//重置文件
         playUrl = "";//重置播放链接
         pb_play.setProgress(0);
         iv_play.setVisibility(VISIBLE);
@@ -458,22 +449,14 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                         .into(iv_music);//四周都是圆角的圆角矩形图片。
             }
         }
-        //当前歌曲有多个版本时支持切换原神和伴奏
-        if (playMusic.getVersion() != null && playMusic.getVersion().size() > 1) {
-            tv_accompany.setEnabled(true);
-            tv_accompany.setAlpha(1f);
-        } else {
-            tv_accompany.setEnabled(false);
-            tv_accompany.setAlpha(0.45f);
-        }
     }
 
     /**
      * 更新播放view
      */
     private void updatePlayView() {
-        MusicRecord playMusic = HifiveDialogManageUtil.getInstance().playMusic;
-        HQListen playMusicDetail = HifiveDialogManageUtil.getInstance().playMusicDetail;
+        MusicRecord playMusic = HifiveDialogManageUtil.getInstance().getPlayMusic();
+        HQListen playMusicDetail = HifiveDialogManageUtil.getInstance().getPlayMusicDetail();
         if (playMusic == null || playMusicDetail == null) {
             return;
         }

@@ -3,21 +3,17 @@ package com.hfopenmusic.sdk.util;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 
 import com.hfopen.sdk.entity.HQListen;
 import com.hfopen.sdk.entity.MusicRecord;
-import com.hfopen.sdk.entity.Version;
 import com.hfopen.sdk.hInterface.DataResponse;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopen.sdk.rx.BaseException;
 import com.hfopenmusic.sdk.ui.HifiveUpdateObservable;
 import com.hfopenmusic.sdk.ui.player.HFLivePlayer;
-import com.hfopenmusic.sdk.ui.player.HifivePlayerView;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -32,19 +28,14 @@ import java.util.List;
  * @author huchao
  */
 public class HifiveDialogManageUtil {
-    public static String field = "album,artist,musicTag";
     public HifiveUpdateObservable updateObservable;
     public static final int UPDATEPALY = 1;//通知相关页面更新当前播放歌曲
     public static final int UPDATEPALYLIST = 2;//通知相关页面更新当前播放列表
-    public static final int UPDATELIKELIST = 3;//通知相关页面更新喜欢列表
-    public static final int UPDATEKARAOKLIST = 4;//通知相关页面更新k歌列表
-    public static final int PALYINGMUSIC = 5;//通知播放器开始播放新歌曲
-    public static final int PALYINGCHANGEMUSIC = 6;//通知播放器改变播放模式
-    public static final int STOPPALYINGMUSIC = 7;//通知播放器停止播放
+    public static final int CHANGEMUSIC = 5;//通知播放器开始播放新歌曲
     private  static volatile  HifiveDialogManageUtil singleManage;
     private Toast toast;
-    public MusicRecord playMusic;//维护当前所播放的音乐，方便当前播放显示播放效果。
-    public HQListen playMusicDetail;//歌曲播放信息
+    private MusicRecord playMusic;//维护当前所播放的音乐，方便当前播放显示播放效果。
+    private HQListen playMusicDetail;//歌曲播放信息
     private List<MusicRecord> currentList;//维护当前播放的音乐列表
 
     private HifiveDialogManageUtil(){
@@ -94,12 +85,15 @@ public class HifiveDialogManageUtil {
     }
 
 
+    public void setPlayMusic(MusicRecord playMusic) {
+        this.playMusic = playMusic;
+    }
+
     public MusicRecord getPlayMusic() {
         return playMusic;
     }
-
-    public void setPlayMusic(MusicRecord playMusic) {
-        this.playMusic = playMusic;
+    public HQListen getPlayMusicDetail() {
+        return playMusicDetail;
     }
 
     public List<MusicRecord> getCurrentList() {
@@ -141,6 +135,34 @@ public class HifiveDialogManageUtil {
         getMusicDetail(activity,musicModel);
     }
 
+    //获取歌曲详情
+    public void getMusicDetail(final Activity activity, final MusicRecord musicModel){
+        try {
+            if (HFOpenApi.getInstance() == null)
+                return;
+
+            HFOpenApi.getInstance().hqListen(HFLivePlayer.listenType + "HQListen", musicModel.getMusicId(), null, null, new DataResponse<HQListen>() {
+                @Override
+                public void onError(@NotNull BaseException e) {
+                    if(currentList != null && currentList.size() >0){
+                        playNextMusic(activity);
+                    }else{
+                        cleanPlayMusic(true);
+                    }
+                }
+
+                @Override
+                public void onSuccess(HQListen hqListen, @NotNull String s) {
+                    updatePlayList(musicModel);
+                    playMusicDetail = hqListen;
+                    updateObservable.postNewPublication(CHANGEMUSIC);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     //获取歌曲详情成功后才添加到播放列表以及播放
     private void updatePlayList(MusicRecord musicModel){
         cleanPlayMusic(false);
@@ -166,7 +188,6 @@ public class HifiveDialogManageUtil {
     public void cleanPlayMusic(boolean isStop){
         playMusic = null;
         playMusicDetail = null;
-        deleteFile();
         if(isStop)
             updateObservable.postNewPublication(UPDATEPALY);
     }
@@ -203,39 +224,9 @@ public class HifiveDialogManageUtil {
         }
     }
 
-    private  List<MusicRecord> userSheetModels;//维护用户歌单列表
 
-    public List<MusicRecord> getUserSheetModels() {
-        return userSheetModels;
-    }
 
-    //获取歌曲详情
-    public void getMusicDetail(final Activity activity, final MusicRecord musicModel){
-        try {
-            if (HFOpenApi.getInstance() == null)
-                return;
 
-            HFOpenApi.getInstance().hqListen(HFLivePlayer.listenType + "HQListen", musicModel.getMusicId(), null, null, new DataResponse<HQListen>() {
-                @Override
-                public void onError(@NotNull BaseException e) {
-                    if(currentList != null && currentList.size() >0){
-                        playNextMusic(activity);
-                    }else{
-                        cleanPlayMusic(true);
-                    }
-                }
-
-                @Override
-                public void onSuccess(HQListen hqListen, @NotNull String s) {
-                    updatePlayList(musicModel);
-                    playMusicDetail = hqListen;
-                    updateObservable.postNewPublication(PALYINGMUSIC);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 
     //显示自定义toast信息
@@ -260,16 +251,5 @@ public class HifiveDialogManageUtil {
         playMusic = null;
         playMusicDetail = null;
         currentList = null;
-        userSheetModels =null;
-        deleteFile();
-    }
-    //删除伴奏文件
-    private void deleteFile() {
-        File file = HifivePlayerView.musicFile;
-        //切歌后删除上一首歌下载的伴奏
-        if(file != null && file.exists() && file.isFile()) {
-            if(file.delete()) Log.e("TAG", "文件删除成功");
-            else Log.e("TAG", "文件删除失败");
-        }
     }
 }
