@@ -66,7 +66,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
     }
     //初始化view
     private void initRecyclerView() {
-        adapter = new HifiveMusicListAdapter(getActivity(), new ArrayList<MusicRecord>());
+        adapter = new HifiveMusicListAdapter(getActivity(), new ArrayList<>());
         adapter.setOnRecyclerViewContentClick(new BaseRecyclerViewAdapter.OnRecyclerViewContentClick(){
             @Override
             public void OnContentClick(int position) {

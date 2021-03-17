@@ -29,6 +29,16 @@ public class HFLivePlayer {
     private static volatile HFLivePlayer mInstance;
     private WeakReference<FrameLayout> mContainer;
     public static boolean isAttached;
+
+    /**--------------播放类型----------*/
+    /** BGM音乐播放*/
+    public static final String TYPE_TRAFFIC = "Traffic";
+    /** 音视频作品BGM音乐播放*/
+    public static final String TYPE_UGC = "UGC";
+    /** K歌音乐播放 */
+    public static final String TYPE_K = "K";
+    public static String listenType = TYPE_TRAFFIC;
+
     private HFLivePlayer() {
 
     }
@@ -41,6 +51,11 @@ public class HFLivePlayer {
             }
         }
         return mInstance;
+    }
+    //设置音乐授权类型
+    public HFLivePlayer setListenType(String type) {
+        listenType = type;
+        return this;
     }
     //添加播放器view
     public HFLivePlayer showPlayer(FragmentActivity activity) {

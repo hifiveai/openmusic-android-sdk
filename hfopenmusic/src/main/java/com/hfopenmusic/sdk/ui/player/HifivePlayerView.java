@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.hfopen.sdk.entity.Desc;
+import com.hfopen.sdk.entity.HQListen;
 import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenmusic.sdk.R;
 import com.hfopenmusic.sdk.listener.HifivePlayListener;
@@ -370,7 +371,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         stopPlay();
         clear();
         //重新播放
-        updatePlayView(false);
+        updatePlayView();
     }
 
     //当前歌曲播放完成回调
@@ -423,13 +424,9 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                     }
                 }
             } else if (type == HifiveDialogManageUtil.PALYINGMUSIC) {
-                //歌词置空
-                tv_lyric_static.setText("");
-                lyric_dynamic_view.clearLyric();
-                lyric_dynamic_view.setVisibility(GONE);
-                updatePlayView(false);
+                updatePlayView();
             } else if (type == HifiveDialogManageUtil.PALYINGCHANGEMUSIC) {
-                updatePlayView(true);
+                updatePlayView();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -494,15 +491,23 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     }
 
     /**
-     * 更新播放view，下载歌词，播放音乐isChange表示是否是切换播放模式
-     *
-     * @param isChangePlayMode
+     * 更新播放view
      */
-    private void updatePlayView(boolean isChangePlayMode) {
-//        MusicRecord playMusicDetail = HifiveDialogManageUtil.getInstance().getPlayMusicDetail();
-//        if (playMusicDetail == null) {
-//            return;
-//        }
+    private void updatePlayView() {
+        MusicRecord playMusic = HifiveDialogManageUtil.getInstance().playMusic;
+        HQListen playMusicDetail = HifiveDialogManageUtil.getInstance().playMusicDetail;
+        if (playMusic == null || playMusicDetail == null) {
+            return;
+        }
+        //切换歌曲
+        if (playMusicDetail.getFileUrl() != null
+                && !TextUtils.isEmpty(playMusicDetail.getFileUrl())) {
+            playUrl = playMusicDetail.getFileUrl();
+            startPlayMusic(playUrl, true);//开始播放新歌曲
+        } else {
+            HifiveDialogManageUtil.getInstance().showToast(mContext, "歌曲地址有误");
+        }
+
     }
 
 

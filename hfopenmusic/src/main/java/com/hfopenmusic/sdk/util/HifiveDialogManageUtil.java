@@ -9,12 +9,18 @@ import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 
+import com.hfopen.sdk.entity.HQListen;
 import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopen.sdk.entity.Version;
+import com.hfopen.sdk.hInterface.DataResponse;
 import com.hfopen.sdk.manager.HFOpenApi;
+import com.hfopen.sdk.rx.BaseException;
 import com.hfopenmusic.sdk.ui.HifiveUpdateObservable;
+import com.hfopenmusic.sdk.ui.player.HFLivePlayer;
 import com.hfopenmusic.sdk.ui.player.HifivePlayerView;
 
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,6 +43,10 @@ public class HifiveDialogManageUtil {
     public static final int STOPPALYINGMUSIC = 7;//通知播放器停止播放
     private  static volatile  HifiveDialogManageUtil singleManage;
     private Toast toast;
+    public MusicRecord playMusic;//维护当前所播放的音乐，方便当前播放显示播放效果。
+    public HQListen playMusicDetail;//歌曲播放信息
+    private List<MusicRecord> currentList;//维护当前播放的音乐列表
+
     private HifiveDialogManageUtil(){
 
     }
@@ -82,7 +92,7 @@ public class HifiveDialogManageUtil {
             e.printStackTrace();
         }
     }
-    public MusicRecord playMusic;//维护当前所播放的音乐，方便当前播放显示播放效果。
+
 
     public MusicRecord getPlayMusic() {
         return playMusic;
@@ -91,10 +101,7 @@ public class HifiveDialogManageUtil {
     public void setPlayMusic(MusicRecord playMusic) {
         this.playMusic = playMusic;
     }
-    //因为同一首歌原声版和伴奏版的歌名可能不一样，所以需要同时维护两个对象，方便切换播放模式时，改变歌曲名字，
-    public MusicRecord playMusicDetail;//主版本的详情
-    public MusicRecord accompanyDetail;//伴奏的详情
-    private  List<MusicRecord> currentList;//维护当前播放的音乐列表
+
     public List<MusicRecord> getCurrentList() {
         return currentList;
     }
@@ -159,7 +166,6 @@ public class HifiveDialogManageUtil {
     public void cleanPlayMusic(boolean isStop){
         playMusic = null;
         playMusicDetail = null;
-        accompanyDetail = null;
         deleteFile();
         if(isStop)
             updateObservable.postNewPublication(UPDATEPALY);
@@ -209,30 +215,23 @@ public class HifiveDialogManageUtil {
             if (HFOpenApi.getInstance() == null)
                 return;
 
+            HFOpenApi.getInstance().hqListen(HFLivePlayer.listenType + "HQListen", musicModel.getMusicId(), null, null, new DataResponse<HQListen>() {
+                @Override
+                public void onError(@NotNull BaseException e) {
+                    if(currentList != null && currentList.size() >0){
+                        playNextMusic(activity);
+                    }else{
+                        cleanPlayMusic(true);
+                    }
+                }
 
-
-//            HFLiveApi.getInstance().getMusicDetail(activity, musicModel.getMusicId(), null,
-//                    mediaType, null, null, field, new DataResponse<HifiveMusicDetailModel>() {
-//                        @Override
-//                        public void errorMsg(@NotNull String string, @Nullable Integer code) {
-//                            showToast(activity,string);
-//                            //454 版权过期
-//                            if(code != null && code == 454 && currentList != null){
-//                                currentList.remove(musicModel);
-//                            }
-//                            if(currentList != null && currentList.size() >0 && code != null && code == 454 ){
-//                                playNextMusic(activity);
-//                            }else{
-//                                cleanPlayMusic(true);
-//                            }
-//                        }
-//                        @Override
-//                        public void data(@NotNull HifiveMusicDetailModel any) {
-//                            updatePlayList(musicModel);
-//                            updatePlayMusicDetail(any);
-//                            updateObservable.postNewPublication(PALYINGMUSIC);
-//                        }
-//                    });
+                @Override
+                public void onSuccess(HQListen hqListen, @NotNull String s) {
+                    updatePlayList(musicModel);
+                    playMusicDetail = hqListen;
+                    updateObservable.postNewPublication(PALYINGMUSIC);
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -260,7 +259,6 @@ public class HifiveDialogManageUtil {
     public  void clearData() {
         playMusic = null;
         playMusicDetail = null;
-        accompanyDetail = null;
         currentList = null;
         userSheetModels =null;
         deleteFile();
