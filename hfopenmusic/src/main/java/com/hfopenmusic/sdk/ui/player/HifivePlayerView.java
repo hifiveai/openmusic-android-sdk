@@ -76,7 +76,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private TextView tv_accompany;
     private CheckBox cb_lyric;
     private ImageView iv_last;
-    private FrameLayout fl_play;//播放进度的layout
     private SeekBar pb_play;
     private ImageView iv_play;
     private FrameLayout fl_download;//下载伴奏的layout
@@ -133,7 +132,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         tv_accompany = findViewById(R.id.tv_accompany);
         cb_lyric = findViewById(R.id.cb_lyric);
         iv_last = findViewById(R.id.iv_last);
-        fl_play = findViewById(R.id.fl_play);
         pb_play = findViewById(R.id.pb_play);
         iv_play = findViewById(R.id.iv_play);
         fl_download = findViewById(R.id.fl_download);
@@ -205,44 +203,23 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         });
     }
 
-
-
-    //设置歌曲名称
-    private void setMusicName(MusicRecord playMusicDetail) {
-        if (playMusicDetail != null) {
-            StringBuilder info = new StringBuilder();
-            if (!TextUtils.isEmpty(playMusicDetail.getMusicName())) {
-                info.append(playMusicDetail.getMusicName());
-            }
-            if (playMusicDetail.getArtist() != null && playMusicDetail.getArtist().size() > 0) {
-                for (Desc authorModel : playMusicDetail.getArtist()) {
-                    if (info.length() > 0) {
-                        info.append("-");
-                    }
-                    info.append(authorModel.getName());
-                }
-            }
-            tv_music_info.setText(info.toString());
-        }
-    }
-
     //显示加载view
     private void showLoadView() {
-        fl_play.setVisibility(GONE);
+        iv_play.setVisibility(GONE);
         fl_download.setVisibility(GONE);
         fl_loading.setVisibility(VISIBLE);
     }
 
     //显示播放view
     private void showPlayView() {
-        fl_play.setVisibility(VISIBLE);
+        iv_play.setVisibility(VISIBLE);
         fl_loading.setVisibility(GONE);
         fl_download.setVisibility(GONE);
     }
 
     //显示下载view
     private void showDownLoadView() {
-        fl_play.setVisibility(GONE);
+        iv_play.setVisibility(GONE);
         fl_loading.setVisibility(GONE);
         fl_download.setVisibility(VISIBLE);
     }
@@ -322,6 +299,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 if (playerUtils != null && playerUtils.isPlaying()) {
                     playProgress = playerUtils.progress();
                     pb_play.setProgress(playProgress);
+                    pb_play.setSecondaryProgress( playProgress + 5000);
                 }
             }
         };
@@ -440,7 +418,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         musicFile = null;//重置文件
         playUrl = "";//重置播放链接
         pb_play.setProgress(0);
-        fl_play.setVisibility(VISIBLE);
+        iv_play.setVisibility(VISIBLE);
         fl_download.setVisibility(GONE);
         fl_loading.setVisibility(GONE);
         //清空动画

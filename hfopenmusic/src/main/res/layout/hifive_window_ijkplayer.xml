@@ -117,21 +117,17 @@
                     android:layout_height="30dp"
                     android:src="@mipmap/hifivesdk_icon_player_last" />
 
-                <FrameLayout
-                    android:id="@+id/fl_play"
+
+                <ImageView
+                    android:id="@+id/iv_play"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
                     android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp">
+                    android:layout_marginEnd="10dp"
+                    android:src="@mipmap/hifivesdk_icon_player_suspend" />
 
-                    <ImageView
-                        android:id="@+id/iv_play"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/hifivesdk_icon_player_suspend" />
-                </FrameLayout>
 
                 <FrameLayout
                     android:id="@+id/fl_download"
@@ -199,9 +195,9 @@
                 android:max="100"
                 android:maxHeight="2dp"
                 android:minHeight="2dp"
-                android:progress="50"
+                android:progress="0"
                 android:progressDrawable="@drawable/seek_bar_progress_style"
-                android:secondaryProgress="70"
+                android:secondaryProgress="0"
                 android:thumb="@drawable/hifive_thumb_progress"
                 android:thumbOffset="0dp" />
         </FrameLayout>
