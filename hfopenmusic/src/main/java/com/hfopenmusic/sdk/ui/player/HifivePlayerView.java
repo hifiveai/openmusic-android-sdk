@@ -222,7 +222,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
                 }
             }
         }
-        StartAnimationPlay();
+        startAnimationPlay();
     }
 
     /**
@@ -255,7 +255,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         if (!isPlay) {
             iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_play);
             isPlay = true;
-            StartAnimationPlay();
+            startAnimationPlay();
         }
     }
 
@@ -288,7 +288,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     }
 
     //开始播放动画
-    private void StartAnimationPlay() {
+    private void startAnimationPlay() {
         //构造ObjectAnimator对象的方法
         rotateAnim = ObjectAnimator.ofFloat(iv_music, "rotation", 0.0F, 360.0F);
         rotateAnim.setRepeatCount(ValueAnimator.INFINITE);
