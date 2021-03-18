@@ -25,7 +25,8 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        // 这里添加
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -39,6 +40,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+
 
     packagingOptions {
         exclude 'META-INF/*.kotlin_module'
@@ -61,9 +64,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-//    api "com.hifive.sdk:liveplayer-androidx:1.0.0"
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    // 引入multidex库
+    implementation 'com.android.support:multidex:1.0.3'
 
     implementation project(path: ':hfopenmusic')
+    implementation project(path: ':hfopenplayer')
 //    //开发者必须导入的包
 //    api "io.reactivex.rxjava2:rxjava:2.2.10"
 //    api "io.reactivex.rxjava2:rxandroid:2.1.1"

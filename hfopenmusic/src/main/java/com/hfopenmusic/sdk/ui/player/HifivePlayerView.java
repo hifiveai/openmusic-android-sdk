@@ -51,7 +51,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private int marginBottom = 0;//滑动范围底部的间距限制默认为0，
     private DraggableLinearLayout dragLayout;
     private FrameLayout fl_lyric;
-    private TextView tv_lyric_static;
     private FrameLayout ll_player;
     private ImageView iv_music;
     private TextView tv_music_info;
@@ -60,12 +59,9 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private ImageView iv_last;
     private SeekBar pb_play;
     private ImageView iv_play;
-    private FrameLayout fl_download;//下载伴奏的layout
-    private TextView tv_download;
     private FrameLayout fl_loading;//加载中的layout
     private ImageView iv_next;
     private ImageView iv_back;
-    private LyricDynamicView lyric_dynamic_view;
     private boolean isPlay;//是否正在播放
     private boolean isError;//判断是否播放出错
     private final FragmentActivity mContext;
@@ -103,9 +99,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         dragLayout.setMarginTop(marginTop);
         dragLayout.setMarginBottom(marginBottom);
         fl_lyric = findViewById(R.id.fl_lyric);
-        tv_lyric_static = findViewById(R.id.tv_lyric_static);
-        tv_lyric_static.setMovementMethod(new ScrollingMovementMethod());
-        lyric_dynamic_view = findViewById(R.id.lyric_dynamic_view);
         ll_player = findViewById(R.id.ll_player);
         iv_music = findViewById(R.id.iv_music);
         tv_music_info = findViewById(R.id.tv_music_info);
@@ -115,8 +108,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         iv_last = findViewById(R.id.iv_last);
         pb_play = findViewById(R.id.pb_play);
         iv_play = findViewById(R.id.iv_play);
-        fl_download = findViewById(R.id.fl_download);
-        tv_download = findViewById(R.id.tv_download);
         fl_loading = findViewById(R.id.fl_loading);
         iv_next = findViewById(R.id.iv_next);
         iv_back = findViewById(R.id.iv_back);
@@ -187,7 +178,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     //显示加载view
     private void showLoadView() {
         iv_play.setVisibility(GONE);
-        fl_download.setVisibility(GONE);
         fl_loading.setVisibility(VISIBLE);
     }
 
@@ -195,14 +185,12 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private void showPlayView() {
         iv_play.setVisibility(VISIBLE);
         fl_loading.setVisibility(GONE);
-        fl_download.setVisibility(GONE);
     }
 
     //显示下载view
     private void showDownLoadView() {
         iv_play.setVisibility(GONE);
         fl_loading.setVisibility(GONE);
-        fl_download.setVisibility(VISIBLE);
     }
 
     /**
@@ -392,7 +380,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         playUrl = "";//重置播放链接
         pb_play.setProgress(0);
         iv_play.setVisibility(VISIBLE);
-        fl_download.setVisibility(GONE);
         fl_loading.setVisibility(GONE);
         //清空动画
         if (rotateAnim != null) {
