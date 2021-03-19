@@ -501,7 +501,7 @@ HFOpenApi.getInstance().orderAuthorization(CompanyName: String?,
                            Brand: String?,
                            Period: Int?,
                            Area: String?,
-                           orderIds: String?,
+                           OrderIds: String?,
                            response: DataResponse<OrderAuthorization>
     )
 ```
@@ -539,12 +539,12 @@ WorkId | 否 | 公司自己生成的作品id,多个以“,”拼接 |
 ##### 3.24 BGM音乐数据上报
 
 ```
-HFOpenApi.getInstance().trafficReportListen(musicId: String?,
-                                                    duration: Long,
-                                                    timestamp: Long,
-                                                    audioFormat: String?,
-                                                    audioRate: String?,
-                                                    response: DataResponse<Any>
+HFOpenApi.getInstance().trafficReportListen(MusicId: String?,
+                                           Duration: Long,
+                                           Timestamp: Long,
+                                           AudioFormat: String?,
+                                           AudioRate: String?,
+                                           response: DataResponse<Any>
                             )
 ```
 
@@ -559,11 +559,11 @@ audioRate	 |  否 | 音频码率 音质 | 320 / 128|
 ##### 3.24 音视频音乐数据上报
 
 ```
-HFOpenApi.getInstance().ugcReportListen(musicId: String?,
-                                                    duration: Long,
-                                                    timestamp: Long,
-                                                    audioFormat: String?,
-                                                    audioRate: String?,
+HFOpenApi.getInstance().ugcReportListen(MusicId: String?,
+                                                    Duration: Long,
+                                                    Timestamp: Long,
+                                                    AudioFormat: String?,
+                                                    AudioRate: String?,
                                                     response: DataResponse<Any>
                             )
 ```
@@ -579,12 +579,12 @@ audioRate	 |  否 | 音频码率 音质 | 320 / 128|
 ##### 3.24 K歌音乐数据上报
 
 ```
-HFOpenApi.getInstance().kReportListen(musicId: String?,
-                                                    duration: Long,
-                                                    timestamp: Long,
-                                                    audioFormat: String?,
-                                                    audioRate: String?,
-                                                    response: DataResponse<Any>
+HFOpenApi.getInstance().kReportListen(MusicId: String?,
+                                      Duration: Long,
+                                      Timestamp: Long,
+                                      AudioFormat: String?,
+                                      AudioRate: String?,
+                                      response: DataResponse<Any>
                             )
 ```
 

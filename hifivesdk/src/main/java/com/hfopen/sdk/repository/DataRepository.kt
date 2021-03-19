@@ -158,14 +158,14 @@ class DataRepository constructor() {
     }
 
 
-    fun report(musicId: String?,
-               duration: Long??,
-               timestamp: Long??,
-               audioFormat: String?,
-               audioRate: String?,
-               Action :String?
+    fun report(MusicId: String,
+               Duration: Int,
+               Timestamp: Long,
+               AudioFormat: String,
+               AudioRate: String,
+               Action :String
     ): Flowable<Any> {
-        return LiveRetrofitFactory.api().report(musicId, duration, timestamp,audioFormat,audioRate, Action).convert()
+        return LiveRetrofitFactory.api().report(MusicId, Duration, Timestamp,AudioFormat,AudioRate, Action).convert()
     }
 
 }

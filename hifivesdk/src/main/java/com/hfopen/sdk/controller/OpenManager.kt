@@ -420,14 +420,14 @@ class OpenManager() {
     }
 
     fun reportListen(Action: String,
-                     musicId: String?,
-                     duration: Long,
-                     timestamp: Long,
-                     audioFormat: String?,
-                     audioRate: String?,
+                     MusicId: String,
+                     Duration: Int,
+                     Timestamp: Long,
+                     AudioFormat: String,
+                     AudioRate: String,
                      response: DataResponse<Any>
     ) {
-        return mService.report(musicId, duration, timestamp, audioFormat, audioRate, Action)
+        return mService.report(MusicId, Duration, Timestamp, AudioFormat, AudioRate, Action)
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
                         response.onSuccess(t, BaseConstance.taskId)
@@ -435,14 +435,14 @@ class OpenManager() {
                 })
     }
 
-    fun trafficReportListen(musicId: String?,
-                            duration: Long,
-                            timestamp: Long,
-                            audioFormat: String?,
-                            audioRate: String?,
+    fun trafficReportListen(MusicId: String,
+                            Duration: Int,
+                            Timestamp: Long,
+                            AudioFormat: String,
+                            AudioRate: String,
                             response: DataResponse<Any>
     ) {
-        return mService.report(musicId, duration, timestamp, audioFormat, audioRate, "TrafficReportListen")
+        return mService.report(MusicId, Duration, Timestamp, AudioFormat, AudioRate, "TrafficReportListen")
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
                         response.onSuccess(t, BaseConstance.taskId)
@@ -450,14 +450,14 @@ class OpenManager() {
                 })
     }
 
-    fun ugcReportListen(musicId: String?,
-                        duration: Long,
-                        timestamp: Long,
-                        audioFormat: String?,
-                        audioRate: String?,
+    fun ugcReportListen(MusicId: String,
+                        Duration: Int,
+                        Timestamp: Long,
+                        AudioFormat: String,
+                        AudioRate: String,
                         response: DataResponse<Any>
     ) {
-        return mService.report(musicId, duration, timestamp, audioFormat, audioRate, "UGCReportListen")
+        return mService.report(MusicId, Duration, Timestamp, AudioFormat, AudioRate, "UGCReportListen")
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
                         response.onSuccess(t, BaseConstance.taskId)
@@ -465,14 +465,14 @@ class OpenManager() {
                 })
     }
 
-    fun kReportListen(musicId: String?,
-                      duration: Long,
-                      timestamp: Long,
-                      audioFormat: String?,
-                      audioRate: String?,
+    fun kReportListen(MusicId: String,
+                      Duration: Int,
+                      Timestamp: Long,
+                      AudioFormat: String,
+                      AudioRate: String,
                       response: DataResponse<Any>
     ) {
-        return mService.report(musicId, duration, timestamp, audioFormat, audioRate, "KReportListen")
+        return mService.report(MusicId, Duration, Timestamp, AudioFormat, AudioRate, "KReportListen")
                 .request(object : BaseSubscribe<Any>(response) {
                     override fun _onNext(t: Any) {
                         response.onSuccess(t, BaseConstance.taskId)

@@ -214,7 +214,7 @@ interface Api {
     @FormUrlEncoded
     @POST("/")
     fun report(@Field("MusicId") musicId: String?,
-               @Field("Duration") duration: Long?,
+               @Field("Duration") duration: Int?,
                @Field("Timestamp") timestamp: Long?,
                @Field("AudioFormat") audioFormat: String?,
                @Field("AudioRate") audioRate: String?,

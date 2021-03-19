@@ -155,13 +155,13 @@ class ServiceImpl constructor() : Service {
         return dataRepository.orderPublish(Action,OrderId, WorkId)
     }
 
-    fun report(musicId: String?,
-               duration: Long,
-               timestamp: Long,
-               audioFormat: String?,
-               audioRate: String?,
-               Action :String?
+    fun report(MusicId: String,
+               Duration: Int,
+               Timestamp: Long,
+               AudioFormat: String,
+               AudioRate: String,
+               Action :String
     ): Flowable<Any> {
-        return dataRepository.report(musicId, duration, timestamp, audioFormat,audioRate, Action)
+        return dataRepository.report(MusicId, Duration, Timestamp, AudioFormat,AudioRate, Action)
     }
 }
