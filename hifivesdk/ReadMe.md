@@ -513,7 +513,7 @@ ProjectName	 | 是 | 项目名称 |  - |
 Brand | 是 | 项目品牌 | - |
 Period | 是 |授权期限（0:半年、1:1年、2:2年、3:3年、4:随片永久） | （0:半年、1:1年、2:2年、3:3年、4:随片永久）|
 Area	 |  是 | 授权地区（0:中国大陆、1:大中华、2:全球） | （0:中国大陆、1:大中华、2:全球）|
-orderIds |  是 | 授权订单ID列表，多个ID用","隔开 |  - |
+OrderIds |  是 | 授权订单ID列表，多个ID用","隔开 |  - |
 
 
 
@@ -542,19 +542,19 @@ WorkId | 否 | 公司自己生成的作品id,多个以“,”拼接 |
 HFOpenApi.getInstance().trafficReportListen(MusicId: String?,
                                            Duration: Long,
                                            Timestamp: Long,
-                                           AudioFormat: String?,
-                                           AudioRate: String?,
+                                           AudioFormat: String,
+                                           AudioRate: String,
                                            response: DataResponse<Any>
                             )
 ```
 
 参数  | 必填  |描述| 可选值|
 ---|---|---|---
-musicId | 是 |  音乐id | - |
-duration	 | 是 | 播放时长 |  - |
-timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
-audioFormat | 否 |音频格式 文件编码, | mp3 / aac |
-audioRate	 |  否 | 音频码率 音质 | 320 / 128|
+MusicId | 是 |  音乐id | - |
+Duration	 | 是 | 播放时长 |  - |
+Timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
+AudioFormat | 否 |音频格式 文件编码, | mp3 / aac |
+AudioRate	 |  否 | 音频码率 音质 | 320 / 128|
 
 ##### 3.24 音视频音乐数据上报
 
@@ -562,19 +562,19 @@ audioRate	 |  否 | 音频码率 音质 | 320 / 128|
 HFOpenApi.getInstance().ugcReportListen(MusicId: String?,
                                                     Duration: Long,
                                                     Timestamp: Long,
-                                                    AudioFormat: String?,
-                                                    AudioRate: String?,
+                                                    AudioFormat: String,
+                                                    AudioRate: String,
                                                     response: DataResponse<Any>
                             )
 ```
 
 参数  | 必填  |描述| 可选值|
 ---|---|---|---
-musicId | 是 |  音乐id | - |
-duration	 | 是 | 播放时长 |  - |
-timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
-audioFormat | 否 |音频格式 文件编码, | mp3 / aac |
-audioRate	 |  否 | 音频码率 音质 | 320 / 128|
+MusicId | 是 |  音乐id | - |
+Duration	 | 是 | 播放时长 |  - |
+Timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
+AudioFormat | 否 |音频格式 文件编码, | mp3 / aac |
+AudioRate	 |  否 | 音频码率 音质 | 320 / 128|
 
 ##### 3.24 K歌音乐数据上报
 
@@ -582,29 +582,20 @@ audioRate	 |  否 | 音频码率 音质 | 320 / 128|
 HFOpenApi.getInstance().kReportListen(MusicId: String?,
                                       Duration: Long,
                                       Timestamp: Long,
-                                      AudioFormat: String?,
-                                      AudioRate: String?,
+                                      AudioFormat: String,
+                                      AudioRate: String,
                                       response: DataResponse<Any>
                             )
 ```
 
 参数  | 必填  |描述| 可选值|
 ---|---|---|---
-musicId | 是 |  音乐id | - |
-duration	 | 是 | 播放时长 |  - |
-timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
-audioFormat | 否 |音频格式 文件编码, | mp3 / aac |
-audioRate	 |  否 | 音频码率 音质 | 320 / 128|
+MusicId | 是 |  音乐id | - |
+Duration	 | 是 | 播放时长 |  - |
+Timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
+AudioFormat | 否 |音频格式 文件编码, | mp3 / aac |
+AudioRate	 |  否 | 音频码率 音质 | 320 / 128|
 
-
-
-参数  | 必填  |描述| 可选值|
----|---|---|---
-musicId | 是 |  音乐id | - |
-duration	 | 是 | 播放时长 |  - |
-timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
-audioFormat | 否 |音频格式 文件编码, | mp3 / aac |
-audioRate	 |  否 | 音频码率 音质 | 320 / 128|
 
 ## 四、API状态码
 

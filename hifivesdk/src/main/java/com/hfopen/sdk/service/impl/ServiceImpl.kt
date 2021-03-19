@@ -160,7 +160,7 @@ class ServiceImpl constructor() : Service {
                Timestamp: Long,
                AudioFormat: String,
                AudioRate: String,
-               Action :String
+               Action :String?
     ): Flowable<Any> {
         return dataRepository.report(MusicId, Duration, Timestamp, AudioFormat,AudioRate, Action)
     }

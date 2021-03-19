@@ -163,7 +163,7 @@ class DataRepository constructor() {
                Timestamp: Long,
                AudioFormat: String,
                AudioRate: String,
-               Action :String
+               Action :String?
     ): Flowable<Any> {
         return LiveRetrofitFactory.api().report(MusicId, Duration, Timestamp,AudioFormat,AudioRate, Action).convert()
     }
