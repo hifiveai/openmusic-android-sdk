@@ -101,7 +101,7 @@ class ServiceImpl constructor() : Service {
                          AudioFormat: String?,
                          AudioRate: String?,
                          Action :String?
-    ): Flowable<TrafficHQListen> {
+    ): Flowable<HQListen> {
         return dataRepository.trafficHQListen(MusicId,AudioFormat,AudioRate,Action)
     }
 

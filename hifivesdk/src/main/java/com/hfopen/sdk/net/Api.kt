@@ -115,7 +115,7 @@ interface Api {
                         @Query("AudioFormat") AudioFormat: String?,
                         @Query("AudioRate") AudioRate: String?,
                         @Query("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<TrafficHQListen>>
+    ): Flowable<BaseResp<HQListen>>
 
     /**
      * 获取音乐混音播放信息

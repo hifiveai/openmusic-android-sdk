@@ -27,11 +27,11 @@ data class TrialMusic(
 )
 
 
-data class TrafficHQListen(
-    val expires: Long,
-    val fileSize: Int,
-    val fileUrl: String,
-    val musicId: String
+data class HQListen(
+    val expires: Long?,
+    val fileSize: Int?,
+    val fileUrl: String?,
+    val musicId: String?
 )
 
 data class TrafficListenMixed(
@@ -130,7 +130,51 @@ data class MusicRecord(
         val musicName: String,
         val tag: List<Tag>?,
         val version: List<Version>?
-)
+){
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as MusicRecord
+
+        if (albumId != other.albumId) return false
+        if (albumName != other.albumName) return false
+        if (arranger != other.arranger) return false
+        if (artist != other.artist) return false
+        if (auditionBegin != other.auditionBegin) return false
+        if (auditionEnd != other.auditionEnd) return false
+        if (author != other.author) return false
+        if (bpm != other.bpm) return false
+        if (composer != other.composer) return false
+        if (cover != other.cover) return false
+        if (duration != other.duration) return false
+        if (musicId != other.musicId) return false
+        if (musicName != other.musicName) return false
+        if (tag != other.tag) return false
+        if (version != other.version) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = albumId.hashCode()
+        result = 31 * result + albumName.hashCode()
+        result = 31 * result + (arranger?.hashCode() ?: 0)
+        result = 31 * result + (artist?.hashCode() ?: 0)
+        result = 31 * result + auditionBegin
+        result = 31 * result + auditionEnd
+        result = 31 * result + (author?.hashCode() ?: 0)
+        result = 31 * result + bpm
+        result = 31 * result + (composer?.hashCode() ?: 0)
+        result = 31 * result + (cover?.hashCode() ?: 0)
+        result = 31 * result + duration
+        result = 31 * result + musicId.hashCode()
+        result = 31 * result + musicName.hashCode()
+        result = 31 * result + (tag?.hashCode() ?: 0)
+        result = 31 * result + (version?.hashCode() ?: 0)
+        return result
+    }
+}
 
 data class Cover(
         val size: String,

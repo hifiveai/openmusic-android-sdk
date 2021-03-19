@@ -139,7 +139,91 @@ HFOpenApi.configCallBack(HFOpenCallback callback);
 callback | 是| SDK全局回调|
 
 
-##### 3.3 获取Token
+##### 3.3 电台列表
+
+
+```
+HFOpenApi.getInstance().channel(response: DataResponse<ArrayList<ChannelItem>>)
+```
+
+##### 3.4 电台获取歌单列表
+
+```
+HFOpenApi.getInstance().channelSheet(GroupId: String?,
+                     Language: Int?,
+                     RecoNum: Int?,
+                     Page: Int?,
+                     PageSize: Int?,
+                    response: DataResponse<ChannelSheet>)
+```
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+GroupId | 否| 电台id | - |
+Language | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文|
+RecoNum | 否|推荐音乐数|0～10 | - |
+Page | 否| 当前页码，默认为1|大于0的整数| - |
+PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
+
+
+##### 3.5 歌单获取音乐列表
+
+```
+HFOpenApi.getInstance().sheetMusic( SheetId: Long?,
+                       Language: Int?,
+                       Page: Int?,
+                       PageSize: Int?,
+                        response: DataResponse<SheetMusic>)
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+SheetId | 是| 歌单id | - |
+Language | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文|
+Page | 否| 当前页码，默认为1|大于0的整数
+PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
+
+
+##### 3.6 组合搜索
+
+```
+HFOpenApi.getInstance().searchMusic(TagIds: String?,
+                    priceFromCent: Long?,
+                    priceToCent: Long?,
+                    BpmForm: Int?,
+                    BpmTo: Int?,
+                    DurationFrom: Int?,
+                    DurationTo: Int?,
+                    Keyword: String?,
+                    Language: Int?,
+                    Page: Int?,
+                    PageSize: Int?,
+                    response: DataResponse<SearchMusic>
+    )
+```
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+TagIds | 否| 标签Id，多个Id以“,”拼接 | - |
+priceFromCent | 否| 价格区间的最低值，单位分 |  - |
+priceToCent | 否| 价格区间的最高值，单位分 | - |
+BpmForm | 否| BPM区间的最低值| - |
+BpmTo	 | 否| BPM区间的最高值| - |
+DurationFrom	 | 否| 时长区间的最低值,单位秒 |  - |
+DurationTo	 | 否| 时长区间的最高值,单位秒| - |
+Keyword	 | 否| 搜索关键词，搜索条件歌名、专辑名、艺人名、标签名| - |
+Language | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文|
+Page | 否| 当前页码，默认为1|大于0的整数| - |
+PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
+
+
+##### 3.7 音乐配置信息
+
+```
+HFOpenApi.getInstance().musicConfig(response: DataResponse<MusicConfig>)
+```
+
+##### 3.8 获取Token
+
+>在接口行为采集、猜你喜欢和单笔付费场景等接口中使用。
 
 ```
 HFOpenApi.getInstance().baseLogin(Nickname: String?,
@@ -180,238 +264,8 @@ FavoriteGenre	 | 否| 喜欢的音乐流派Id，多个用英文逗号拼接| - |
 大学	 | 4| - |
 硕士及以上	 | 5| - |
 
-##### 3.4 电台列表
 
-
-```
-HFOpenApi.getInstance().channel(response: DataResponse<ArrayList<ChannelItem>>)
-```
-
-##### 3.5 电台获取歌单列表
-
-```
-HFOpenApi.getInstance().channelSheet(GroupId: String?,
-                     Language: Int?,
-                     RecoNum: Int?,
-                     Page: Int?,
-                     PageSize: Int?,
-                    response: DataResponse<ChannelSheet>)
-```
-参数  | 必填  |描述| 可选值|
----|---|---|---
-GroupId | 否| 电台id | - |
-Language | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文|
-RecoNum | 否|推荐音乐数|0～10 | - |
-Page | 否| 当前页码，默认为1|大于0的整数| - |
-PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
-
-
-##### 3.6 歌单获取音乐列表
-
-```
-HFOpenApi.getInstance().sheetMusic( SheetId: Long?,
-                       Language: Int?,
-                       Page: Int?,
-                       PageSize: Int?,
-                        response: DataResponse<SheetMusic>)
-```
-
-参数  | 必填  |描述| 可选值|
----|---|---|---
-SheetId | 是| 歌单id | - |
-Language | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文|
-Page | 否| 当前页码，默认为1|大于0的整数
-PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
-
-
-##### 3.7 组合搜索
-
-```
-HFOpenApi.getInstance().searchMusic(TagIds: String?,
-                    priceFromCent: Long?,
-                    priceToCent: Long?,
-                    BpmForm: Int?,
-                    BpmTo: Int?,
-                    DurationFrom: Int?,
-                    DurationTo: Int?,
-                    Keyword: String?,
-                    Language: Int?,
-                    Page: Int?,
-                    PageSize: Int?,
-                    response: DataResponse<SearchMusic>
-    )
-```
-参数  | 必填  |描述| 可选值|
----|---|---|---
-TagIds | 否| 标签Id，多个Id以“,”拼接 | - |
-priceFromCent | 否| 价格区间的最低值，单位分 |  - |
-priceToCent | 否| 价格区间的最高值，单位分 | - |
-BpmForm | 否| BPM区间的最低值| - |
-BpmTo	 | 否| BPM区间的最高值| - |
-DurationFrom	 | 否| 时长区间的最低值,单位秒 |  - |
-DurationTo	 | 否| 时长区间的最高值,单位秒| - |
-Keyword	 | 否| 搜索关键词，搜索条件歌名、专辑名、艺人名、标签名| - |
-Language | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文|
-Page | 否| 当前页码，默认为1|大于0的整数| - |
-PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
-
-
-##### 3.8 音乐配置信息
-
-```
-HFOpenApi.getInstance().musicConfig(response: DataResponse<MusicConfig>)
-```
-
-
-#####  3.9 猜你喜欢
-
-> 注意：此接口需先调用BaseLogin接口获取token
-
-```
-HFOpenApi.getInstance().baseFavorite(Page: Int?,
-                     PageSize: Int?,
-                     response: DataResponse<BaseFavorite>
-    )
-```
-参数  | 必填  |描述| 可选值|
----|---|---|---
-Page | 否| 当前页码，默认为1|大于0的整数|
-PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
-
-
-##### 3.10 热门推荐
-
-```
-HFOpenApi.getInstance().baseHot(StartTime: Long?,
-                Duration: Int?,
-                Page: Int?,
-                PageSize: Int?,
-                response: DataResponse<BaseHot>
-    )
-```
-
-参数  | 必填  |描述| 可选值|
----|---|---|---
-StartTime | 是| 10位秒级时间戳| - |
-Duration	 | 是| 距离StartTime过去的天数 | 1～365|
-Page | 否| 当前页码，默认为1|大于0的整数|
-PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
-
-
-##### 3.11 歌曲试听
-
-```
-HFOpenApi.getInstance().trial(MusicId: String?,
-              response: DataResponse<TrialMusic>
-    )
-```
-参数  | 必填  |描述| 
----|---|---
-MusicId | 是| 音乐id|
-
-
-##### 3.12 获取音乐HQ播放信息
-
-```
-HFOpenApi.getInstance().trafficHQListen(MusicId: String?,
-                        AudioFormat: String?,
-                        AudioRate: String?,
-                        response: DataResponse<TrafficHQListen>
-    )
-
-```
-
-参数  | 必填  |描述| 可选值|
----|---|---|---
-MusicId | 是| 音乐id | - |
-AudioFormat	 | 否| 文件编码,默认mp3 | mp3 / aac|
-AudioRate | 否| 音质，音乐播放时的比特率，默认320 |320 / 128|
-
-
-##### 3.13 获取音乐混音播放信息
-
-```
-HFOpenApi.getInstance().trafficListenMixed(MusicId: String?,
-                           response: DataResponse<TrafficListenMixed>
-    )
-
-```
-
-参数  | 必填  |描述| 
----|---|---
-MusicId | 是| 音乐id |
-
-
-
-##### 3.14 购买音乐
-
-```
-HFOpenApi.getInstance().orderMusic(Subject: String?,
-                   OrderId: Long?,
-                   Deadline: Int?,
-                   Music: String?,
-                   Language: Int?,
-                   AudioFormat: String?,
-                   AudioRate: String?,
-                   TotalFee: Int?,
-                   Remark: String?,
-                   WorkId: String?,
-                   response: DataResponse<OrderMusic>
-    )
-```
-
-参数  | 必填  |描述| 可选值|
----|---|---|---
-Subject | 是| 商品描述 | - |
-OrderId	 | 是| 公司自己生成的订单id |  - |
-Deadline | 是| 作品授权时长，以天为单位，0代表永久授权 | - |
-Music | 是| 购买详情，encode转化后的json字符串 （musicId->音乐id；price->音乐单价，单位分；num->购买数量） | - |
-Language	 | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文|
-AudioFormat | 否| 文件编码,默认mp3 | mp3 / aac|
-AudioRate | 否| 音质，音乐播放时的比特率，默认320 |320 / 128|
-TotalFee	 | 是| 售出总价，单位：分 |  - |
-Remark | 否| 备注，最多不超过255字符 | - |
-WorkId | 否| 公司自己生成的作品id,多个以“,”拼接 | - |
-
-
-##### 3.15 查询订单
-
-```
-HFOpenApi.getInstance().orderDetail(OrderId: String?,
-                    response: DataResponse<OrderMusic>
-    ) 
-```
-
-参数  | 必填  |描述| 可选值|
----|---|---|---
-OrderId	 | 是| 公司自己生成的订单id |  - |
-
-
-##### 3.16 下载授权书
-
-```
-HFOpenApi.getInstance().orderAuthorization(CompanyName: String?,
-                           ProjectName: String?,
-                           Brand: String?,
-                           Period: Int?,
-                           Area: String?,
-                           orderIds: String?,
-                           response: DataResponse<OrderAuthorization>
-    )
-```
-
-参数  | 必填  |描述| 可选值|
----|---|---|---
-CompanyName | 是 | 公司名称 | - |
-ProjectName	 | 是 | 项目名称 |  - |
-Brand | 是 | 项目品牌 | - |
-Period | 是 |授权期限（0:半年、1:1年、2:2年、3:3年、4:随片永久） | （0:半年、1:1年、2:2年、3:3年、4:随片永久）|
-Area	 |  是 | 授权地区（0:中国大陆、1:大中华、2:全球） | （0:中国大陆、1:大中华、2:全球）|
-orderIds |  是 | 授权订单ID列表，多个ID用","隔开 |  - |
-
-
-
-##### 3.17 行为采集
+##### 3.9 行为采集
 
 > 注意：此接口需先调用BaseLogin接口获取token
 
@@ -457,7 +311,212 @@ tagId | String| 切换标签后的标签id|
 from	 | Int| 用于变化的操作，该值代表进度变化前的值(秒)|
 to	 | Int|用于变化的操作，该值代表进度变化后的值(秒)|
 
-##### 3.18 发布作品
+#####  3.10 猜你喜欢
+
+> 注意：此接口需先调用BaseLogin接口获取token
+
+```
+HFOpenApi.getInstance().baseFavorite(Page: Int?,
+                     PageSize: Int?,
+                     response: DataResponse<BaseFavorite>
+    )
+```
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+Page | 否| 当前页码，默认为1|大于0的整数|
+PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
+
+
+##### 3.11 热门推荐
+
+```
+HFOpenApi.getInstance().baseHot(StartTime: Long?,
+                Duration: Int?,
+                Page: Int?,
+                PageSize: Int?,
+                response: DataResponse<BaseHot>
+    )
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+StartTime | 是| 10位秒级时间戳| - |
+Duration	 | 是| 距离StartTime过去的天数 | 1～365|
+Page | 否| 当前页码，默认为1|大于0的整数|
+PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
+
+
+##### 3.12 BGM音乐播放-歌曲试听
+
+```
+HFOpenApi.getInstance().trafficTrial(MusicId: String?,
+              response: DataResponse<TrialMusic>
+    )
+```
+参数  | 必填  |描述| 
+---|---|---
+MusicId | 是| 音乐id|
+
+
+##### 3.13 BGM音乐播放-获取音乐HQ播放信息
+
+```
+HFOpenApi.getInstance().trafficHQListen(MusicId: String?,
+                        AudioFormat: String?,
+                        AudioRate: String?,
+                        response: DataResponse<TrafficHQListen>
+    )
+
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+MusicId | 是| 音乐id | - |
+AudioFormat	 | 否| 文件编码,默认mp3 | mp3 / aac|
+AudioRate | 否| 音质，音乐播放时的比特率，默认320 |320 / 128|
+
+
+##### 3.14 获取音乐混音播放信息
+
+```
+HFOpenApi.getInstance().trafficListenMixed(MusicId: String?,
+                           response: DataResponse<TrafficListenMixed>
+    )
+
+```
+
+参数  | 必填  |描述| 
+---|---|---
+MusicId | 是| 音乐id |
+
+##### 3.15 音视频作品BGM音乐播放-歌曲试听
+
+```
+HFOpenApi.getInstance().ugcTrial(MusicId: String?,
+              response: DataResponse<TrialMusic>
+    )
+```
+参数  | 必填  |描述| 
+---|---|---
+MusicId | 是| 音乐id|
+
+
+##### 3.16 音视频作品BGM音乐播放-获取音乐HQ播放信息
+
+```
+HFOpenApi.getInstance().ugcHQListen(MusicId: String?,
+                        AudioFormat: String?,
+                        AudioRate: String?,
+                        response: DataResponse<TrafficHQListen>
+    )
+
+```
+
+##### 3.17 K歌音乐播放-歌曲试听
+
+```
+HFOpenApi.getInstance().kTrial(MusicId: String?,
+              response: DataResponse<TrialMusic>
+    )
+```
+参数  | 必填  |描述| 
+---|---|---
+MusicId | 是| 音乐id|
+
+
+##### 3.18 K歌音乐播放-获取音乐HQ播放信息
+
+```
+HFOpenApi.getInstance().kHQListen(MusicId: String?,
+                        AudioFormat: String?,
+                        AudioRate: String?,
+                        response: DataResponse<TrafficHQListen>
+    )
+
+```
+
+##### 3.19 音乐售卖-歌曲试听
+
+```
+HFOpenApi.getInstance().orderTrial(MusicId: String?,
+              response: DataResponse<TrialMusic>
+    )
+```
+参数  | 必填  |描述| 
+---|---|---
+MusicId | 是| 音乐id|
+
+
+##### 3.20 音乐售卖-购买音乐
+
+```
+HFOpenApi.getInstance().orderMusic(Subject: String?,
+                   OrderId: Long?,
+                   Deadline: Int?,
+                   Music: String?,
+                   Language: Int?,
+                   AudioFormat: String?,
+                   AudioRate: String?,
+                   TotalFee: Int?,
+                   Remark: String?,
+                   WorkId: String?,
+                   response: DataResponse<OrderMusic>
+    )
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+Subject | 是| 商品描述 | - |
+OrderId	 | 是| 公司自己生成的订单id |  - |
+Deadline | 是| 作品授权时长，以天为单位，0代表永久授权 | - |
+Music | 是| 购买详情，encode转化后的json字符串 （musicId->音乐id；price->音乐单价，单位分；num->购买数量） | - |
+Language	 | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文|
+AudioFormat | 否| 文件编码,默认mp3 | mp3 / aac|
+AudioRate | 否| 音质，音乐播放时的比特率，默认320 |320 / 128|
+TotalFee	 | 是| 售出总价，单位：分 |  - |
+Remark | 否| 备注，最多不超过255字符 | - |
+WorkId | 否| 公司自己生成的作品id,多个以“,”拼接 | - |
+
+
+##### 3.21 音乐售卖-查询订单
+
+```
+HFOpenApi.getInstance().orderDetail(OrderId: String?,
+                    response: DataResponse<OrderMusic>
+    ) 
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+OrderId	 | 是| 公司自己生成的订单id |  - |
+
+
+##### 3.22 音乐售卖-下载授权书
+
+```
+HFOpenApi.getInstance().orderAuthorization(CompanyName: String?,
+                           ProjectName: String?,
+                           Brand: String?,
+                           Period: Int?,
+                           Area: String?,
+                           orderIds: String?,
+                           response: DataResponse<OrderAuthorization>
+    )
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+CompanyName | 是 | 公司名称 | - |
+ProjectName	 | 是 | 项目名称 |  - |
+Brand | 是 | 项目品牌 | - |
+Period | 是 |授权期限（0:半年、1:1年、2:2年、3:3年、4:随片永久） | （0:半年、1:1年、2:2年、3:3年、4:随片永久）|
+Area	 |  是 | 授权地区（0:中国大陆、1:大中华、2:全球） | （0:中国大陆、1:大中华、2:全球）|
+orderIds |  是 | 授权订单ID列表，多个ID用","隔开 |  - |
+
+
+
+
+##### 3.23 发布作品
 
 ```
 HFOpenApi.getInstance().orderPublish(Action: Int?,
@@ -475,7 +534,7 @@ WorkId | 否 | 公司自己生成的作品id,多个以“,”拼接 |
 
 
 
-##### 3.19 Report
+##### 3.24 BGM音乐数据上报
 
 ```
 HFOpenApi.getInstance().trafficReportListen(musicId: String?,
@@ -486,6 +545,56 @@ HFOpenApi.getInstance().trafficReportListen(musicId: String?,
                                                     response: DataResponse<Any>
                             )
 ```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+musicId | 是 |  音乐id | - |
+duration	 | 是 | 播放时长 |  - |
+timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
+audioFormat | 否 |音频格式 文件编码, | mp3 / aac |
+audioRate	 |  否 | 音频码率 音质 | 320 / 128|
+
+##### 3.24 音视频音乐数据上报
+
+```
+HFOpenApi.getInstance().ugcReportListen(musicId: String?,
+                                                    duration: Long,
+                                                    timestamp: Long,
+                                                    audioFormat: String?,
+                                                    audioRate: String?,
+                                                    response: DataResponse<Any>
+                            )
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+musicId | 是 |  音乐id | - |
+duration	 | 是 | 播放时长 |  - |
+timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
+audioFormat | 否 |音频格式 文件编码, | mp3 / aac |
+audioRate	 |  否 | 音频码率 音质 | 320 / 128|
+
+##### 3.24 K歌音乐数据上报
+
+```
+HFOpenApi.getInstance().kReportListen(musicId: String?,
+                                                    duration: Long,
+                                                    timestamp: Long,
+                                                    audioFormat: String?,
+                                                    audioRate: String?,
+                                                    response: DataResponse<Any>
+                            )
+```
+
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+musicId | 是 |  音乐id | - |
+duration	 | 是 | 播放时长 |  - |
+timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
+audioFormat | 否 |音频格式 文件编码, | mp3 / aac |
+audioRate	 |  否 | 音频码率 音质 | 320 / 128|
+
+
 
 参数  | 必填  |描述| 可选值|
 ---|---|---|---

@@ -99,7 +99,7 @@ class DataRepository constructor() {
                         AudioFormat: String?,
                         AudioRate: String?,
                         Action :String?
-    ): Flowable<TrafficHQListen> {
+    ): Flowable<HQListen> {
         return LiveRetrofitFactory.api().trafficHQListen(MusicId, AudioFormat, AudioRate, Action).convert()
     }
 
