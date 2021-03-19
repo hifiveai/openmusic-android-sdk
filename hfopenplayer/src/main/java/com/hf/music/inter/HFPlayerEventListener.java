@@ -6,7 +6,7 @@ import com.hf.music.model.AudioBean;
 /**
  * 播放进度监听器
  */
-public interface OnPlayerEventListener {
+public interface HFPlayerEventListener {
 
     /**
      * 切换歌曲

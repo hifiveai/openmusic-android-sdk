@@ -3,10 +3,8 @@ package com.hfopenmusic.sdk.ui.player;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.media.MediaPlayer;
 
 import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,16 +22,19 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.hf.music.config.MusicPlayAction;
+import com.hf.music.inter.HFPlayerEventListener;
+import com.hf.music.manager.HFPlayer;
+import com.hf.music.model.AudioBean;
+import com.hf.music.playback.IjkPlayback;
 import com.hfopen.sdk.entity.Desc;
 import com.hfopen.sdk.entity.HQListen;
 import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenmusic.sdk.R;
-import com.hfopenmusic.sdk.listener.HifivePlayListener;
 import com.hfopenmusic.sdk.ui.HifiveMusicListDialogFragment;
 import com.hfopenmusic.sdk.util.HifiveDisplayUtils;
 import com.hfopenmusic.sdk.listener.NoDoubleClickListener;
 import com.hfopenmusic.sdk.view.DraggableLinearLayout;
-import com.hfopenmusic.sdk.view.LyricDynamicView;
 import com.hfopenmusic.sdk.view.RoundedCornersTransform;
 
 import java.util.Observable;
@@ -46,7 +47,7 @@ import java.util.TimerTask;
  * Created by huchao on 20/11/10.
  */
 @SuppressLint("ViewConstructor")
-public class HifivePlayerView extends FrameLayout implements Observer, HifivePlayListener {
+public class HifivePlayerView extends FrameLayout implements Observer {
     private int marginTop = 0;//滑动范围顶部的间距限制默认为0，
     private int marginBottom = 0;//滑动范围底部的间距限制默认为0，
     private DraggableLinearLayout dragLayout;
@@ -67,12 +68,12 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private final FragmentActivity mContext;
     private ObjectAnimator rotateAnim;//音乐图片旋转的动画
     private long rotateAnimPlayTime;//音乐图片旋转的动画执行时间
-    public HifivePlayerUtils playerUtils;
     private HifiveMusicListDialogFragment dialogFragment;
     public Timer mTimer;
     public TimerTask mTimerTask;
     private String playUrl;//播放歌曲的url
     private int playProgress;//播放的进度
+    public IjkPlayback hfPlayer;
 
 
     public HifivePlayerView(@NonNull FragmentActivity context, int Top, int Bottom) {
@@ -91,10 +92,6 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
 
     //初始化view
     private void initView() {
-        if (playerUtils == null) {
-            playerUtils = HifivePlayerUtils.Companion.getInstance();
-            playerUtils.setPlayCompletionListener(this);
-        }
         dragLayout = findViewById(R.id.root);
         dragLayout.setMarginTop(marginTop);
         dragLayout.setMarginBottom(marginBottom);
@@ -121,10 +118,18 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     //初始化点击事件
     @SuppressLint("ClickableViewAccessibility")
     private void initEvent() {
+        dragLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+               initPlaylistener();
+            }
+        }, 500);
+
+
         dragLayout.setDragView(iv_music, new DraggableLinearLayout.OnClickEvent() {
             @Override
             public void onClickEvent() {
-                AnimationOpen();
+                animationOpen();
                 showDialog();
             }
         });
@@ -169,8 +174,28 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         iv_back.setOnClickListener(new OnClickListener() {//收起
             @Override
             public void onClick(View v) {
-                AnimationOFF();
+                animationOFF();
                 HifiveManage.getInstance().CloseDialog();
+            }
+        });
+
+        pb_play.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                boolean seekTo = hfPlayer.seekTo(seekBar.getProgress());
+                if(!seekTo){
+                    hfPlayer.pause();
+                }
             }
         });
     }
@@ -202,24 +227,14 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     private void startPlayMusic(String path, boolean isStart) {
         iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_play);
         isPlay = true;
-        if (playerUtils != null) {
-            if (isStart) {
-                playerUtils.prepareAndPlay(path, new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        pb_play.setMax(playerUtils.duration());
-                        showPlayView();
-                        setPlayProgress();
-                        playerUtils.play();
-                    }
-                });
+        if (isStart) {
+            hfPlayer.playWhitUrl(path);
+        } else {
+            //是否是播放错误后导致的暂停，播放出错暂停播放后需要重新prepare（）
+            if (isError) {
+                changePlayMusic(path);
             } else {
-                //是否是播放错误后导致的暂停，播放出错暂停播放后需要重新prepare（）
-                if (isError) {
-                    changePlayMusic(path);
-                } else {
-                    playerUtils.play();
-                }
+                hfPlayer.playPause();
             }
         }
         startAnimationPlay();
@@ -240,39 +255,12 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
      * @param path 音频文件路径或者url
      */
     private void changePlayMusic(String path) {
-        if (playerUtils != null) {
-            playerUtils.prepareAndPlay(path, new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    pb_play.setMax(playerUtils.duration());
-                    showPlayView();
-                    setPlayProgress();
-                    playerUtils.play();
-                    playerUtils.seekTo(playProgress);
-                }
-            });
-        }
+        hfPlayer.playWhitUrl(path);
         if (!isPlay) {
             iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_play);
             isPlay = true;
             startAnimationPlay();
         }
-    }
-
-    //设置播放进度
-    private void setPlayProgress() {
-        mTimer = new Timer();
-        mTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                if (playerUtils != null && playerUtils.isPlaying()) {
-                    playProgress = playerUtils.progress();
-                    pb_play.setProgress(playProgress);
-                    pb_play.setSecondaryProgress( playProgress + 5000);
-                }
-            }
-        };
-        mTimer.schedule(mTimerTask, 0, 200);
     }
 
     //清空播放进度
@@ -302,36 +290,17 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     public void stopPlay() {
         iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_suspend);
         isPlay = false;
-        if (playerUtils != null && playerUtils.isPlaying())
-            playerUtils.onPause();
+        if(hfPlayer != null && hfPlayer.isPlaying()){
+            hfPlayer.pause();
+        }
         if(rotateAnim != null){
             rotateAnimPlayTime = rotateAnim.getCurrentPlayTime();
             rotateAnim.cancel();
         }
     }
 
-    //当前歌曲播放错误回调
-    @Override
-    public void playError() {
-        HifiveManage.getInstance().showToast(mContext, "歌曲播放出错");
-        isError = true;
-        stopPlay();
-        clear();
-        //重新播放
-        updatePlayView();
-    }
-
-    //当前歌曲播放完成回调
-    @Override
-    public void playCompletion() {
-        if (playerUtils != null)
-            playerUtils.reset();
-        HifiveManage.getInstance().playNextMusic(mContext);//播放完成自动播放下一首
-    }
-
-
     //播放器展开动画
-    protected void AnimationOpen() {
+    protected void animationOpen() {
         Animation animation = new HifiveViewChangeAnimation(ll_player, HifiveDisplayUtils.getScreenWidth(mContext)
                 - HifiveDisplayUtils.dip2px(mContext, 40));
         animation.setDuration(500);
@@ -339,7 +308,7 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
     }
 
     //播放器收起动画
-    protected void AnimationOFF() {
+    protected void animationOFF() {
         Animation animation = new HifiveViewChangeAnimation(ll_player, HifiveDisplayUtils.dip2px(mContext, 50));
         animation.setDuration(500);
         ll_player.startAnimation(animation);
@@ -351,8 +320,8 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         try {
             int type = (int) arg;
             if (type == HifiveManage.UPDATEPALY) {
-                stopPlay();
                 clear();
+                stopPlay();
                 if (HifiveManage.getInstance().getPlayMusic() != null) {
                     showLoadView();
                     updateView();
@@ -457,4 +426,59 @@ public class HifivePlayerView extends FrameLayout implements Observer, HifivePla
         }
     }
 
+
+    private void initPlaylistener(){
+        hfPlayer = HFPlayer.with();
+        hfPlayer.setOnPlayEventListener(new HFPlayerEventListener() {
+            @Override
+            public void onChange(AudioBean music) {
+
+            }
+
+            @Override
+            public void onPlayStateChanged(int state) {
+                switch (state) {
+                    case MusicPlayAction.STATE_IDLE:
+                        break;
+                    case MusicPlayAction.STATE_PAUSE:
+                        break;
+                    case MusicPlayAction.STATE_ERROR:
+                        HifiveManage.getInstance().showToast(mContext, "歌曲播放出错");
+                        isError = true;
+                        stopPlay();
+                        clear();
+//                        //重新播放
+//                        updatePlayView();
+                        break;
+                    case MusicPlayAction.STATE_PREPARING:
+                        pb_play.setMax((int) hfPlayer.getDuration());
+                        break;
+                    case MusicPlayAction.STATE_PLAYING:
+                        showPlayView();
+                        break;
+                    case MusicPlayAction.STATE_BUFFERING:
+                        showLoadView();
+                        break;
+                    case MusicPlayAction.STATE_COMPLETE:
+                        HifiveManage.getInstance().playNextMusic(mContext);//播放完成自动播放下一首
+                        break;
+                }
+            }
+
+            @Override
+            public void onProgressUpdate(int progress, int duration) {
+                pb_play.setProgress(progress);
+            }
+
+            @Override
+            public void onBufferingUpdate(int percent) {
+                pb_play.setSecondaryProgress( pb_play.getMax() * percent / 100);
+            }
+
+            @Override
+            public void onTimer(long remain) {
+
+            }
+        });
+    }
 }

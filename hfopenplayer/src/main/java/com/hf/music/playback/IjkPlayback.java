@@ -2,11 +2,8 @@ package com.hf.music.playback;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkRequest;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Message;
@@ -18,16 +15,11 @@ import com.hf.music.config.MusicConstant;
 import com.hf.music.config.MusicPlayAction;
 import com.hf.music.config.PlayModeEnum;
 import com.hf.music.inter.EventCallback;
-import com.hf.music.inter.OnPlayerEventListener;
-import com.hf.music.manager.AudioFocusManager;
+import com.hf.music.inter.HFPlayerEventListener;
 import com.hf.music.manager.AudioSoundManager;
 import com.hf.music.manager.HFPlayer;
-import com.hf.music.manager.MediaSessionManager;
 import com.hf.music.model.AudioBean;
-import com.hf.music.receiver.AudioBroadcastReceiver;
-import com.hf.music.receiver.AudioEarPhoneReceiver;
 import com.hf.music.service.PlayService;
-import com.hf.music.tool.NetworkCallbackImpl;
 import com.hf.music.tool.QuitTimerHelper;
 import com.hf.music.utils.MusicLogUtils;
 import com.hf.music.utils.MusicSpUtils;
@@ -39,7 +31,6 @@ import java.util.Random;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
-import tv.danmaku.ijk.media.player.misc.IAndroidIO;
 
 public class IjkPlayback {
 
@@ -67,7 +58,7 @@ public class IjkPlayback {
     /**
      * 播放进度监听器
      */
-    private OnPlayerEventListener mListener;
+    private HFPlayerEventListener mListener;
     /**
      * 更新播放进度的显示，时间的显示
      */
@@ -88,9 +79,9 @@ public class IjkPlayback {
      * 加入唤醒锁和WiFi锁保证我们在后台长时间播放音频的稳定
      */
     private WifiManager.WifiLock wifiLock;
-    
-    
-    public IjkPlayback(PlayService service ){
+
+
+    public IjkPlayback(PlayService service) {
         mPlayService = service;
 
         createIjkMediaPlayer();
@@ -112,7 +103,7 @@ public class IjkPlayback {
                     break;
                 case MusicPlayAction.STATE_PLAYING:
                     mNetAvailable = true;
-                    if (HFPlayer.getIsReconnect()){
+                    if (HFPlayer.getIsReconnect()) {
                         playPause();
                     }
                     break;
@@ -144,7 +135,6 @@ public class IjkPlayback {
     }
 
 
-
     /**
      * 创建IjkMediaPlayer对象
      */
@@ -164,7 +154,6 @@ public class IjkPlayback {
             mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1L);
         }
     }
-
 
 
     /**
@@ -195,7 +184,7 @@ public class IjkPlayback {
      * 4.其他情况是直接播放
      */
     public void playPause() {
-        if(mPlayer == null) return;
+        if (mPlayer == null) return;
         if (isPreparing()) {
             stop();
         } else if (isPlaying()) {
@@ -293,11 +282,8 @@ public class IjkPlayback {
      * 开始播放
      */
     public void start() {
-        if(!mNetAvailable) return;
+        if (!mNetAvailable) return;
         if (!isPreparing() && !isPausing()) {
-            return;
-        }
-        if (mPlayingMusic == null) {
             return;
         }
         if (mPlayService.mAudioFocusManager.requestAudioFocus()) {
@@ -312,15 +298,17 @@ public class IjkPlayback {
                 if (mListener != null) {
                     mListener.onPlayStateChanged(mPlayState);
                 }
-                //当点击播放按钮时(播放详情页面或者底部控制栏)，同步通知栏中播放按钮状态
-                NotificationHelper.get().showPlay(mPlayingMusic, mPlayService.mMediaSessionManager.getMediaSession());
+                if (mPlayingMusic != null) {
+                    //当点击播放按钮时(播放详情页面或者底部控制栏)，同步通知栏中播放按钮状态
+                    NotificationHelper.get().showPlay(mPlayingMusic, mPlayService.mMediaSessionManager.getMediaSession());
+                    mPlayService.mMediaSessionManager.updatePlaybackState();
+                }
                 //注册监听来电/耳机拔出时暂停播放广播
                 if (!mReceiverTag) {
                     mReceiverTag = true;
-                    mPlayService.registerReceiver(mPlayService.mNoisyReceiver,new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
-);
+                    mPlayService.registerReceiver(mPlayService.mNoisyReceiver, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
+                    );
                 }
-                mPlayService.mMediaSessionManager.updatePlaybackState();
             }
         }
     }
@@ -345,9 +333,6 @@ public class IjkPlayback {
             if (mListener != null) {
                 mListener.onPlayStateChanged(mPlayState);
             }
-
-            //当点击暂停按钮时(播放详情页面或者底部控制栏)，同步通知栏中暂停按钮状态
-            NotificationHelper.get().showPause(mPlayingMusic, mPlayService.mMediaSessionManager.getMediaSession());
             //注销监听来电/耳机拔出时暂停播放广播
             //判断广播是否注册
             if (mReceiverTag) {
@@ -355,8 +340,11 @@ public class IjkPlayback {
                 mReceiverTag = false;
                 mPlayService.unregisterReceiver(mPlayService.mNoisyReceiver);
             }
-
-            mPlayService.mMediaSessionManager.updatePlaybackState();
+            if (mPlayingMusic != null) {
+                //当点击暂停按钮时(播放详情页面或者底部控制栏)，同步通知栏中暂停按钮状态
+                NotificationHelper.get().showPause(mPlayingMusic, mPlayService.mMediaSessionManager.getMediaSession());
+                mPlayService.mMediaSessionManager.updatePlaybackState();
+            }
         }
     }
 
@@ -385,7 +373,7 @@ public class IjkPlayback {
      * @param position 索引
      */
     public void play(int position) {
-        if(!mNetAvailable) return;
+        if (!mNetAvailable) return;
         audioMusics = HFPlayer.getMusicList();
         if (audioMusics == null || audioMusics.isEmpty()) {
             return;
@@ -415,7 +403,7 @@ public class IjkPlayback {
      * @param progress 进度
      */
     public boolean seekTo(int progress) {
-        if(!mNetAvailable) return false;
+        if (!mNetAvailable) return false;
         //只有当播放或者暂停的时候才允许拖动bar
         if (isPlaying() || isPausing()) {
             mPlayer.seekTo(progress);
@@ -435,20 +423,20 @@ public class IjkPlayback {
      * @param music music
      */
     public void play(AudioBean music) {
-        if(!mNetAvailable) return;
+        if (!mNetAvailable) return;
         mPlayingMusic = music;
         playWhitUrl(mPlayingMusic.getPath());
         //当播放的时候，需要刷新界面信息
         if (mListener != null) {
             mListener.onChange(mPlayingMusic);
         }
-        //更新通知栏
-        NotificationHelper.get().showPlay(mPlayingMusic, mPlayService.mMediaSessionManager.getMediaSession());
-
-        //更新
-        mPlayService.mMediaSessionManager.updateMetaData(mPlayingMusic);
-        mPlayService.mMediaSessionManager.updatePlaybackState();
-
+        if (mPlayingMusic != null) {
+            //更新通知栏
+            NotificationHelper.get().showPlay(mPlayingMusic, mPlayService.mMediaSessionManager.getMediaSession());
+            //更新
+            mPlayService.mMediaSessionManager.updateMetaData(mPlayingMusic);
+            mPlayService.mMediaSessionManager.updatePlaybackState();
+        }
     }
 
 
@@ -458,7 +446,7 @@ public class IjkPlayback {
      * @param url
      */
     public void playWhitUrl(String url) {
-        if(!mNetAvailable) return;
+        if (!mNetAvailable) return;
         createIjkMediaPlayer();
         try {
             mPlayer.reset();
@@ -482,6 +470,7 @@ public class IjkPlayback {
             mPlayer.prepareAsync();
             //设置状态为准备中
             mPlayState = MusicPlayAction.STATE_PREPARING;
+
             if (mListener != null) {
                 mListener.onPlayStateChanged(mPlayState);
             }
@@ -537,10 +526,10 @@ public class IjkPlayback {
         /** 当音频播放结果的时候这个方法会被调用 */
         @Override
         public void onCompletion(IMediaPlayer mediaPlayer) {
-            if(mPlayer.getCurrentPosition() + 1000 >= getDuration() && getDuration() != 0){
-                mPlayState = MusicPlayAction.STATE_IDLE;
+            if (mPlayer.getCurrentPosition() + 1000 >= getDuration() && getDuration() != 0) {
+                mPlayState = MusicPlayAction.STATE_COMPLETE;
                 next();
-            }else{
+            } else {
                 mPlayState = MusicPlayAction.STATE_ERROR;
             }
             if (mListener != null) {
@@ -592,7 +581,7 @@ public class IjkPlayback {
         @Override
         public boolean onError(IMediaPlayer mediaPlayer, int i, int i1) {
             MusicLogUtils.e("MediaPlayer.onError" + i);
-            switch (i){
+            switch (i) {
                 case -10000:
                     mPlayState = MusicPlayAction.STATE_ERROR_AUDIO;
                     break;
@@ -632,7 +621,7 @@ public class IjkPlayback {
         @Override
         public boolean onInfo(IMediaPlayer mediaPlayer, int i, int i1) {
             MusicLogUtils.e("MediaPlayer.onInfo" + i);
-            switch (i){
+            switch (i) {
                 case 701:
                     mPlayState = MusicPlayAction.STATE_BUFFERING;
                     break;
@@ -641,7 +630,7 @@ public class IjkPlayback {
                     mPlayState = MusicPlayAction.STATE_PLAYING;
                     break;
                 case 10009:
-                    if(isPlaying()){
+                    if (isPlaying()) {
                         mPlayState = MusicPlayAction.STATE_PLAYING;
                     }
                     break;
@@ -649,9 +638,9 @@ public class IjkPlayback {
                     break;
 
             }
-//            if (mListener != null) {
-//                mListener.onPlayStateChanged(mPlayState);
-//            }
+            if (mListener != null) {
+                mListener.onPlayStateChanged(mPlayState);
+            }
 
             return false;
         }
@@ -695,7 +684,6 @@ public class IjkPlayback {
     public boolean isDefault() {
         return mPlayState == MusicPlayAction.STATE_IDLE;
     }
-
 
 
     /**
@@ -759,7 +747,7 @@ public class IjkPlayback {
     /**
      * 设置速率
      *
-     * @param speed   0.5~2
+     * @param speed 0.5~2
      */
     public void setSpeed(float speed) {
         if (mPlayer != null) {
@@ -777,7 +765,7 @@ public class IjkPlayback {
         return 0;
     }
 
-    public void sendMessage(int what){
+    public void sendMessage(int what) {
         handler.sendEmptyMessage(what);
     }
 
@@ -885,7 +873,7 @@ public class IjkPlayback {
      *
      * @param listener listener
      */
-    public void setOnPlayEventListener(OnPlayerEventListener listener) {
+    public void setOnPlayEventListener(HFPlayerEventListener listener) {
         mListener = listener;
     }
 

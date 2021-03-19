@@ -170,7 +170,10 @@ object HFPlayer {
      */
     @JvmStatic
     fun with(): IjkPlayback {
-        return mPlayService?.playback!!
+//        if(mPlayService == null){
+//            bindService()
+//        }
+        return mPlayService!!.playback
     }
 
     /**

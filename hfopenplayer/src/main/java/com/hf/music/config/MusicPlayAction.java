@@ -25,9 +25,11 @@ public class MusicPlayAction {
     public static final int STATE_BUFFERING = 103;
     /** 暂停状态*/
     public static final int STATE_PAUSE = 104;
+    /** 播放完成*/
+    public static final int STATE_COMPLETE = 105;
     /** 出错 */
-    public static final int STATE_ERROR = 105;
+    public static final int STATE_ERROR = 106;
     /** 资源出错 */
-    public static final int STATE_ERROR_AUDIO = 106;
+    public static final int STATE_ERROR_AUDIO = 107;
 
 }

@@ -1,41 +1,25 @@
 package com.hf.music.service;
 
-import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
-import android.net.wifi.WifiManager;
 import android.os.Binder;
-import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.PowerManager;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import com.hf.music.config.MusicPlayAction;
 import com.hf.music.config.MusicConstant;
-import com.hf.music.config.PlayModeEnum;
-import com.hf.music.inter.EventCallback;
-import com.hf.music.inter.OnPlayerEventListener;
 import com.hf.music.manager.AudioFocusManager;
-import com.hf.music.manager.AudioSoundManager;
 import com.hf.music.manager.MediaSessionManager;
-import com.hf.music.model.AudioBean;
 import com.hf.music.playback.IjkPlayback;
 import com.hf.music.receiver.AudioBroadcastReceiver;
 import com.hf.music.receiver.AudioEarPhoneReceiver;
 import com.hf.music.manager.HFPlayer;
-import com.hf.music.receiver.NetworkReceiver;
 import com.hf.music.tool.NetworkCallbackImpl;
 import com.hf.music.tool.QuitTimerHelper;
 import com.hf.music.utils.MusicLogUtils;

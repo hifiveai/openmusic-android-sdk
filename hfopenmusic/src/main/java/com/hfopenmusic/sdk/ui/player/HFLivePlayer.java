@@ -102,10 +102,10 @@ public class HFLivePlayer {
     private void recyclePlayer() {
          mPlayerView.cleanTimer();
         //回收播放器资源
-        if(mPlayerView.playerUtils != null){
-            mPlayerView.playerUtils.onStop();
-            mPlayerView.playerUtils.release();
-            mPlayerView.playerUtils = null;
+        if(mPlayerView.hfPlayer != null){
+            mPlayerView.hfPlayer.stop();
+            mPlayerView.hfPlayer.release();
+            mPlayerView.hfPlayer = null;
         }
     }
     //初始化一个container容器装载播放器view
