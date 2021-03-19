@@ -56,14 +56,14 @@ api "com.squareup.okhttp3:logging-interceptor:4.9.0"
     android:value="注册时申请的APPID" >
 </meta-data>
 <meta-data
-    android:name="HIFIVE_SECRET"
-    android:value="注册时申请的SECRET" />
+    android:name="HIFIVE_SERVERCODE"
+    android:value="注册时申请的SERVERCODE" />
 ```
 
 -添加混淆，在Proguard混淆文件中增加以下配置：
 ```
--dontwarn com.hifive.sdk.**
--keep public class com.hifive.sdk.**{*;}
+-dontwarn com.hfopen.sdk.**
+-keep public class com.hfopen.sdk.**{*;}
 ```
 
 
@@ -81,7 +81,9 @@ clientId | 是| 用户唯一标识（公司自有的用户ID）。|
 
 ##### 2.3 设置SDK版本
 
+```
 HFOpenApi.setVersion(String version);
+```
 
 参数  | 必填  |描述| 示例|
 ---|---|---|---

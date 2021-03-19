@@ -160,7 +160,7 @@ interface Api {
                            @Query("Brand") Brand: String?,
                            @Query("Period") Period: Int?,
                            @Query("Area") Area: String?,
-                           @Query("orderIds") orderIds: String?,
+                           @Query("OrderIds") orderIds: String?,
                            @Query("X-HF-Action") Action: String?
     ): Flowable<BaseResp<OrderAuthorization>>
 

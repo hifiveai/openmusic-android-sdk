@@ -135,9 +135,9 @@ class ServiceImpl constructor() : Service {
                             Brand: String?,
                             Period: Int?,
                             Area: String?,
-                            orderIds: String?
+                            OrderIds: String?
     ): Flowable<OrderAuthorization> {
-        return dataRepository.orderAuthorization(CompanyName,ProjectName,Brand,Period,Area,orderIds)
+        return dataRepository.orderAuthorization(CompanyName,ProjectName,Brand,Period,Area,OrderIds)
     }
 
     fun baseReport(Action: Int?,

@@ -372,13 +372,13 @@ class OpenManager() {
                            Brand: String?,
                            Period: Int?,
                            Area: String?,
-                           orderIds: String?,
+                           OrderIds: String?,
                            response: DataResponse<OrderAuthorization>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.orderAuthorization(CompanyName, ProjectName, Brand, Period, Area, orderIds)
+        return mService.orderAuthorization(CompanyName, ProjectName, Brand, Period, Area, OrderIds)
                 .request(object : BaseSubscribe<OrderAuthorization>(response) {
                     override fun _onNext(t: OrderAuthorization) {
                         response.onSuccess(t, BaseConstance.taskId)

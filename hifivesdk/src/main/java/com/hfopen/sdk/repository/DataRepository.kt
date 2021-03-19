@@ -135,9 +135,9 @@ class DataRepository constructor() {
                            Brand: String?,
                            Period: Int?,
                            Area: String?,
-                           orderIds: String?
+                           OrderIds: String?
     ): Flowable<OrderAuthorization> {
-        return LiveRetrofitFactory.api().orderAuthorization(CompanyName, ProjectName, Brand, Period, Area, orderIds, "OrderAuthorization").convert()
+        return LiveRetrofitFactory.api().orderAuthorization(CompanyName, ProjectName, Brand, Period, Area, OrderIds, "OrderAuthorization").convert()
     }
 
 
