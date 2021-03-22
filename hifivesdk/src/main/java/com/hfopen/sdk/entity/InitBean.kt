@@ -108,7 +108,7 @@ data class Record(
         val music: List<MusicRecord>?,
         val musicTotal: Int,
         val price: Int,
-        val sheetId: Int,
+        val sheetId: Long,
         val sheetName: String,
         val tag: List<Tag>?,
         val type: Int

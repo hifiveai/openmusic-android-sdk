@@ -148,11 +148,10 @@ class ServiceImpl constructor() : Service {
         return dataRepository.baseReport(Action,TargetId, Content, Location)
     }
 
-    fun orderPublish(Action: String?,
-                     OrderId: String?,
+    fun orderPublish(OrderId: String?,
                      WorkId: String?
     ): Flowable<OrderPublish> {
-        return dataRepository.orderPublish(Action,OrderId, WorkId)
+        return dataRepository.orderPublish(OrderId, WorkId)
     }
 
     fun report(MusicId: String,

@@ -201,8 +201,7 @@ interface Api {
      */
     @FormUrlEncoded
     @POST("/")
-    fun orderPublish(@Field("Action") Action: String?,
-                     @Field("OrderId") OrderId: String?,
+    fun orderPublish(@Field("OrderId") OrderId: String?,
                      @Field("WorkId") WorkId: String?,
                      @Field("X-HF-Action") Actions: String?
     ): Flowable<BaseResp<OrderPublish>>

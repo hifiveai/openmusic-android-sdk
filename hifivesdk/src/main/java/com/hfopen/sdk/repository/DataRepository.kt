@@ -150,11 +150,10 @@ class DataRepository constructor() {
     }
 
 
-    fun orderPublish(Action: String?,
-                     OrderId: String?,
+    fun orderPublish(OrderId: String?,
                      WorkId: String?
     ): Flowable<OrderPublish> {
-        return LiveRetrofitFactory.api().orderPublish(Action, OrderId, WorkId, "OrderPublish").convert()
+        return LiveRetrofitFactory.api().orderPublish(OrderId, WorkId, "OrderPublish").convert()
     }
 
 

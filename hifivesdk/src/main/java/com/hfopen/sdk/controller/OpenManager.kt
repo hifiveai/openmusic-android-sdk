@@ -403,15 +403,14 @@ class OpenManager() {
                 })
     }
 
-    fun orderPublish(Action: String?,
-                     OrderId: String?,
+    fun orderPublish(OrderId: String?,
                      WorkId: String?,
                      response: DataResponse<OrderPublish>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
-        return mService.orderPublish(Action, OrderId, WorkId)
+        return mService.orderPublish(OrderId, WorkId)
                 .request(object : BaseSubscribe<OrderPublish>(response) {
                     override fun _onNext(t: OrderPublish) {
                         response.onSuccess(t, BaseConstance.taskId)
