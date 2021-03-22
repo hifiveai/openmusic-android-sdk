@@ -103,7 +103,7 @@ public class IjkPlayback {
                     break;
                 case MusicPlayAction.STATE_PLAYING:
                     mNetAvailable = true;
-                    if (HFPlayer.getIsReconnect()) {
+                    if (HFPlayer.getIsReconnect() && isPausing()) {
                         playPause();
                     }
                     break;

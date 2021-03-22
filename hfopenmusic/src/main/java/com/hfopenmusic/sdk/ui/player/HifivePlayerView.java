@@ -441,6 +441,7 @@ public class HifivePlayerView extends FrameLayout implements Observer {
                     case MusicPlayAction.STATE_IDLE:
                         break;
                     case MusicPlayAction.STATE_PAUSE:
+                        iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_suspend);
                         break;
                     case MusicPlayAction.STATE_ERROR:
                         HifiveManage.getInstance().showToast(mContext, "歌曲播放出错");
@@ -454,12 +455,14 @@ public class HifivePlayerView extends FrameLayout implements Observer {
                         pb_play.setMax((int) hfPlayer.getDuration());
                         break;
                     case MusicPlayAction.STATE_PLAYING:
+                        iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_play);
                         showPlayView();
                         break;
                     case MusicPlayAction.STATE_BUFFERING:
                         showLoadView();
                         break;
                     case MusicPlayAction.STATE_COMPLETE:
+                        iv_play.setImageResource(R.mipmap.hifivesdk_icon_player_suspend);
                         HifiveManage.getInstance().playNextMusic(mContext);//播放完成自动播放下一首
                         break;
                 }
