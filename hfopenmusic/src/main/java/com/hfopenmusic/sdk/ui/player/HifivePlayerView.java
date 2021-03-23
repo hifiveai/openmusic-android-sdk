@@ -69,8 +69,6 @@ public class HifivePlayerView extends FrameLayout implements Observer {
     private ObjectAnimator rotateAnim;//音乐图片旋转的动画
     private long rotateAnimPlayTime;//音乐图片旋转的动画执行时间
     private HifiveMusicListDialogFragment dialogFragment;
-    public Timer mTimer;
-    public TimerTask mTimerTask;
     private String playUrl;//播放歌曲的url
     private int playProgress;//播放的进度
     public IjkPlayback hfPlayer;
@@ -137,7 +135,6 @@ public class HifivePlayerView extends FrameLayout implements Observer {
         tv_accompany.setOnClickListener(new NoDoubleClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
-                cleanTimer();
             }
         });
         cb_lyric.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -263,17 +260,6 @@ public class HifivePlayerView extends FrameLayout implements Observer {
         }
     }
 
-    //清空播放进度
-    public void cleanTimer() {
-        if (mTimerTask != null) {
-            mTimerTask.cancel();
-            mTimerTask = null;
-        }
-        if (mTimer != null) {
-            mTimer.cancel();
-            mTimer = null;
-        }
-    }
 
     //开始播放动画
     private void startAnimationPlay() {
@@ -344,7 +330,6 @@ public class HifivePlayerView extends FrameLayout implements Observer {
 
     //切歌后清空上首歌播放相关标志和配置
     private void clear() {
-        cleanTimer();
         playProgress = 0;//重置播放进度
         playUrl = "";//重置播放链接
         pb_play.setProgress(0);

@@ -100,7 +100,6 @@ public class HFLivePlayer {
     }
     //播放器资源回收
     private void recyclePlayer() {
-         mPlayerView.cleanTimer();
         //回收播放器资源
         if(mPlayerView.hfPlayer != null){
             mPlayerView.hfPlayer.stop();
