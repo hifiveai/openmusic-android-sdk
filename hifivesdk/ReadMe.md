@@ -229,16 +229,16 @@ HFOpenApi.getInstance().musicConfig(response: DataResponse<MusicConfig>)
 
 ```
 HFOpenApi.getInstance().baseLogin(Nickname: String?,
-            Gender: String?,
-            Birthday: String?,
-            Location: String?,
-            Education: String?,
-            Profession: String?,
-            IsOrganization: String?,
-            Reserve: String?,
-            FavoriteSinger: String?,
-            FavoriteGenre: String?,
-            response: DataResponse<LoginBean>
+                                  Gender: Int?,
+                                  Birthday: Long?,
+                                  Location: String?,
+                                  Education: Int?,
+                                  Profession: Int?,
+                                  IsOrganization: Boolean?,
+                                  Reserve: String?,
+                                  FavoriteSinger: String?,
+                                  FavoriteGenre: String?,
+                                  response: DataResponse<LoginBean>
     )
 ```
 
@@ -250,7 +250,7 @@ Birthday | 否|出生日期，10位秒级时间戳| - |1594639058|
 Location | 否| 经纬度信息，纬度在前| - | 30.779164,103.94547|
 Education	 | 否| 所受教育水平 | 详见[教育水平定义]|0|
 Profession	 | 否| 职业 | 详见[用户职业定义]|0|
-IsOrganization	 | 否| 是否属于组织机构类型用户（to B），默认false| - |false|
+IsOrganization	 | 否| 是否属于组织机构类型用户（to B），默认false| true/false |false|
 Reserve	 | 否| json字符串，保留字段用于扩展用户其他信息| - |{"language":"English"}|
 favoriteSinger	 | 否| 喜欢的歌手名，多个用英文逗号隔开| - |Queen,The Beatles|
 FavoriteGenre	 | 否| 喜欢的音乐流派Id，多个用英文逗号拼接| - |7,8,10|
@@ -266,6 +266,40 @@ FavoriteGenre	 | 否| 喜欢的音乐流派Id，多个用英文逗号拼接| - |
 大学	 | 4| - |
 硕士及以上	 | 5| - |
 
+**用户职业定义**
+
+名称  | 枚举值  |说明| 
+---|---|---
+未采集 | 0| 默认值|
+政府部门/企事业/公司管理人员 | 1| - |
+私营业主 | 2| - |
+专业技术人员（教师、医生、工程技术人员、作家等） | 3| - |
+企业/公司职员	 | 4| - |
+党政机关事业单位员工	 | 5| - |
+第三产业服务人员 | 6| - |
+学生 | 7| - |
+军人	 | 8| - |
+失业、自由工作者、离退休人员	 | 9| - |
+其他	 | 10| - |
+
+**音乐流派定义**
+
+名称  | 枚举值  |说明| 
+---|---|---
+未采集 | 0| 默认值|
+中国风 | 1| - |
+拉丁 | 2| - |
+嘻哈 | 3| - |
+爵士	 | 4| - |
+乡村	 | 5| - |
+流行 | 6| - |
+布鲁斯 | 7| - |
+民谣	 | 8| - |
+摇滚	 | 9| - |
+轻音乐	 | 10| - |
+管弦乐	 | 11| - |
+电子	 | 12| - |
+
 
 ##### 3.9 行为采集
 
@@ -275,7 +309,7 @@ FavoriteGenre	 | 否| 喜欢的音乐流派Id，多个用英文逗号拼接| - |
 HFOpenApi.getInstance().baseReport(Action: Int?,
                    TargetId: String?,
                    Content: String?,
-                   Location: Int?,
+                   Location: String?,
                    response: DataResponse<Object>
     ) 
 ```
@@ -303,6 +337,8 @@ Location | 否 |经纬度信息，纬度在前 |  - |30.779164,103.94547|
 下载音乐	 | 1010|音乐id |空|
 
 **行为内容定义**
+
+>行为内容采用json字符串保存，根据行为不同其参数不同。例如：播放音乐时content字段为point/duration，代表json包含point和duration这2个字段，字段具体含义如下：
 
 参数  | 类型  |说明| 
 ---|---|---
@@ -378,20 +414,7 @@ AudioFormat	 | 否| 文件编码,默认mp3 | mp3 / aac|
 AudioRate | 否| 音质，音乐播放时的比特率，默认320 |320 / 128|
 
 
-##### 3.14 获取音乐混音播放信息
-
-```
-HFOpenApi.getInstance().trafficListenMixed(MusicId: String?,
-                           response: DataResponse<TrafficListenMixed>
-    )
-
-```
-
-参数  | 必填  |描述| 
----|---|---
-MusicId | 是| 音乐id |
-
-##### 3.15 音视频作品BGM音乐播放-歌曲试听
+##### 3.14 音视频作品BGM音乐播放-歌曲试听
 
 ```
 HFOpenApi.getInstance().ugcTrial(MusicId: String?,
@@ -403,7 +426,7 @@ HFOpenApi.getInstance().ugcTrial(MusicId: String?,
 MusicId | 是| 音乐id|
 
 
-##### 3.16 音视频作品BGM音乐播放-获取音乐HQ播放信息
+##### 3.15 音视频作品BGM音乐播放-获取音乐HQ播放信息
 
 ```
 HFOpenApi.getInstance().ugcHQListen(MusicId: String?,
@@ -414,7 +437,13 @@ HFOpenApi.getInstance().ugcHQListen(MusicId: String?,
 
 ```
 
-##### 3.17 K歌音乐播放-歌曲试听
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+MusicId | 是| 音乐id | - |
+AudioFormat	 | 否| 文件编码,默认mp3 | mp3 / aac|
+AudioRate | 否| 音质，音乐播放时的比特率，默认320 |320 / 128|
+
+##### 3.16 K歌音乐播放-歌曲试听
 
 ```
 HFOpenApi.getInstance().kTrial(MusicId: String?,
@@ -426,7 +455,7 @@ HFOpenApi.getInstance().kTrial(MusicId: String?,
 MusicId | 是| 音乐id|
 
 
-##### 3.18 K歌音乐播放-获取音乐HQ播放信息
+##### 3.16 K歌音乐播放-获取音乐HQ播放信息
 
 ```
 HFOpenApi.getInstance().kHQListen(MusicId: String?,
@@ -436,8 +465,13 @@ HFOpenApi.getInstance().kHQListen(MusicId: String?,
     )
 
 ```
+参数  | 必填  |描述| 可选值|
+---|---|---|---
+MusicId | 是| 音乐id | - |
+AudioFormat	 | 否| 文件编码,默认mp3 | mp3 / aac|
+AudioRate | 否| 音质，音乐播放时的比特率，默认320 |320 / 128|
 
-##### 3.19 音乐售卖-歌曲试听
+##### 3.17 音乐售卖-歌曲试听
 
 ```
 HFOpenApi.getInstance().orderTrial(MusicId: String?,
@@ -449,11 +483,11 @@ HFOpenApi.getInstance().orderTrial(MusicId: String?,
 MusicId | 是| 音乐id|
 
 
-##### 3.20 音乐售卖-购买音乐
+##### 3.18 音乐售卖-购买音乐
 
 ```
 HFOpenApi.getInstance().orderMusic(Subject: String?,
-                   OrderId: Long?,
+                   OrderId: String?,
                    Deadline: Int?,
                    Music: String?,
                    Language: Int?,
@@ -480,7 +514,7 @@ Remark | 否| 备注，最多不超过255字符 | - |
 WorkId | 否| 公司自己生成的作品id,多个以“,”拼接 | - |
 
 
-##### 3.21 音乐售卖-查询订单
+##### 3.19 音乐售卖-查询订单
 
 ```
 HFOpenApi.getInstance().orderDetail(OrderId: String?,
@@ -493,7 +527,7 @@ HFOpenApi.getInstance().orderDetail(OrderId: String?,
 OrderId	 | 是| 公司自己生成的订单id |  - |
 
 
-##### 3.22 音乐售卖-下载授权书
+##### 3.20 音乐售卖-下载授权书
 
 ```
 HFOpenApi.getInstance().orderAuthorization(CompanyName: String?,
@@ -518,11 +552,10 @@ OrderIds |  是 | 授权订单ID列表，多个ID用","隔开 |  - |
 
 
 
-##### 3.23 发布作品
+##### 3.21 发布作品
 
 ```
-HFOpenApi.getInstance().orderPublish(Action: Int?,
-                      OrderId: String?,
+HFOpenApi.getInstance().orderPublish(OrderId: String?,
                       WorkId: String?,
                       response: DataResponse<OrderPublish>
      )
@@ -530,17 +563,16 @@ HFOpenApi.getInstance().orderPublish(Action: Int?,
 
 参数  | 必填  |描述
 ---|---|---
-Action | 是 | 公共参数，操作的接口名称 |
 OrderId	 | 是 | 公司自己生成的订单id |
-WorkId | 否 | 公司自己生成的作品id,多个以“,”拼接 |
+WorkId | 是 | 公司自己生成的作品id,多个以“,”拼接 |
 
 
 
-##### 3.24 BGM音乐数据上报
+##### 3.22 BGM音乐数据上报
 
 ```
 HFOpenApi.getInstance().trafficReportListen(MusicId: String?,
-                                           Duration: Long,
+                                           Duration: Int,
                                            Timestamp: Long,
                                            AudioFormat: String,
                                            AudioRate: String,
@@ -551,16 +583,16 @@ HFOpenApi.getInstance().trafficReportListen(MusicId: String?,
 参数  | 必填  |描述| 可选值|
 ---|---|---|---
 MusicId | 是 |  音乐id | - |
-Duration	 | 是 | 播放时长 |  - |
-Timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
-AudioFormat | 否 |音频格式 文件编码, | mp3 / aac |
-AudioRate	 |  否 | 音频码率 音质 | 320 / 128|
+Duration	 | 是 | 当前音频播放持续时长 |  - |
+Timestamp | 是 | 播放完成的时间，13位毫秒级时间戳 | - |
+AudioFormat | 是 |当前播放音频的文件编码 | mp3 / aac |
+AudioRate	 |  是 |当前播放音频的比特率 | 320 / 128|
 
-##### 3.24 音视频音乐数据上报
+##### 3.23 音视频音乐数据上报
 
 ```
 HFOpenApi.getInstance().ugcReportListen(MusicId: String?,
-                                                    Duration: Long,
+                                                    Duration: Int,
                                                     Timestamp: Long,
                                                     AudioFormat: String,
                                                     AudioRate: String,
@@ -571,16 +603,16 @@ HFOpenApi.getInstance().ugcReportListen(MusicId: String?,
 参数  | 必填  |描述| 可选值|
 ---|---|---|---
 MusicId | 是 |  音乐id | - |
-Duration	 | 是 | 播放时长 |  - |
-Timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
-AudioFormat | 否 |音频格式 文件编码, | mp3 / aac |
-AudioRate	 |  否 | 音频码率 音质 | 320 / 128|
+Duration	 | 是 | 当前音频播放持续时长 |  - |
+Timestamp | 是 | 播放完成的时间，13位毫秒级时间戳 | - |
+AudioFormat | 是 |当前播放音频的文件编码 | mp3 / aac |
+AudioRate	 |  是 |当前播放音频的比特率 | 320 / 128|
 
 ##### 3.24 K歌音乐数据上报
 
 ```
 HFOpenApi.getInstance().kReportListen(MusicId: String?,
-                                      Duration: Long,
+                                      Duration: Int,
                                       Timestamp: Long,
                                       AudioFormat: String,
                                       AudioRate: String,
@@ -591,10 +623,10 @@ HFOpenApi.getInstance().kReportListen(MusicId: String?,
 参数  | 必填  |描述| 可选值|
 ---|---|---|---
 MusicId | 是 |  音乐id | - |
-Duration	 | 是 | 播放时长 |  - |
-Timestamp | 是 | 播放时间，13位毫秒级时间戳 | - |
-AudioFormat | 否 |音频格式 文件编码, | mp3 / aac |
-AudioRate	 |  否 | 音频码率 音质 | 320 / 128|
+Duration	 | 是 | 当前音频播放持续时长 |  - |
+Timestamp | 是 | 播放完成的时间，13位毫秒级时间戳 | - |
+AudioFormat | 是 |当前播放音频的文件编码 | mp3 / aac |
+AudioRate	 |  是 |当前播放音频的比特率 | 320 / 128|
 
 
 ## 四、API状态码

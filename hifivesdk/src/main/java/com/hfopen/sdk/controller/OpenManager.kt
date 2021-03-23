@@ -315,19 +315,19 @@ class OpenManager() {
     }
 
 
-    fun trafficListenMixed(MusicId: String?,
-                           response: DataResponse<TrafficListenMixed>
-    ) {
-        if (!checkNetWork(mContext)) {
-            return
-        }
-        return mService.trafficListenMixed(MusicId)
-                .request(object : BaseSubscribe<TrafficListenMixed>(response) {
-                    override fun _onNext(t: TrafficListenMixed) {
-                        response.onSuccess(t, BaseConstance.taskId)
-                    }
-                })
-    }
+//    fun trafficListenMixed(MusicId: String?,
+//                           response: DataResponse<TrafficListenMixed>
+//    ) {
+//        if (!checkNetWork(mContext)) {
+//            return
+//        }
+//        return mService.trafficListenMixed(MusicId)
+//                .request(object : BaseSubscribe<TrafficListenMixed>(response) {
+//                    override fun _onNext(t: TrafficListenMixed) {
+//                        response.onSuccess(t, BaseConstance.taskId)
+//                    }
+//                })
+//    }
 
     fun orderMusic(Subject: String?,
                    OrderId: String?,
