@@ -125,11 +125,13 @@ code |  错误code|
 ##### 3.2 SDK初始化
 
 ```
-HFOpenApi.registerApp(Application context);
+HFOpenApi.registerApp(Application context,String clientId);
 ```
+
 参数  | 必填  |描述|
 ---|---|---
 context | 是| 上下文|
+clientId | 是| 用户唯一标识（公司自有的用户ID）。|
 
 
 **设置SDK全局回调**
@@ -189,8 +191,8 @@ PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
 
 ```
 HFOpenApi.getInstance().searchMusic(TagIds: String?,
-                    priceFromCent: Long?,
-                    priceToCent: Long?,
+                    PriceFromCent: Long?,
+                    PriceToCent: Long?,
                     BpmForm: Int?,
                     BpmTo: Int?,
                     DurationFrom: Int?,
@@ -205,8 +207,8 @@ HFOpenApi.getInstance().searchMusic(TagIds: String?,
 参数  | 必填  |描述| 可选值|
 ---|---|---|---
 TagIds | 否| 标签Id，多个Id以“,”拼接 | - |
-priceFromCent | 否| 价格区间的最低值，单位分 |  - |
-priceToCent | 否| 价格区间的最高值，单位分 | - |
+PriceFromCent | 否| 价格区间的最低值，单位分 |  - |
+PriceToCent | 否| 价格区间的最高值，单位分 | - |
 BpmForm | 否| BPM区间的最低值| - |
 BpmTo	 | 否| BPM区间的最高值| - |
 DurationFrom	 | 否| 时长区间的最低值,单位秒 |  - |

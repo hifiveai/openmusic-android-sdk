@@ -106,8 +106,8 @@ class OpenManager() {
 
 
     fun searchMusic(TagIds: String?,
-                    priceFromCent: Long?,
-                    priceToCent: Long?,
+                    PriceFromCent: Long?,
+                    PriceToCent: Long?,
                     BpmForm: Int?,
                     BpmTo: Int?,
                     DurationFrom: Int?,
@@ -122,7 +122,7 @@ class OpenManager() {
             return
         }
 
-        mService.searchMusic(TagIds, priceFromCent, priceToCent, BpmForm, BpmTo, DurationFrom, DurationTo, Keyword, Language, Page, PageSize)
+        mService.searchMusic(TagIds, PriceFromCent, PriceToCent, BpmForm, BpmTo, DurationFrom, DurationTo, Keyword, Language, Page, PageSize)
                 .request(object : BaseSubscribe<SearchMusic>(response) {
                     override fun _onNext(t: SearchMusic) {
                         response.onSuccess(t, BaseConstance.taskId)

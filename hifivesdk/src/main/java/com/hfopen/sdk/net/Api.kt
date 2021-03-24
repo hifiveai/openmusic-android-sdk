@@ -54,8 +54,8 @@ interface Api {
     @FormUrlEncoded
     @POST("/")
     fun searchMusic(@Field("TagIds") TagIds: String?,
-                    @Field("priceFromCent") priceFromCent: Long?,
-                    @Field("priceToCent") priceToCent: Long?,
+                    @Field("PriceFromCent") PriceFromCent: Long?,
+                    @Field("PriceToCent") PriceToCent: Long?,
                     @Field("BpmForm") BpmForm: Int?,
                     @Field("BpmTo") BpmTo: Int?,
                     @Field("DurationFrom") DurationFrom: Int?,
