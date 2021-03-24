@@ -89,6 +89,7 @@
                         android:text="@string/hifivesdk_music_player_sound"
                         android:textColor="#ffffff"
                         android:textSize="10sp"
+                        android:visibility="gone"
                         android:textStyle="bold" />
 
                     <CheckBox
@@ -106,6 +107,7 @@
                         android:enabled="false"
                         android:gravity="center"
                         android:text="@string/hifivesdk_music_player_lyric"
+                        android:visibility="gone"
                         android:textColor="@drawable/hifive_music_player_lyric_checkbox_textcolor"
                         android:textSize="10sp"
                         android:textStyle="bold" />

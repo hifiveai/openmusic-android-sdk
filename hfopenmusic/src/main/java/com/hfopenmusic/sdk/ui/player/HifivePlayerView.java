@@ -366,6 +366,18 @@ public class HifivePlayerView extends FrameLayout implements Observer {
                         .into(iv_music);//四周都是圆角的圆角矩形图片。
             }
         }
+        if(playMusic.getVersion() != null && playMusic.getVersion().size()>0){
+            boolean majorVersion = playMusic.getVersion().get(0).getMajorVersion();
+            tv_accompany.setVisibility(View.VISIBLE);
+            if(majorVersion) {
+                tv_accompany.setAlpha(1);
+                tv_accompany.setText(R.string.hifivesdk_music_player_sound);
+            }
+            else {
+                tv_accompany.setAlpha(0.45f);
+                tv_accompany.setText(R.string.hifivesdk_music_player_accompany);
+            }
+        }
     }
 
     /**
