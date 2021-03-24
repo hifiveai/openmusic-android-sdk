@@ -388,10 +388,11 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
                 override fun onSuccess(data: SearchMusic, taskId: String) {
                     musicModels = data.record
                     totalCount = data.meta.totalCount
-                    if (ty == Refresh && (musicModels == null || musicModels!!.isEmpty())) {
+                    if (ty == Refresh && (totalCount == 0 || musicModels == null || musicModels!!.isEmpty())) {
                         isRecommand = true
                         login()
                     } else {
+                        isRecommand = false
                         mHandler.sendEmptyMessage(ty)
                     }
                 }

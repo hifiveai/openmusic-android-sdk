@@ -324,9 +324,17 @@ public class HifivePlayerView extends FrameLayout implements Observer {
 
     //切歌后清空上首歌播放相关标志和配置
     private void clear() {
+        tv_music_info.setText("");
+        if (mContext != null) {
+            RoundedCornersTransform transform = new RoundedCornersTransform(mContext, HifiveDisplayUtils.dip2px(mContext, 25));
+            Glide.with(mContext).asBitmap().load(R.mipmap.hifivesdk_icon_music_player_defaut)
+                    .apply(new RequestOptions().transform(transform))
+                    .into(iv_music);
+        }
         playProgress = 0;//重置播放进度
         playUrl = "";//重置播放链接
         pb_play.setProgress(0);
+        pb_play.setSecondaryProgress(0);
         iv_play.setVisibility(VISIBLE);
         fl_loading.setVisibility(GONE);
         //清空动画

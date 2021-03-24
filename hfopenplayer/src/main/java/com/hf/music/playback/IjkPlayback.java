@@ -192,7 +192,8 @@ public class IjkPlayback {
         } else if (isPausing()) {
             start();
         } else {
-            play(getPlayingPosition());
+            release();
+//            play(getPlayingPosition());
         }
     }
 
