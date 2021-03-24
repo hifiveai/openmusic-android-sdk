@@ -6,46 +6,46 @@ import java.io.Serializable
  * lsh 2021年3月1日13:44:07
  */
 data class LoginBean(
-    val token: String
+        val token: String
 )
 
 
 data class ChannelItem(
-    val coverUrl: String,
-    val groupId: String,
-    val groupName: String
+        val coverUrl: String,
+        val groupId: String,
+        val groupName: String
 )
 
 
 data class TrialMusic(
-    val expires: Long,
-    val fileSize: Int,
-    val fileUrl: String,
-    val musicId: String,
-    val waveUrl: String
+        val expires: Long,
+        val fileSize: Int,
+        val fileUrl: String,
+        val musicId: String,
+        val waveUrl: String
 
 )
 
 
 data class HQListen(
-    val expires: Long?,
-    val fileSize: Int?,
-    val fileUrl: String?,
-    val musicId: String?
+        val expires: Long?,
+        val fileSize: Int?,
+        val fileUrl: String?,
+        val musicId: String?
 )
 
 data class TrafficListenMixed(
-    val expires: Long,
-    val fileSize: Int,
-    val fileUrl: String,
-    val musicId: String,
-    val waveUrl: String
+        val expires: Long,
+        val fileSize: Int,
+        val fileUrl: String,
+        val musicId: String,
+        val waveUrl: String
 )
 
 
 data class SearchMusic(
-    val meta: Meta,
-    val record: List<MusicRecord>
+        val meta: Meta,
+        val record: List<MusicRecord>
 )
 
 data class MusicConfig(
@@ -55,8 +55,8 @@ data class MusicConfig(
 
 
 data class BaseFavorite(
-    val meta: Meta,
-    val record: List<MusicRecord>
+        val meta: Meta,
+        val record: List<MusicRecord>
 )
 
 data class BaseHot(
@@ -66,22 +66,30 @@ data class BaseHot(
 
 
 data class OrderMusic(
-    val HForderId: String,
-    val createTime: String,
-    val deadline: String,
-    val music: List<MusicRecord>,
-    val orderId: String,
-    val subject: String,
-    val totalFee: Int
+        val HForderId: String,
+        val createTime: String,
+        val deadline: String,
+        val music: List<OrderDetail>,
+        val orderId: String,
+        val subject: String,
+        val totalFee: Int
+)
+
+data class OrderDetail(
+        val musicId: String,
+        val fileUrl: String,
+        val expires: Long,
+        val fileSize: Int
+
 )
 
 data class OrderAuthorization(
-    val fileUrl: List<String>
+        val fileUrl: List<String>
 )
 
 data class OrderPublish(
-    val orderId: String,
-    val workId: String
+        val orderId: String,
+        val workId: String
 )
 
 
@@ -91,8 +99,8 @@ data class ChannelSheet(
 )
 
 data class SheetMusic(
-    val meta: Meta,
-    val record: List<MusicRecord>
+        val meta: Meta,
+        val record: List<MusicRecord>
 )
 
 
@@ -130,7 +138,7 @@ data class MusicRecord(
         val musicName: String,
         val tag: List<Tag>?,
         val version: List<Version>?
-){
+) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
