@@ -39,10 +39,7 @@ public class MainActivity extends AppCompatActivity{
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions.request(permissionsGroup)
                 .subscribe(aBoolean -> {
-                    HFPlayer.init(getApplication())
-                            .setDebug(true)
-                            .setMaxBufferSize(200 * 1024)
-                            .apply();
+
                 });
     }
 

@@ -85,6 +85,7 @@ public class HifivePlayerView extends FrameLayout implements Observer {
         this.mContext = context;
         inflate(mContext, R.layout.hifive_window_ijkplayer, this);
         initView();
+        initPlaylistener();
         initEvent();
     }
 
@@ -116,13 +117,6 @@ public class HifivePlayerView extends FrameLayout implements Observer {
     //初始化点击事件
     @SuppressLint("ClickableViewAccessibility")
     private void initEvent() {
-        dragLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-               initPlaylistener();
-            }
-        }, 500);
-
 
         dragLayout.setDragView(iv_music, new DraggableLinearLayout.OnClickEvent() {
             @Override
