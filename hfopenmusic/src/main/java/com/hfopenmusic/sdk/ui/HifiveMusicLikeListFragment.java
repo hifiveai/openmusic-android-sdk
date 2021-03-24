@@ -18,7 +18,7 @@
 //import com.hfopenmusic.sdk.adapter.BaseRecyclerViewAdapter;
 //import com.hfopenmusic.sdk.adapter.HifiveMusicListAdapter;
 //import com.hfopenmusic.sdk.listener.HifiveAddMusicListener;
-//import com.hfopenmusic.sdk.ui.player.HifiveManage;
+//import com.hfopenmusic.sdk.ui.player.HifiveMusicManage;
 //import com.hfopenmusic.sdk.view.HifiveRefreshHeader;
 //import com.hifive.sdk.entity.HifiveMusicBean;
 //import com.hifive.sdk.entity.HifiveMusicModel;
@@ -70,7 +70,7 @@
 //                        if (hifiveMusicModels.size() > 0) {
 //                            adapter.addHeaderView(R.layout.hifive_header_playall);
 //                            adapter.updateDatas(hifiveMusicModels);
-//                            HifiveManage.getInstance().setLikeList(hifiveMusicModels);
+//                            HifiveMusicManage.getInstance().setLikeList(hifiveMusicModels);
 //                        }else{
 //                            adapter.addEmptyView(R.layout.hifive_recycler_emptyview);
 //                        }
@@ -85,9 +85,9 @@
 //                        adapter.getDatas().remove(msg.arg1);
 //                        adapter.notifyDataSetChanged();
 //                        if(getActivity() != null){
-//                            HifiveManage.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
+//                            HifiveMusicManage.getInstance().showToast(getActivity(),getActivity().getString(R.string.hifivesdk_comfirm_dialog_delete));
 //                        }
-//                        HifiveManage.getInstance().setLikeList(adapter.getDatas());
+//                        HifiveMusicManage.getInstance().setLikeList(adapter.getDatas());
 //                        if(adapter.getDatas().size()==0){
 //                            adapter.removeHeaderView();
 //                            adapter.addEmptyView(R.layout.hifive_recycler_emptyview);
@@ -95,7 +95,7 @@
 //                        break;
 //                    case UPDATE_CURRENT_SONG:
 //                        HifiveMusicModel hifiveMusicModel = (HifiveMusicModel) msg.obj;
-//                        HifiveManage.getInstance().addCurrentSingle(getActivity(),hifiveMusicModel,"2");
+//                        HifiveMusicManage.getInstance().addCurrentSingle(getActivity(),hifiveMusicModel,"2");
 //                        break;
 //                }
 //            } catch (Exception e) {
@@ -115,12 +115,12 @@
 //    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        View view = inflater.inflate(R.layout.hifive_fragment_music_list, container, false);
 //        if(getActivity() != null)
-//            sheetId = HifiveManage.getInstance().getUserSheetIdByName(getActivity().getString(R.string.hifivesdk_music_like));
+//            sheetId = HifiveMusicManage.getInstance().getUserSheetIdByName(getActivity().getString(R.string.hifivesdk_music_like));
 //        initView(view);
 //        initRecyclerView();
-//        if(HifiveManage.getInstance().getLikeList() !=null
-//                && HifiveManage.getInstance().getLikeList().size() >0){
-//            hifiveMusicModels = HifiveManage.getInstance().getLikeList();
+//        if(HifiveMusicManage.getInstance().getLikeList() !=null
+//                && HifiveMusicManage.getInstance().getLikeList().size() >0){
+//            hifiveMusicModels = HifiveMusicManage.getInstance().getLikeList();
 //            mHandler.sendEmptyMessageDelayed(RequstSuccess,1000);
 //        }else{
 //            refreshLayout.autoRefresh();
@@ -147,13 +147,13 @@
 //                message.obj = hifiveMusicModel;
 //                message.what = UPDATE_CURRENT_SONG;
 //                mHandler.sendMessageDelayed(message,200);
-////                HifiveManage.getInstance().addCurrentSingle(getActivity(), (HifiveMusicModel) adapter.getDatas().get(position), "2");
+////                HifiveMusicManage.getInstance().addCurrentSingle(getActivity(), (HifiveMusicModel) adapter.getDatas().get(position), "2");
 //            }
 //        });
 //        adapter.setOnRecyclerViewHeaderClick(new BaseRecyclerViewAdapter.OnRecyclerViewHeaderClick() {
 //            @Override
 //            public void OnHeaderClick() {
-//                HifiveManage.getInstance().updateCurrentList(getActivity(), (List<HifiveMusicModel>)adapter.getDatas());
+//                HifiveMusicManage.getInstance().updateCurrentList(getActivity(), (List<HifiveMusicModel>)adapter.getDatas());
 //            }
 //        });
 //
@@ -211,7 +211,7 @@
 //                    ((HifiveMusicModel)adapter.getDatas().get(position)).getMusicId(), new DataResponse() {
 //                        @Override
 //                        public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-//                            HifiveManage.getInstance().showToast(getActivity(),string);
+//                            HifiveMusicManage.getInstance().showToast(getActivity(),string);
 //                        }
 //
 //                        @Override
@@ -233,11 +233,11 @@
 //        try {
 //            if (HFLiveApi.getInstance() == null || getContext() == null)
 //                return;
-//            HFLiveApi.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, HifiveManage.field,
+//            HFLiveApi.getInstance().getMemberSheetMusicList(getContext(), String.valueOf(sheetId), null, HifiveMusicManage.field,
 //                    "100", "1", new DataResponse<HifiveMusicBean<HifiveMusicModel>>() {
 //                        @Override
 //                        public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-//                            HifiveManage.getInstance().showToast(getActivity(),string);
+//                            HifiveMusicManage.getInstance().showToast(getActivity(),string);
 //                            mHandler.sendEmptyMessage(RequstFail);
 //                        }
 //
@@ -263,10 +263,10 @@
 //        try{
 //            int type = (int) arg;
 //            if(adapter != null){
-//                if(type == HifiveManage.UPDATEPALY){
+//                if(type == HifiveMusicManage.UPDATEPALY){
 //                    adapter.notifyDataSetChanged();
-//                }else if(type == HifiveManage.UPDATELIKELIST){
-//                    hifiveMusicModels = HifiveManage.getInstance().getLikeList();
+//                }else if(type == HifiveMusicManage.UPDATELIKELIST){
+//                    hifiveMusicModels = HifiveMusicManage.getInstance().getLikeList();
 //                    if (hifiveMusicModels.size() > 0) {
 //                        adapter.addHeaderView(R.layout.hifive_header_playall);
 //                        adapter.updateDatas(hifiveMusicModels);

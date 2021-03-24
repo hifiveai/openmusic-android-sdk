@@ -1,4 +1,4 @@
-package com.hfopenmusic.sdk.ui.player;
+package com.hfopenmusic.sdk;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -11,6 +11,8 @@ import com.hfopen.sdk.hInterface.DataResponse;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopen.sdk.rx.BaseException;
 import com.hfopenmusic.sdk.ui.HifiveUpdateObservable;
+import com.hfopenmusic.sdk.player.HFLivePlayer;
+
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,25 +23,25 @@ import java.util.Observer;
  *
  * @author huchao
  */
-public class HifiveManage {
+public class HifiveMusicManage {
     public HifiveUpdateObservable updateObservable;
     public static final int UPDATEPALY = 1;//通知相关页面更新当前播放歌曲
     public static final int UPDATEPALYLIST = 2;//通知相关页面更新当前播放列表
     public static final int CHANGEMUSIC = 5;//通知播放器开始播放新歌曲
-    private  static volatile HifiveManage singleManage;
+    private  static volatile HifiveMusicManage singleManage;
     private Toast toast;
     private MusicRecord playMusic;//维护当前所播放的音乐，方便当前播放显示播放效果。
     private HQListen playMusicDetail;//歌曲播放信息
     private List<MusicRecord> currentList;//维护当前播放的音乐列表
 
-    private HifiveManage(){
+    private HifiveMusicManage(){
 
     }
-    public static HifiveManage getInstance(){
+    public static HifiveMusicManage getInstance(){
         if (singleManage == null) {
-            synchronized (HifiveManage.class) {
+            synchronized (HifiveMusicManage.class) {
                 if (singleManage == null) {
-                    singleManage = new HifiveManage();
+                    singleManage = new HifiveMusicManage();
                 }
             }
         }

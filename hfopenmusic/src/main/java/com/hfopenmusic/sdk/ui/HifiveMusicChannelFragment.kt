@@ -19,7 +19,7 @@ import com.hfopen.sdk.manager.HFOpenApi
 import com.hfopen.sdk.rx.BaseException
 import com.hfopenmusic.sdk.R
 import com.hfopenmusic.sdk.adapter.HifiveViewPagerAdapter
-import com.hfopenmusic.sdk.ui.player.HifiveManage
+import com.hfopenmusic.sdk.HifiveMusicManage
 import com.hfopenmusic.sdk.util.HifiveDisplayUtils
 import com.hfopenmusic.sdk.view.magicindicator.*
 import com.hfopenmusic.sdk.view.magicindicator.CommonPagerTitleView.OnPagerTitleChangeListener
@@ -72,7 +72,7 @@ class HifiveMusicChannelFragment : DialogFragment() {
         val view = inflater.inflate(R.layout.hifive_dialog_music_sheet, container)
         initView(view)
         getChannelData()
-        HifiveManage.getInstance().addDialog(this)
+        HifiveMusicManage.getInstance().addDialog(this)
         return view
     }
 
@@ -80,7 +80,7 @@ class HifiveMusicChannelFragment : DialogFragment() {
     private fun initView(view: View) {
         view.findViewById<View>(R.id.iv_back).setOnClickListener {
             dismiss()
-            HifiveManage.getInstance().removeDialog(1)
+            HifiveMusicManage.getInstance().removeDialog(1)
         }
         magicIndicator = view.findViewById(R.id.magic_indicator)
         viewPager = view.findViewById(R.id.viewpager)
@@ -165,7 +165,7 @@ class HifiveMusicChannelFragment : DialogFragment() {
             if (mContext == null) return
             HFOpenApi.getInstance().channel(object : DataResponse<ArrayList<ChannelItem>> {
                 override fun onError(exception: BaseException) {
-                    HifiveManage.getInstance().showToast(activity, exception.msg)
+                    HifiveMusicManage.getInstance().showToast(activity, exception.msg)
                 }
 
                 override fun onSuccess(data: ArrayList<ChannelItem>, taskId: String) {

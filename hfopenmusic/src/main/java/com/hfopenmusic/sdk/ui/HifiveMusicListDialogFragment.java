@@ -25,7 +25,7 @@ import com.hfopenmusic.sdk.R;
 import com.hfopenmusic.sdk.adapter.HifiveViewPagerAdapter;
 import com.hfopenmusic.sdk.listener.HifiveAddMusicListener;
 import com.hfopenmusic.sdk.listener.NoDoubleClickListener;
-import com.hfopenmusic.sdk.ui.player.HifiveManage;
+import com.hfopenmusic.sdk.HifiveMusicManage;
 import com.hfopenmusic.sdk.util.HifiveDisplayUtils;
 import com.hfopenmusic.sdk.view.magicindicator.CommonNavigator;
 import com.hfopenmusic.sdk.view.magicindicator.CommonNavigatorAdapter;
@@ -91,13 +91,13 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
         initView(view);
         initMagicIndicator();
         initPage();
-//        if (HifiveManage.getInstance().getUserSheetModels() != null
-//                && HifiveManage.getInstance().getUserSheetModels().size() > 0) {
+//        if (HifiveMusicManage.getInstance().getUserSheetModels() != null
+//                && HifiveMusicManage.getInstance().getUserSheetModels().size() > 0) {
 //
 //        } else {
 //            getData();
 //        }
-        HifiveManage.getInstance().addDialog(this);
+        HifiveMusicManage.getInstance().addDialog(this);
         return view;
     }
 
@@ -107,7 +107,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
             @Override
             public void onClick(View v) {
                 dismiss();
-                HifiveManage.getInstance().removeDialog(0);
+                HifiveMusicManage.getInstance().removeDialog(0);
             }
         });
         view.findViewById(R.id.iv_sheet).setOnClickListener(new NoDoubleClickListener() {
@@ -137,13 +137,13 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
 //        HFLiveApi.getInstance().getMemberSheetList(mContext, "1", "10", new DataResponse<HifiveMusicBean<HifiveMusicUserSheetModel>>() {
 //            @Override
 //            public void errorMsg(@NotNull String string, @org.jetbrains.annotations.Nullable Integer code) {
-//                HifiveManage.getInstance().showToast(getActivity(), string);
+//                HifiveMusicManage.getInstance().showToast(getActivity(), string);
 //            }
 //
 //            @Override
 //            public void data(@NotNull HifiveMusicBean<HifiveMusicUserSheetModel> any) {
 ////                Log.e("TAG", "我的歌单==" + any);
-//                HifiveManage.getInstance().setUserSheetModels(any.getRecords());
+//                HifiveMusicManage.getInstance().setUserSheetModels(any.getRecords());
 //                initMagicIndicator();
 //                initPage();
 //            }
@@ -239,9 +239,9 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
 //        HifiveMusicKaraokeListFragment karaokeListFragment = new HifiveMusicKaraokeListFragment();
 //        karaokeListFragment.setAddMusicListener(this);
         //为被观察者添加观察者
-        HifiveManage.getInstance().addObserver(currentPalyListFragment);
-//        HifiveManage.getInstance().addObserver(likeListFragment);
-//        HifiveManage.getInstance().addObserver(karaokeListFragment);
+        HifiveMusicManage.getInstance().addObserver(currentPalyListFragment);
+//        HifiveMusicManage.getInstance().addObserver(likeListFragment);
+//        HifiveMusicManage.getInstance().addObserver(karaokeListFragment);
         fragments.add(currentPalyListFragment);
 //        fragments.add(likeListFragment);
 //        fragments.add(karaokeListFragment);

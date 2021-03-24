@@ -14,7 +14,7 @@ import com.hfopen.sdk.entity.Desc;
 import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenmusic.sdk.R;
 
-import com.hfopenmusic.sdk.ui.player.HifiveManage;
+import com.hfopenmusic.sdk.HifiveMusicManage;
 
 import java.util.List;
 
@@ -57,8 +57,8 @@ public class HifiveMusicListAdapter extends BaseRecyclerViewAdapter{
 
         holder.setText(R.id.tv_name,model.getMusicName());
 
-        if(HifiveManage.getInstance().getPlayMusic() != null
-                && HifiveManage.getInstance().getPlayMusic().getMusicId().equals(model.getMusicId())){
+        if(HifiveMusicManage.getInstance().getPlayMusic() != null
+                && HifiveMusicManage.getInstance().getPlayMusic().getMusicId().equals(model.getMusicId())){
             holder.setVisible(R.id.iv_play, View.VISIBLE);
 
             RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);

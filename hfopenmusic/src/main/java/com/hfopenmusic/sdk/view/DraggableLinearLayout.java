@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-import com.hfopenmusic.sdk.ui.player.HifiveManage;
+import com.hfopenmusic.sdk.HifiveMusicManage;
 import com.hfopenmusic.sdk.util.HifiveDisplayUtils;
 
 /**
@@ -123,7 +123,7 @@ public class DraggableLinearLayout extends LinearLayout {
     //获取最大可滑动距离
     public int getMaxScrollY() {
         //判断歌曲选择相关的弹窗是否打开
-        if (HifiveManage.dialogFragments != null && HifiveManage.dialogFragments.size()>0) {
+        if (HifiveMusicManage.dialogFragments != null && HifiveMusicManage.dialogFragments.size()>0) {
             return mScreenHeight - ((View)getParent()).getHeight() - HifiveDisplayUtils.getScreenHeight(getContext())/24 - HifiveDisplayUtils.getPlayerHeight(getContext());
         } else {
             return mScreenHeight - ((View)getParent()).getHeight() - marginBottom;

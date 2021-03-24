@@ -23,7 +23,7 @@ import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopen.sdk.rx.BaseException;
 import com.hfopenmusic.sdk.R;
 import com.hfopenmusic.sdk.adapter.HifiveMusicChannelSheetAdapter;
-import com.hfopenmusic.sdk.ui.player.HifiveManage;
+import com.hfopenmusic.sdk.HifiveMusicManage;
 import com.hfopenmusic.sdk.util.HifiveDisplayUtils;
 import com.hfopenmusic.sdk.view.HifiveLoadMoreFooter;
 import com.hfopenmusic.sdk.view.HifiveRefreshHeader;
@@ -178,7 +178,7 @@ public class HifiveMusicChannelSheetFragment extends Fragment {
                     if (ty != Refresh) {//上拉加载请求失败后，还原页卡
                         page--;
                     }
-                    HifiveManage.getInstance().showToast(getActivity(),e.getMsg());
+                    HifiveMusicManage.getInstance().showToast(getActivity(),e.getMsg());
                     mHandler.sendEmptyMessage(RequstFail);
                 }
 

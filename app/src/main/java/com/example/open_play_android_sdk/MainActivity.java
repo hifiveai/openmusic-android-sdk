@@ -7,8 +7,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import com.hf.music.manager.HFPlayer;
-import com.hfopenmusic.sdk.ui.player.HFLivePlayer;
+import com.hfopenmusic.sdk.player.HFLivePlayer;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 

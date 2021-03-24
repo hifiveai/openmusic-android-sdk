@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import com.hfopenmusic.sdk.listener.LifeCycleListener
-import com.hfopenmusic.sdk.ui.player.HFLivePlayer
+import com.hfopenmusic.sdk.player.HFLivePlayer
 
 /**
  * 空白Fragment实现生命周期管理
