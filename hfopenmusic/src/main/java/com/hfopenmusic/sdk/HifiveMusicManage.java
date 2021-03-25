@@ -2,14 +2,18 @@ package com.hfopenmusic.sdk;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+
 import com.hfopen.sdk.entity.HQListen;
 import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopen.sdk.hInterface.DataResponse;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopen.sdk.rx.BaseException;
+import com.hfopenmusic.sdk.ui.HifiveMusicListDialogFragment;
 import com.hfopenmusic.sdk.ui.HifiveUpdateObservable;
 import com.hfopenmusic.sdk.player.HFLivePlayer;
 
@@ -21,7 +25,6 @@ import java.util.Observer;
 /**
  * 弹窗管理工具
  *
- * @author huchao
  */
 public class HifiveMusicManage {
     public HifiveUpdateObservable updateObservable;
@@ -29,6 +32,8 @@ public class HifiveMusicManage {
     public static final int UPDATEPALYLIST = 2;//通知相关页面更新当前播放列表
     public static final int CHANGEMUSIC = 5;//通知播放器开始播放新歌曲
     private  static volatile HifiveMusicManage singleManage;
+    private HifiveMusicListDialogFragment dialogFragment;
+    public static List<DialogFragment> dialogFragments;//维护当前所打开的dialog
     private Toast toast;
     private MusicRecord playMusic;//维护当前所播放的音乐，方便当前播放显示播放效果。
     private HQListen playMusicDetail;//歌曲播放信息
@@ -47,7 +52,28 @@ public class HifiveMusicManage {
         }
         return singleManage;
     }
-    public static List<DialogFragment> dialogFragments;//维护当前所打开的dialog
+
+    //添加Observer
+    public void addObserver(Observer o){
+        if(updateObservable == null )
+            updateObservable = new HifiveUpdateObservable();
+        updateObservable.addObserver(o);
+    }
+
+
+    //显示歌曲列表弹窗
+    public void showDialog(FragmentActivity context) {
+        if (dialogFragment != null && dialogFragment.getDialog() != null) {
+            if (dialogFragment.getDialog().isShowing()) {
+                HifiveMusicManage.getInstance().CloseDialog();
+            } else {
+                dialogFragment.show(context.getSupportFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
+            }
+        } else {
+            dialogFragment = new HifiveMusicListDialogFragment();
+            dialogFragment.show(context.getSupportFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
+        }
+    }
 
     //关闭所有dialog
     public void CloseDialog(){
@@ -62,12 +88,7 @@ public class HifiveMusicManage {
             dialogFragments = null;
     }
 
-    //添加Observer
-    public void addObserver(Observer o){
-        if(updateObservable == null )
-            updateObservable = new HifiveUpdateObservable();
-        updateObservable.addObserver(o);
-    }
+
 
     //添加dialog
     public void addDialog(DialogFragment dialogFragment){
@@ -88,10 +109,6 @@ public class HifiveMusicManage {
         }
     }
 
-
-    public void setPlayMusic(MusicRecord playMusic) {
-        this.playMusic = playMusic;
-    }
 
     public MusicRecord getPlayMusic() {
         return playMusic;
@@ -227,10 +244,6 @@ public class HifiveMusicManage {
             e.printStackTrace();
         }
     }
-
-
-
-
 
 
     //显示自定义toast信息

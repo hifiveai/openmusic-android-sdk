@@ -95,7 +95,6 @@ public class HFLivePlayer {
             }
             recyclePlayer();
             mPlayerView = null;
-            HifiveMusicManage.getInstance().setPlayMusic(null);//清空当前播放的歌曲
             HifiveMusicManage.getInstance().CloseDialog();
         } catch (Exception e) {
             e.printStackTrace();

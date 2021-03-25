@@ -36,6 +36,7 @@ repositories {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api 'androidx.appcompat:appcompat:1.2.0'
+
     api project(path: ':hfopenplayer')
 
     //开发者必须导入的包

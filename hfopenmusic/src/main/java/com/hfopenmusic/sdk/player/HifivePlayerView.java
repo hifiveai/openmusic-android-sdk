@@ -68,7 +68,6 @@ public class HifivePlayerView extends FrameLayout implements Observer {
     private final FragmentActivity mContext;
     private ObjectAnimator rotateAnim;//音乐图片旋转的动画
     private long rotateAnimPlayTime;//音乐图片旋转的动画执行时间
-    private HifiveMusicListDialogFragment dialogFragment;
     private String playUrl;//播放歌曲的url
     private int playProgress;//播放的进度
     public IjkPlayback hfPlayer;
@@ -122,7 +121,8 @@ public class HifivePlayerView extends FrameLayout implements Observer {
             @Override
             public void onClickEvent() {
                 animationOpen();
-                showDialog();
+                HifiveMusicManage.getInstance().showDialog(mContext);
+                dragLayout.updateViewY();
             }
         });
 
@@ -406,23 +406,6 @@ public class HifivePlayerView extends FrameLayout implements Observer {
             HifiveMusicManage.getInstance().showToast(mContext, "歌曲地址有误");
         }
 
-    }
-
-
-    //显示歌曲列表弹窗
-    public void showDialog() {
-        if (dialogFragment != null && dialogFragment.getDialog() != null) {
-            if (dialogFragment.getDialog().isShowing()) {
-                HifiveMusicManage.getInstance().CloseDialog();
-            } else {
-                dialogFragment.show(mContext.getSupportFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
-                dragLayout.updateViewY();
-            }
-        } else {
-            dialogFragment = new HifiveMusicListDialogFragment();
-            dialogFragment.show(mContext.getSupportFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
-            dragLayout.updateViewY();
-        }
     }
 
 
