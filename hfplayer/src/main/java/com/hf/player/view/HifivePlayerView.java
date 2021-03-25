@@ -60,6 +60,7 @@ public class HifivePlayerView extends FrameLayout implements Observer {
     private String playUrl;//播放歌曲的url
     private int playProgress;//播放的进度
     public IjkPlayback hfPlayer;
+    private boolean onTrackingTouch;//是否在拖拽进度条
 
 
     public HifivePlayerView(@NonNull FragmentActivity context, int Top, int Bottom) {
@@ -159,11 +160,12 @@ public class HifivePlayerView extends FrameLayout implements Observer {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                onTrackingTouch = true;
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                onTrackingTouch = false;
                 boolean seekTo = hfPlayer.seekTo(seekBar.getProgress());
                 if(!seekTo){
                     hfPlayer.pause();
@@ -223,6 +225,14 @@ public class HifivePlayerView extends FrameLayout implements Observer {
             }
         }
     }
+
+//    /**
+//     * 移动播放器位置
+//     */
+//    public void updateViewY()(){
+//        startPlayMusic(url,true);
+//
+//    }
 
 
     /**
@@ -382,12 +392,17 @@ public class HifivePlayerView extends FrameLayout implements Observer {
 
             @Override
             public void onProgressUpdate(int progress, int duration) {
-                pb_play.setProgress(progress);
+                if(!onTrackingTouch){
+                    pb_play.setProgress(progress);
+                }
+
             }
 
             @Override
             public void onBufferingUpdate(int percent) {
-                pb_play.setSecondaryProgress( pb_play.getMax() * percent / 100);
+                if(!onTrackingTouch){
+                    pb_play.setSecondaryProgress( pb_play.getMax() * percent / 100);
+                }
             }
 
             @Override

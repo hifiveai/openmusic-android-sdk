@@ -12,6 +12,7 @@ import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopen.sdk.hInterface.DataResponse;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopen.sdk.rx.BaseException;
+import com.hfopenmusic.sdk.listener.HFPlayMusicListener;
 import com.hfopenmusic.sdk.ui.HifiveMusicListDialogFragment;
 import com.hfopenmusic.sdk.ui.HifiveUpdateObservable;
 
@@ -36,6 +37,8 @@ public class HFOpenMusic {
     private MusicRecord playMusic;//维护当前所播放的音乐，方便当前播放显示播放效果。
     private HQListen playMusicDetail;//歌曲播放信息
     private List<MusicRecord> currentList;//维护当前播放的音乐列表
+    private HFPlayMusicListener mListener;
+
 
     /**--------------播放类型----------*/
     /** BGM音乐播放*/
@@ -66,6 +69,12 @@ public class HFOpenMusic {
         return this;
     }
 
+    //设置播放音乐回调
+    public HFOpenMusic setPlayListen(HFPlayMusicListener listener) {
+        mListener = listener;
+        return this;
+    }
+
     //添加Observer
     public void addObserver(Observer o){
         if(updateObservable == null )
@@ -78,7 +87,7 @@ public class HFOpenMusic {
     public void showOpenMusic(FragmentActivity activity) {
         if (dialogFragment != null && dialogFragment.getDialog() != null) {
             if (dialogFragment.getDialog().isShowing()) {
-                HFOpenMusic.getInstance().CloseDialog();
+                HFOpenMusic.getInstance().closeOpenMusic();
             } else {
                 dialogFragment.show(activity.getSupportFragmentManager(), HifiveMusicListDialogFragment.class.getSimpleName());
             }
@@ -89,7 +98,7 @@ public class HFOpenMusic {
     }
 
     //关闭所有dialog
-    public void CloseDialog(){
+    public void closeOpenMusic(){
             if(dialogFragments != null && dialogFragments.size() >0){
                 for(DialogFragment dialogFragment:dialogFragments){
                     if(dialogFragment != null){
@@ -123,6 +132,7 @@ public class HFOpenMusic {
     }
 
 
+
     public MusicRecord getPlayMusic() {
         return playMusic;
     }
@@ -135,16 +145,16 @@ public class HFOpenMusic {
     }
 
     //更新当前播放列表
-    public void updateCurrentList(Activity activity,List<MusicRecord> musicModels){
+    public void updateCurrentList(List<MusicRecord> musicModels){
         if(musicModels == null || musicModels.size() == 0)
             return;
         currentList = new ArrayList<>();
         currentList.addAll(musicModels);
-        setCurrentPlay(activity,currentList.get(0));
+        setCurrentPlay(currentList.get(0));
         updateObservable.postNewPublication(UPDATEPALYLIST);
     }
     //设置当前播放的歌曲
-    public void setCurrentPlay(Activity activity,MusicRecord musicModel){
+    public void setCurrentPlay(MusicRecord musicModel){
         try {
             if(musicModel == null ){
                 return;
@@ -152,25 +162,25 @@ public class HFOpenMusic {
             cleanPlayMusic(false);
             playMusic = musicModel;
             updateObservable.postNewPublication(UPDATEPALY);
-            getMusicDetail(activity,musicModel);
+            getMusicDetail(musicModel);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     //添加某一首歌曲到当前播放中mediaType	类型：1-k歌；2-听歌
-    public void addCurrentSingle(Activity activity, MusicRecord musicModel){
+    public void addCurrentSingle(MusicRecord musicModel){
         if(musicModel == null ){
             return;
         }
         if(playMusic != null && playMusic.getMusicId().equals(musicModel.getMusicId())){//播放的同一首=歌
             return;
         }
-        getMusicDetail(activity,musicModel);
+        getMusicDetail(musicModel);
     }
 
     //获取歌曲详情
-    public void getMusicDetail(final Activity activity, final MusicRecord musicModel){
+    public void getMusicDetail(final MusicRecord musicModel){
         try {
             if (HFOpenApi.getInstance() == null)
                 return;
@@ -179,7 +189,7 @@ public class HFOpenMusic {
                 @Override
                 public void onError(@NotNull BaseException e) {
                     if(currentList != null && currentList.size() >0){
-                        playNextMusic(activity);
+                        playNextMusic();
                     }else{
                         cleanPlayMusic(true);
                     }
@@ -190,6 +200,10 @@ public class HFOpenMusic {
                     updatePlayList(musicModel);
                     playMusicDetail = hqListen;
                     updateObservable.postNewPublication(CHANGEMUSIC);
+                    if(mListener != null){
+                        mListener.onPlayMusic(playMusic,playMusicDetail.getFileUrl());
+                    }
+
                 }
             });
         } catch (Exception e) {
@@ -226,16 +240,16 @@ public class HFOpenMusic {
             updateObservable.postNewPublication(UPDATEPALY);
     }
     //按顺序播放上一首歌
-    public void playLastMusic(Activity activity){
+    public void playLastMusic(){
         try {
             if(currentList!= null && currentList.size() >1){
                 int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
                 if(positon<0)
                     return;
                 if(positon != 0){//不是第一首
-                    setCurrentPlay(activity,currentList.get(positon-1));
+                    setCurrentPlay(currentList.get(positon-1));
                 }else{
-                    setCurrentPlay(activity,currentList.get(currentList.size()-1));
+                    setCurrentPlay(currentList.get(currentList.size()-1));
                 }
             }
         } catch (Exception e) {
@@ -243,14 +257,14 @@ public class HFOpenMusic {
         }
     }
     //按顺序播放下一首歌
-    public void playNextMusic(Activity activity){
+    public void playNextMusic(){
         try {
             if(currentList != null && currentList.size()>0){
                 int positon = currentList.indexOf(playMusic);//获取当前播放歌曲的序号
                 if(positon != (currentList.size()-1)){//不是最后一首
-                    setCurrentPlay(activity,currentList.get(positon+1));
+                    setCurrentPlay(currentList.get(positon+1));
                 }else{
-                    setCurrentPlay(activity,currentList.get(0));
+                    setCurrentPlay(currentList.get(0));
                 }
             }
         } catch (Exception e) {

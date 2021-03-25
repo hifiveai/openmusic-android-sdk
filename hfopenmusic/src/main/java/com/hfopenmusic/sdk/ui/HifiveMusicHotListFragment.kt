@@ -107,10 +107,10 @@ class HifiveMusicHotListFragment : Fragment() {
     private fun initRecyclerView() {
         adapter = HifiveMusicSheetListAdapter(activity, ArrayList())
         adapter!!.setOnRecyclerViewContentClick { position ->
-            HFOpenMusic.getInstance().addCurrentSingle(activity, adapter!!.datas[position] as MusicRecord?)
+            HFOpenMusic.getInstance().addCurrentSingle( adapter!!.datas[position] as MusicRecord?)
         }
         adapter!!.setOnRecyclerViewHeaderClick {
-            HFOpenMusic.getInstance().updateCurrentList(activity, adapter!!.datas as List<MusicRecord?>) }
+            HFOpenMusic.getInstance().updateCurrentList(adapter!!.datas as List<MusicRecord?>) }
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向
         refreshLayout!!.setOnRefreshListener {

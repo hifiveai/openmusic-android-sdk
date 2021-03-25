@@ -7,16 +7,20 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.hf.player.view.HFPlayer;
 import com.hf.player.view.HFPlayerViewListener;
+import com.hfopen.sdk.entity.HQListen;
+import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenmusic.sdk.HFOpenMusic;
+import com.hfopenmusic.sdk.listener.HFPlayMusicListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 
 public class MainActivity extends AppCompatActivity{
     private boolean flag;
-    private AppCompatButton play;
+    private AppCompatButton play,play2,play3;
 
     /**
      * 权限组
@@ -31,6 +35,8 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         play =  findViewById(R.id.play);
+        play2 =  findViewById(R.id.play2);
+        play3 =  findViewById(R.id.play3);
 
         requestPermission();
         initView();
@@ -46,33 +52,69 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void initView() {
-//        HFLivePlayer.getInstance().showPlayer(MainActivity.this);
-        play.setOnClickListener(view -> {
-//            if(!flag){
-//                HFLivePlayer.getInstance().showPlayer(MainActivity.this);
-//                flag = true ;
-//                play.setText("关闭播放器");
-//            }else{
-//                HFLivePlayer.getInstance().removePlayer();
-//                flag = false;
-//                play.setText("开启播放器");
-//            }
-            HFOpenMusic.getInstance().showOpenMusic(MainActivity.this);
-            HFPlayer.getInstance().showPlayer(MainActivity.this);
-            //初始化播放器UI
-            HFPlayer.getInstance()
-                    .setTitle("测试测试")
-                    .setCover("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20190521%2F17%2F1558430156-SBswiePxFE.jpg&refer=http%3A%2F%2Fimage.biaobaiju.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619162218&t=409c6be07cf495ccc4dcf3bc23f94028")
-                    .playWithUrl("https://sharefs.yun.kugou.com/202103251442/489fd352b879416de9742d9c98797b6b/G197/M04/0E/18/ZYcBAF5x5-2AbFgmADaApn6O6Fw014.mp3")
+        play.setOnClickListener(v -> HFPlayer.getInstance().showPlayer(MainActivity.this)
+        .setListener(new HFPlayerViewListener() {
+            @Override
+            public void onClick() {
+                play(null,null);
+            }
+
+            @Override
+            public void onPre() {
+
+            }
+
+            @Override
+            public void onPlayPause(boolean isPlaying) {
+
+            }
+
+            @Override
+            public void onNext() {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        }));
+
+        play2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(flag){
+                    HFOpenMusic.getInstance().closeOpenMusic();
+                    flag = false;
+                }else{
+                    showMusic(false);
+                }
+            }
+        });
+
+        play3.setOnClickListener(view -> {
+            HFPlayer.getInstance().showPlayer(MainActivity.this)
                     .setListener(new HFPlayerViewListener() {
                         @Override
                         public void onClick() {
                             Log.e("HFPlayerViewListener", "onClick");
+                            if(flag){
+                                HFOpenMusic.getInstance().closeOpenMusic();
+                                flag = false;
+                            }else{
+                                showMusic(true);
+                            }
                         }
 
                         @Override
                         public void onPre() {
                             Log.e("HFPlayerViewListener", "onPre");
+                            HFOpenMusic.getInstance().playLastMusic();
                         }
 
                         @Override
@@ -83,18 +125,54 @@ public class MainActivity extends AppCompatActivity{
                         @Override
                         public void onNext() {
                             Log.e("HFPlayerViewListener", "onNext");
+                            HFOpenMusic.getInstance().playNextMusic();
                         }
 
                         @Override
                         public void onComplete() {
                             Log.e("HFPlayerViewListener", "onComplete");
+                            HFOpenMusic.getInstance().playNextMusic();
                         }
 
                         @Override
                         public void onError() {
                             Log.e("HFPlayerViewListener", "onError");
+                            HFOpenMusic.getInstance().playNextMusic();
                         }
                     });
         });
+    }
+
+    private void play(MusicRecord musicDetail,String url){
+        if(musicDetail != null){
+            //初始化播放器UI
+            HFPlayer.getInstance()
+                    .setTitle(musicDetail.getMusicName())
+                    .setCover(musicDetail.getCover().get(0).getUrl())
+                    .playWithUrl(url);
+        }else{
+            //初始化播放器UI
+            HFPlayer.getInstance()
+                    .setTitle("测试测试")
+                    .setCover("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20190521%2F17%2F1558430156-SBswiePxFE.jpg&refer=http%3A%2F%2Fimage.biaobaiju.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619162218&t=409c6be07cf495ccc4dcf3bc23f94028")
+                    .playWithUrl("https://sharefs.yun.kugou.com/202103251442/489fd352b879416de9742d9c98797b6b/G197/M04/0E/18/ZYcBAF5x5-2AbFgmADaApn6O6Fw014.mp3");
+        }
+    }
+
+    private void showMusic(boolean showplayer){
+        flag = true;
+        HFOpenMusic.getInstance()
+                .setPlayListen(new HFPlayMusicListener() {
+                    @Override
+                    public void onPlayMusic(MusicRecord musicDetail, String url) {
+                        if(showplayer){
+                            play(musicDetail,url);
+                        }else{
+                            Log.e("HFPlayMusicListener", url);
+                        }
+
+                    }
+                })
+                .showOpenMusic(MainActivity.this);
     }
 }

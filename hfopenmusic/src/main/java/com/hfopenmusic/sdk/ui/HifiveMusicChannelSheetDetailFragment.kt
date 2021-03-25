@@ -150,9 +150,9 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
     //初始化ReclyView
     private fun ininReclyView() {
         adapter = HifiveMusicSheetListAdapter(context, ArrayList())
-        adapter!!.setOnRecyclerViewContentClick { position: Int -> HFOpenMusic.getInstance().addCurrentSingle(activity, adapter!!.datas[position] as MusicRecord?) }
+        adapter!!.setOnRecyclerViewContentClick { position: Int -> HFOpenMusic.getInstance().addCurrentSingle( adapter!!.datas[position] as MusicRecord?) }
         adapter!!.setOnRecyclerViewHeaderClick {
-                            HFOpenMusic.getInstance().updateCurrentList(activity, adapter!!.datas as List<MusicRecord>)
+                            HFOpenMusic.getInstance().updateCurrentList( adapter!!.datas as List<MusicRecord>)
         }
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context)

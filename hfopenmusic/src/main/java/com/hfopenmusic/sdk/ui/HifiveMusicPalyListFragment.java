@@ -45,7 +45,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
         public boolean handleMessage(Message msg) {
             if (msg.what == UPDATE_CURRENT_SONG) {
                 MusicRecord hifiveMusicModel = (MusicRecord) msg.obj;
-                HFOpenMusic.getInstance().addCurrentSingle(getActivity(), hifiveMusicModel);
+                HFOpenMusic.getInstance().addCurrentSingle(hifiveMusicModel);
             }
             return true;
         }
@@ -118,7 +118,7 @@ public class HifiveMusicPalyListFragment extends Fragment implements Observer {
                 if(HFOpenMusic.getInstance().getPlayMusic() != null
                         && HFOpenMusic.getInstance().getPlayMusic().getMusicId().equals(musicModel.getMusicId())){
                     if(adapter.getItemCount() > 1){
-                        HFOpenMusic.getInstance().playNextMusic(getActivity());
+                        HFOpenMusic.getInstance().playNextMusic();
                     }else{
                         HFOpenMusic.getInstance().cleanPlayMusic(true);
                     }

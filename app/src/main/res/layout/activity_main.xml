@@ -3,23 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:alpha="0.7"
     android:background="#FF000000"
-    android:orientation="vertical"
-    android:alpha="0.7">
+    android:orientation="vertical">
 
     <ImageView
-        android:scaleType="centerCrop"
         android:layout_width="match_parent"
-        android:src="@mipmap/ssl"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ssl" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/play"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:text="打开播放器" />
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/play"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:text="HFPlayer" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/play2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="HFOpenMusic" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/play3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="HFPlayer＆HFOpenMusic" />
+    </LinearLayout>
 </RelativeLayout>
