@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         play.setOnClickListener(v -> {
-            HFPlayer.getInstance().removePlayer();
+//            HFPlayer.getInstance().removePlayer();
             HFOpenMusic.getInstance().closeOpenMusic();
             HFPlayer.getInstance().showPlayer(MainActivity.this)
                     .setListener(new HFPlayerViewListener() {
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         play2.setOnClickListener(v -> {
-            HFPlayer.getInstance().removePlayer();
+//            HFPlayer.getInstance().removePlayer();
             HFOpenMusic.getInstance().closeOpenMusic();
             if (flag) {
                 HFOpenMusic.getInstance().closeOpenMusic();
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         play3.setOnClickListener(view -> {
-            HFPlayer.getInstance().removePlayer();
+//            HFPlayer.getInstance().removePlayer();
             HFOpenMusic.getInstance().closeOpenMusic();
             flag = false;
             HFPlayer.getInstance().showPlayer(MainActivity.this)
