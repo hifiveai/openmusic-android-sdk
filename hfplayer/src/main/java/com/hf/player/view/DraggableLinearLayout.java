@@ -107,7 +107,7 @@ public class DraggableLinearLayout extends LinearLayout {
         setX(mOriginalX + event.getRawX() - mOriginalRawX);
         // 限制不可超出屏幕高度
         float desY = mOriginalY + event.getRawY() - mOriginalRawY;
-        int maxScrollY = getMaxScrollY(false);
+        int maxScrollY = getMaxScrollY();
         if (desY > maxScrollY) {
             desY = maxScrollY;
         } else {
@@ -120,19 +120,14 @@ public class DraggableLinearLayout extends LinearLayout {
     }
 
     //获取最大可滑动距离
-    public int getMaxScrollY(boolean showDialog) {
-        //判断歌曲选择相关的弹窗是否打开
-        if (showDialog) {
-            return mScreenHeight - ((View)getParent()).getHeight() - DisplayUtils.getScreenHeight(getContext())/24 - DisplayUtils.getPlayerHeight(getContext());
-        } else {
-            return mScreenHeight - ((View)getParent()).getHeight() - marginBottom;
-        }
-
+    public int getMaxScrollY() {
+        return mScreenHeight - ((View)getParent()).getHeight() - marginBottom;
     }
 
     //歌曲弹窗显示时更新最大可滑动距离
-    public void updateViewY() {
-        final int maxScrollY =  mScreenHeight - ((View)getParent()).getHeight() - DisplayUtils.getScreenHeight(getContext())/24 - DisplayUtils.getPlayerHeight(getContext());
+    public void updateViewY(int marginBottom) {
+        this.marginBottom = marginBottom;
+        final int maxScrollY =  mScreenHeight - ((View)getParent()).getHeight() - DisplayUtils.getScreenHeight(getContext())/24 - marginBottom;
         if (((View)getParent()).getY() > maxScrollY) {
             TranslateAnimation translateAnimation = new TranslateAnimation(0, 0, 0, maxScrollY - ((View)getParent()).getY());
             translateAnimation.setDuration(500);

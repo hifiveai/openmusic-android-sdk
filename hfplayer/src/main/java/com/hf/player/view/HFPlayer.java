@@ -97,6 +97,16 @@ public class HFPlayer {
         return this;
     }
 
+    /**
+     * 移动播放器位置
+     */
+    public HFPlayer updateViewY(int marginBottom){
+        if(mPlayerView != null)
+            mPlayerView.updateViewY(marginBottom);
+        return this;
+    }
+
+
     //移除播放器view,清除缓存数据
     public void destory() {
         removePlayer();

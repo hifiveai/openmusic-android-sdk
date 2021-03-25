@@ -15,6 +15,7 @@ import com.hfopen.sdk.entity.HQListen;
 import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenmusic.sdk.HFOpenMusic;
 import com.hfopenmusic.sdk.listener.HFPlayMusicListener;
+import com.hfopenmusic.sdk.util.HifiveDisplayUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity{
                             Log.e("HFPlayerViewListener", "onClick");
                             if(flag){
                                 HFOpenMusic.getInstance().closeOpenMusic();
+                                HFPlayer.getInstance().updateViewY(0);
                                 flag = false;
                             }else{
                                 showMusic(true);
@@ -174,5 +176,8 @@ public class MainActivity extends AppCompatActivity{
                     }
                 })
                 .showOpenMusic(MainActivity.this);
+        if(showplayer) {
+            HFPlayer.getInstance().updateViewY(HifiveDisplayUtils.getPlayerHeight(this));
+        }
     }
 }
