@@ -226,13 +226,14 @@ public class HifivePlayerView extends FrameLayout implements Observer {
         }
     }
 
-//    /**
-//     * 移动播放器位置
-//     */
-//    public void updateViewY()(){
-//        startPlayMusic(url,true);
-//
-//    }
+    /**
+     * 移动播放器位置
+     */
+    public void updateViewY(){
+        if(dragLayout != null){
+            dragLayout.updateViewY();
+        }
+    }
 
 
     /**
