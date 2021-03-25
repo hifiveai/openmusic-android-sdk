@@ -24,11 +24,10 @@ import com.hf.player.utils.RoundedCornersTransform;
 import com.hf.player.R;
 import com.hf.playerkernel.config.MusicPlayAction;
 import com.hf.playerkernel.inter.HFPlayerEventListener;
-import com.hf.playerkernel.manager.HFPlayer;
+import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hf.playerkernel.model.AudioBean;
 import com.hf.playerkernel.playback.IjkPlayback;
 import com.hf.playerkernel.utils.DisplayUtils;
-import com.hf.player.view.DraggableLinearLayout;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -106,7 +105,7 @@ public class HifivePlayerView extends FrameLayout implements Observer {
             @Override
             public void onClickEvent() {
                 animationOpen();
-                HFPlayerManager.getInstance().mListener.onClick();
+                HFPlayer.getInstance().mListener.onClick();
             }
         });
 
@@ -125,19 +124,19 @@ public class HifivePlayerView extends FrameLayout implements Observer {
         iv_last.setOnClickListener(new OnClickListener() {//上一曲
             @Override
             public void onClick(View v) {
-                HFPlayerManager.getInstance().mListener.onPre();
+                HFPlayer.getInstance().mListener.onPre();
             }
         });
         iv_next.setOnClickListener(new OnClickListener() {//下一曲
             @Override
             public void onClick(View v) {
-                HFPlayerManager.getInstance().mListener.onNext();
+                HFPlayer.getInstance().mListener.onNext();
             }
         });
         iv_play.setOnClickListener(new OnClickListener() {//播放
             @Override
             public void onClick(View v) {
-                HFPlayerManager.getInstance().mListener.onPlayPause(isPlay);
+                HFPlayer.getInstance().mListener.onPlayPause(isPlay);
                 if (isPlay) {//正在播放，点击就是暂停播放
                     stopPlay();
                 } else {//暂停点击就是播放
@@ -339,7 +338,7 @@ public class HifivePlayerView extends FrameLayout implements Observer {
 
 
     private void initPlaylistener(){
-        hfPlayer = HFPlayer.with();
+        hfPlayer = HFPlayerApi.with();
         hfPlayer.setOnPlayEventListener(new HFPlayerEventListener() {
             @Override
             public void onChange(AudioBean music) {
@@ -360,7 +359,7 @@ public class HifivePlayerView extends FrameLayout implements Observer {
                         isError = true;
                         stopPlay();
                         clear();
-                        HFPlayerManager.getInstance().mListener.onError();
+                        HFPlayer.getInstance().mListener.onError();
                         break;
                     case MusicPlayAction.STATE_PREPARING:
                         pb_play.setMax((int) hfPlayer.getDuration());
@@ -375,7 +374,7 @@ public class HifivePlayerView extends FrameLayout implements Observer {
                     case MusicPlayAction.STATE_COMPLETE:
                         stopPlay();
                         clear();
-                        HFPlayerManager.getInstance().mListener.onComplete();
+                        HFPlayer.getInstance().mListener.onComplete();
 //                        HifiveManage.getInstance().playNextMusic(mContext);//播放完成自动播放下一首
                         break;
                 }

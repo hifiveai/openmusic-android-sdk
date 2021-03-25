@@ -4,7 +4,7 @@ import android.app.Application;
 
 import androidx.multidex.MultiDex;
 
-import com.hf.playerkernel.manager.HFPlayer;
+import com.hf.playerkernel.manager.HFPlayerApi;
 
 public class MyApplication extends Application {
     @Override
@@ -13,7 +13,7 @@ public class MyApplication extends Application {
         // 初始化MultiDex
         MultiDex.install(this);
 
-        HFPlayer.init(this)
+        HFPlayerApi.init(this)
                 .setDebug(true)
                 .setMaxBufferSize(200 * 1024)
                 .apply();

@@ -8,7 +8,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.hf.player.view.HFPlayerManager;
+import com.hf.player.view.HFPlayer;
 import com.hf.player.view.HFPlayerViewListener;
 import com.hfopenmusic.sdk.HFOpenMusic;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -58,9 +58,9 @@ public class MainActivity extends AppCompatActivity{
 //                play.setText("开启播放器");
 //            }
             HFOpenMusic.getInstance().showOpenMusic(MainActivity.this);
-            HFPlayerManager.getInstance().showPlayer(MainActivity.this);
+            HFPlayer.getInstance().showPlayer(MainActivity.this);
             //初始化播放器UI
-            HFPlayerManager.getInstance()
+            HFPlayer.getInstance()
                     .setTitle("测试测试")
                     .setCover("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20190521%2F17%2F1558430156-SBswiePxFE.jpg&refer=http%3A%2F%2Fimage.biaobaiju.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619162218&t=409c6be07cf495ccc4dcf3bc23f94028")
                     .playWithUrl("https://sharefs.yun.kugou.com/202103251442/489fd352b879416de9742d9c98797b6b/G197/M04/0E/18/ZYcBAF5x5-2AbFgmADaApn6O6Fw014.mp3")

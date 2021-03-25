@@ -16,7 +16,7 @@ import java.util.*
 /**
  * 音乐播放器管理类
  */
-object HFPlayer {
+object HFPlayerApi {
     private var globalContext: Application? = null
 
     /**

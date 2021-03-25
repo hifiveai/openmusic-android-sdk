@@ -13,8 +13,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/hfopenmusic" />
-            <option value="$PROJECT_DIR$/hfopenplayer" />
-            <option value="$PROJECT_DIR$/hfopenplayerview" />
+            <option value="$PROJECT_DIR$/hfplayer" />
+            <option value="$PROJECT_DIR$/hfplayerkenerl" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

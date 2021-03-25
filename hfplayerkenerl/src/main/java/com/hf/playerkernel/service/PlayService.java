@@ -19,7 +19,7 @@ import com.hf.playerkernel.manager.MediaSessionManager;
 import com.hf.playerkernel.playback.IjkPlayback;
 import com.hf.playerkernel.receiver.AudioBroadcastReceiver;
 import com.hf.playerkernel.receiver.AudioEarPhoneReceiver;
-import com.hf.playerkernel.manager.HFPlayer;
+import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hf.playerkernel.tool.NetworkCallbackImpl;
 import com.hf.playerkernel.tool.QuitTimerHelper;
 import com.hf.playerkernel.utils.MusicLogUtils;
@@ -102,7 +102,7 @@ public class PlayService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        NotificationHelper.get().init(this, HFPlayer.getIsOpenNotification());
+        NotificationHelper.get().init(this, HFPlayerApi.getIsOpenNotification());
         createIjkPlayer();
         initMediaSessionManager();
         initAudioFocusManager();
@@ -126,7 +126,7 @@ public class PlayService extends Service {
         //结束notification通知
         NotificationHelper.get().cancelAll();
         //relese
-        HFPlayer.relese();
+        HFPlayerApi.relese();
     }
 
 
@@ -191,7 +191,7 @@ public class PlayService extends Service {
      * 播放器除了播放了音乐之外什么都没做，就可以分别在任务管理、锁屏、负一屏控制我的播放器
      */
     private void initMediaSessionManager() {
-        mMediaSessionManager = new MediaSessionManager(this, HFPlayer.getIsOpenNotification());
+        mMediaSessionManager = new MediaSessionManager(this, HFPlayerApi.getIsOpenNotification());
     }
 
     /**

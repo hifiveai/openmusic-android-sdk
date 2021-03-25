@@ -28,14 +28,14 @@ class LifeFragment: Fragment() {
     override fun onStart() {
         super.onStart()
         Log.d("======", "player_onStart")
-        HFPlayerManager.getInstance().attach(activity)
+        HFPlayer.getInstance().attach(activity)
         lifeListener?.onStart()
     }
 
     override fun onStop() {
         super.onStop()
         Log.d("======", "player_onStop")
-        HFPlayerManager.getInstance().detach(activity)
+        HFPlayer.getInstance().detach(activity)
         lifeListener?.onStop()
     }
 
@@ -54,7 +54,7 @@ class LifeFragment: Fragment() {
     override fun onDestroy() {
         Log.e("======", "player_onDestroy")
         super.onDestroy()
-        HFPlayerManager.getInstance().destory()
+        HFPlayer.getInstance().destory()
         lifeListener?.onDestroy()
         removeLifeListener()
     }

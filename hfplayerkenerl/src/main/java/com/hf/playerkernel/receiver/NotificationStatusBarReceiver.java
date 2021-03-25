@@ -7,7 +7,7 @@ import android.text.TextUtils;
 
 import com.hf.playerkernel.config.MusicPlayAction;
 import com.hf.playerkernel.service.PlayService;
-import com.hf.playerkernel.manager.HFPlayer;
+import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hf.playerkernel.utils.MusicLogUtils;
 
 
@@ -30,8 +30,8 @@ public class NotificationStatusBarReceiver extends BroadcastReceiver {
             PlayService.startCommand(context, MusicPlayAction.TYPE_NEXT);
             MusicLogUtils.e("NotifiyStatusBarReceiver"+"下一首");
         } else if (TextUtils.equals(extra, MusicPlayAction.TYPE_START_PAUSE)) {
-            if(HFPlayer.with()!=null){
-                boolean playing = HFPlayer.with().isPlaying();
+            if(HFPlayerApi.with()!=null){
+                boolean playing = HFPlayerApi.with().isPlaying();
                 if(playing){
                     MusicLogUtils.e("NotifiyStatusBarReceiver"+"暂停");
                 }else {

@@ -26,6 +26,6 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    api project(path: ':hfopenplayer')
+    api project(path: ':hfplayerkenerl')
     api group: 'com.github.bumptech.glide', name: 'glide', version: '4.11.0'
 }

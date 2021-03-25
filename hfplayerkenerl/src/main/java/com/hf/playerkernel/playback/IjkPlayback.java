@@ -17,7 +17,7 @@ import com.hf.playerkernel.config.PlayModeEnum;
 import com.hf.playerkernel.inter.EventCallback;
 import com.hf.playerkernel.inter.HFPlayerEventListener;
 import com.hf.playerkernel.manager.AudioSoundManager;
-import com.hf.playerkernel.manager.HFPlayer;
+import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hf.playerkernel.model.AudioBean;
 import com.hf.playerkernel.service.PlayService;
 import com.hf.playerkernel.tool.QuitTimerHelper;
@@ -103,7 +103,7 @@ public class IjkPlayback {
                     break;
                 case MusicPlayAction.STATE_PLAYING:
                     mNetAvailable = true;
-                    if (HFPlayer.getIsReconnect() && isPausing()) {
+                    if (HFPlayerApi.getIsReconnect() && isPausing()) {
                         playPause();
                     }
                     break;
@@ -375,7 +375,7 @@ public class IjkPlayback {
      */
     public void play(int position) {
         if (!mNetAvailable) return;
-        audioMusics = HFPlayer.getMusicList();
+        audioMusics = HFPlayerApi.getMusicList();
         if (audioMusics == null || audioMusics.isEmpty()) {
             return;
         }
@@ -464,7 +464,7 @@ public class IjkPlayback {
             mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", 0);
             // 设置无缓冲，这是播放器的缓冲区，有数据就播放
 //            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 0);
-            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", HFPlayer.getMaxBufferSize());
+            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", HFPlayerApi.getMaxBufferSize());
             //配置成1是变声，0是不变声
             mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "soundtouch", 0);
             //准备

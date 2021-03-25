@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentActivity;
 
 
-import com.hf.playerkernel.manager.HFPlayer;
+import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hf.playerkernel.utils.DisplayUtils;
 
 import java.lang.ref.WeakReference;
@@ -17,21 +17,21 @@ import java.lang.ref.WeakReference;
 /**
  *
  */
-public class HFPlayerManager {
+public class HFPlayer {
     private HifivePlayerView mPlayerView;
-    private static volatile HFPlayerManager mInstance;
+    private static volatile HFPlayer mInstance;
     private WeakReference<FrameLayout> mContainer;
     public static boolean isAttached;
     public HFPlayerViewListener mListener;
 
-    private HFPlayerManager() {
+    private HFPlayer() {
 
     }
-    public static HFPlayerManager getInstance() {
+    public static HFPlayer getInstance() {
         if (mInstance == null) {
-            synchronized (HFPlayerManager.class) {
+            synchronized (HFPlayer.class) {
                 if (mInstance == null) {
-                    mInstance = new HFPlayerManager();
+                    mInstance = new HFPlayer();
                 }
             }
         }
@@ -39,11 +39,11 @@ public class HFPlayerManager {
     }
 
     //添加播放器view
-    public HFPlayerManager showPlayer(FragmentActivity activity) {
+    public HFPlayer showPlayer(FragmentActivity activity) {
         return showPlayer(activity,0,0);
     }
-    public HFPlayerManager showPlayer(FragmentActivity activity, int marginTop, int marginBottom) {
-        LifeFragmentManager.Companion.getInstances().addLifeListener(activity, "HFPlayerManager", null);
+    public HFPlayer showPlayer(FragmentActivity activity, int marginTop, int marginBottom) {
+        LifeFragmentManager.Companion.getInstances().addLifeListener(activity, "HFPlayer", null);
         synchronized (this) {
             if (mPlayerView != null) {
                 return this;
@@ -62,7 +62,7 @@ public class HFPlayerManager {
         return this;
     }
 
-    public HFPlayerManager setListener(HFPlayerViewListener listener){
+    public HFPlayer setListener(HFPlayerViewListener listener){
         mListener = listener;
         return this;
     }
@@ -71,7 +71,7 @@ public class HFPlayerManager {
      * 播放歌曲
      * @param url
      */
-    public HFPlayerManager playWithUrl(String url){
+    public HFPlayer playWithUrl(String url){
         if(mPlayerView != null)
         mPlayerView.playWithUrl(url);
         return this;
@@ -81,7 +81,7 @@ public class HFPlayerManager {
      * 播放歌曲
      * @param title
      */
-    public HFPlayerManager setTitle(String title){
+    public HFPlayer setTitle(String title){
         if(mPlayerView != null)
             mPlayerView.setTitle(title);
         return this;
@@ -91,7 +91,7 @@ public class HFPlayerManager {
      * 播放歌曲
      * @param coverUrl
      */
-    public HFPlayerManager setCover(String coverUrl){
+    public HFPlayer setCover(String coverUrl){
         if(mPlayerView != null)
             mPlayerView.setCover(coverUrl);
         return this;
@@ -118,8 +118,8 @@ public class HFPlayerManager {
     }
     //播放器资源回收
     private void recyclePlayer() {
-        HFPlayer.with().stop();
-        HFPlayer.relese();
+        HFPlayerApi.with().stop();
+        HFPlayerApi.relese();
     }
     //初始化一个container容器装载播放器view
     private FrameLayout getActivityRoot(FragmentActivity activity) {
