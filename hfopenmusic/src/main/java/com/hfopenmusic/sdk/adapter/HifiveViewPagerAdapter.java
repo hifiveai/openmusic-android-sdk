@@ -17,9 +17,15 @@ public class HifiveViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> mFragmentList;//界面
     private final FragmentManager fm;
     public HifiveViewPagerAdapter(FragmentManager mFragmentManager, List<Fragment> fragmentList) {
-        super (mFragmentManager);
+        super (mFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         fm = mFragmentManager;
         mFragmentList = fragmentList;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        //注意一定要重写
+        return mFragmentList.get(position).hashCode();
     }
 
     @Override

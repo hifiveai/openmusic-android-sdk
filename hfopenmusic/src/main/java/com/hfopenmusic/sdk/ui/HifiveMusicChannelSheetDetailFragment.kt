@@ -24,10 +24,10 @@ import com.hfopen.sdk.entity.Tag
 import com.hfopen.sdk.hInterface.DataResponse
 import com.hfopen.sdk.manager.HFOpenApi
 import com.hfopen.sdk.rx.BaseException
+import com.hfopenmusic.sdk.HifiveMusicManage
 import com.hfopenmusic.sdk.R
 import com.hfopenmusic.sdk.adapter.HifiveMusicSheetListAdapter
 import com.hfopenmusic.sdk.util.GlideBlurTransformation
-import com.hfopenmusic.sdk.HifiveMusicManage
 import com.hfopenmusic.sdk.util.HifiveDisplayUtils
 import com.hfopenmusic.sdk.util.RoundedCornersTransform
 import com.hfopenmusic.sdk.view.HifiveLoadMoreFooter
@@ -157,8 +157,12 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context)
         refreshLayout.setOnRefreshListener {
-            page  = 0
-            getData(Refresh) }
+            if (!isRefresh) {
+                page = 1
+                isRefresh = true
+                getData(Refresh)
+            }
+        }
         refreshLayout.setOnLoadMoreListener {
             if (!isLoadMore) {
                 page++

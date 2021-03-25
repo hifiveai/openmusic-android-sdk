@@ -107,7 +107,7 @@ class HifiveMusicChannelFragment : DialogFragment() {
                 cptv.onPagerTitleChangeListener = object : OnPagerTitleChangeListener {
                     override fun onSelected(index: Int, totalCount: Int) {
                         titleText.setTextColor(Color.parseColor("#FFFFFF"))
-                        titleText.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD)) //加粗
+                        titleText.typeface = Typeface.defaultFromStyle(Typeface.BOLD) //加粗
                         titleText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                         vvDown.visibility = View.VISIBLE
                     }

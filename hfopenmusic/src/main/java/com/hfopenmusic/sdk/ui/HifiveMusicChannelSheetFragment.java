@@ -98,10 +98,6 @@ public class HifiveMusicChannelSheetFragment extends Fragment {
             return false;
         }
     });
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
@@ -116,9 +112,18 @@ public class HifiveMusicChannelSheetFragment extends Fragment {
         refreshLayout.setRefreshFooter(new HifiveLoadMoreFooter(getContext()));
         mRecyclerView = view.findViewById(R.id.rv_sheet);
         initRecyclerView();
-        refreshLayout.autoRefresh();
+
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(sheetModels.size() == 0){
+            refreshLayout.autoRefresh();
+        }
+    }
+
     //初始化view
     private void initRecyclerView() {
         adapter = new HifiveMusicChannelSheetAdapter(getActivity(), new ArrayList<Record>());

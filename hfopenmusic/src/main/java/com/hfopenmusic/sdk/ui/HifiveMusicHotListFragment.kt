@@ -6,7 +6,6 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +20,6 @@ import com.hfopenmusic.sdk.adapter.HifiveMusicSheetListAdapter
 import com.hfopenmusic.sdk.view.HifiveLoadMoreFooter
 import com.hfopenmusic.sdk.view.HifiveRefreshHeader
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
-import kotlinx.android.synthetic.main.hifive_dialog_music_search.*
 import java.util.*
 
 /**
@@ -80,13 +78,19 @@ class HifiveMusicHotListFragment : Fragment() {
         }
         false
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (hotModels == null) {
+            refreshLayout!!.autoRefresh()
+        }
+    }
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mContext = context
         val view = inflater.inflate(R.layout.hifive_fragment_music_list, container, false)
         initView(view)
         initRecyclerView()
-        refreshLayout!!.autoRefresh()
         return view
     }
 
@@ -110,8 +114,11 @@ class HifiveMusicHotListFragment : Fragment() {
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向
         refreshLayout!!.setOnRefreshListener {
-            page  = 0
-            getData(Refresh)
+            if (!isRefresh) {
+                page = 1
+                isRefresh = true
+                getData(Refresh)
+            }
         }
         refreshLayout!!.setOnLoadMoreListener {
             if (!isLoadMore) {
@@ -126,21 +133,21 @@ class HifiveMusicHotListFragment : Fragment() {
         try {
             if (mContext == null) return
                     HFOpenApi.getInstance().baseHot(System.currentTimeMillis(), 365, page, 20, object : DataResponse<BaseHot> {
-                override fun onError(exception: BaseException) {
-                    if (ty != Refresh) { //上拉加载请求失败后，还原页卡
-                        page--
-                    }
-                    HifiveMusicManage.getInstance().showToast(activity, exception.msg)
-                    mHandler!!.sendEmptyMessage(RequstFail)
-                }
+                        override fun onError(exception: BaseException) {
+                            if (ty != Refresh) { //上拉加载请求失败后，还原页卡
+                                page--
+                            }
+                            HifiveMusicManage.getInstance().showToast(activity, exception.msg)
+                            mHandler!!.sendEmptyMessage(RequstFail)
+                        }
 
-                override fun onSuccess(data: BaseHot, taskId: String) {
-                    hotModels = data.record
-                    totalCount = data.meta.totalCount
-                    if (mHandler == null) return
-                    mHandler!!.sendEmptyMessage(ty)
-                }
-            })
+                        override fun onSuccess(data: BaseHot, taskId: String) {
+                            hotModels = data.record
+                            totalCount = data.meta.totalCount
+                            if (mHandler == null) return
+                            mHandler!!.sendEmptyMessage(ty)
+                        }
+                    })
         } catch (e: Exception) {
             e.printStackTrace()
         }
