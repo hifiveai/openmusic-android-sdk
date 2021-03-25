@@ -110,6 +110,7 @@ class HifiveMusicHotListFragment : Fragment() {
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向
         refreshLayout!!.setOnRefreshListener {
+            page  = 0
             getData(Refresh)
         }
         refreshLayout!!.setOnLoadMoreListener {
@@ -124,7 +125,7 @@ class HifiveMusicHotListFragment : Fragment() {
     private fun getData(ty: Int) {
         try {
             if (mContext == null) return
-                    HFOpenApi.getInstance().baseHot(System.currentTimeMillis(), 365, 1, 20, object : DataResponse<BaseHot> {
+                    HFOpenApi.getInstance().baseHot(System.currentTimeMillis(), 365, page, 20, object : DataResponse<BaseHot> {
                 override fun onError(exception: BaseException) {
                     if (ty != Refresh) { //上拉加载请求失败后，还原页卡
                         page--

@@ -156,7 +156,9 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
         }
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context)
-        refreshLayout.setOnRefreshListener { getData(Refresh) }
+        refreshLayout.setOnRefreshListener {
+            page  = 0
+            getData(Refresh) }
         refreshLayout.setOnLoadMoreListener {
             if (!isLoadMore) {
                 page++
@@ -244,7 +246,7 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
     private fun getData(ty: Int) {
         try {
             if (mContext == null) return
-            HFOpenApi.getInstance().sheetMusic(sheetId, 0, page, 100, object : DataResponse<SheetMusic> {
+            HFOpenApi.getInstance().sheetMusic(sheetId, 0, page, 20, object : DataResponse<SheetMusic> {
                 override fun onError(exception: BaseException) {
                     if (ty != Refresh) { //上拉加载请求失败后，还原页卡
                         page--
