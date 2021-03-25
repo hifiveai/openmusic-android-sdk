@@ -30,6 +30,7 @@ import com.hfopenmusic.sdk.util.GlideBlurTransformation
 import com.hfopenmusic.sdk.HifiveMusicManage
 import com.hfopenmusic.sdk.util.HifiveDisplayUtils
 import com.hfopenmusic.sdk.util.RoundedCornersTransform
+import com.hfopenmusic.sdk.view.HifiveLoadMoreFooter
 import com.hfopenmusic.sdk.view.HifiveRefreshHeader
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import java.util.*
@@ -142,6 +143,7 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
         refreshLayout = view.findViewById(R.id.refreshLayout)
         refreshLayout.setEnableLoadMore(true)
         refreshLayout.setRefreshHeader(HifiveRefreshHeader(context))
+        refreshLayout.setRefreshFooter(HifiveLoadMoreFooter(context))
         mRecyclerView = view.findViewById(R.id.rv_music)
     }
 

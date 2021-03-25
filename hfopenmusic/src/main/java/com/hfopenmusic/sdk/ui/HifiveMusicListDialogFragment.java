@@ -156,7 +156,7 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
     //初始化指示器
     private void initMagicIndicator() {
         final String[] titleContent = new String[]{
-                mContext.getString(R.string.hifivesdk_music_current_play)};
+                mContext.getString(R.string.hifivesdk_music_current_play), mContext.getString(R.string.hifivesdk_music_hot)};
         CommonNavigator commonNavigator = new CommonNavigator(mContext);
         commonNavigator.setAdjustMode(false);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
@@ -232,19 +232,12 @@ public class HifiveMusicListDialogFragment extends DialogFragment implements Hif
         //1.当前播放
         HifiveMusicPalyListFragment currentPalyListFragment = new HifiveMusicPalyListFragment();
         currentPalyListFragment.setAddMusicListener(this);
-//        //2.我喜欢
-//        HifiveMusicLikeListFragment likeListFragment = new HifiveMusicLikeListFragment();
-//        likeListFragment.setAddMusicListener(this);
-//        //3.K歌
-//        HifiveMusicKaraokeListFragment karaokeListFragment = new HifiveMusicKaraokeListFragment();
-//        karaokeListFragment.setAddMusicListener(this);
-        //为被观察者添加观察者
         HifiveMusicManage.getInstance().addObserver(currentPalyListFragment);
-//        HifiveMusicManage.getInstance().addObserver(likeListFragment);
-//        HifiveMusicManage.getInstance().addObserver(karaokeListFragment);
+        //2.热门推荐
+        HifiveMusicHotListFragment hotListFragment = new HifiveMusicHotListFragment();
+
         fragments.add(currentPalyListFragment);
-//        fragments.add(likeListFragment);
-//        fragments.add(karaokeListFragment);
+        fragments.add(hotListFragment);
         if (!isAdded()) return;
         HifiveViewPagerAdapter adapter = new HifiveViewPagerAdapter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
