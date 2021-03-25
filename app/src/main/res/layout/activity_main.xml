@@ -26,25 +26,25 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="10dp"
             android:gravity="center"
-            android:text="HFPlayer" />
+            android:text="Player" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/play2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="HFOpenMusic" />
+            android:text="Music" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/play3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center"
-            android:text="HFPlayer＆HFOpenMusic" />
+            android:text="Player＆Music" />
     </LinearLayout>
 </RelativeLayout>

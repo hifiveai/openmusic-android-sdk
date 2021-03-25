@@ -19,9 +19,9 @@ import com.hfopenmusic.sdk.util.HifiveDisplayUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     private boolean flag;
-    private AppCompatButton play,play2,play3;
+    private AppCompatButton play, play2, play3;
 
     /**
      * 权限组
@@ -35,9 +35,9 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        play =  findViewById(R.id.play);
-        play2 =  findViewById(R.id.play2);
-        play3 =  findViewById(R.id.play3);
+        play = findViewById(R.id.play);
+        play2 = findViewById(R.id.play2);
+        play3 = findViewById(R.id.play3);
 
         requestPermission();
         initView();
@@ -53,62 +53,70 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void initView() {
-        play.setOnClickListener(v -> HFPlayer.getInstance().showPlayer(MainActivity.this)
-        .setListener(new HFPlayerViewListener() {
-            @Override
-            public void onClick() {
-                play(null,null);
-            }
+        play.setOnClickListener(v -> {
+            HFPlayer.getInstance().removePlayer();
+            HFOpenMusic.getInstance().closeOpenMusic();
+            HFPlayer.getInstance().showPlayer(MainActivity.this)
+                    .setListener(new HFPlayerViewListener() {
+                        @Override
+                        public void onClick() {
+                            play(null, null);
+                        }
 
-            @Override
-            public void onPre() {
+                        @Override
+                        public void onPre() {
 
-            }
+                        }
 
-            @Override
-            public void onPlayPause(boolean isPlaying) {
+                        @Override
+                        public void onPlayPause(boolean isPlaying) {
 
-            }
+                        }
 
-            @Override
-            public void onNext() {
+                        @Override
+                        public void onNext() {
 
-            }
+                        }
 
-            @Override
-            public void onComplete() {
+                        @Override
+                        public void onComplete() {
 
-            }
+                        }
 
-            @Override
-            public void onError() {
+                        @Override
+                        public void onError() {
 
-            }
-        }));
+                        }
+                    });
 
-        play2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(flag){
-                    HFOpenMusic.getInstance().closeOpenMusic();
-                    flag = false;
-                }else{
-                    showMusic(false);
-                }
+        });
+
+
+        play2.setOnClickListener(v -> {
+            HFPlayer.getInstance().removePlayer();
+            HFOpenMusic.getInstance().closeOpenMusic();
+            if (flag) {
+                HFOpenMusic.getInstance().closeOpenMusic();
+                flag = false;
+            } else {
+                showMusic(false);
             }
         });
 
         play3.setOnClickListener(view -> {
+            HFPlayer.getInstance().removePlayer();
+            HFOpenMusic.getInstance().closeOpenMusic();
+            flag = false;
             HFPlayer.getInstance().showPlayer(MainActivity.this)
                     .setListener(new HFPlayerViewListener() {
                         @Override
                         public void onClick() {
                             Log.e("HFPlayerViewListener", "onClick");
-                            if(flag){
+                            if (flag) {
                                 HFOpenMusic.getInstance().closeOpenMusic();
                                 HFPlayer.getInstance().updateViewY(0);
                                 flag = false;
-                            }else{
+                            } else {
                                 showMusic(true);
                             }
                         }
@@ -145,14 +153,14 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
-    private void play(MusicRecord musicDetail,String url){
-        if(musicDetail != null){
+    private void play(MusicRecord musicDetail, String url) {
+        if (musicDetail != null) {
             //初始化播放器UI
             HFPlayer.getInstance()
                     .setTitle(musicDetail.getMusicName())
                     .setCover(musicDetail.getCover().get(0).getUrl())
                     .playWithUrl(url);
-        }else{
+        } else {
             //初始化播放器UI
             HFPlayer.getInstance()
                     .setTitle("测试测试")
@@ -161,22 +169,28 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void showMusic(boolean showplayer){
+    private void showMusic(boolean showplayer) {
         flag = true;
         HFOpenMusic.getInstance()
                 .setPlayListen(new HFPlayMusicListener() {
                     @Override
                     public void onPlayMusic(MusicRecord musicDetail, String url) {
-                        if(showplayer){
-                            play(musicDetail,url);
-                        }else{
+                        if (showplayer) {
+                            play(musicDetail, url);
+                        } else {
                             Log.e("HFPlayMusicListener", url);
                         }
 
                     }
+
+                    @Override
+                    public void onCloseOpenMusic() {
+                        HFPlayer.getInstance().updateViewY(0);
+                        flag = false;
+                    }
                 })
                 .showOpenMusic(MainActivity.this);
-        if(showplayer) {
+        if (showplayer) {
             HFPlayer.getInstance().updateViewY(HifiveDisplayUtils.getPlayerHeight(this));
         }
     }

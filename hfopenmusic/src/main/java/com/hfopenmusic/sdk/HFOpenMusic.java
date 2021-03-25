@@ -108,9 +108,10 @@ public class HFOpenMusic {
                 dialogFragments.clear();
             }
             dialogFragments = null;
+            if(mListener != null){
+                mListener.onCloseOpenMusic();
+            }
     }
-
-
 
     //添加dialog
     public void addDialog(DialogFragment dialogFragment){
