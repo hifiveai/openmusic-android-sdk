@@ -15,7 +15,7 @@ class DataRepository constructor() {
     fun baseLogin(
             Nickname: String?,
             Gender: Int?,
-            Birthday: Long??,
+            Birthday: Long?,
             Location: String?,
             Education: Int?,
             Profession: Int?,
