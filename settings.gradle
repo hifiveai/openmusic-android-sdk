@@ -1,4 +1,5 @@
 include ':hfopenmusic'
 include ':hfopenplayer'
+include ':hfopenplayerview'
 include ':app'
 rootProject.name = "open_play_android_sdk"

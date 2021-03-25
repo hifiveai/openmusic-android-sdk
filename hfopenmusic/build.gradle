@@ -37,7 +37,7 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api 'androidx.appcompat:appcompat:1.2.0'
 
-    api project(path: ':hfopenplayer')
+    api project(path: ':hfopenplayerview')
 
     //开发者必须导入的包
     api "io.reactivex.rxjava2:rxjava:2.2.10"

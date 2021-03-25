@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hf.music">
+    package="com.hf.playerkernel">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -8,18 +8,18 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application>
-        <service android:name="com.hf.music.service.PlayService" />
-        <receiver android:name="com.hf.music.receiver.NotificationStatusBarReceiver">
+        <service android:name="com.hf.playerkernel.service.PlayService" />
+        <receiver android:name="com.hf.playerkernel.receiver.NotificationStatusBarReceiver">
             <intent-filter>
                 <action android:name="ACTION_STATUS_BAR" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.hf.music.receiver.EarphoneControlReceiver">
+        <receiver android:name="com.hf.playerkernel.receiver.EarphoneControlReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.hf.music.receiver.AudioBroadcastReceiver">
+        <receiver android:name="com.hf.playerkernel.receiver.AudioBroadcastReceiver">
             <intent-filter>
                 <action android:name="cn.hf.lock" />
             </intent-filter>

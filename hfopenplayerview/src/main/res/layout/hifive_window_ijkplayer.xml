@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hf.player.view.DraggableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <FrameLayout
+            android:id="@+id/ll_player"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/hifive_player_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="60dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_music_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_accompany"
+                        android:layout_width="32dp"
+                        android:layout_height="20dp"
+                        android:layout_below="@id/tv_music_info"
+                        android:layout_alignLeft="@id/tv_music_info"
+                        android:layout_marginTop="4dp"
+                        android:alpha="0.45"
+                        android:background="@drawable/hifive_player_accompany_bg"
+                        android:enabled="false"
+                        android:gravity="center"
+                        android:text="@string/hifivesdk_music_player_sound"
+                        android:textColor="#ffffff"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <CheckBox
+                        android:id="@+id/cb_lyric"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_below="@id/tv_music_info"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_toEndOf="@id/tv_accompany"
+                        android:alpha="0.45"
+                        android:background="@drawable/hifive_music_player_lyric_checkbox_bg"
+                        android:button="@null"
+                        android:checked="false"
+                        android:enabled="false"
+                        android:gravity="center"
+                        android:text="@string/hifivesdk_music_player_lyric"
+                        android:textColor="@drawable/hifive_music_player_lyric_checkbox_textcolor"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/iv_last"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/hifivesdk_icon_player_last" />
+
+
+                <ImageView
+                    android:id="@+id/iv_play"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/hifivesdk_icon_player_suspend" />
+
+
+                <FrameLayout
+                    android:id="@+id/fl_download"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/hifive_player_download_bg"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_download"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:alpha="0.85"
+                        android:gravity="center"
+                        android:textColor="#ffffff"
+                        android:textSize="9sp"
+                        android:textStyle="bold" />
+
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/fl_loading"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/hifive_player_download_bg"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        style="@style/HifiveSdkProgressbarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </FrameLayout>
+
+                <ImageView
+                    android:id="@+id/iv_next"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/hifivesdk_icon_player_next" />
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/hifivesdk_icon_player_back" />
+
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/pb_play"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="15dp"
+                android:indeterminateOnly="false"
+                android:max="100"
+                android:maxHeight="2dp"
+                android:minHeight="2dp"
+                android:progress="0"
+                android:progressDrawable="@drawable/seek_bar_progress_style"
+                android:secondaryProgress="0"
+                android:thumb="@drawable/hifive_thumb_progress"
+                android:thumbOffset="0dp" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/iv_music"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/hifivesdk_icon_music_player_defaut" />
+    </FrameLayout>
+
+
+</com.hf.player.view.DraggableLinearLayout>

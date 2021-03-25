@@ -14,7 +14,7 @@ import com.hfopen.sdk.entity.MusicRecord
 import com.hfopen.sdk.hInterface.DataResponse
 import com.hfopen.sdk.manager.HFOpenApi
 import com.hfopen.sdk.rx.BaseException
-import com.hfopenmusic.sdk.HifiveMusicManage
+import com.hfopenmusic.sdk.HFOpenMusic
 import com.hfopenmusic.sdk.R
 import com.hfopenmusic.sdk.adapter.HifiveMusicSheetListAdapter
 import com.hfopenmusic.sdk.view.HifiveLoadMoreFooter
@@ -107,10 +107,10 @@ class HifiveMusicHotListFragment : Fragment() {
     private fun initRecyclerView() {
         adapter = HifiveMusicSheetListAdapter(activity, ArrayList())
         adapter!!.setOnRecyclerViewContentClick { position ->
-            HifiveMusicManage.getInstance().addCurrentSingle(activity, adapter!!.datas[position] as MusicRecord?)
+            HFOpenMusic.getInstance().addCurrentSingle(activity, adapter!!.datas[position] as MusicRecord?)
         }
         adapter!!.setOnRecyclerViewHeaderClick {
-            HifiveMusicManage.getInstance().updateCurrentList(activity, adapter!!.datas as List<MusicRecord?>) }
+            HFOpenMusic.getInstance().updateCurrentList(activity, adapter!!.datas as List<MusicRecord?>) }
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向
         refreshLayout!!.setOnRefreshListener {
@@ -137,7 +137,7 @@ class HifiveMusicHotListFragment : Fragment() {
                             if (ty != Refresh) { //上拉加载请求失败后，还原页卡
                                 page--
                             }
-                            HifiveMusicManage.getInstance().showToast(activity, exception.msg)
+                            HFOpenMusic.getInstance().showToast(activity, exception.msg)
                             mHandler!!.sendEmptyMessage(RequstFail)
                         }
 

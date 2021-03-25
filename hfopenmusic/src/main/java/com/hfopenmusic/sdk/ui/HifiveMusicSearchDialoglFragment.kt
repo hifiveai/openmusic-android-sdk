@@ -25,7 +25,7 @@ import com.hfopen.sdk.rx.BaseException
 import com.hfopenmusic.sdk.R
 import com.hfopenmusic.sdk.adapter.HifiveHotMusicAdapter
 import com.hfopenmusic.sdk.adapter.HifiveMusicSheetListAdapter
-import com.hfopenmusic.sdk.HifiveMusicManage
+import com.hfopenmusic.sdk.HFOpenMusic
 import com.hfopenmusic.sdk.util.HifiveDisplayUtils
 import com.hfopenmusic.sdk.util.SharedPref
 import com.hfopenmusic.sdk.view.HifiveFlowLayout
@@ -160,7 +160,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
         initEvent()
         getHot()
         getHistoryData()
-        HifiveMusicManage.getInstance().addDialog(this)
+        HFOpenMusic.getInstance().addDialog(this)
         return view
     }
 
@@ -190,7 +190,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
     private fun ininReclyView() {
         adapter = HifiveMusicSheetListAdapter(context, ArrayList())
         adapter!!.setOnRecyclerViewContentClick { position: Int ->
-            HifiveMusicManage.getInstance().addCurrentSingle(activity, adapter!!.datas[position] as MusicRecord?)
+            HFOpenMusic.getInstance().addCurrentSingle(activity, adapter!!.datas[position] as MusicRecord?)
         }
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向
@@ -203,7 +203,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
 
         hotAdapter = HifiveHotMusicAdapter(context, ArrayList())
         hotAdapter!!.setOnRecyclerViewContentClick { position: Int ->
-            HifiveMusicManage.getInstance().addCurrentSingle(activity, hotAdapter!!.datas[position] as MusicRecord?)}
+            HFOpenMusic.getInstance().addCurrentSingle(activity, hotAdapter!!.datas[position] as MusicRecord?)}
         mHotRv!!.adapter = hotAdapter
         mHotRv!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向
     }
@@ -214,7 +214,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
         //取消搜索
         {
             dismiss()
-            HifiveMusicManage.getInstance().removeDialog(1)
+            HFOpenMusic.getInstance().removeDialog(1)
         })
         et_content!!.setOnEditorActionListener { v, actionId, event ->
             //开始搜索
@@ -269,7 +269,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
             if (mContext == null) return
             SharedPref.setParam(mContext, "searchHistory", searchHistory)
             if (activity != null) {
-                HifiveMusicManage.getInstance().showToast(activity, activity!!.getString(R.string.hifivesdk_comfirm_dialog_delete))
+                HFOpenMusic.getInstance().showToast(activity, activity!!.getString(R.string.hifivesdk_comfirm_dialog_delete))
             }
             searchHistory = ""
             historyData = null
@@ -337,7 +337,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
             if (mContext == null) return
             HFOpenApi.getInstance().baseHot(System.currentTimeMillis(), 365, 1, 20, object : DataResponse<BaseHot> {
                 override fun onError(exception: BaseException) {
-                    HifiveMusicManage.getInstance().showToast(activity, exception.msg)
+                    HFOpenMusic.getInstance().showToast(activity, exception.msg)
                 }
 
                 override fun onSuccess(data: BaseHot, taskId: String) {
@@ -381,7 +381,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
                     } else {
                         getHistoryData()
                     }
-                    HifiveMusicManage.getInstance().showToast(activity, exception.msg)
+                    HFOpenMusic.getInstance().showToast(activity, exception.msg)
                     mHandler.sendEmptyMessage(RequstFail)
                 }
 
@@ -423,7 +423,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
             if (mContext == null) return
             HFOpenApi.getInstance().baseFavorite(page, 100, object : DataResponse<BaseFavorite> {
                 override fun onError(exception: BaseException) {
-                    HifiveMusicManage.getInstance().showToast(activity, exception.msg)
+                    HFOpenMusic.getInstance().showToast(activity, exception.msg)
                     mHandler.sendEmptyMessage(RequstFail)
                 }
 

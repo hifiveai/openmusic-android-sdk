@@ -24,7 +24,7 @@ import com.hfopen.sdk.entity.Tag
 import com.hfopen.sdk.hInterface.DataResponse
 import com.hfopen.sdk.manager.HFOpenApi
 import com.hfopen.sdk.rx.BaseException
-import com.hfopenmusic.sdk.HifiveMusicManage
+import com.hfopenmusic.sdk.HFOpenMusic
 import com.hfopenmusic.sdk.R
 import com.hfopenmusic.sdk.adapter.HifiveMusicSheetListAdapter
 import com.hfopenmusic.sdk.util.GlideBlurTransformation
@@ -125,7 +125,7 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
         updateSheetView()
         ininReclyView()
         refreshLayout.autoRefresh()
-        HifiveMusicManage.getInstance().addDialog(this)
+        HFOpenMusic.getInstance().addDialog(this)
         return view
     }
 
@@ -133,7 +133,7 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
     private fun initView(view: View) {
         view.findViewById<View>(R.id.iv_back).setOnClickListener {
             dismiss()
-            HifiveMusicManage.getInstance().removeDialog(2)
+            HFOpenMusic.getInstance().removeDialog(2)
         }
         ivImage = view.findViewById(R.id.iv_image)
         rootImage =  view.findViewById(R.id.root_image)
@@ -150,9 +150,9 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
     //初始化ReclyView
     private fun ininReclyView() {
         adapter = HifiveMusicSheetListAdapter(context, ArrayList())
-        adapter!!.setOnRecyclerViewContentClick { position: Int -> HifiveMusicManage.getInstance().addCurrentSingle(activity, adapter!!.datas[position] as MusicRecord?) }
+        adapter!!.setOnRecyclerViewContentClick { position: Int -> HFOpenMusic.getInstance().addCurrentSingle(activity, adapter!!.datas[position] as MusicRecord?) }
         adapter!!.setOnRecyclerViewHeaderClick {
-                            HifiveMusicManage.getInstance().updateCurrentList(activity, adapter!!.datas as List<MusicRecord>)
+                            HFOpenMusic.getInstance().updateCurrentList(activity, adapter!!.datas as List<MusicRecord>)
         }
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context)
@@ -255,7 +255,7 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
                     if (ty != Refresh) { //上拉加载请求失败后，还原页卡
                         page--
                     }
-                    HifiveMusicManage.getInstance().showToast(activity, exception.msg)
+                    HFOpenMusic.getInstance().showToast(activity, exception.msg)
                     mHandler!!.sendEmptyMessage(RequstFail)
                 }
 

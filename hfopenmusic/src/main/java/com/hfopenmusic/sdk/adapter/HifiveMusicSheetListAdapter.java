@@ -35,14 +35,14 @@ public class HifiveMusicSheetListAdapter extends BaseRecyclerViewAdapter{
     public void onBindContentViewHolder(BaseRecyclerViewHolder holder, final int position) {
         final MusicRecord model = (MusicRecord) getDatas().get(position);
 
-//        if(HifiveMusicManage.getInstance().getKaraokeList() != null
-//                && HifiveMusicManage.getInstance().getKaraokeList().contains(model)){
+//        if(HFOpenMusic.getInstance().getKaraokeList() != null
+//                && HFOpenMusic.getInstance().getKaraokeList().contains(model)){
 //            holder.setImageResource(R.id.iv_add_karaoke,R.mipmap.hifivesdk_icon_add_karaoke_select);
 //        }else{
 //            holder.setImageResource(R.id.iv_add_karaoke,R.mipmap.hifivesdk_icon_add_karaoke);
 //        }
-//        if (HifiveMusicManage.getInstance().getLikeList() != null &&
-//                HifiveMusicManage.getInstance().getLikeList().contains(model)) {
+//        if (HFOpenMusic.getInstance().getLikeList() != null &&
+//                HFOpenMusic.getInstance().getLikeList().contains(model)) {
 //            holder.setImageResource(R.id.iv_add_like,R.mipmap.hifivesdk_icon_add_like_select);
 //        } else {
 //            holder.setImageResource(R.id.iv_add_like,R.mipmap.hifivesdk_icon_add_like);
