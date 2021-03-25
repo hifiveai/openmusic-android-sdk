@@ -121,7 +121,7 @@ class DefaultHeaderInterceptor : Interceptor {
         //还原Url
         encodedQuery = HiFiveUtils.buildParam(signParams)
         val finalUrl = "$path?$encodedQuery"
-        Log.e("requestUrl: ", finalUrl)
+//        Log.e("requestUrl: ", finalUrl)
         return builder.url(finalUrl).build()
     }
 
