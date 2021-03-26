@@ -106,6 +106,17 @@ public class HFPlayer {
         return this;
     }
 
+    /**
+     * 移动播放器位置
+     */
+    public HFPlayer stopPlay(){
+        if(mPlayerView != null){
+            mPlayerView.stopPlay();
+            mPlayerView.clear();
+        }
+        return this;
+    }
+
 
     //移除播放器view,清除缓存数据
     public void destory() {

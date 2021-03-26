@@ -239,6 +239,9 @@ public class HFOpenMusic {
         playMusicDetail = null;
         if(isStop)
             updateObservable.postNewPublication(UPDATEPALY);
+        if(mListener != null){
+            mListener.onStop();
+        }
     }
     //按顺序播放上一首歌
     public void playLastMusic(){

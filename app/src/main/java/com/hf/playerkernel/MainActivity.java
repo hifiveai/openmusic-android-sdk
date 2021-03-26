@@ -184,6 +184,11 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
+                    public void onStop() {
+                        HFPlayer.getInstance().stopPlay();
+                    }
+
+                    @Override
                     public void onCloseOpenMusic() {
                         HFPlayer.getInstance().updateViewY(0);
                         flag = false;

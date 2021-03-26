@@ -331,7 +331,7 @@ public class HifivePlayerView extends FrameLayout implements Observer {
     }
 
     //切歌后清空上首歌播放相关标志和配置
-    private void clear() {
+    public void clear() {
         setTitle("");
         setCover("");
         playProgress = 0;//重置播放进度
