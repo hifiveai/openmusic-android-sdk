@@ -1,4 +1,4 @@
-package com.hf.playerkernel;
+package com.hf.test;
 
 import android.content.Context;
 import android.content.SharedPreferences;

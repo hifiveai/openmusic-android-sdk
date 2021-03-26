@@ -1,18 +1,16 @@
-package com.hf.playerkernel;
+package com.hf.test;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.hf.player.view.HFPlayer;
 import com.hf.player.view.HFPlayerViewListener;
-import com.hfopen.sdk.entity.HQListen;
+import com.hf.test.R;
 import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenmusic.sdk.HFOpenMusic;
 import com.hfopenmusic.sdk.listener.HFPlayMusicListener;

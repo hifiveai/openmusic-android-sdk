@@ -1,4 +1,4 @@
-package com.hf.playerkernel;
+package com.hf.test;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.hf.test.R;
 import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hfopen.sdk.rx.BaseException;
 import com.hfopenmusic.sdk.HFOpenMusic;
