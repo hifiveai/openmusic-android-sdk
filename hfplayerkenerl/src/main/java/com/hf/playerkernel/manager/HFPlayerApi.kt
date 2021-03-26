@@ -180,14 +180,17 @@ object HFPlayerApi {
      * 解除绑定
      */
     private fun unbindService() {
-        if (serviceToken == null || !isBindService) {
-            return
-        }
-        val mContextWrapper = serviceToken!!.mWrappedContext
-        val mBinder = mConnectionMap[mContextWrapper] ?: return
-        mContextWrapper.unbindService(mBinder)
-        if (mConnectionMap.isEmpty()) {
-            mPlayService = null
+        try {
+            if (serviceToken == null || !isBindService) {
+                return
+            }
+            val mContextWrapper = serviceToken!!.mWrappedContext
+            val mBinder = mConnectionMap[mContextWrapper] ?: return
+            mContextWrapper.unbindService(mBinder)
+            if (mConnectionMap.isEmpty()) {
+                mPlayService = null
+            }
+        } catch (e: Exception) {
         }
     }
 
@@ -196,7 +199,6 @@ object HFPlayerApi {
      */
     @JvmStatic
     fun relese() {
-
         unbindService()
         globalContext = null
         mMusicList!!.clear()

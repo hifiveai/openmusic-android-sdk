@@ -12,10 +12,5 @@ public class MyApplication extends Application {
         super.onCreate();
         // 初始化MultiDex
         MultiDex.install(this);
-
-        HFPlayerApi.init(this)
-                .setDebug(true)
-                .setMaxBufferSize(200 * 1024)
-                .apply();
     }
 }

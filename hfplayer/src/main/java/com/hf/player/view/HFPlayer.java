@@ -98,6 +98,16 @@ public class HFPlayer {
     }
 
     /**
+     * 设置版本信息
+     * @param isMajor
+     */
+    public HFPlayer setMajorVersion(Boolean isMajor){
+        if(mPlayerView != null)
+            mPlayerView.setMajorVersion(isMajor);
+        return this;
+    }
+
+    /**
      * 移动播放器位置
      */
     public HFPlayer updateViewY(int marginBottom){
@@ -128,11 +138,14 @@ public class HFPlayer {
             if (mPlayerView == null) {
                 return;
             }
-            if (ViewCompat.isAttachedToWindow(mPlayerView) && getContainer() != null) {
-                getContainer().removeView(mPlayerView);
+            mPlayerView.stopPlay();
+            mPlayerView.clear();
+
+            if (mPlayerView.getParent() != null) {
+                ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
             }
-            recyclePlayer();
             mPlayerView = null;
+            recyclePlayer();
         } catch (Exception e) {
             e.printStackTrace();
         }

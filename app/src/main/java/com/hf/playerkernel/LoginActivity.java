@@ -3,12 +3,14 @@ package com.hf.playerkernel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hfopen.sdk.rx.BaseException;
 import com.hfopenmusic.sdk.HFOpenMusic;
 import com.hfopen.sdk.common.HFOpenCallback;
@@ -18,9 +20,10 @@ import com.tencent.bugly.crashreport.CrashReport;
 public class LoginActivity extends AppCompatActivity {
     private EditText et_appid, et_secretkey;
     private EditText et_member_id;
-    private AppCompatButton btn_initialize;
+    private AppCompatButton btn_initialize, play, play2, play3;
     private String secretKey, appId;
     private String memberId;
+    private boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +74,6 @@ public class LoginActivity extends AppCompatActivity {
 //,"https://gateway.open.hifiveai.com"
             HFOpenApi.registerApp(getApplication(), memberId);
 //        HFOpenMusic.getInstance().showToast(this, "初始化SDK成功");
-
-
             HFOpenApi.configCallBack(new HFOpenCallback() {
                 @Override
                 public void onError(BaseException exception) {
@@ -85,20 +86,64 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
-//
             SPUtils.put(this, SPUtils.appId, appId);
             SPUtils.put(this, SPUtils.secretKey, secretKey);
-            startActivity(new Intent(this, MainActivity.class));
+            flag = true;
+            Toast.makeText(LoginActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
         });
 
 
+        play = findViewById(R.id.play);
+        play2 = findViewById(R.id.play2);
+        play3 = findViewById(R.id.play3);
+
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!flag){
+                    Toast.makeText(LoginActivity.this, "请先初始化SDK", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                initPlayer();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("type",1);
+                startActivity(intent);
+            }
+        });
+        play2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!flag){
+                    Toast.makeText(LoginActivity.this, "请先初始化SDK", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                initPlayer();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("type",2);
+                startActivity(intent);
+            }
+        });
+        play3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!flag){
+                    Toast.makeText(LoginActivity.this, "请先初始化SDK", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                initPlayer();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("type",3);
+                startActivity(intent);
+            }
+        });
+
     }
 
-//    public static String stringFilter (String str)throws PatternSyntaxException {
-//// 只允许字母、数字和汉字其余的还可以随时添加比如下划线什么的，但是注意引文符号和中文符号区别
-//        String regEx = "[^a-zA-Z0-9\u4E00-\u9FA5]";//正则表达式
-//        Pattern p = Pattern.compile(regEx);
-//        Matcher m = p.matcher(str);
-//        return m.replaceAll("").trim();
-//    }
+    private void initPlayer(){
+        HFPlayerApi.init(getApplication())
+                .setDebug(true)
+                .setMaxBufferSize(200 * 1024)
+                .apply();
+    }
+
 }

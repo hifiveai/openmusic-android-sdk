@@ -202,27 +202,44 @@ public class HifivePlayerView extends FrameLayout implements Observer {
      * @param title
      */
     public void setTitle(String title){
-        tv_music_info.setText(title);
+        if(tv_music_info != null){
+            tv_music_info.setText(title);
+        }
     }
 
     /**
      * 设置图片
      */
     public void setCover(String coverUrl){
-        if (mContext != null) {
-            RoundedCornersTransform transform = new RoundedCornersTransform(mContext, DisplayUtils.dip2px(mContext, 25));
-            transform.setNeedCorner(true,true,true,true);
-            if (coverUrl != null ) {
-                Glide.with(mContext).asBitmap().load(coverUrl)
-                        .error(R.drawable.hifivesdk_icon_music_player_defaut)
-                        .placeholder(R.drawable.hifivesdk_icon_music_player_defaut)
-                        .apply(new RequestOptions().transform(transform))
-                        .into(iv_music);//四周都是圆角的圆角矩形图片。
-            } else {
-                Glide.with(mContext).asBitmap().load(R.drawable.hifivesdk_icon_music_player_defaut)
-                        .apply(new RequestOptions().transform(transform))
-                        .into(iv_music);//四周都是圆角的圆角矩形图片。
+        try {
+            if (mContext != null) {
+                RoundedCornersTransform transform = new RoundedCornersTransform(mContext, DisplayUtils.dip2px(mContext, 25));
+                transform.setNeedCorner(true,true,true,true);
+                if (coverUrl != null ) {
+                    Glide.with(mContext).asBitmap().load(coverUrl)
+                            .error(R.drawable.hifivesdk_icon_music_player_defaut)
+                            .placeholder(R.drawable.hifivesdk_icon_music_player_defaut)
+                            .apply(new RequestOptions().transform(transform))
+                            .into(iv_music);//四周都是圆角的圆角矩形图片。
+                } else {
+                    Glide.with(mContext).asBitmap().load(R.drawable.hifivesdk_icon_music_player_defaut)
+                            .apply(new RequestOptions().transform(transform))
+                            .into(iv_music);//四周都是圆角的圆角矩形图片。
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 设置版本信息
+     * @param isMajor
+     */
+    public void setMajorVersion(Boolean isMajor){
+        if(tv_accompany != null){
+            tv_accompany.setAlpha(isMajor? 1.0f : 0.45f);
+            tv_accompany.setText(isMajor?R.string.hifivesdk_music_player_sound : R.string.hifivesdk_music_player_accompany);
         }
     }
 

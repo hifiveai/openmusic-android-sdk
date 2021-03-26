@@ -108,6 +108,7 @@ public class HFOpenMusic {
                 dialogFragments.clear();
             }
             dialogFragments = null;
+            clearData();
             if(mListener != null){
                 mListener.onCloseOpenMusic();
             }

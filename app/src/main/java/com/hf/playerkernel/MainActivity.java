@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.hf.player.view.HFPlayer;
 import com.hf.player.view.HFPlayerViewListener;
@@ -21,7 +22,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 public class MainActivity extends AppCompatActivity {
     private boolean flag;
-    private AppCompatButton play, play2, play3;
 
     /**
      * 权限组
@@ -35,9 +35,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        play = findViewById(R.id.play);
-        play2 = findViewById(R.id.play2);
-        play3 = findViewById(R.id.play3);
 
         requestPermission();
         initView();
@@ -53,8 +50,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        play.setOnClickListener(v -> {
-//            HFPlayer.getInstance().removePlayer();
+        int type = getIntent().getIntExtra("type", 1);
+        if (type == 1) {
+            //            HFPlayer.getInstance().removePlayer();
             HFOpenMusic.getInstance().closeOpenMusic();
             HFPlayer.getInstance().showPlayer(MainActivity.this)
                     .setListener(new HFPlayerViewListener() {
@@ -65,35 +63,30 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onPre() {
-
+                            Toast.makeText(MainActivity.this, "上一首", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onPlayPause(boolean isPlaying) {
-
+                            Toast.makeText(MainActivity.this, isPlaying? "暂停" : "播放" , Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onNext() {
-
+                            Toast.makeText(MainActivity.this, "下一首", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onComplete() {
-
+                            Toast.makeText(MainActivity.this, "播放完成", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError() {
-
+                            Toast.makeText(MainActivity.this, "播放错误", Toast.LENGTH_SHORT).show();
                         }
                     });
-
-        });
-
-
-        play2.setOnClickListener(v -> {
-//            HFPlayer.getInstance().removePlayer();
+        } else if (type == 2) {
             HFOpenMusic.getInstance().closeOpenMusic();
             if (flag) {
                 HFOpenMusic.getInstance().closeOpenMusic();
@@ -101,10 +94,8 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 showMusic(false);
             }
-        });
-
-        play3.setOnClickListener(view -> {
-//            HFPlayer.getInstance().removePlayer();
+        } else if (type == 3) {
+            //            HFPlayer.getInstance().removePlayer();
             HFOpenMusic.getInstance().closeOpenMusic();
             flag = false;
             HFPlayer.getInstance().showPlayer(MainActivity.this)
@@ -150,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
                             HFOpenMusic.getInstance().playNextMusic();
                         }
                     });
-        });
+        }
+
     }
 
     private void play(MusicRecord musicDetail, String url) {
@@ -158,14 +150,16 @@ public class MainActivity extends AppCompatActivity {
             //初始化播放器UI
             HFPlayer.getInstance()
                     .setTitle(musicDetail.getMusicName())
+                    .setMajorVersion(musicDetail.getVersion().get(0).getMajorVersion())
                     .setCover(musicDetail.getCover().get(0).getUrl())
                     .playWithUrl(url);
         } else {
             //初始化播放器UI
             HFPlayer.getInstance()
                     .setTitle("测试测试")
+                    .setMajorVersion(true)
                     .setCover("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20190521%2F17%2F1558430156-SBswiePxFE.jpg&refer=http%3A%2F%2Fimage.biaobaiju.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619162218&t=409c6be07cf495ccc4dcf3bc23f94028")
-                    .playWithUrl("https://sharefs.yun.kugou.com/202103251442/489fd352b879416de9742d9c98797b6b/G197/M04/0E/18/ZYcBAF5x5-2AbFgmADaApn6O6Fw014.mp3");
+                    .playWithUrl("https://sharefs.yun.kugou.com/202103261535/4dd6a514a9ac703622f5179af9859e61/G197/M04/0E/18/ZYcBAF5x5-2AbFgmADaApn6O6Fw014.mp3");
         }
     }
 
@@ -178,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
                         if (showplayer) {
                             play(musicDetail, url);
                         } else {
+                            Toast.makeText(MainActivity.this, "歌曲:"+musicDetail.getMusicName(), Toast.LENGTH_SHORT).show();
                             Log.e("HFPlayMusicListener", url);
                         }
 
@@ -199,4 +194,12 @@ public class MainActivity extends AppCompatActivity {
             HFPlayer.getInstance().updateViewY(HifiveDisplayUtils.getPlayerHeight(this));
         }
     }
+
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        HFPlayer.getInstance().destory();
+//        HFOpenMusic.getInstance().closeOpenMusic();
+//    }
+
 }
