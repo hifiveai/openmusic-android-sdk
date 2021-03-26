@@ -128,6 +128,9 @@ public class HFOpenMusic {
             if(dialogFragments != null && dialogFragments.size() > position){
                 dialogFragments.remove(position);
             }
+            if(position == 0 && mListener != null){
+                mListener.onCloseOpenMusic();
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

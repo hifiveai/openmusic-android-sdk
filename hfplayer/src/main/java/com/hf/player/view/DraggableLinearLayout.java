@@ -121,7 +121,7 @@ public class DraggableLinearLayout extends LinearLayout {
 
     //获取最大可滑动距离
     public int getMaxScrollY() {
-        return mScreenHeight - ((View)getParent()).getHeight() - marginBottom;
+        return mScreenHeight - ((View)getParent()).getHeight() - DisplayUtils.getScreenHeight(getContext())/24 - marginBottom;
     }
 
     //歌曲弹窗显示时更新最大可滑动距离
