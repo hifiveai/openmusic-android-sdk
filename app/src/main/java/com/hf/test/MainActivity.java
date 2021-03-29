@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.e("HFPlayerViewListener", "onClick");
                             if (flag) {
                                 HFOpenMusic.getInstance().closeOpenMusic();
-                                HFPlayer.getInstance().updateViewY(0);
+                                HFPlayer.getInstance().setMarginBottom(0);
                                 flag = false;
                             } else {
                                 showMusic(true);
@@ -183,13 +183,13 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onCloseOpenMusic() {
-                        HFPlayer.getInstance().updateViewY(0);
+                        HFPlayer.getInstance().setMarginBottom(0);
                         flag = false;
                     }
                 })
                 .showOpenMusic(MainActivity.this);
         if (showplayer) {
-            HFPlayer.getInstance().updateViewY(HifiveDisplayUtils.getPlayerHeight(this));
+            HFPlayer.getInstance().setMarginBottom(HifiveDisplayUtils.getPlayerHeight(this));
         }
     }
 

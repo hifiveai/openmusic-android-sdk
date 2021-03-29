@@ -62,6 +62,11 @@ public class HFPlayer {
         return this;
     }
 
+    /**
+     * 设置监听
+     * @param listener
+     * @return
+     */
     public HFPlayer setListener(HFPlayerViewListener listener){
         mListener = listener;
         return this;
@@ -78,7 +83,7 @@ public class HFPlayer {
     }
 
     /**
-     * 播放歌曲
+     * 设置标题
      * @param title
      */
     public HFPlayer setTitle(String title){
@@ -88,7 +93,7 @@ public class HFPlayer {
     }
 
     /**
-     * 播放歌曲
+     * 设置封面图
      * @param coverUrl
      */
     public HFPlayer setCover(String coverUrl){
@@ -110,14 +115,14 @@ public class HFPlayer {
     /**
      * 移动播放器位置
      */
-    public HFPlayer updateViewY(int marginBottom){
+    public HFPlayer setMarginBottom(int marginBottom){
         if(mPlayerView != null)
-            mPlayerView.updateViewY(marginBottom);
+            mPlayerView.setMarginBottom(marginBottom);
         return this;
     }
 
     /**
-     * 移动播放器位置
+     * 停止播放
      */
     public HFPlayer stopPlay(){
         if(mPlayerView != null){

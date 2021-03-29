@@ -246,7 +246,7 @@ public class HifivePlayerView extends FrameLayout implements Observer {
     /**
      * 移动播放器位置
      */
-    public void updateViewY(int marginBottom){
+    public void setMarginBottom(int marginBottom){
         if(dragLayout != null){
             dragLayout.updateViewY(marginBottom);
         }
