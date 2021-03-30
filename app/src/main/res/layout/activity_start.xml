@@ -116,7 +116,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="Player" />
+        android:text="播放器UI" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/play2"
@@ -126,7 +126,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="Music" />
+        android:text="OpenApi UI列表" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/play3"
@@ -136,6 +136,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="Player＆Music" />
+        android:text="OpenMusicPlayer" />
 
 </LinearLayout>

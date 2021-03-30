@@ -16,7 +16,7 @@ import com.hfopenmusic.sdk.util.HifiveDisplayUtils;
 
 
 /**
- * 播放器UI
+ * 带列表版播放器
  */
 public class HFOpenMusicPlayer {
     private static volatile HFOpenMusicPlayer mInstance;
@@ -37,12 +37,22 @@ public class HFOpenMusicPlayer {
         return mInstance;
     }
 
-    //添加播放器view
+    /**
+     * 显示播放器view
+     * @param activity
+     * @return
+     */
     public HFOpenMusicPlayer showPlayer(FragmentActivity activity) {
         return showPlayer(activity,0,0);
     }
 
-    //添加播放器view
+    /**
+     * 显示播放器view
+     * @param activity
+     * @param marginTop
+     * @param marginBottom
+     * @return
+     */
     public HFOpenMusicPlayer showPlayer(FragmentActivity activity, int marginTop, int marginBottom) {
         HFPlayer.getInstance().showPlayer(activity,marginTop,marginBottom)
                 .setListener(new HFPlayerViewListener() {
@@ -60,14 +70,7 @@ public class HFOpenMusicPlayer {
 
                     @Override
                     public void onPre() {
-                        try {
-                            if(musicId != null){
-                                int currentPosition = (int) HFPlayerApi.with().getCurrentPosition();
-                                HFOpenMusic.getInstance().reportListen(musicId,currentPosition,System.currentTimeMillis());
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        report();
                         HFOpenMusic.getInstance().playLastMusic();
                     }
 
@@ -77,32 +80,19 @@ public class HFOpenMusicPlayer {
 
                     @Override
                     public void onNext() {
-                        try {
-                            if(musicId != null){
-                                int currentPosition = (int) HFPlayerApi.with().getCurrentPosition();
-                                HFOpenMusic.getInstance().reportListen(musicId,currentPosition,System.currentTimeMillis());
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        report();
                         HFOpenMusic.getInstance().playNextMusic();
                     }
 
                     @Override
                     public void onComplete() {
-                        try {
-                            if(musicId != null){
-                                int currentPosition = (int) HFPlayerApi.with().getCurrentPosition();
-                                HFOpenMusic.getInstance().reportListen(musicId,currentPosition,System.currentTimeMillis());
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        report();
                         HFOpenMusic.getInstance().playNextMusic();
                     }
 
                     @Override
                     public void onError() {
+                        report();
                         HFOpenMusic.getInstance().playNextMusic();
                     }
                 });
@@ -111,12 +101,20 @@ public class HFOpenMusicPlayer {
         return null;
     }
 
-    //设置音乐授权类型
+    /**
+     *  设置音乐授权类型
+     *  @param type
+     *  @return
+     */
     public HFOpenMusicPlayer setListenType(String type) {
         HFOpenMusic.getInstance().setListenType(type);
         return this;
     }
 
+    /**
+     * 显示OpenAPI播放列表
+     * @param activity  activity
+     */
     private void showMusic(FragmentActivity activity) {
         flag = true;
         HFOpenMusic.getInstance()
@@ -141,16 +139,35 @@ public class HFOpenMusicPlayer {
         HFPlayer.getInstance().setMarginBottom(HifiveDisplayUtils.getPlayerHeight(activity));
     }
 
+    /**
+     * 点击列表播放歌曲
+     * @param musicDetail  歌曲详情
+     * @param url  歌曲播放地址
+     */
     private void play(MusicRecord musicDetail, String url) {
         if (musicDetail != null) {
             musicId = musicDetail.getMusicId();
-
             //初始化播放器UI
             HFPlayer.getInstance()
                     .setTitle(musicDetail.getMusicName())
                     .setMajorVersion(musicDetail.getVersion().get(0).getMajorVersion())
                     .setCover(musicDetail.getCover().get(0).getUrl())
                     .playWithUrl(url);
+        }
+    }
+
+
+    /**
+     * 数据上报
+     */
+    private void report(){
+        try {
+            if(musicId != null){
+                int currentPosition = (int) HFPlayerApi.with().getCurrentPosition();
+                HFOpenMusic.getInstance().reportListen(musicId,currentPosition,System.currentTimeMillis());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
