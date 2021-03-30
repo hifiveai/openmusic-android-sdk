@@ -39,6 +39,8 @@ object HFPlayerApi {
 
     //最大缓冲
     private var maxBufferSize = 200 * 1024L
+    //是否缓存
+    private var useCache = false
 
 
     @JvmStatic
@@ -53,6 +55,10 @@ object HFPlayerApi {
 
     fun setMaxBufferSize(size: Long)= apply  {
         this.maxBufferSize  =size
+    }
+
+    fun setUseCache(useCache: Boolean)= apply  {
+        this.useCache  = useCache
     }
 
     /**
@@ -133,7 +139,7 @@ object HFPlayerApi {
      * 获取
      */
     @JvmStatic
-    fun getMusicList() : MutableList<AudioBean> = mMusicList!!
+    fun getMusicList() : MutableList<AudioBean>? = mMusicList
 
     /**
      * 获取
@@ -144,6 +150,8 @@ object HFPlayerApi {
     fun getIsOpenNotification() : Boolean = this.isOpenNotification
     @JvmStatic
     fun getMaxBufferSize() : Long = this.maxBufferSize
+    @JvmStatic
+    fun getIsUseCache() : Boolean = this.useCache
 
     @JvmStatic
     val playMode: Int

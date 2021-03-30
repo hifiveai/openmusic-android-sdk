@@ -15,7 +15,7 @@ import com.hf.playerkernel.utils.DisplayUtils;
 import java.lang.ref.WeakReference;
 
 /**
- *
+ * 播放器UI
  */
 public class HFPlayer {
     private HifivePlayerView mPlayerView;

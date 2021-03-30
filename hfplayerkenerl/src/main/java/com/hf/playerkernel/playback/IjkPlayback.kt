@@ -1,180 +1,167 @@
-package com.hf.playerkernel.playback;
+package com.hf.playerkernel.playback
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.IntentFilter;
-import android.media.AudioManager;
-import android.net.wifi.WifiManager;
-import android.os.Handler;
-import android.os.Message;
-import android.os.PowerManager;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.IntentFilter
+import android.media.AudioManager
+import android.net.wifi.WifiManager
+import android.net.wifi.WifiManager.WifiLock
+import android.os.Handler
+import android.os.Message
+import android.os.PowerManager
+import com.hf.playerkernel.config.MusicConstant
+import com.hf.playerkernel.config.MusicPlayAction
+import com.hf.playerkernel.config.PlayModeEnum
+import com.hf.playerkernel.inter.EventCallback
+import com.hf.playerkernel.inter.HFPlayerEventListener
+import com.hf.playerkernel.manager.AudioSoundManager
+import com.hf.playerkernel.manager.HFPlayerApi.getIsReconnect
+import com.hf.playerkernel.manager.HFPlayerApi.getIsUseCache
+import com.hf.playerkernel.manager.HFPlayerApi.getMaxBufferSize
+import com.hf.playerkernel.manager.HFPlayerApi.getMusicList
+import com.hf.playerkernel.model.AudioBean
+import com.hf.playerkernel.service.PlayService
+import com.hf.playerkernel.tool.QuitTimerHelper
+import com.hf.playerkernel.utils.MusicLogUtils
+import com.hf.playerkernel.utils.MusicSpUtils
+import com.hf.playerkernel.utils.NotificationHelper
+import tv.danmaku.ijk.media.player.IMediaPlayer
+import tv.danmaku.ijk.media.player.IjkMediaPlayer
+import java.io.IOException
+import java.util.*
 
-import androidx.annotation.NonNull;
-
-import com.hf.playerkernel.config.MusicConstant;
-import com.hf.playerkernel.config.MusicPlayAction;
-import com.hf.playerkernel.config.PlayModeEnum;
-import com.hf.playerkernel.inter.EventCallback;
-import com.hf.playerkernel.inter.HFPlayerEventListener;
-import com.hf.playerkernel.manager.AudioSoundManager;
-import com.hf.playerkernel.manager.HFPlayerApi;
-import com.hf.playerkernel.model.AudioBean;
-import com.hf.playerkernel.service.PlayService;
-import com.hf.playerkernel.tool.QuitTimerHelper;
-import com.hf.playerkernel.utils.MusicLogUtils;
-import com.hf.playerkernel.utils.MusicSpUtils;
-import com.hf.playerkernel.utils.NotificationHelper;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Random;
-
-import tv.danmaku.ijk.media.player.IMediaPlayer;
-import tv.danmaku.ijk.media.player.IjkMediaPlayer;
-
-public class IjkPlayback {
-
-    private PlayService mPlayService;
+class IjkPlayback(private val mPlayService: PlayService) {
+    /**
+     * 获取正在播放的本地歌曲的序号
+     */
     /**
      * 正在播放的歌曲的序号
      */
-    private int mPlayingPosition = -1;
+    var playingPosition = -1
+        private set
+    /**
+     * 获取正在播放的歌曲[本地|网络]
+     */
     /**
      * 正在播放的歌曲[本地|网络]
      */
-    private AudioBean mPlayingMusic;
+    var playingMusic: AudioBean? = null
+        private set
+
     /**
      * 音频list集合
      */
-    private List<AudioBean> audioMusics;
+    private var audioMusics: List<AudioBean>? = null
+
     /**
      * 播放状态
      */
-    private int mPlayState = MusicPlayAction.STATE_IDLE;
+    private var mPlayState = MusicPlayAction.STATE_IDLE
+
     /**
      * 播放器
      */
-    private IjkMediaPlayer mPlayer;
+    private var mPlayer: IjkMediaPlayer? = null
+
     /**
      * 播放进度监听器
      */
-    private HFPlayerEventListener mListener;
-    /**
-     * 更新播放进度的显示，时间的显示
-     */
-    private static final int UPDATE_PLAY_PROGRESS_SHOW = 0;
+    private var mListener: HFPlayerEventListener? = null
+
     /**
      * 是否锁屏了，默认是false
      */
-    private boolean mIsLocked = false;
+    private val mIsLocked = false
+
     /**
      * 是否又网络
      */
-    private boolean mNetAvailable = true;
+    private var mNetAvailable = true
+
     /**
      * 广播接受者标识，避免多次注册广播
      */
-    private boolean mReceiverTag = false;
+    private var mReceiverTag = false
+
     /**
      * 加入唤醒锁和WiFi锁保证我们在后台长时间播放音频的稳定
      */
-    private WifiManager.WifiLock wifiLock;
-
-
-    public IjkPlayback(PlayService service) {
-        mPlayService = service;
-
-        createIjkMediaPlayer();
-        initQuitTimer();
-    }
+    private var wifiLock: WifiLock? = null
 
     @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case UPDATE_PLAY_PROGRESS_SHOW:
-                    updatePlayProgressShow();
-                    break;
-                case MusicPlayAction.STATE_PAUSE:
-                    mNetAvailable = false;
-                    pause();
-                    break;
-                case MusicPlayAction.STATE_PLAYING:
-                    mNetAvailable = true;
-                    if (HFPlayerApi.getIsReconnect() && isPausing()) {
-                        playPause();
+    private var handler: Handler? = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            when (msg.what) {
+                UPDATE_PLAY_PROGRESS_SHOW -> updatePlayProgressShow()
+                MusicPlayAction.STATE_PAUSE -> {
+                    mNetAvailable = false
+                    pause()
+                }
+                MusicPlayAction.STATE_PLAYING -> {
+                    mNetAvailable = true
+                    if (getIsReconnect() && isPausing) {
+                        playPause()
                     }
-                    break;
-                default:
-                    break;
+                }
+                else -> {
+                }
             }
         }
-    };
-
+    }
 
     /**
      * 服务在销毁时调用该方法
      */
-    public void release() {
+    fun release() {
         //销毁handler
         if (handler != null) {
-            handler.removeCallbacksAndMessages(null);
-            handler = null;
+            handler!!.removeCallbacksAndMessages(null)
+            handler = null
         }
         //销毁IjkMediaPlayer
-        mPlayer.reset();
-        mPlayer.release();
-        mPlayer = null;
+        mPlayer!!.reset()
+        mPlayer!!.release()
+        mPlayer = null
         // 关闭wifi锁
-        if (wifiLock.isHeld()) {
-            wifiLock.release();
+        if (wifiLock!!.isHeld) {
+            wifiLock!!.release()
         }
-        wifiLock = null;
+        wifiLock = null
     }
-
 
     /**
      * 创建IjkMediaPlayer对象
      */
-    private void createIjkMediaPlayer() {
+    private fun createIjkMediaPlayer() {
         if (mPlayer == null) {
             //MediaCodec codec = new MediaCodec();
-            mPlayer = new IjkMediaPlayer();
-
-            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mPlayer = IjkMediaPlayer()
+            mPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
             // 使用唤醒锁
-            mPlayer.setWakeMode(mPlayService, PowerManager.PARTIAL_WAKE_LOCK);
+            mPlayer!!.setWakeMode(mPlayService, PowerManager.PARTIAL_WAKE_LOCK)
             // 初始化wifi锁
-            wifiLock = ((WifiManager) mPlayService.getApplicationContext().getSystemService(Context.WIFI_SERVICE)).createWifiLock(WifiManager.WIFI_MODE_FULL, "mylock");
+            wifiLock = (mPlayService.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager).createWifiLock(WifiManager.WIFI_MODE_FULL, "mylock")
             //播放重连次数
-            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "reconnect", 5);
+            mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "reconnect", 5)
             //SeekTo设置优化
-            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1L);
+            mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1L)
         }
     }
-
 
     /**
      * 初始化计时器
      */
-    private void initQuitTimer() {
-        QuitTimerHelper.getInstance().init(mPlayService, handler, new EventCallback<Long>() {
-            @Override
-            public void onEvent(Long aLong) {
+    private fun initQuitTimer() {
+        QuitTimerHelper.getInstance().init(mPlayService, handler!!, object : EventCallback<Long> {
+            override fun onEvent(aLong: Long) {
                 if (mListener != null) {
-                    mListener.onTimer(aLong);
+                    mListener!!.onTimer(aLong)
                 }
-
-
             }
-        });
+        })
     }
-
-
-    /**---------------------播放或暂停，上一首，下一首-----------------------------------------*/
-
+    /**---------------------播放或暂停，上一首，下一首----------------------------------------- */
     /**
      * 播放或暂停
      * 逻辑：
@@ -183,239 +170,233 @@ public class IjkPlayback {
      * 3.如果是暂停状态，点击则是开始播放
      * 4.其他情况是直接播放
      */
-    public void playPause() {
-        if (mPlayer == null) return;
-        if (isPreparing()) {
-            stop();
-        } else if (isPlaying()) {
-            pause();
-        } else if (isPausing()) {
-            start();
+    fun playPause() {
+        if (mPlayer == null) return
+        if (isPreparing) {
+            stop()
+        } else if (isPlaying) {
+            pause()
+        } else if (isPausing) {
+            start()
         } else {
-            release();
-//            play(getPlayingPosition());
+            release()
+            //            play(getPlayingPosition());
         }
     }
-
 
     /**
      * 上一首
      * 记住有播放类型，单曲循环，顺序循环，随机播放
      * 逻辑：如果不是第一首，则还有上一首；如果没有上一首，则切换到最后一首
      */
-    public void prev() {
+    fun prev() {
         //建议都添加这个判断
-        if (null == audioMusics || audioMusics.isEmpty()) {
-            return;
+        if (null == audioMusics || audioMusics!!.isEmpty()) {
+            return
         }
-        int playMode = MusicSpUtils.getInstance(MusicConstant.SP_NAME).getInt(MusicConstant.PLAY_MODE, 0);
-        int size = audioMusics.size();
-        PlayModeEnum mode = PlayModeEnum.valueOf(playMode);
-        switch (mode) {
-            //随机
-            case SHUFFLE:
-                mPlayingPosition = new Random().nextInt(size);
-                play(mPlayingPosition);
-                break;
-            //单曲
-            case SINGLE:
-                play(mPlayingPosition);
-                break;
-            //顺序播放并且循环
-            case LOOP:
-            default:
-                if (mPlayingPosition != 0) {
+        val playMode = MusicSpUtils.getInstance(MusicConstant.SP_NAME).getInt(MusicConstant.PLAY_MODE, 0)
+        val size = audioMusics!!.size
+        val mode = PlayModeEnum.valueOf(playMode)
+        when (mode) {
+            PlayModeEnum.SHUFFLE -> {
+                playingPosition = Random().nextInt(size)
+                play(playingPosition)
+            }
+            PlayModeEnum.SINGLE -> play(playingPosition)
+            PlayModeEnum.LOOP -> {
+                if (playingPosition != 0) {
                     // 如果不是第一首，则还有上一首
-                    mPlayingPosition--;
+                    playingPosition--
                 } else {
                     // 如果没有上一首，则切换到最后一首
-                    mPlayingPosition = size;
+                    playingPosition = size
                 }
-                play(mPlayingPosition);
-                break;
+                play(playingPosition)
+            }
+            else -> {
+                if (playingPosition != 0) {
+                    playingPosition--
+                } else {
+                    playingPosition = size
+                }
+                play(playingPosition)
+            }
         }
     }
-
 
     /**
      * 下一首
      * 记住有播放类型，单曲循环，顺序循环，随机播放
      * 逻辑：如果不是最后一首，则还有下一首；如果是最后一首，则切换回第一首
      */
-    public void next() {
+    operator fun next() {
         //建议都添加这个判断
-        if (null == audioMusics || audioMusics.isEmpty()) {
-            return;
+        if (null == audioMusics || audioMusics!!.isEmpty()) {
+            return
         }
-        int playMode = MusicSpUtils.getInstance(MusicConstant.SP_NAME).getInt(MusicConstant.PLAY_MODE, 0);
-        int size = audioMusics.size();
-        PlayModeEnum mode = PlayModeEnum.valueOf(playMode);
-        switch (mode) {
-            //随机
-            case SHUFFLE:
-                mPlayingPosition = new Random().nextInt(size);
-                play(mPlayingPosition);
-                break;
-            //单曲
-            case SINGLE:
-                play(mPlayingPosition);
-                break;
-            //顺序播放并且循环
-            case LOOP:
-            default:
-                if (mPlayingPosition != size - 1) {
+        val playMode = MusicSpUtils.getInstance(MusicConstant.SP_NAME).getInt(MusicConstant.PLAY_MODE, 0)
+        val size = audioMusics!!.size
+        val mode = PlayModeEnum.valueOf(playMode)
+        when (mode) {
+            PlayModeEnum.SHUFFLE -> {
+                playingPosition = Random().nextInt(size)
+                play(playingPosition)
+            }
+            PlayModeEnum.SINGLE -> play(playingPosition)
+            PlayModeEnum.LOOP -> {
+                if (playingPosition != size - 1) {
                     // 如果不是最后一首，则还有下一首
-                    mPlayingPosition++;
+                    playingPosition++
                 } else {
                     // 如果是最后一首，则切换回第一首
-                    mPlayingPosition = 0;
+                    playingPosition = 0
                 }
-                MusicLogUtils.e("PlayService" + "----mPlayingPosition----" + mPlayingPosition);
-                play(mPlayingPosition);
-                break;
+                MusicLogUtils.e("PlayService" + "----mPlayingPosition----" + playingPosition)
+                play(playingPosition)
+            }
+            else -> {
+                if (playingPosition != size - 1) {
+                    playingPosition++
+                } else {
+                    playingPosition = 0
+                }
+                MusicLogUtils.e("PlayService" + "----mPlayingPosition----" + playingPosition)
+                play(playingPosition)
+            }
         }
     }
-
-    /**---------------------开始播放，暂停播放，停止播放等-----------------------------------------*/
-
-
+    /**---------------------开始播放，暂停播放，停止播放等----------------------------------------- */
     /**
      * 开始播放
      */
-    public void start() {
-        if (!mNetAvailable) return;
-        if (!isPreparing() && !isPausing()) {
-            return;
+    fun start() {
+        if (!mNetAvailable) return
+        if (!isPreparing && !isPausing) {
+            return
         }
         if (mPlayService.mAudioFocusManager.requestAudioFocus()) {
             if (mPlayer != null) {
-                mPlayer.start();
+                mPlayer!!.start()
                 // 启用wifi锁
-                wifiLock.acquire();
+                wifiLock!!.acquire()
                 //同步播放状态
-                mPlayState = MusicPlayAction.STATE_PLAYING;
+                mPlayState = MusicPlayAction.STATE_PLAYING
                 //开始发送消息，执行进度条进度更新
-                handler.sendEmptyMessage(UPDATE_PLAY_PROGRESS_SHOW);
+                handler!!.sendEmptyMessage(UPDATE_PLAY_PROGRESS_SHOW)
                 if (mListener != null) {
-                    mListener.onPlayStateChanged(mPlayState);
+                    mListener!!.onPlayStateChanged(mPlayState)
                 }
-                if (mPlayingMusic != null) {
+                if (playingMusic != null) {
                     //当点击播放按钮时(播放详情页面或者底部控制栏)，同步通知栏中播放按钮状态
-                    NotificationHelper.get().showPlay(mPlayingMusic, mPlayService.mMediaSessionManager.getMediaSession());
-                    mPlayService.mMediaSessionManager.updatePlaybackState();
+                    NotificationHelper.get().showPlay(playingMusic, mPlayService.mMediaSessionManager.mediaSession)
+                    mPlayService.mMediaSessionManager.updatePlaybackState()
                 }
                 //注册监听来电/耳机拔出时暂停播放广播
                 if (!mReceiverTag) {
-                    mReceiverTag = true;
-                    mPlayService.registerReceiver(mPlayService.mNoisyReceiver, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
-                    );
+                    mReceiverTag = true
+                    mPlayService.registerReceiver(mPlayService.mNoisyReceiver, IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
+                    )
                 }
             }
         }
     }
-
 
     /**
      * 暂停
      */
-    public void pause() {
+    fun pause() {
         if (mPlayer != null) {
             //暂停
-            mPlayer.pause();
+            mPlayer!!.pause()
             // 关闭wifi锁
-            if (wifiLock.isHeld()) {
-                wifiLock.release();
+            if (wifiLock!!.isHeld) {
+                wifiLock!!.release()
             }
             //切换状态
-            mPlayState = MusicPlayAction.STATE_PAUSE;
+            mPlayState = MusicPlayAction.STATE_PAUSE
             //移除，注意一定要移除，否则一直走更新方法
-            handler.removeMessages(UPDATE_PLAY_PROGRESS_SHOW);
+            handler!!.removeMessages(UPDATE_PLAY_PROGRESS_SHOW)
             //监听
             if (mListener != null) {
-                mListener.onPlayStateChanged(mPlayState);
+                mListener!!.onPlayStateChanged(mPlayState)
             }
             //注销监听来电/耳机拔出时暂停播放广播
             //判断广播是否注册
             if (mReceiverTag) {
                 //Tag值 赋值为false 表示该广播已被注销
-                mReceiverTag = false;
-                mPlayService.unregisterReceiver(mPlayService.mNoisyReceiver);
+                mReceiverTag = false
+                mPlayService.unregisterReceiver(mPlayService.mNoisyReceiver)
             }
-            if (mPlayingMusic != null) {
+            if (playingMusic != null) {
                 //当点击暂停按钮时(播放详情页面或者底部控制栏)，同步通知栏中暂停按钮状态
-                NotificationHelper.get().showPause(mPlayingMusic, mPlayService.mMediaSessionManager.getMediaSession());
-                mPlayService.mMediaSessionManager.updatePlaybackState();
+                NotificationHelper.get().showPause(playingMusic, mPlayService.mMediaSessionManager.mediaSession)
+                mPlayService.mMediaSessionManager.updatePlaybackState()
             }
         }
     }
-
 
     /**
      * 停止播放
      */
-    public void stop() {
-        if (isDefault()) {
-            return;
+    fun stop() {
+        if (isDefault) {
+            return
         }
-        pause();
+        pause()
         if (mPlayer != null) {
-            mPlayer.reset();
-            mPlayState = MusicPlayAction.STATE_IDLE;
+            mPlayer!!.reset()
+            mPlayState = MusicPlayAction.STATE_IDLE
             if (mListener != null) {
-                mListener.onPlayStateChanged(mPlayState);
+                mListener!!.onPlayStateChanged(mPlayState)
             }
         }
     }
-
 
     /**
      * 播放索引为position的音乐
      *
      * @param position 索引
      */
-    public void play(int position) {
-        if (!mNetAvailable) return;
-        audioMusics = HFPlayerApi.getMusicList();
-        if (audioMusics == null || audioMusics.isEmpty()) {
-            return;
+    private fun play(position: Int) {
+        var position = position
+        if (!mNetAvailable) return
+        audioMusics = getMusicList()
+        if (audioMusics == null || audioMusics?.isEmpty()!!) {
+            return
         }
-
         if (position < 0) {
-            position = audioMusics.size() - 1;
-        } else if (position >= audioMusics.size()) {
+            position = audioMusics?.size!! - 1
+        } else if (position >= audioMusics?.size!!) {
             //如果是最后一首音乐，则播放时直接播放第一首音乐
-            position = 0;
+            position = 0
         }
-
-        mPlayingPosition = position;
-        AudioBean music = audioMusics.get(mPlayingPosition);
-        String id = music.getId();
-        MusicLogUtils.e("PlayService" + "----id----" + id);
+        playingPosition = position
+        val music = audioMusics?.get(playingPosition)
+        val id = music?.id
+        MusicLogUtils.e("PlayService----id----$id")
         //保存当前播放的musicId，下次进来可以记录状态
-        long musicId = Long.parseLong(id);
-        MusicSpUtils.getInstance(MusicConstant.SP_NAME).put(MusicConstant.MUSIC_ID, musicId);
-        play(music);
+        val musicId = id?.toLong()
+        MusicSpUtils.getInstance(MusicConstant.SP_NAME).put(MusicConstant.MUSIC_ID, musicId!!)
+        play(music)
     }
-
 
     /**
      * 拖动seekBar时，调节进度
      *
      * @param progress 进度
      */
-    public boolean seekTo(int progress) {
-        if (!mNetAvailable) return false;
+    fun seekTo(progress: Int): Boolean {
+        if (!mNetAvailable) return false
         //只有当播放或者暂停的时候才允许拖动bar
-        if (isPlaying() || isPausing()) {
-            mPlayer.seekTo(progress);
+        if (isPlaying || isPausing) {
+            mPlayer!!.seekTo(progress.toLong())
             if (mListener != null) {
-                mListener.onProgressUpdate(progress, (int) getDuration());
+                mListener!!.onProgressUpdate(progress, duration.toInt())
             }
-
-            mPlayService.mMediaSessionManager.updatePlaybackState();
-            return true;
+            mPlayService.mMediaSessionManager.updatePlaybackState()
+            return true
         }
-        return false;
+        return false
     }
 
     /**
@@ -423,156 +404,132 @@ public class IjkPlayback {
      *
      * @param music music
      */
-    public void play(AudioBean music) {
-        if (!mNetAvailable) return;
-        mPlayingMusic = music;
-        playWhitUrl(mPlayingMusic.getPath());
+    fun play(music: AudioBean?) {
+        if (!mNetAvailable) return
+        playingMusic = music
+        playWhitUrl(playingMusic!!.path)
         //当播放的时候，需要刷新界面信息
         if (mListener != null) {
-            mListener.onChange(mPlayingMusic);
+            mListener!!.onChange(playingMusic)
         }
-        if (mPlayingMusic != null) {
+        if (playingMusic != null) {
             //更新通知栏
-            NotificationHelper.get().showPlay(mPlayingMusic, mPlayService.mMediaSessionManager.getMediaSession());
+            NotificationHelper.get().showPlay(playingMusic, mPlayService.mMediaSessionManager.mediaSession)
             //更新
-            mPlayService.mMediaSessionManager.updateMetaData(mPlayingMusic);
-            mPlayService.mMediaSessionManager.updatePlaybackState();
+            mPlayService.mMediaSessionManager.updateMetaData(playingMusic)
+            mPlayService.mMediaSessionManager.updatePlaybackState()
         }
     }
-
 
     /**
      * 通过URl播放
      *
      * @param url
      */
-    public void playWhitUrl(String url) {
-        if (!mNetAvailable) return;
-        createIjkMediaPlayer();
+    fun playWhitUrl(url: String) {
+        if (!mNetAvailable) return
+        createIjkMediaPlayer()
         try {
-            mPlayer.reset();
-            //把音频路径传给播放器
-//            "ijkio:cache:ffio:"+
-            mPlayer.setDataSource("ijkio:cache:ffio:" + url);
-
-            if (HFPlayerApi.getIsUseCache()) {
-                int index = url.lastIndexOf(".");
-                int startIndex = index>15? index -15 : index -8;
-                String fileName = url.substring(startIndex, index);
-                mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "auto_save_map", 1);
-                mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "parse_cache_map", 1);
-                mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_file_path", mPlayService.getCacheDir() + "/"+fileName+".tmp");
-                mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_map_path", mPlayService.getCacheDir() + "/path.tmp");
+            mPlayer!!.reset()
+            if (getIsUseCache()) {
+                val index = url.lastIndexOf(".")
+                val startIndex = if (index > 15) index - 15 else index - 8
+                val fileName = url.substring(startIndex, index).replace("/","")
+                mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "auto_save_map", 1)
+                mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "parse_cache_map", 1)
+                mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_file_path", "${mPlayService.cacheDir}/$fileName.tmp")
+                mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_map_path", "${mPlayService.cacheDir}/${fileName}path.tmp")
             } else {
-                mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_file_path", mPlayService.getCacheDir() + "/tmp.tmp");
+                mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_file_path", "${mPlayService.cacheDir}/tmp.tmp")
             }
 
             // 无限制收流
-            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", 0);
+            mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", 0)
             // 设置无缓冲，这是播放器的缓冲区，有数据就播放
 //            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 0);
-            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", HFPlayerApi.getMaxBufferSize());
+            mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", getMaxBufferSize())
             //配置成1是变声，0是不变声
-            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "soundtouch", 0);
+            mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "soundtouch", 0)
+            //把音频路径传给播放器
+//            "ijkio:cache:ffio:"+
+            mPlayer!!.dataSource = "ijkio:cache:ffio:$url"
             //准备
-            mPlayer.prepareAsync();
+            mPlayer!!.prepareAsync()
             //设置状态为准备中
-            mPlayState = MusicPlayAction.STATE_PREPARING;
-
+            mPlayState = MusicPlayAction.STATE_PREPARING
             if (mListener != null) {
-                mListener.onPlayStateChanged(mPlayState);
+                mListener!!.onPlayStateChanged(mPlayState)
             }
             //监听
-            mPlayer.setOnPreparedListener(mOnPreparedListener);
-            mPlayer.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
-            mPlayer.setOnCompletionListener(mOnCompletionListener);
-            mPlayer.setOnSeekCompleteListener(mOnSeekCompleteListener);
-            mPlayer.setOnErrorListener(mOnErrorListener);
-            mPlayer.setOnInfoListener(mOnInfoListener);
-        } catch (IOException e) {
-            e.printStackTrace();
+            mPlayer!!.setOnPreparedListener(mOnPreparedListener)
+            mPlayer!!.setOnBufferingUpdateListener(mOnBufferingUpdateListener)
+            mPlayer!!.setOnCompletionListener(mOnCompletionListener)
+            mPlayer!!.setOnSeekCompleteListener(mOnSeekCompleteListener)
+            mPlayer!!.setOnErrorListener(mOnErrorListener)
+            mPlayer!!.setOnInfoListener(mOnInfoListener)
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
-
 
     /**
      * 更新播放进度的显示，时间的显示
      */
-    private void updatePlayProgressShow() {
-        if (isPlaying()) {
-            int currentPosition = (int) mPlayer.getCurrentPosition();
+    private fun updatePlayProgressShow() {
+        if (isPlaying) {
+            val currentPosition = mPlayer!!.currentPosition.toInt()
             if (mListener != null) {
-                mListener.onProgressUpdate(currentPosition, (int) getDuration());
+                mListener!!.onProgressUpdate(currentPosition, duration.toInt())
             }
         }
-
-        MusicLogUtils.e("updatePlayProgressShow" + mPlayer.getCurrentPosition());
+        MusicLogUtils.e("updatePlayProgressShow" + mPlayer!!.currentPosition)
         // 每30毫秒更新一下显示的内容，注意这里时间不要太短，因为这个是一个循环
         // 经过测试，60毫秒更新一次有点卡，30毫秒最为顺畅
-        handler.sendEmptyMessageDelayed(UPDATE_PLAY_PROGRESS_SHOW, 300);
+        handler!!.sendEmptyMessageDelayed(UPDATE_PLAY_PROGRESS_SHOW, 300)
     }
-
 
     /**
      * 音频准备好的监听器
      */
-    private IjkMediaPlayer.OnPreparedListener mOnPreparedListener = new IjkMediaPlayer.OnPreparedListener() {
-        /** 当音频准备好可以播放了，则这个方法会被调用  */
-        @Override
-        public void onPrepared(IMediaPlayer mediaPlayer) {
-            if (isPreparing()) {
-                start();
-            }
+    private val mOnPreparedListener = IMediaPlayer.OnPreparedListener {
+        /** 当音频准备好可以播放了，则这个方法会被调用   */
+        if (isPreparing) {
+            start()
         }
-    };
-
+    }
 
     /**
      * 当音频播放结束的时候的监听器
      */
-    private IjkMediaPlayer.OnCompletionListener mOnCompletionListener = new IjkMediaPlayer.OnCompletionListener() {
-        /** 当音频播放结果的时候这个方法会被调用 */
-        @Override
-        public void onCompletion(IMediaPlayer mediaPlayer) {
-            if (mPlayer.getCurrentPosition() + 1000 >= getDuration() && getDuration() != 0) {
-                mPlayState = MusicPlayAction.STATE_COMPLETE;
-                next();
-            } else {
-                mPlayState = MusicPlayAction.STATE_ERROR;
-            }
-            if (mListener != null) {
-                mListener.onPlayStateChanged(mPlayState);
-            }
+    private val mOnCompletionListener = IMediaPlayer.OnCompletionListener{
+        /** 当音频播放结果的时候这个方法会被调用  */
+        if (mPlayer!!.currentPosition + 1000 >= duration && duration != 0L) {
+            mPlayState = MusicPlayAction.STATE_COMPLETE
+            next()
+        } else {
+            mPlayState = MusicPlayAction.STATE_ERROR
         }
-    };
-
+        if (mListener != null) {
+            mListener!!.onPlayStateChanged(mPlayState)
+        }
+    }
 
     /**
      * 当音频缓冲的监听器
      */
-    private IjkMediaPlayer.OnBufferingUpdateListener mOnBufferingUpdateListener = new IjkMediaPlayer.OnBufferingUpdateListener() {
-
-        @Override
-        public void onBufferingUpdate(IMediaPlayer mediaPlayer, int i) {
-            if (mListener != null) {
-                if (i >= 99) i = 100;
-                mListener.onBufferingUpdate(i);
-            }
-            MusicLogUtils.e("updateBuffering" + i);
+    private val mOnBufferingUpdateListener = IMediaPlayer.OnBufferingUpdateListener { _, i ->
+        var progress = i
+        if (mListener != null) {
+            if (i >= 99) progress = 100
+            mListener!!.onBufferingUpdate(progress)
         }
-    };
-
+        MusicLogUtils.e("updateBuffering$i")
+    }
 
     /**
      * 跳转完成时的监听
      */
-    private IjkMediaPlayer.OnSeekCompleteListener mOnSeekCompleteListener = new IjkMediaPlayer.OnSeekCompleteListener() {
-
-        @Override
-        public void onSeekComplete(IMediaPlayer mediaPlayer) {
-
-        }
-    };
+    private val mOnSeekCompleteListener = IMediaPlayer.OnSeekCompleteListener { }
 
     /**
      * 播放错误的监听
@@ -584,26 +541,17 @@ public class IjkPlayback {
      * int MEDIA_ERROR_UNSUPPORTED = -1010;//数据不支持
      * int MEDIA_ERROR_TIMED_OUT = -110;//数据超时
      */
-    private IjkMediaPlayer.OnErrorListener mOnErrorListener = new IjkMediaPlayer.OnErrorListener() {
-
-        @Override
-        public boolean onError(IMediaPlayer mediaPlayer, int i, int i1) {
-            MusicLogUtils.e("MediaPlayer.onError" + i);
-            switch (i) {
-                case -10000:
-                    mPlayState = MusicPlayAction.STATE_ERROR_AUDIO;
-                    break;
-                default:
-                    mPlayState = MusicPlayAction.STATE_ERROR;
-                    break;
-
-            }
-            if (mListener != null) {
-                mListener.onPlayStateChanged(mPlayState);
-            }
-            return false;
+    private val mOnErrorListener = IMediaPlayer.OnErrorListener { _, i, _ ->
+        MusicLogUtils.e("MediaPlayer.onError$i")
+        mPlayState = when (i) {
+            -10000 -> MusicPlayAction.STATE_ERROR_AUDIO
+            else -> MusicPlayAction.STATE_ERROR
         }
-    };
+        if (mListener != null) {
+            mListener!!.onPlayStateChanged(mPlayState)
+        }
+        false
+    }
 
     /**
      * 设置音频信息监听器
@@ -624,282 +572,234 @@ public class IjkPlayback {
      * int MEDIA_INFO_VIDEO_ROTATION_CHANGED = 10001;//视频方向改变，视频选择信息
      * int MEDIA_INFO_AUDIO_RENDERING_START = 10002;//音频开始整备中
      */
-    private IjkMediaPlayer.OnInfoListener mOnInfoListener = new IjkMediaPlayer.OnInfoListener() {
-
-        @Override
-        public boolean onInfo(IMediaPlayer mediaPlayer, int i, int i1) {
-            MusicLogUtils.e("MediaPlayer.onInfo" + i);
-            switch (i) {
-                case 701:
-                    mPlayState = MusicPlayAction.STATE_BUFFERING;
-                    break;
-                case 702:
-                case 10002:
-                    mPlayState = MusicPlayAction.STATE_PLAYING;
-                    break;
-                case 10009:
-                    if (isPlaying()) {
-                        mPlayState = MusicPlayAction.STATE_PLAYING;
-                    }
-                    break;
-                default:
-                    break;
-
+    private val mOnInfoListener = IMediaPlayer.OnInfoListener { _, i, _ ->
+        MusicLogUtils.e("MediaPlayer.onInfo$i")
+        when (i) {
+            701 -> mPlayState = MusicPlayAction.STATE_BUFFERING
+            702, 10002 -> mPlayState = MusicPlayAction.STATE_PLAYING
+            10009 -> if (isPlaying) {
+                mPlayState = MusicPlayAction.STATE_PLAYING
             }
-            if (mListener != null) {
-                mListener.onPlayStateChanged(mPlayState);
+            else -> {
             }
-
-            return false;
         }
-    };
+        if (mListener != null) {
+            mListener!!.onPlayStateChanged(mPlayState)
+        }
+        false
+    }
 
     /**
      * 是否正在播放
      *
      * @return true表示正在播放
      */
-    public boolean isPlaying() {
-        return mPlayer.isPlaying();
-    }
-
+    val isPlaying: Boolean
+        get() = mPlayer!!.isPlaying
 
     /**
      * 是否暂停
      *
      * @return true表示暂停
      */
-    public boolean isPausing() {
-        return mPlayState == MusicPlayAction.STATE_PAUSE;
-    }
-
+    val isPausing: Boolean
+        get() = mPlayState == MusicPlayAction.STATE_PAUSE
 
     /**
      * 是否正在准备中
      *
      * @return true表示正在准备中
      */
-    public boolean isPreparing() {
-        return mPlayState == MusicPlayAction.STATE_PREPARING;
-    }
-
+    val isPreparing: Boolean
+        get() = mPlayState == MusicPlayAction.STATE_PREPARING
 
     /**
      * 是否正在准备中
      *
      * @return true表示正在准备中
      */
-    public boolean isDefault() {
-        return mPlayState == MusicPlayAction.STATE_IDLE;
-    }
-
-
-    /**
-     * 获取正在播放的本地歌曲的序号
-     */
-    public int getPlayingPosition() {
-        return mPlayingPosition;
-    }
-
-
-    /**
-     * 获取正在播放的歌曲[本地|网络]
-     */
-    public AudioBean getPlayingMusic() {
-        return mPlayingMusic;
-    }
-
+    val isDefault: Boolean
+        get() = mPlayState == MusicPlayAction.STATE_IDLE
 
     /**
      * 获取播放的进度
      *
      * @return long类型值
      */
-    public long getCurrentPosition() {
-        if (isPlaying() || isPausing()) {
-            return mPlayer.getCurrentPosition();
+    val currentPosition: Long
+        get() = if (isPlaying || isPausing) {
+            mPlayer!!.currentPosition
         } else {
-            return 0;
+            0
         }
-    }
-
+    /**
+     * 获取音量
+     */
+    //        if(mPlayer != null){
+//            mPlayer.setVolume(volume,volume);
+//        }
     /**
      * 设置音量
      *
      * @param volume
      */
-    public void setVolume(int volume) {
+    var volume: Int
+        get() {
+            val soundManager = AudioSoundManager(mPlayService)
+            return soundManager.volume
+        }
+        set(volume) {
 //        if(mPlayer != null){
 //            mPlayer.setVolume(volume,volume);
 //        }
-        AudioSoundManager soundManager = new AudioSoundManager(mPlayService);
-        soundManager.setVolume(volume);
-    }
+            val soundManager = AudioSoundManager(mPlayService)
+            soundManager.volume = volume
+        }
 
     /**
      * 获取音量
      */
-    public int getVolume() {
-        AudioSoundManager soundManager = new AudioSoundManager(mPlayService);
-        return soundManager.getVolume();
-    }
-
-    /**
-     * 获取音量
-     */
-    public int getMaxVolume() {
-        AudioSoundManager soundManager = new AudioSoundManager(mPlayService);
-        return soundManager.getMaxVolume();
-    }
+    val maxVolume: Int
+        get() {
+            val soundManager = AudioSoundManager(mPlayService)
+            return soundManager.maxVolume
+        }
 
     /**
      * 设置速率
      *
      * @param speed 0.5~2
      */
-    public void setSpeed(float speed) {
+    fun setSpeed(speed: Float) {
         if (mPlayer != null) {
-            mPlayer.setSpeed(speed);
+            mPlayer!!.setSpeed(speed)
         }
     }
 
     /**
      * 获取总时长
      */
-    public long getDuration() {
-        if (mPlayer != null) {
-            return mPlayer.getDuration();
-        }
-        return 0;
-    }
+    val duration: Long
+        get() = if (mPlayer != null) {
+            mPlayer!!.duration
+        } else 0
 
-    public void sendMessage(int what) {
-        handler.sendEmptyMessage(what);
-    }
-
+    fun sendMessage(what: Int) {
+        handler!!.sendEmptyMessage(what)
+    }// 如果不是第一首，则还有上一首
 
     /**
      * 判斷是否有上一首音頻
      *
      * @return true表示有
      */
-    public boolean isHavePre() {
-        if (audioMusics != null && audioMusics.size() > 0) {
-            if (mPlayingPosition != 0) {
-                // 如果不是第一首，则还有上一首
-                return true;
-            } else {
-                return false;
-            }
+    val isHavePre: Boolean
+        get() = if (audioMusics != null && audioMusics!!.isNotEmpty()) {
+            playingPosition != 0
         } else {
-            return false;
-        }
-    }
+            false
+        }// 如果是最后一首，则切换回第一首// 如果不是最后一首，则还有下一首
 
     /**
      * 判斷是否有下一首音頻
      *
      * @return true表示有
      */
-    public boolean isHaveNext() {
-        if (audioMusics != null && audioMusics.size() > 0) {
-            if (mPlayingPosition != audioMusics.size() - 1) {
-                // 如果不是最后一首，则还有下一首
-                return true;
-            } else {
-                // 如果是最后一首，则切换回第一首
-                return false;
-            }
+    val isHaveNext: Boolean
+        get() = if (audioMusics != null && audioMusics!!.isNotEmpty()) {
+            playingPosition != audioMusics!!.size - 1
         } else {
-            return false;
+            false
         }
-    }
-
-
-//
-//    /**
-//     * 扫描音乐
-//     */
-//    @SuppressLint("StaticFieldLeak")
-//    public void updateMusicList(final EventCallback<Void> callback) {
-//        new AsyncTask<Void, Void, List<AudioBean>>() {
-//            @Override
-//            protected List<AudioBean> doInBackground(Void... params) {
-//                return FileMusicScanManager.getInstance().scanMusic(PlayService.this);
-//            }
-//
-//            @Override
-//            protected void onPostExecute(List<AudioBean> musicList) {
-//                //首先先清空
-//                //然后添加所有扫描到的音乐
-//                HFPlayer.get().setMusicList(musicList);
-//
-//                //如果获取音乐数据集合不为空
-//                if (!HFPlayer.get().getMusicList().isEmpty()) {
-//                    //音频的集合
-//                    audioMusics = HFPlayer.get().getMusicList();
-//                    //刷新正在播放的本地歌曲的序号
-//                    updatePlayingPosition();
-//                    //获取正在播放的音乐
-//                    if(mPlayingPosition>=0){
-//                        mPlayingMusic = HFPlayer.get().getMusicList().get(mPlayingPosition);
-//                    }
-//                }
-//                if (callback != null) {
-//                    callback.onEvent(null);
-//                }
-//            }
-//        }.execute();
-//    }
-
-
+    //
+    //    /**
+    //     * 扫描音乐
+    //     */
+    //    @SuppressLint("StaticFieldLeak")
+    //    public void updateMusicList(final EventCallback<Void> callback) {
+    //        new AsyncTask<Void, Void, List<AudioBean>>() {
+    //            @Override
+    //            protected List<AudioBean> doInBackground(Void... params) {
+    //                return FileMusicScanManager.getInstance().scanMusic(PlayService.this);
+    //            }
+    //
+    //            @Override
+    //            protected void onPostExecute(List<AudioBean> musicList) {
+    //                //首先先清空
+    //                //然后添加所有扫描到的音乐
+    //                HFPlayer.get().setMusicList(musicList);
+    //
+    //                //如果获取音乐数据集合不为空
+    //                if (!HFPlayer.get().getMusicList().isEmpty()) {
+    //                    //音频的集合
+    //                    audioMusics = HFPlayer.get().getMusicList();
+    //                    //刷新正在播放的本地歌曲的序号
+    //                    updatePlayingPosition();
+    //                    //获取正在播放的音乐
+    //                    if(mPlayingPosition>=0){
+    //                        mPlayingMusic = HFPlayer.get().getMusicList().get(mPlayingPosition);
+    //                    }
+    //                }
+    //                if (callback != null) {
+    //                    callback.onEvent(null);
+    //                }
+    //            }
+    //        }.execute();
+    //    }
     /**
      * 删除或下载歌曲后刷新正在播放的本地歌曲的序号
      */
-    public void updatePlayingPosition() {
-        int position = 0;
-        long id = MusicSpUtils.getInstance(MusicConstant.SP_NAME).getLong(MusicConstant.MUSIC_ID, -1);
-        if (audioMusics.isEmpty()) {
-            return;
+    fun updatePlayingPosition() {
+        var position = 0
+        val id = MusicSpUtils.getInstance(MusicConstant.SP_NAME).getLong(MusicConstant.MUSIC_ID, -1)
+        if (audioMusics!!.isEmpty()) {
+            return
         }
-        for (int i = 0; i < audioMusics.size(); i++) {
-            String musicId = audioMusics.get(i).getId();
-            MusicLogUtils.e("PlayService" + "----musicId----" + musicId);
-            if (Long.parseLong(musicId) == id) {
-                position = i;
-                break;
+        for (i in audioMusics!!.indices) {
+            val musicId = audioMusics!![i].id
+            MusicLogUtils.e("PlayService----musicId----$musicId")
+            if (musicId.toLong() == id) {
+                position = i
+                break
             }
         }
-        mPlayingPosition = position;
-        long musicId = Long.parseLong(audioMusics.get(mPlayingPosition).getId());
-        MusicSpUtils.getInstance(MusicConstant.SP_NAME).put(MusicConstant.MUSIC_ID, musicId);
+        playingPosition = position
+        val musicId = audioMusics!![playingPosition].id.toLong()
+        MusicSpUtils.getInstance(MusicConstant.SP_NAME).put(MusicConstant.MUSIC_ID, musicId)
     }
-
 
     /**
      * 设置播放进度监听器
      *
      * @param listener listener
      */
-    public void setOnPlayEventListener(HFPlayerEventListener listener) {
-        mListener = listener;
+    fun setOnPlayEventListener(listener: HFPlayerEventListener?) {
+        mListener = listener
     }
-
-
-    /**-------------------------------------添加锁屏界面----------------------------------------*/
-
-
+    /**-------------------------------------添加锁屏界面---------------------------------------- */
     /**
      * 打开锁屏页面
      * 不管是播放状态是哪一个，只要屏幕灭了到亮了，就展现这个锁屏页面
      * 有些APP限制了状态，比如只有播放时才走这个逻辑
      */
-    private void startLockAudioActivity() {
-        if (!mIsLocked && isPlaying()) {
+    private fun startLockAudioActivity() {
+        if (!mIsLocked && isPlaying) {
 //            Intent lockScreen = new Intent(this, LockAudioActivity.class);
 //            lockScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //            startActivity(lockScreen);
 //            BaseConfig.INSTANCE.setLocked(true);
         }
+    }
+
+    companion object {
+        /**
+         * 更新播放进度的显示，时间的显示
+         */
+        private const val UPDATE_PLAY_PROGRESS_SHOW = 0
+    }
+
+    init {
+        createIjkMediaPlayer()
+        initQuitTimer()
     }
 }

@@ -144,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
         HFPlayerApi.init(getApplication())
                 .setDebug(true)
                 .setMaxBufferSize(200 * 1024)
+                .setUseCache(true)
                 .apply();
     }
 

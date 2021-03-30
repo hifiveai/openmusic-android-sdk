@@ -1,3 +1,4 @@
+include ':hfopenmusicplayer'
 include ':hfopenmusic'
 include ':hfplayerkenerl'
 include ':hfplayer'
