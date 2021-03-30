@@ -2,6 +2,9 @@ package com.hfopenmusic.sdk;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.os.Looper;
+import android.os.MessageQueue;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
@@ -231,6 +234,34 @@ public class HFOpenMusic {
             currentList.add(playMusic);
             updateObservable.postNewPublication(UPDATEPALYLIST);
         }
+    }
+
+    //数据上报
+    public void reportListen(String musicID,int duration, long timestamp ){
+        try {
+            if (HFOpenApi.getInstance() == null)
+                return;
+            // 添加一个IdleHandler
+            Looper.myQueue().addIdleHandler(() -> {
+                report(musicID,duration,timestamp);
+                return false;
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void report(String musicID,int duration, long timestamp ){
+        HFOpenApi.getInstance().reportListen(listenType + "ReportListen", musicID, duration, timestamp, "aac","320",new DataResponse<Object>() {
+            @Override
+            public void onError(@NotNull BaseException exception) {
+            }
+
+            @Override
+            public void onSuccess(@NotNull Object any, String taskId) {
+                Log.e("report","IdleHandler report");
+            }
+        });
     }
 
     /**

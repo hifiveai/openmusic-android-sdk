@@ -11,12 +11,9 @@ import android.widget.Toast;
 import com.hf.openplayer.HFOpenMusicPlayer;
 import com.hf.player.view.HFPlayer;
 import com.hf.player.view.HFPlayerViewListener;
-import com.hf.player.view.HifivePlayerView;
-import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenmusic.sdk.HFOpenMusic;
 import com.hfopenmusic.sdk.listener.HFPlayMusicListener;
-import com.hfopenmusic.sdk.util.HifiveDisplayUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 

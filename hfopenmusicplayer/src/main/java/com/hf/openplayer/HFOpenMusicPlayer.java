@@ -1,5 +1,6 @@
 package com.hf.openplayer;
 
+import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.hfopenmusic.sdk.util.HifiveDisplayUtils;
 public class HFOpenMusicPlayer {
     private static volatile HFOpenMusicPlayer mInstance;
     private boolean flag;
+    private String musicId;
 
     private HFOpenMusicPlayer() {
 
@@ -42,7 +44,7 @@ public class HFOpenMusicPlayer {
 
     //添加播放器view
     public HFOpenMusicPlayer showPlayer(FragmentActivity activity, int marginTop, int marginBottom) {
-        HFPlayer.getInstance().showPlayer(activity)
+        HFPlayer.getInstance().showPlayer(activity,marginTop,marginBottom)
                 .setListener(new HFPlayerViewListener() {
                     @Override
                     public void onClick() {
@@ -58,6 +60,14 @@ public class HFOpenMusicPlayer {
 
                     @Override
                     public void onPre() {
+                        try {
+                            if(musicId != null){
+                                int currentPosition = (int) HFPlayerApi.with().getCurrentPosition();
+                                HFOpenMusic.getInstance().reportListen(musicId,currentPosition,System.currentTimeMillis());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         HFOpenMusic.getInstance().playLastMusic();
                     }
 
@@ -67,11 +77,27 @@ public class HFOpenMusicPlayer {
 
                     @Override
                     public void onNext() {
+                        try {
+                            if(musicId != null){
+                                int currentPosition = (int) HFPlayerApi.with().getCurrentPosition();
+                                HFOpenMusic.getInstance().reportListen(musicId,currentPosition,System.currentTimeMillis());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         HFOpenMusic.getInstance().playNextMusic();
                     }
 
                     @Override
                     public void onComplete() {
+                        try {
+                            if(musicId != null){
+                                int currentPosition = (int) HFPlayerApi.with().getCurrentPosition();
+                                HFOpenMusic.getInstance().reportListen(musicId,currentPosition,System.currentTimeMillis());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         HFOpenMusic.getInstance().playNextMusic();
                     }
 
@@ -83,6 +109,12 @@ public class HFOpenMusicPlayer {
 
 
         return null;
+    }
+
+    //设置音乐授权类型
+    public HFOpenMusicPlayer setListenType(String type) {
+        HFOpenMusic.getInstance().setListenType(type);
+        return this;
     }
 
     private void showMusic(FragmentActivity activity) {
@@ -111,6 +143,8 @@ public class HFOpenMusicPlayer {
 
     private void play(MusicRecord musicDetail, String url) {
         if (musicDetail != null) {
+            musicId = musicDetail.getMusicId();
+
             //初始化播放器UI
             HFPlayer.getInstance()
                     .setTitle(musicDetail.getMusicName())
@@ -120,9 +154,6 @@ public class HFOpenMusicPlayer {
         }
     }
 
-    //播放器资源回收
-    private void recyclePlayer() {
-        HFPlayerApi.with().stop();
-        HFPlayerApi.relese();
-    }
+
+
 }
