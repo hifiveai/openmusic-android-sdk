@@ -455,10 +455,17 @@ public class IjkPlayback {
 //            "ijkio:cache:ffio:"+
             mPlayer.setDataSource("ijkio:cache:ffio:" + url);
 
-//            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "auto_save_map", 1);
-//            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "parse_cache_map", 1);
-            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_file_path", mPlayService.getCacheDir() + "/1.tmp");
-//            mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_map_path",getCacheDir()+"/2.tmp");
+            if (HFPlayerApi.getIsUseCache()) {
+                int index = url.lastIndexOf(".");
+                int startIndex = index>15? index -15 : index -8;
+                String fileName = url.substring(startIndex, index);
+                mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "auto_save_map", 1);
+                mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "parse_cache_map", 1);
+                mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_file_path", mPlayService.getCacheDir() + "/"+fileName+".tmp");
+                mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_map_path", mPlayService.getCacheDir() + "/path.tmp");
+            } else {
+                mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_file_path", mPlayService.getCacheDir() + "/tmp.tmp");
+            }
 
             // 无限制收流
             mPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", 0);
