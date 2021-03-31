@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void play() {
-
         //初始化播放器UI
         HFPlayer.getInstance()
                 .setTitle("测试测试")
