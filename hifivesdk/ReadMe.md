@@ -193,7 +193,7 @@ PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
 HFOpenApi.getInstance().searchMusic(TagIds: String?,
                     PriceFromCent: Long?,
                     PriceToCent: Long?,
-                    BpmForm: Int?,
+                    BpmFrom: Int?,
                     BpmTo: Int?,
                     DurationFrom: Int?,
                     DurationTo: Int?,
@@ -209,7 +209,7 @@ HFOpenApi.getInstance().searchMusic(TagIds: String?,
 TagIds | 否| 标签Id，多个Id以“,”拼接 | - |
 PriceFromCent | 否| 价格区间的最低值，单位分 |  - |
 PriceToCent | 否| 价格区间的最高值，单位分 | - |
-BpmForm | 否| BPM区间的最低值| - |
+BpmFrom | 否| BPM区间的最低值| - |
 BpmTo	 | 否| BPM区间的最高值| - |
 DurationFrom	 | 否| 时长区间的最低值,单位秒 |  - |
 DurationTo	 | 否| 时长区间的最高值,单位秒| - |

@@ -56,7 +56,7 @@ interface Api {
     fun searchMusic(@Field("TagIds") TagIds: String?,
                     @Field("PriceFromCent") PriceFromCent: Long?,
                     @Field("PriceToCent") PriceToCent: Long?,
-                    @Field("BpmForm") BpmForm: Int?,
+                    @Field("BpmFrom") BpmFrom: Int?,
                     @Field("BpmTo") BpmTo: Int?,
                     @Field("DurationFrom") DurationFrom: Int?,
                     @Field("DurationTo") DurationTo: Int?,

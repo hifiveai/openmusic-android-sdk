@@ -53,7 +53,7 @@ class DataRepository constructor() {
     fun searchMusic(TagIds: String?,
                     PriceFromCent: Long?,
                     PriceToCent: Long?,
-                    BpmForm: Int?,
+                    BpmFrom: Int?,
                     BpmTo: Int?,
                     DurationFrom: Int?,
                     DurationTo: Int?,
@@ -62,7 +62,7 @@ class DataRepository constructor() {
                     Page: Int?,
                     PageSize: Int?
     ): Flowable<SearchMusic> {
-        return LiveRetrofitFactory.api().searchMusic(TagIds, PriceFromCent, PriceToCent, BpmForm, BpmTo, DurationFrom, DurationTo, Keyword, Language, Page, PageSize, "SearchMusic").convert()
+        return LiveRetrofitFactory.api().searchMusic(TagIds, PriceFromCent, PriceToCent, BpmFrom, BpmTo, DurationFrom, DurationTo, Keyword, Language, Page, PageSize, "SearchMusic").convert()
     }
 
 
