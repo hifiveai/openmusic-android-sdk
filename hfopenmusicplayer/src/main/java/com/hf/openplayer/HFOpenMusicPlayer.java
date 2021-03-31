@@ -102,6 +102,14 @@ public class HFOpenMusicPlayer {
     }
 
     /**
+     * 移除播放器
+     */
+    public void removePlayer() {
+        HFPlayer.getInstance().removePlayer();
+        HFOpenMusic.getInstance().closeOpenMusic();
+    }
+
+    /**
      *  设置音乐授权类型
      *  @param type
      *  @return
