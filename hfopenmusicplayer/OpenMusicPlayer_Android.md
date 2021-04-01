@@ -53,6 +53,7 @@ implementation(name: 'demo', ext:'aar')//注意这里加入的名字没有后缀
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
     api 'androidx.recyclerview:recyclerview:1.1.0'
 
+    api 'androidx.media:media:1.2.1'
     api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
 
 ```
