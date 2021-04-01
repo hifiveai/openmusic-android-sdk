@@ -44,7 +44,7 @@ object HFPlayerApi {
 
 
     @JvmStatic
-    fun init(application: Application?)= apply {
+    fun init(application: Application)= apply {
         globalContext = application
     }
 

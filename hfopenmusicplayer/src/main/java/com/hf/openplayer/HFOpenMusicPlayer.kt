@@ -1,49 +1,68 @@
-package com.hf.openplayer;
+package com.hf.openplayer
 
-import android.app.Application;
-import android.util.Log;
-import android.widget.Toast;
-
-import androidx.fragment.app.FragmentActivity;
-
-import com.hf.player.view.HFPlayer;
-import com.hf.player.view.HFPlayerViewListener;
-import com.hf.playerkernel.manager.HFPlayerApi;
-import com.hfopen.sdk.entity.MusicRecord;
-import com.hfopenmusic.sdk.HFOpenMusic;
-import com.hfopenmusic.sdk.listener.HFPlayMusicListener;
-import com.hfopenmusic.sdk.util.HifiveDisplayUtils;
-
+import android.app.Application
+import android.util.Log
+import androidx.fragment.app.FragmentActivity
+import com.hf.player.view.HFPlayer
+import com.hf.player.view.HFPlayerViewListener
+import com.hf.playerkernel.manager.HFPlayerApi
+import com.hf.playerkernel.utils.MusicLogUtils
+import com.hfopen.sdk.entity.MusicRecord
+import com.hfopen.sdk.manager.HFOpenApi
+import com.hfopenmusic.sdk.HFOpenMusic
+import com.hfopenmusic.sdk.listener.HFPlayMusicListener
+import com.hfopenmusic.sdk.util.HifiveDisplayUtils
 
 /**
  * 带列表版播放器
  */
-public class HFOpenMusicPlayer {
-    private static volatile HFOpenMusicPlayer mInstance;
-    private boolean flag;
-    private String musicId;
+class HFOpenMusicPlayer private constructor() {
+    private var globalContext: Application? = null
+    private var flag = false
+    private var musicId: String? = null
 
-    private HFOpenMusicPlayer() {
-
+    /**
+     * 注册api
+     * @param app
+     * @param clientId
+     * @return
+     */
+    fun registerApp(app: Application, clientId: String) = apply {
+        globalContext = app
+        HFOpenApi.registerApp(app, clientId)
+        HFPlayerApi.init(app)
     }
-    public static HFOpenMusicPlayer getInstance() {
-        if (mInstance == null) {
-            synchronized (HFOpenMusicPlayer.class) {
-                if (mInstance == null) {
-                    mInstance = new HFOpenMusicPlayer();
-                }
-            }
-        }
-        return mInstance;
+
+    fun setMaxBufferSize(size: Long) = apply {
+        HFPlayerApi.setMaxBufferSize(size)
+    }
+
+    fun setUseCache(useCache: Boolean) = apply {
+        HFPlayerApi.setUseCache(useCache)
     }
 
     /**
-     * 显示播放器view
-     * @param activity
-     * @return
+     * 是否断线重连
      */
-    public HFOpenMusicPlayer showPlayer(FragmentActivity activity) {
-        return showPlayer(activity,0,0);
+    fun setReconnect(reconnect: Boolean) = apply {
+        HFPlayerApi.setReconnect(reconnect)
+    }
+
+    /**
+     * 是否debug，区别就是是否打印一些内部 log
+     */
+    fun setDebug(debug: Boolean) = apply {
+        MusicLogUtils.setIsLog(debug)
+    }
+
+    /**
+     * 初始化
+     */
+    fun apply() {
+        if (globalContext == null) {
+            throw NullPointerException("context is null")
+        }
+        HFPlayerApi.apply()
     }
 
     /**
@@ -53,98 +72,90 @@ public class HFOpenMusicPlayer {
      * @param marginBottom
      * @return
      */
-    public HFOpenMusicPlayer showPlayer(FragmentActivity activity, int marginTop, int marginBottom) {
-        HFPlayer.getInstance().showPlayer(activity,marginTop,marginBottom)
-                .setListener(new HFPlayerViewListener() {
-                    @Override
-                    public void onClick() {
-                        Log.e("HFPlayerViewListener", "onClick");
+    /**
+     * 显示播放器view
+     * @param activity
+     * @return
+     */
+    @JvmOverloads
+    fun showPlayer(activity: FragmentActivity, marginTop: Int = 0, marginBottom: Int = 0) = apply {
+        if (globalContext == null) return@apply
+        HFPlayer.getInstance().showPlayer(activity, marginTop, marginBottom)
+                .setListener(object : HFPlayerViewListener {
+                    override fun onClick() {
+                        Log.e("HFPlayerViewListener", "onClick")
                         if (flag) {
-                            HFOpenMusic.getInstance().closeOpenMusic();
-                            HFPlayer.getInstance().setMarginBottom(0);
-                            flag = false;
+                            HFOpenMusic.getInstance().closeOpenMusic()
+                            HFPlayer.getInstance().setMarginBottom(0)
+                            flag = false
                         } else {
-                            showMusic(activity);
+                            showMusic(activity)
                         }
                     }
 
-                    @Override
-                    public void onPre() {
-                        report();
-                        HFOpenMusic.getInstance().playLastMusic();
+                    override fun onPre() {
+                        report()
+                        HFOpenMusic.getInstance().playLastMusic()
                     }
 
-                    @Override
-                    public void onPlayPause(boolean isPlaying) {
+                    override fun onPlayPause(isPlaying: Boolean) {}
+                    override fun onNext() {
+                        report()
+                        HFOpenMusic.getInstance().playNextMusic()
                     }
 
-                    @Override
-                    public void onNext() {
-                        report();
-                        HFOpenMusic.getInstance().playNextMusic();
+                    override fun onComplete() {
+                        report()
+                        HFOpenMusic.getInstance().playNextMusic()
                     }
 
-                    @Override
-                    public void onComplete() {
-                        report();
-                        HFOpenMusic.getInstance().playNextMusic();
+                    override fun onError() {
+                        report()
+                        HFOpenMusic.getInstance().playNextMusic()
                     }
-
-                    @Override
-                    public void onError() {
-                        report();
-                        HFOpenMusic.getInstance().playNextMusic();
-                    }
-                });
-
-
-        return null;
+                })
     }
 
     /**
      * 移除播放器
      */
-    public void removePlayer() {
-        HFPlayer.getInstance().removePlayer();
-        HFOpenMusic.getInstance().closeOpenMusic();
+    fun removePlayer() {
+        HFPlayer.getInstance().removePlayer()
+        HFOpenMusic.getInstance().closeOpenMusic()
     }
 
     /**
-     *  设置音乐授权类型
-     *  @param type
-     *  @return
+     * 设置音乐授权类型
+     * @param type
+     * @return
      */
-    public HFOpenMusicPlayer setListenType(String type) {
-        HFOpenMusic.getInstance().setListenType(type);
-        return this;
+    fun setListenType(type: String?) = apply {
+        HFOpenMusic.getInstance().setListenType(type)
     }
 
     /**
      * 显示OpenAPI播放列表
      * @param activity  activity
      */
-    private void showMusic(FragmentActivity activity) {
-        flag = true;
+    private fun showMusic(activity: FragmentActivity) {
+        flag = true
         HFOpenMusic.getInstance()
-                .setPlayListen(new HFPlayMusicListener() {
-                    @Override
-                    public void onPlayMusic(MusicRecord musicDetail, String url) {
-                        play(musicDetail, url);
+                .setPlayListen(object : HFPlayMusicListener {
+                    override fun onPlayMusic(musicDetail: MusicRecord, url: String) {
+                        play(musicDetail, url)
                     }
 
-                    @Override
-                    public void onStop() {
-                        HFPlayer.getInstance().stopPlay();
+                    override fun onStop() {
+                        HFPlayer.getInstance().stopPlay()
                     }
 
-                    @Override
-                    public void onCloseOpenMusic() {
-                        HFPlayer.getInstance().setMarginBottom(0);
-                        flag = false;
+                    override fun onCloseOpenMusic() {
+                        HFPlayer.getInstance().setMarginBottom(0)
+                        flag = false
                     }
                 })
-                .showOpenMusic(activity);
-        HFPlayer.getInstance().setMarginBottom(HifiveDisplayUtils.getPlayerHeight(activity));
+                .showOpenMusic(activity)
+        HFPlayer.getInstance().setMarginBottom(HifiveDisplayUtils.getPlayerHeight(activity))
     }
 
     /**
@@ -152,33 +163,46 @@ public class HFOpenMusicPlayer {
      * @param musicDetail  歌曲详情
      * @param url  歌曲播放地址
      */
-    private void play(MusicRecord musicDetail, String url) {
+    private fun play(musicDetail: MusicRecord?, url: String) {
         if (musicDetail != null) {
-            musicId = musicDetail.getMusicId();
+            musicId = musicDetail.musicId
             //初始化播放器UI
             HFPlayer.getInstance()
-                    .setTitle(musicDetail.getMusicName())
-                    .setMajorVersion(musicDetail.getVersion().get(0).getMajorVersion())
-                    .setCover(musicDetail.getCover().get(0).getUrl())
-                    .playWithUrl(url);
+                    .setTitle(musicDetail.musicName)
+                    .setMajorVersion(musicDetail.version!![0].majorVersion)
+                    .setCover(musicDetail.cover!![0].url)
+                    .playWithUrl(url)
         }
     }
-
 
     /**
      * 数据上报
      */
-    private void report(){
+    private fun report() {
         try {
-            if(musicId != null){
-                int currentPosition = (int) HFPlayerApi.with().getCurrentPosition();
-                HFOpenMusic.getInstance().reportListen(musicId,currentPosition,System.currentTimeMillis());
+            if (musicId != null) {
+                val currentPosition = HFPlayerApi.with().currentPosition.toInt()
+                HFOpenMusic.getInstance().reportListen(musicId, currentPosition, System.currentTimeMillis())
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
+    companion object {
+        @Volatile
+        private var mInstance: HFOpenMusicPlayer? = null
 
-
+        @JvmStatic
+        fun getInstance(): HFOpenMusicPlayer {
+            if (mInstance == null) {
+                synchronized(HFOpenMusicPlayer::class.java) {
+                    if (mInstance == null) {
+                        mInstance = HFOpenMusicPlayer()
+                    }
+                }
+            }
+            return mInstance!!
+        }
+    }
 }

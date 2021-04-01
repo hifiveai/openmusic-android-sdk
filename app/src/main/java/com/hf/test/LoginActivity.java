@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.hf.openplayer.HFOpenMusicPlayer;
 import com.hf.test.R;
 import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hfopen.sdk.rx.BaseException;
@@ -131,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "请先初始化SDK", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                initPlayer();
+                initOpenPlayer();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("type",3);
                 startActivity(intent);
@@ -142,6 +143,15 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initPlayer(){
         HFPlayerApi.init(getApplication())
+                .setDebug(true)
+                .setMaxBufferSize(200 * 1024)
+                .setUseCache(true)
+                .apply();
+    }
+
+    private void initOpenPlayer(){
+        HFOpenMusicPlayer.getInstance()
+                .registerApp(getApplication(),memberId)
                 .setDebug(true)
                 .setMaxBufferSize(200 * 1024)
                 .setUseCache(true)

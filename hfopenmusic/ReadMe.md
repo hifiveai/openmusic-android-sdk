@@ -131,76 +131,53 @@ api 'androidx.recyclerview:recyclerview:1.1.0'
 
 -请避免混淆HFLivePlayer，在Proguard混淆文件中增加以下配置：
 ```
--dontwarn com.hfliveplayer.sdk.**
--keep public class com.hfliveplayer.sdk.**{*;}
+-dontwarn com.hfopen.sdk.**
+-keep public class com.hfopen.sdk.**{*;}
 
--dontwarn com.hifive.sdk.**
--keep public class com.hifive.sdk.**{*;}
+-dontwarn com.hfopemmusic.sdk.**
+-keep public class com.hfopemmusic.sdk.**{*;}
 ```
 
 #### 3.2 SDK初始化
-建议在应用一启动就初始化，例如Application中
+>  注意：初始化需要clientId，建议在用户登录之后进行初始化
 
 ```
-HFLiveApi.registerApp(Application context);
+HFOpenApi.registerApp(Application context,String clientId);
 ```
 参数  | 必填  |描述|
 ---|---|---
 activity | 是| 上下文
+clientId | 是| 用户唯一标识（公司自有的用户ID）。|
 
 #### 3.3 设置SDK全局回调
 ```
-HFLiveApi.configCallBack(HFLiveCallback callback);
+HFOpenApi.configCallBack(HFOpenCallback callback);
 ```
 参数  | 必填  |描述|
 ---|---|---
 callback | 是| SDK回调
 
-#### 3.4 会员登录
+
+#### 3.4 列表UI使用
+
+##### 3.4.1 注意事项
+- 由于列表UI基于DialogFragment开发，需要使用UI的Activity务必继承FragmentActivity或FragmentActivity的子类。
+- 使用列表UI前请确保SDK已初始化。
+
+##### 3.4.2 播放器使用
+
+- 显示列表方法
 
 ```
-HFLiveApi.getInstance().memberLogin(context: Context, memberName: String, memberId: String, societyName: String?, societyId: String?, headerUrl: String?, gender: String?, birthday: String?, location: String?, favoriteSinger: String?, phone: String?, dataResponse: DataResponse)
-```
-
-参数  | 必填  |描述|
----|---|---
-memberName | 是| 会员名称
-memberId | 是| 外部会员ID
-sociatyName | 否|公会名称
-societyId | 否| 公会外部ID
-headerUrl	 | 否| 头像URL
-gender	 | 否| 性别,未知：0，男：1，女：2
-birthday	 | 否| 生日
-location	 | 否| 经纬度信息，纬度在前(30.779164,103.94547)
-favoriteSinger	 | 否| 喜欢的歌手名，多个用英文逗号隔开
-phone	 | 否| 手机号
-
-#### 3.5 播放器UI使用
-
-##### 3.5.1 注意事项
-- 由于播放器UI基于DialogFragment开发，需要使用播放器UI的Activity务必继承FragmentActivity或FragmentActivity的子类。
-- 使用播放器UI前请确保SDK已初始化，并完成用户登录操作。
-
-##### 3.5.2 播放器使用
-
-- 显示播放器方法
-
-```
-HFLivePlayer.getInstance().showPlayer(FragmentActivity activity);
-或者
-HFLivePlayer.getInstance().showPlayer(FragmentActivity activity,int marginTop,int marginBottom);
+HFOpenMusic.getInstance().showOpenMusic(FragmentActivity activity);
 ```
 参数  | 必填  |描述|
 ---|---|---
 activity | 是| 上下文
-marginTop | 否| 播放器可拖拽范围上限（默认为0，表示可以拖至屏幕最上方）
-marginBottom | 否| 播放器可拖拽范围下限（默认为0，表示可以拖至屏幕最底部，只对未显示音乐列表弹窗时有效）
 
-注意事项：播放器UI相关接口都是基于登录后的操作，为了正常使用，请确保已完成登录操作。
-
-- 关闭播放器方法
+- 关闭列表方法
 ```
-HFLivePlayer.getInstance().removePlayer();
+HFOpenMusic.getInstance().closeOpenMusic();
 ```
 
 ## 四、API状态码
