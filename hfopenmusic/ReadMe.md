@@ -125,7 +125,7 @@ api 'androidx.recyclerview:recyclerview:1.1.0'
     android:value="注册时申请的APPID" >
 </meta-data>
 <meta-data
-    android:name="HIFIVE_SECRET"
+    android:name="HIFIVE_SERVERCODE"
     android:value="注册时申请的SECRET" />
 ```
 
@@ -179,6 +179,16 @@ activity | 是| 上下文
 ```
 HFOpenMusic.getInstance().closeOpenMusic();
 ```
+
+- 事件监听
+```
+HFOpenMusic.getInstance().setPlayListen(HFPlayMusicListener listener);
+```
+
+
+参数  | 必填  |描述|
+---|---|---
+listener | 是| 监听接口
 
 ## 四、API状态码
 

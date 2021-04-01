@@ -53,6 +53,8 @@ implementation(name: 'demo', ext:'aar')//注意这里加入的名字没有后缀
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
     api 'androidx.recyclerview:recyclerview:1.1.0'
 
+    api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
+
 ```
 ## 二、SDK使用
 
@@ -65,7 +67,7 @@ implementation(name: 'demo', ext:'aar')//注意这里加入的名字没有后缀
     android:value="注册时申请的APPID" >
 </meta-data>
 <meta-data
-    android:name="HIFIVE_SECRET"
+    android:name="HIFIVE_SERVERCODE"
     android:value="注册时申请的SECRET" />
 ```
 

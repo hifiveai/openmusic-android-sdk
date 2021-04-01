@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.hf.openplayer.HFOpenMusicPlayer;
-import com.hf.test.R;
 import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hfopen.sdk.rx.BaseException;
 import com.hfopenmusic.sdk.HFOpenMusic;
@@ -119,7 +118,6 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "请先初始化SDK", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                initPlayer();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("type",2);
                 startActivity(intent);
