@@ -162,7 +162,8 @@ bytes | 是| 最大缓冲大小字节数 | 200 * 1024 |
 ---|---|--- | ---
 useCache | 是| 是否开启缓存 | false |
 
-显示播放器方法
+#### 2.8 显示播放器方法
+> 在播放器服务初始化后调用
 
 ```
 HFOpenMusicPlayer.getInstance().showPlayer(FragmentActivity activity);
@@ -177,7 +178,7 @@ HFOpenMusicPlayer.getInstance().showPlayer(FragmentActivity activity,int marginT
 | marginTop | 否 | 播放器可拖拽范围上限（默认为0，表示可以拖至屏幕最上方） |
 | marginBottom | 否 | 播放器可拖拽范围下限（默认为0，表示可以拖至屏幕最底部，只对未显示音乐列表弹窗时有效） |
 
-#### 2.8 移除播放器
+#### 2.9 移除播放器
 
 ```
 HFOpenMusicPlayer.getInstance().removePlayer();
