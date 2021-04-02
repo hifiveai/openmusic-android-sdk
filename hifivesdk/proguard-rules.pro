@@ -153,7 +153,7 @@
 ###########################以下是需要手动的混淆配置协议###############################
 
 
--libraryjars 'E:\tool\Java\jdk1.8.0_271\jre\lib\rt.jar'
+#-libraryjars 'E:\tool\Java\jdk1.8.0_271\jre\lib\rt.jar'
 #-libraryjars "C:\Users\admin\AppData\Local\Android\sdk\platforms\android-26\android.jar"
 # 注意：以上两个路径需要将以上路径是自己jar包的位置，需要根据自己情况进行修改，如果报重复配置的错误，注释掉即可
 
