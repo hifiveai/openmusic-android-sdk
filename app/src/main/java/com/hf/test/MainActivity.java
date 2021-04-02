@@ -131,6 +131,15 @@ public class MainActivity extends AppCompatActivity {
                 .showOpenMusic(MainActivity.this);
     }
 
+    private void initOpenPlayer(){
+        HFOpenMusicPlayer.getInstance()
+                .registerApp(getApplication(),"1234567")
+                .setDebug(true)
+                .setMaxBufferSize(200 * 1024)
+                .setUseCache(true)
+                .apply();
+    }
+
 //    @Override
 //    protected void onDestroy() {
 //        super.onDestroy();

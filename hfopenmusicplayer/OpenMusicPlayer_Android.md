@@ -93,6 +93,25 @@ implementation(name: 'demo', ext:'aar')//注意这里加入的名字没有后缀
 
 ## 二、播放器UISDK使用
 
+建议在应用一启动就初始化，例如Application中
+```
+HFOpenMusicPlayer.getInstance()
+                .registerApp(..)
+                .apply();
+```
+
+可以配置更多的功能：
+
+```
+HFOpenMusicPlayer.getInstance()
+                .registerApp(..)
+                .setListenType(..)
+                .setDebug(..)
+                .setMaxBufferSize(..)
+                .setUseCache(..)
+                .apply();
+```
+
 #### 2.1 初始化播放器
 
 >  注意：初始化需要clientId，建议在用户登录之后进行初始化
@@ -154,6 +173,8 @@ bytes | 是| 最大缓冲大小字节数 | 200 * 1024 |
 ```
 
 #### 2.7 初始化播放器服务
+
+> 建议在application初始化
 ```
  HFOpenMusicPlayer.getInstance().apply()
 ```
