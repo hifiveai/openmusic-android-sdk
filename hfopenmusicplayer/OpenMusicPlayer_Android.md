@@ -168,6 +168,8 @@ reconnect | 是| 是否断线重连 | true |
 bytes | 是| 最大缓冲大小字节数 | 200 * 1024 |
 
 #### 2.6 配置是否开启缓存，默认关闭
+
+> 需要存储权限
 ```
  HFOpenMusicPlayer.getInstance().serUseCache(boolean useCache)
 ```

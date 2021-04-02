@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     .setListener(new HFPlayerViewListener() {
                         @Override
                         public void onClick() {
-
+                            play();
                         }
 
                         @Override
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onPlayPause(boolean isPlaying) {
-                            play();
+
                             Toast.makeText(MainActivity.this, isPlaying ? "暂停" : "播放", Toast.LENGTH_SHORT).show();
                         }
 
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 .setTitle("测试测试")
                 .setMajorVersion(true)
                 .setCover("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20190521%2F17%2F1558430156-SBswiePxFE.jpg&refer=http%3A%2F%2Fimage.biaobaiju.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619162218&t=409c6be07cf495ccc4dcf3bc23f94028")
-                .playWithUrl("https://static-test.hifiveai.open.hifiveai.com/WaterMark/hifive/KPM/KPM/mp3_320/KPM_KPM_0948/KPM_KPM_0948_01601.mp3?param=ns5eoi3vWyU_4dWGiR9zWi6PmGfyMU2lOCQX63jrsygAQN2uTQq6PyANuRnJkNm8B6QIaU_0eNQ1fT9wuxPQ78RrIQ16FTkMq2CXJgnaBtgG6cYjUyJ6Eez88bjggmubieX8K-RJ0Af-2xSpSPV8KQ&sign=61b1e03016e685b259b965bc79c691d8&t=1616756630");
+                .playWithUrl("https://sharefs.yun.kugou.com/202104021003/1682bd6b8f9d69cbbd1e27eb0c6bb92c/G197/M04/0E/18/ZYcBAF5x5-2AbFgmADaApn6O6Fw014.mp3");
 
     }
 
