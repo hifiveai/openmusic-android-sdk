@@ -180,6 +180,23 @@ activity | 是| 上下文
 HFOpenMusic.getInstance().closeOpenMusic();
 ```
 
+- 设置音乐授权类型
+```
+HFOpenMusic.getInstance().setListenType(String type);
+```
+参数  | 必填  | 描述| 可选值 |
+---|---|--- | ---
+type | 是| 音乐授权类型 | 详见[音乐授权类型] |
+
+**音乐授权类型**
+
+名称  |  值  |
+---|---
+BGM音乐播放 | Traffic | 
+音视频作品BGM音乐播放 | UGC| 
+K歌音乐播放 | K | 
+
+
 - 事件监听
 ```
 HFOpenMusic.getInstance().setPlayListen(HFPlayMusicListener listener);
@@ -189,6 +206,28 @@ HFOpenMusic.getInstance().setPlayListen(HFPlayMusicListener listener);
 参数  | 必填  |描述|
 ---|---|---
 listener | 是| 监听接口
+
+- HFPlayMusicListener说明
+
+```java
+interface HFPlayMusicListener {
+    /**
+     * 音乐详情
+     */
+    void onPlayMusic(MusicRecord musicDetail,String url);
+
+    /**
+     * 播放列表删除所有歌曲
+     */
+    void onStop();
+
+    /**
+     * 关闭界面
+     */
+    void onCloseOpenMusic();
+}
+```
+
 
 ## 四、API状态码
 

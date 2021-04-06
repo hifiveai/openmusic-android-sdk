@@ -124,7 +124,7 @@ HFOpenMusicPlayer.getInstance().registerApp(Application context,String clientId)
 activity | 是| 上下文 |
 clientId | 是| 用户唯一标识（公司自有的用户ID）。|
 
-#### 2.2 置音乐授权类型
+#### 2.2 设置音乐授权类型
 ```
 HFOpenMusicPlayer.getInstance().setListenType(String type);
 ```
@@ -173,6 +173,9 @@ bytes | 是| 最大缓冲大小字节数 | 200 * 1024 |
 ```
  HFOpenMusicPlayer.getInstance().serUseCache(boolean useCache)
 ```
+参数  | 必填  |描述| 默认值 |
+---|---|--- | ---
+useCache | 是| 是否开启缓存 | false |
 
 #### 2.7 初始化播放器服务
 
@@ -181,9 +184,6 @@ bytes | 是| 最大缓冲大小字节数 | 200 * 1024 |
  HFOpenMusicPlayer.getInstance().apply()
 ```
 
-参数  | 必填  |描述| 默认值 |
----|---|--- | ---
-useCache | 是| 是否开启缓存 | false |
 
 #### 2.8 显示播放器方法
 
