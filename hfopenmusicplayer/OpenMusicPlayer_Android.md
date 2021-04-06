@@ -72,7 +72,7 @@ implementation(name: 'demo', ext:'aar')//注意这里加入的名字没有后缀
     android:value="注册时申请的SECRET" />
 ```
 
--请避免混淆HFLivePlayer，在Proguard混淆文件中增加以下配置：
+-请避免混淆，在Proguard混淆文件中增加以下配置：
 ```
 -dontwarn com.hf.openplayer.**
 -keep public class com.hf.openplayer.**{*;}
@@ -186,7 +186,10 @@ bytes | 是| 最大缓冲大小字节数 | 200 * 1024 |
 useCache | 是| 是否开启缓存 | false |
 
 #### 2.8 显示播放器方法
-> 在播放器服务初始化后调用
+
+> 在需要播放器的界面使用
+- 由于列表UI基于DialogFragment开发，需要使用UI的Activity务必继承FragmentActivity或FragmentActivity的子类。
+- 使用列表UI前请确保SDK已初始化。
 
 ```
 HFOpenMusicPlayer.getInstance().showPlayer(FragmentActivity activity);

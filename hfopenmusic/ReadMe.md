@@ -129,7 +129,7 @@ api 'androidx.recyclerview:recyclerview:1.1.0'
     android:value="注册时申请的SECRET" />
 ```
 
--请避免混淆HFLivePlayer，在Proguard混淆文件中增加以下配置：
+-请避免混淆，在Proguard混淆文件中增加以下配置：
 ```
 -dontwarn com.hfopen.sdk.**
 -keep public class com.hfopen.sdk.**{*;}
