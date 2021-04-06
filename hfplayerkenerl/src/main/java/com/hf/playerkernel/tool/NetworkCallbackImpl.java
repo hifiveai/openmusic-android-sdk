@@ -17,6 +17,9 @@ public class NetworkCallbackImpl extends ConnectivityManager.NetworkCallback {
     public void onAvailable(Network network) {
         super.onAvailable(network);
         MusicLogUtils.i("网络已连接");
+        if(HFPlayerApi.with() != null){
+            HFPlayerApi.with().sendMessage(MusicPlayAction.STATE_PLAYING);
+        }
 
     }
 
