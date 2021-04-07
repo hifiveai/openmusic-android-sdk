@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 apply from: 'aar-upload.gradle'
+apply from: 'auto-pack.gradle'
 
 android {
     compileSdkVersion HiFiveVersion.compileSdkVersion
