@@ -267,7 +267,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
     private fun deleteSearchHistory() {
         try {
             if (mContext == null) return
-            SharedPref.setParam(mContext, "searchHistory", searchHistory)
+            SharedPref.setParam(mContext, "searchHistory", "")
             if (activity != null) {
                 HFOpenMusic.getInstance().showToast(activity, activity!!.getString(R.string.hifivesdk_comfirm_dialog_delete))
             }
