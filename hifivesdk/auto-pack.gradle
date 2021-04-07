@@ -1,0 +1,61 @@
+def buildOutDir = "build/outputs/aar/"
+def aarName = "hifivesdk-release.aar"
+def zipName = "hifivesdk-release.zip"
+def removePackageName = "com/hfopen/sdk/common"
+def zipFile = file(buildOutDir + "tmp/classes.jar")
+
+
+task auto_pack(dependsOn: 'build') {
+    doLast {
+        Logger.println("============================================================================")
+
+
+        copy {
+            from buildOutDir
+            into buildOutDir
+
+            rename(aarName, zipName)
+            println 'copy and rename zip success'
+
+        }
+
+        println 'start unzip aar...'
+        ant.unzip(src: buildOutDir + zipName, dest: buildOutDir + "tmp")
+
+        println 'start unzip classes.jar...'
+        ant.unzip(src: buildOutDir + "tmp/classes.jar", dest: buildOutDir + "tmp/classes")
+
+        delete buildOutDir + "tmp/classes.jar"
+
+
+//        deleTask(buildOutDir + "tmp/classes/" + removePackageName)
+
+        println 'remove files...'
+        def remove = buildOutDir + "tmp/classes/" + removePackageName
+        FileTree tree = fileTree(remove)
+        tree.each { File file ->
+            delete file
+        }
+
+        println 'zip pack...'
+//        zip{
+//            from buildOutDir + "tmp/classes/"
+//            destinationDir file(buildOutDir + "tmp/")
+//        }
+        //from zipTree(zipFile)
+
+        tasks.myZip.exclude()
+        println '============================================================================'
+    }
+}
+
+
+task myZip(type: Zip) {
+    println 'doing zip pack...'
+
+    from buildOutDir + "tmp/classes/"
+    include '*'
+    archiveName 'classes.jar'
+    destinationDir file(buildOutDir + "tmp/")
+}
+myZip
