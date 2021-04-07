@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.kezong.fat-aar'
 
 android {
     compileSdkVersion 30
@@ -41,5 +42,9 @@ dependencies {
 
     api project(path: ':hfopenmusic')
     api project(path: ':hfplayer')
+
+//    embed project(path: ':hfopenmusic', configuration: 'default')
+//    embed project(path: ':hfplayer', configuration: 'default')
+//    embed project(path: ':hfplayerkenerl', configuration: 'default')
 
 }

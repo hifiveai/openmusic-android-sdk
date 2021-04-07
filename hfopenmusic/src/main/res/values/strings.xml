@@ -1,8 +1,4 @@
 <resources>
-    <string name="app_name">HifiveSdk</string>
-
-
-
     <string name="hifivesdk_music_current_play">当前播放</string>
     <string name="hifivesdk_music_hot">热门推荐</string>
     <string name="hifivesdk_music_like">我的喜欢</string>
@@ -22,9 +18,6 @@
     <string name="hifivesdk_comfirm_delete_music">确定将所选音乐从列表中删除？</string>
     <string name="hifivesdk_comfirm_delete_history">确定删除搜索历史？</string>
 
-    <string name="hifivesdk_music_player_lyric">词</string>
-    <string name="hifivesdk_music_player_accompany">伴奏</string>
-    <string name="hifivesdk_music_player_sound">原声</string>
     <string name="hifivesdk_music_add_music">添加歌曲</string>
 
 </resources>
