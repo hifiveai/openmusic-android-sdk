@@ -11,8 +11,8 @@ android {
         release {
             storeFile file('hifiveplayer.jks')
             storePassword 'HiFiveSdk'
-            keyPassword 'HiFiveSdk'
             keyAlias = 'player'
+            keyPassword 'HiFiveSdk'
         }
 
     }
@@ -31,7 +31,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
