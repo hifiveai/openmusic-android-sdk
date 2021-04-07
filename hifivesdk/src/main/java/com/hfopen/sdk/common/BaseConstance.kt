@@ -15,7 +15,7 @@ class BaseConstance {
 //        var BASE_URL_MUSIC: String = "https://hifive-gateway-pre.hifiveai.com"
         //正式
         var BASE_URL_MUSIC: String = "https://gateway.open.hifiveai.com"
-        var verison : String = "V4.0.1"
+        var verison : String = "V4.1.1"
         var token: String = ""
         @JvmField
         var taskId: String = ""

@@ -63,11 +63,13 @@ class ServiceImpl constructor() : Service {
             DurationFrom: Int?,
             DurationTo: Int?,
             Keyword: String?,
+            SearchFiled: String?,
+            SearchSmart: Int?,
             Language: Int?,
             Page: Int?,
             PageSize: Int?
     ): Flowable<SearchMusic> {
-        return dataRepository.searchMusic(TagIds, PriceFromCent, PriceToCent, BpmFrom, BpmTo, DurationFrom, DurationTo, Keyword, Language, Page, PageSize)
+        return dataRepository.searchMusic(TagIds, PriceFromCent, PriceToCent, BpmFrom, BpmTo, DurationFrom, DurationTo, Keyword, SearchFiled,SearchSmart, Language, Page, PageSize)
     }
 
 

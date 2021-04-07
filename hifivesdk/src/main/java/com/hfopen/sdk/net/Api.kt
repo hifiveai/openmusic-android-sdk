@@ -61,6 +61,8 @@ interface Api {
                     @Field("DurationFrom") DurationFrom: Int?,
                     @Field("DurationTo") DurationTo: Int?,
                     @Field("Keyword") Keyword: String?,
+                    @Field("SearchFiled") SearchFiled: String?,
+                    @Field("SearchSmart") SearchSmart: Int?,
                     @Field("Language") Language: Int?,
                     @Field("Page") Page: Int?,
                     @Field("PageSize") PageSize: Int?,
