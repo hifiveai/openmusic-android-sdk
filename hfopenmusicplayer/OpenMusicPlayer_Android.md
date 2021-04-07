@@ -72,7 +72,7 @@ implementation(name: 'demo', ext:'aar')//注意这里加入的名字没有后缀
     android:value="注册时申请的SECRET" />
 ```
 
--请避免混淆HFLivePlayer，在Proguard混淆文件中增加以下配置：
+-请避免混淆，在Proguard混淆文件中增加以下配置：
 ```
 -dontwarn com.hf.openplayer.**
 -keep public class com.hf.openplayer.**{*;}
@@ -124,7 +124,7 @@ HFOpenMusicPlayer.getInstance().registerApp(Application context,String clientId)
 activity | 是| 上下文 |
 clientId | 是| 用户唯一标识（公司自有的用户ID）。|
 
-#### 2.2 置音乐授权类型
+#### 2.2 设置音乐授权类型
 ```
 HFOpenMusicPlayer.getInstance().setListenType(String type);
 ```
@@ -173,6 +173,9 @@ bytes | 是| 最大缓冲大小字节数 | 200 * 1024 |
 ```
  HFOpenMusicPlayer.getInstance().serUseCache(boolean useCache)
 ```
+参数  | 必填  |描述| 默认值 |
+---|---|--- | ---
+useCache | 是| 是否开启缓存 | false |
 
 #### 2.7 初始化播放器服务
 
@@ -181,12 +184,12 @@ bytes | 是| 最大缓冲大小字节数 | 200 * 1024 |
  HFOpenMusicPlayer.getInstance().apply()
 ```
 
-参数  | 必填  |描述| 默认值 |
----|---|--- | ---
-useCache | 是| 是否开启缓存 | false |
 
 #### 2.8 显示播放器方法
-> 在播放器服务初始化后调用
+
+> 在需要播放器的界面使用
+- 由于列表UI基于DialogFragment开发，需要使用UI的Activity务必继承FragmentActivity或FragmentActivity的子类。
+- 使用列表UI前请确保SDK已初始化。
 
 ```
 HFOpenMusicPlayer.getInstance().showPlayer(FragmentActivity activity);
