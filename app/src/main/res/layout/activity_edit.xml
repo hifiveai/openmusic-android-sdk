@@ -6,74 +6,211 @@
     android:background="#ffffff"
     android:orientation="vertical">
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="0dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="@dimen/text_width"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="最大缓存（KB）" />
-
-        <EditText
-            android:id="@+id/et_maxbuff"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="200"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="0dp"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="0dp"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="@dimen/text_width"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="播放器可拖拽范围上限\n距离屏幕上方边缘" />
+                <TextView
+                    android:layout_width="@dimen/text_width"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="是否断线重连" />
 
-        <EditText
-            android:id="@+id/et_top"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="0"/>
+                <RadioGroup
+                    android:id="@+id/radioGroup0"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-    </LinearLayout>
+                    <RadioButton
+                        android:id="@+id/rb_reconnect_open"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="开启" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="0dp"
-        android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/rb_reconnect_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:checked="true"
+                        android:text="关闭" />
+                </RadioGroup>
 
-        <TextView
-            android:layout_width="@dimen/text_width"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="播放器可拖拽范围下限" />
+            </LinearLayout>
 
-        <EditText
-            android:id="@+id/et_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="0"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="0dp"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="@dimen/text_width"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="是否开启缓存" />
 
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/teal_700"
-        android:text="保存"
-        android:layout_marginTop="10dp"
-        android:textColor="#ffffff" />
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
+                    <RadioButton
+                        android:id="@+id/rb_open"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="开启" />
+
+                    <RadioButton
+                        android:id="@+id/rb_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:checked="true"
+                        android:text="关闭" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="0dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/text_width"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="最大缓存（KB）" />
+
+                <EditText
+                    android:id="@+id/et_maxbuff"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="200" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="0dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/text_width"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="播放器可拖拽范围上限\n距离屏幕上方边缘" />
+
+                <EditText
+                    android:id="@+id/et_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="0dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/text_width"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="播放器可拖拽范围下限" />
+
+                <EditText
+                    android:id="@+id/et_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/text_width"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="音乐授权类型" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/rb_type_traffic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="BGM音乐播放" />
+
+                    <RadioButton
+                        android:id="@+id/rb_type_ugc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:checked="true"
+                        android:text="UGC" />
+
+                    <RadioButton
+                        android:id="@+id/rb_type_k"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="00dp"
+                        android:checked="true"
+                        android:text="K歌" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/teal_700"
+                android:text="保存"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="所有项为临时修改，退出程序后会重置默认" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

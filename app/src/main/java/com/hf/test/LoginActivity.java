@@ -3,6 +3,7 @@ package com.hf.test;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -102,38 +103,38 @@ public class LoginActivity extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!flag){
+                if (!flag) {
                     Toast.makeText(LoginActivity.this, "请先初始化SDK", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 initPlayer();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("type",1);
+                intent.putExtra("type", 1);
                 startActivity(intent);
             }
         });
         play2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!flag){
+                if (!flag) {
                     Toast.makeText(LoginActivity.this, "请先初始化SDK", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("type",2);
+                intent.putExtra("type", 2);
                 startActivity(intent);
             }
         });
         play3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!flag){
+                if (!flag) {
                     Toast.makeText(LoginActivity.this, "请先初始化SDK", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 initOpenPlayer();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("type",3);
+                intent.putExtra("type", 3);
                 startActivity(intent);
             }
         });
@@ -147,20 +148,23 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void initPlayer(){
+    private void initPlayer() {
         HFPlayerApi.init(getApplication())
                 .setDebug(true)
-                .setMaxBufferSize(200 * 1024)
-                .setUseCache(true)
+                .setMaxBufferSize(ConsData.MaxBufferSize)
+                .setUseCache(ConsData.UseCache)
                 .apply();
     }
 
-    private void initOpenPlayer(){
+    private void initOpenPlayer() {
+        Log.d(ConsData.TAG, "musicType:" + ConsData.musicType.toString());
+
         HFOpenMusicPlayer.getInstance()
-                .registerApp(getApplication(),memberId)
+                .registerApp(getApplication(), memberId)
                 .setDebug(true)
-                .setMaxBufferSize(200 * 1024)
-                .setUseCache(true)
+                .setMaxBufferSize(ConsData.MaxBufferSize)
+                .setUseCache(ConsData.UseCache)
+                .setListenType(ConsData.musicType.toString())
                 .apply();
     }
 
