@@ -100,7 +100,7 @@
                     android:layout_width="@dimen/text_width"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="最大缓存（KB）" />
+                    android:text="最大缓冲（200-1000KB）" />
 
                 <EditText
                     android:id="@+id/et_maxbuff"
@@ -140,7 +140,7 @@
                     android:layout_width="@dimen/text_width"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="播放器可拖拽范围下限" />
+                    android:text="播放器可拖拽范围下限\n距离屏幕下方边缘" />
 
                 <EditText
                     android:id="@+id/et_bottom"

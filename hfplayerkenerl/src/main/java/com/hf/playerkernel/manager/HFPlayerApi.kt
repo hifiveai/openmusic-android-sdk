@@ -33,40 +33,46 @@ object HFPlayerApi {
     private var mMusicList: MutableList<AudioBean>? = ArrayList()
     private var isBindService = false
     private var retryLineService = 0
+
     //断线重连
     private var isReconnect: Boolean = true
+
     //通知栏相关
     private var isOpenNotification: Boolean = false
 
     //最大缓冲
     private var maxBufferSize = 200 * 1024L
+
     //是否缓存
     private var useCache = false
 
 
     @JvmStatic
-    fun init(application: Application)= apply {
+    fun init(application: Application) = apply {
         globalContext = application
     }
 
-    fun setNotificationSwitch(isOpenNotification: Boolean)= apply  {
-        this.isOpenNotification  =false
+    fun setNotificationSwitch(isOpenNotification: Boolean) = apply {
+        this.isOpenNotification = false
 //        this.isOpenNotification  =isOpenNotification
     }
 
-    fun setMaxBufferSize(size: Long)= apply  {
-        this.maxBufferSize  =size
+    fun setMaxBufferSize(size: Long) = apply {
+        var tmp = size / 1024
+        if (tmp in 200..1000){
+            this.maxBufferSize = size
+        }
     }
 
-    fun setUseCache(useCache: Boolean)= apply  {
-        this.useCache  = useCache
+    fun setUseCache(useCache: Boolean) = apply {
+        this.useCache = useCache
     }
 
     /**
      * 是否断线重连
      */
     fun setReconnect(reconnect: Boolean) = apply {
-        this.isReconnect  =reconnect
+        this.isReconnect = reconnect
     }
 
     /**
@@ -140,19 +146,22 @@ object HFPlayerApi {
      * 获取
      */
     @JvmStatic
-    fun getMusicList() : MutableList<AudioBean>? = mMusicList
+    fun getMusicList(): MutableList<AudioBean>? = mMusicList
 
     /**
      * 获取
      */
     @JvmStatic
-    fun getIsReconnect() : Boolean = this.isReconnect
+    fun getIsReconnect(): Boolean = this.isReconnect
+
     @JvmStatic
-    fun getIsOpenNotification() : Boolean = this.isOpenNotification
+    fun getIsOpenNotification(): Boolean = this.isOpenNotification
+
     @JvmStatic
-    fun getMaxBufferSize() : Long = this.maxBufferSize
+    fun getMaxBufferSize(): Long = this.maxBufferSize
+
     @JvmStatic
-    fun getIsUseCache() : Boolean = this.useCache
+    fun getIsUseCache(): Boolean = this.useCache
 
     @JvmStatic
     val playMode: Int
@@ -183,7 +192,7 @@ object HFPlayerApi {
 //            bindService()
 //        }
 
-        if(mPlayService == null){
+        if (mPlayService == null) {
             MusicLogUtils.e("PlayService" + "mPlayService is null")
             return null
         }

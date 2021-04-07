@@ -78,8 +78,28 @@ public class EditActivity extends AppCompatActivity {
                     Toast.makeText(EditActivity.this, "必须是数字", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                int iBuff = Integer.parseInt(maxBuff);
+                if (iBuff < 200){
+                    Toast.makeText(EditActivity.this, "缓冲不能小于200", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (iBuff > 1000){
+                    Toast.makeText(EditActivity.this, "缓冲不能大于1000", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int iTop = Integer.parseInt(top);
+                int iBottom = Integer.parseInt(bottom);
 
-                ConsData.MaxBufferSize = Integer.parseInt(maxBuff) * 1024;
+                if (iTop < 0){
+                    Toast.makeText(EditActivity.this, "拖拽范围必须大于0", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (iBottom < 0){
+                    Toast.makeText(EditActivity.this, "拖拽范围必须大于0", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ConsData.MaxBufferSize = iBuff * 1024;
                 ConsData.marginTop = Integer.parseInt(top);
                 ConsData.marginBottom = Integer.parseInt(bottom);
                 Toast.makeText(EditActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
