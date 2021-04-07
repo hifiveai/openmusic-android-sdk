@@ -87,7 +87,7 @@ HFOpenApi.setVersion(String version);
 
 参数  | 必填  |描述| 示例|
 ---|---|---|---
-version | 是| 操作的 API 的版本。| V4.0.1 |
+version | 是| 操作的 API 的版本。| V4.1.1 |
 
 ## 三 API文档
 
@@ -198,6 +198,8 @@ HFOpenApi.getInstance().searchMusic(TagIds: String?,
                     DurationFrom: Int?,
                     DurationTo: Int?,
                     Keyword: String?,
+                    SearchFiled: String?,
+                    SearchSmart: Int?,
                     Language: Int?,
                     Page: Int?,
                     PageSize: Int?,
@@ -214,6 +216,8 @@ BpmTo	 | 否| BPM区间的最高值| - |
 DurationFrom	 | 否| 时长区间的最低值,单位秒 |  - |
 DurationTo	 | 否| 时长区间的最高值,单位秒| - |
 Keyword	 | 否| 搜索关键词，搜索条件歌名、专辑名、艺人名、标签名| - |
+SearchFiled	 | 否| Keywords参数指定搜索条件，不传时默认搜索条件歌名、专辑名、艺人名、标签名| musicName/albumName/artistName/tagName |
+SearchSmart | 否| 是否启用分词 | 0/1 |
 Language | 否| 标签、歌单名、歌名语言版本 | 0-中文,1-英文|
 Page | 否| 当前页码，默认为1|大于0的整数| - |
 PageSize	 | 否| 每页显示条数，默认为10 | 1～100|
