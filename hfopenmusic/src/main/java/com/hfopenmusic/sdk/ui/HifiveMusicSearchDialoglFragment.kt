@@ -374,7 +374,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
             }
 
             HFOpenApi.getInstance().searchMusic(null, null, null, null, null, null, null,
-                    content, null, page, 100, object : DataResponse<SearchMusic> {
+                    content, null,1,null, page, 100, object : DataResponse<SearchMusic> {
                 override fun onError(exception: BaseException) {
                     if (ty != Refresh) { //上拉加载请求失败后，还原页卡
                         page--
