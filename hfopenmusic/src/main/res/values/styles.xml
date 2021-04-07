@@ -20,12 +20,4 @@
         <item name="android:backgroundDimEnabled">false</item><!--activity不变暗-->
     </style>
 
-    <style name="HifiveSdkProgressbarStyle">
-        <item name="android:maxWidth">30dp</item>
-        <item name="android:maxHeight">30dp</item>
-        <item name="android:indeterminateDrawable">@drawable/hifive_download_anim</item>
-        <item name="android:minWidth">30dp</item>
-        <item name="android:minHeight">30dp</item>
-    </style>
-
 </resources>
