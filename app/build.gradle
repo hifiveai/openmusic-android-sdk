@@ -1,0 +1,54 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+    defaultConfig {
+        applicationId "com.hifive.openapi"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+repositories {
+    maven {
+        url 'http://172.16.52.62:8081/repository/hifive_repository'
+    }
+}
+
+dependencies {
+//    api fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+//    implementation 'com.hifiveai:hifive-openapi:4.0.1-RELEASE'
+
+//    api "com.hifive.sdk:api:1.0.0"
+
+    implementation project(path: ':hifivesdk')
+//
+//    //开发者必须导入的包
+//    api "io.reactivex.rxjava2:rxjava:2.2.10"
+//    api "io.reactivex.rxjava2:rxandroid:2.1.1"
+//    api "com.squareup.retrofit2:retrofit:2.6.0"
+//    api "com.squareup.retrofit2:converter-gson:2.6.0"
+//    api "com.squareup.retrofit2:adapter-rxjava2:2.6.0"
+//    api "com.squareup.okhttp3:okhttp:4.9.0"
+//    api "com.squareup.okhttp3:logging-interceptor:4.9.0"
+}

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">api</string>
+    <string name="filter_vcode">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+</resources>
