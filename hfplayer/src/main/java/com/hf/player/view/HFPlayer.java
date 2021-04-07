@@ -1,5 +1,6 @@
 package com.hf.player.view;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -48,7 +49,8 @@ public class HFPlayer {
             if (mPlayerView != null) {
                 return this;
             }
-            mPlayerView = new HifivePlayerView(activity,marginTop,marginBottom);
+            mPlayerView = new HifivePlayerView(activity);
+            mPlayerView.setMargin(marginTop, marginBottom);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT);

@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
@@ -61,9 +62,14 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
     private var onTrackingTouch //是否在拖拽进度条
             = false
 
-    constructor(context: FragmentActivity, Top: Int, Bottom: Int) : this(context, null, 0) {
-        marginTop = Math.max(Top, 0)
-        marginBottom = Math.max(Bottom, 0)
+    constructor(context: FragmentActivity) : this(context, null, 0) {
+    }
+
+    fun setMargin(top: Int, bottom: Int) {
+        marginTop = Math.max(top, 0)
+        marginBottom = Math.max(bottom, 0)
+        dragLayout!!.setMarginTop(marginTop)
+        dragLayout!!.setMarginBottom(marginBottom)
     }
 
     //初始化view
@@ -99,7 +105,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
         ivLast!!.setOnClickListener { HFPlayer.getInstance().mListener.onPre() }
         ivNext!!.setOnClickListener { HFPlayer.getInstance().mListener.onNext() }
         ivPlay!!.setOnClickListener {
-            if(playUrl == null) return@setOnClickListener
+            if (playUrl == null) return@setOnClickListener
             HFPlayer.getInstance().mListener.onPlayPause(isPlay)
             if (isPlay) { //正在播放，点击就是暂停播放
                 stopPlay()

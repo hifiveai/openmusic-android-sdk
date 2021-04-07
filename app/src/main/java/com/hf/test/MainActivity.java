@@ -19,6 +19,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 public class MainActivity extends AppCompatActivity {
     private boolean flag;
+    private static final String TAG = "MainActivity";
 
     /**
      * 权限组
@@ -92,8 +93,11 @@ public class MainActivity extends AppCompatActivity {
                 showMusic();
             }
         } else if (type == 3) {
+            Log.d(TAG, "type 3");
+
             HFOpenMusic.getInstance().closeOpenMusic();
-            HFOpenMusicPlayer.getInstance().showPlayer(this);
+            initOpenPlayer();
+            HFOpenMusicPlayer.getInstance().showPlayer(this, ConsData.marginTop, ConsData.marginBottom);
         }
     }
 
@@ -131,11 +135,13 @@ public class MainActivity extends AppCompatActivity {
                 .showOpenMusic(MainActivity.this);
     }
 
-    private void initOpenPlayer(){
+    private void initOpenPlayer() {
+        String memberId = (String) SPUtils.get(this, SPUtils.memberId, "hifivetest");
+
         HFOpenMusicPlayer.getInstance()
-                .registerApp(getApplication(),"1234567")
+                .registerApp(getApplication(), memberId)
                 .setDebug(true)
-                .setMaxBufferSize(200 * 1024)
+                .setMaxBufferSize(ConsData.MaxBufferSize)
                 .setUseCache(true)
                 .apply();
     }

@@ -3,6 +3,7 @@ package com.hf.playerkernel.manager
 import android.app.Application
 import android.content.*
 import android.os.IBinder
+import android.util.Log
 import com.hf.playerkernel.config.MusicConstant
 import com.hf.playerkernel.config.PlayModeEnum
 import com.hf.playerkernel.model.AudioBean
@@ -177,11 +178,16 @@ object HFPlayerApi {
      * @return              PlayService对象
      */
     @JvmStatic
-    fun with(): IjkPlayback {
+    fun with(): IjkPlayback? {
 //        if(mPlayService == null){
 //            bindService()
 //        }
-        return mPlayService!!.playback
+
+        if(mPlayService == null){
+            MusicLogUtils.e("PlayService" + "mPlayService is null")
+            return null
+        }
+        return mPlayService?.playback
     }
 
     /**

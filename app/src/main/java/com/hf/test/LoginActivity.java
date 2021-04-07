@@ -21,7 +21,7 @@ import com.tencent.bugly.crashreport.CrashReport;
 public class LoginActivity extends AppCompatActivity {
     private EditText et_appid, et_secretkey;
     private EditText et_member_id;
-    private AppCompatButton btn_initialize, play, play2, play3;
+    private AppCompatButton btn_initialize, play, play2, play3, play4;
     private String secretKey, appId;
     private String memberId;
     private boolean flag;
@@ -97,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         play = findViewById(R.id.play);
         play2 = findViewById(R.id.play2);
         play3 = findViewById(R.id.play3);
+        play4 = findViewById(R.id.play4);
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +134,13 @@ public class LoginActivity extends AppCompatActivity {
                 initOpenPlayer();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("type",3);
+                startActivity(intent);
+            }
+        });
+        play4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, EditActivity.class);
                 startActivity(intent);
             }
         });

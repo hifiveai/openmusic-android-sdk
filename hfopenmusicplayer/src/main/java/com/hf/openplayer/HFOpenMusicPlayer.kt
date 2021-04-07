@@ -181,7 +181,7 @@ class HFOpenMusicPlayer private constructor() {
     private fun report() {
         try {
             if (musicId != null) {
-                val currentPosition = HFPlayerApi.with().currentPosition.toInt()
+                val currentPosition = HFPlayerApi.with()!!.currentPosition.toInt()
                 HFOpenMusic.getInstance().reportListen(musicId, currentPosition, System.currentTimeMillis())
             }
         } catch (e: Exception) {
