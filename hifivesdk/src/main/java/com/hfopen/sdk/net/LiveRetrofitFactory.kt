@@ -69,7 +69,6 @@ class LiveRetrofitFactory private constructor() {
                 .readTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
                 .hostnameVerifier(RxUtils.TrustAllHostnameVerifier())
                 .sslSocketFactory(RxUtils.createSSLSocketFactory(), TrustAllCerts())
-                .retryOnConnectionFailure(true)
                 .build()
     }
 
