@@ -319,7 +319,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
             if (mContext == null) return
             searchHistory = SharedPref.getParam(mContext, "searchHistory", "") as String
             if (searchHistory.isNotEmpty()) {
-                iv_delete!!.visibility = View.GONE
+                iv_delete!!.visibility = View.VISIBLE
                 ll_history!!.visibility = View.VISIBLE
                 historyData = searchHistory.split(",")
                 initFlowLayout()
