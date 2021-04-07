@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 .setTitle("测试测试")
                 .setMajorVersion(true)
                 .setCover("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20190521%2F17%2F1558430156-SBswiePxFE.jpg&refer=http%3A%2F%2Fimage.biaobaiju.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619162218&t=409c6be07cf495ccc4dcf3bc23f94028")
-                .playWithUrl("https://sharefs.yun.kugou.com/202104021003/1682bd6b8f9d69cbbd1e27eb0c6bb92c/G197/M04/0E/18/ZYcBAF5x5-2AbFgmADaApn6O6Fw014.mp3");
+                .playWithUrl("https://sharefs.yun.kugou.com/202104071136/e7301f0b1eef5d6487c4afe1c0f620c0/G199/M0A/09/14/Z4cBAF5hgMKAVyWFAD1pUCyoMo0034.mp3");
 
     }
 
