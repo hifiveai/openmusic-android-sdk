@@ -101,6 +101,22 @@ public class HFOpenMusic {
     }
 
     //关闭所有dialog
+    public void hideOpenMusic(){
+        if(dialogFragments != null && dialogFragments.size() >0){
+            for(DialogFragment dialogFragment:dialogFragments){
+                if(dialogFragment != null){
+                    dialogFragment.dismissAllowingStateLoss();
+                }
+            }
+            dialogFragments.clear();
+        }
+        dialogFragments = null;
+        if(mListener != null){
+            mListener.onCloseOpenMusic();
+        }
+    }
+
+    //关闭所有dialog并清除数据
     public void closeOpenMusic(){
             if(dialogFragments != null && dialogFragments.size() >0){
                 for(DialogFragment dialogFragment:dialogFragments){

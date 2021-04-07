@@ -85,7 +85,7 @@ class HFOpenMusicPlayer private constructor() {
                     override fun onClick() {
                         Log.e("HFPlayerViewListener", "onClick")
                         if (flag) {
-                            HFOpenMusic.getInstance().closeOpenMusic()
+                            HFOpenMusic.getInstance().hideOpenMusic()
                             HFPlayer.getInstance().setMarginBottom(0)
                             flag = false
                         } else {
