@@ -161,7 +161,7 @@ data class MusicRecord(
         if (musicName != other.musicName) return false
         if (tag != other.tag) return false
         if (version != other.version) return false
-
+        if (intro != other.intro) return false
         return true
     }
 
@@ -181,8 +181,11 @@ data class MusicRecord(
         result = 31 * result + musicName.hashCode()
         result = 31 * result + (tag?.hashCode() ?: 0)
         result = 31 * result + (version?.hashCode() ?: 0)
+        result = 31 * result + intro.hashCode()
         return result
     }
+
+
 }
 
 data class Cover(
