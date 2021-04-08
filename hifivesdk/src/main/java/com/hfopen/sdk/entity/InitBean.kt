@@ -137,7 +137,8 @@ data class MusicRecord(
         val musicId: String,
         val musicName: String,
         val tag: List<Tag>?,
-        val version: List<Version>?
+        val version: List<Version>?,
+        val intro: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
