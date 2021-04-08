@@ -147,6 +147,9 @@ class HFOpenMusicPlayer private constructor() {
 
                     override fun onStop() {
                         HFPlayer.getInstance().stopPlay()
+                        HFOpenMusic.getInstance().hideOpenMusic()
+                        HFPlayer.getInstance().setMarginBottom(0)
+                        flag = false
                     }
 
                     override fun onCloseOpenMusic() {
