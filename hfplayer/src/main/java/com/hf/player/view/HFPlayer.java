@@ -129,10 +129,23 @@ public class HFPlayer {
     public HFPlayer stopPlay(){
         if(mPlayerView != null){
             mPlayerView.stopPlay();
+            mPlayerView.animationOFF();
             mPlayerView.clear();
         }
         return this;
     }
+
+    /**
+     * 收起播放器
+     */
+    public HFPlayer hidePlayer(){
+        if(mPlayerView != null){
+            mPlayerView.animationOFF();
+        }
+        return this;
+    }
+
+
 
 
     //移除播放器view,清除缓存数据

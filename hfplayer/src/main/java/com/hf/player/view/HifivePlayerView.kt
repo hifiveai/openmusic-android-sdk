@@ -284,7 +284,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
     }
 
     //播放器收起动画
-    private fun animationOFF() {
+    public fun animationOFF() {
         val animation: Animation = HifiveViewChangeAnimation(llPlayer, DisplayUtils.dip2px(mContext, 50f))
         animation.duration = 500
         llPlayer!!.startAnimation(animation)

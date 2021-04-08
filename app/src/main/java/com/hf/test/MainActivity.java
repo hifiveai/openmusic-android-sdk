@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.hf.openplayer.HFOpenMusicPlayer;
 import com.hf.player.view.HFPlayer;
 import com.hf.player.view.HFPlayerViewListener;
+import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hfopen.sdk.entity.MusicRecord;
 import com.hfopenmusic.sdk.HFOpenMusic;
 import com.hfopenmusic.sdk.listener.HFPlayMusicListener;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onComplete() {
+                            play();
                             Toast.makeText(MainActivity.this, "播放完成", Toast.LENGTH_SHORT).show();
                         }
 
@@ -102,11 +104,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void play() {
         //初始化播放器UI
+        if(HFPlayerApi.with().isPlaying()) return;
         HFPlayer.getInstance()
                 .setTitle("测试测试")
                 .setMajorVersion(true)
                 .setCover("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20190521%2F17%2F1558430156-SBswiePxFE.jpg&refer=http%3A%2F%2Fimage.biaobaiju.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619162218&t=409c6be07cf495ccc4dcf3bc23f94028")
-                .playWithUrl("https://sharefs.yun.kugou.com/202104071136/e7301f0b1eef5d6487c4afe1c0f620c0/G199/M0A/09/14/Z4cBAF5hgMKAVyWFAD1pUCyoMo0034.mp3");
+                .playWithUrl("https://sharefs.yun.kugou.com/202104081334/de6f056c4f10fca5b49c7ed977e90761/G197/M04/0E/18/ZYcBAF5x5-2AbFgmADaApn6O6Fw014.mp3");
 
     }
 

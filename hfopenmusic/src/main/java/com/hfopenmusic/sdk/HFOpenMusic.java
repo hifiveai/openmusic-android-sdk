@@ -290,7 +290,7 @@ public class HFOpenMusic {
         playMusicDetail = null;
         if(isStop)
             updateObservable.postNewPublication(UPDATEPALY);
-        if(mListener != null){
+        if(mListener != null && isStop){
             mListener.onStop();
         }
     }
