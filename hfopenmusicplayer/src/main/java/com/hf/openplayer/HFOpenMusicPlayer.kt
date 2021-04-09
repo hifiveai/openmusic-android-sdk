@@ -169,9 +169,14 @@ class HFOpenMusicPlayer private constructor() {
     private fun play(musicDetail: MusicRecord?, url: String) {
         if (musicDetail != null) {
             musicId = musicDetail.musicId
+            val title = if(musicDetail.artist != null && musicDetail.artist!!.isNotEmpty()){
+                musicDetail.musicName +"-"+ musicDetail.artist?.get(0)?.name
+            }else{
+                musicDetail.musicName
+            }
             //初始化播放器UI
             HFPlayer.getInstance()
-                    .setTitle(musicDetail.musicName +"-"+ musicDetail.artist?.get(0)?.name)
+                    .setTitle(title)
                     .setMajorVersion(musicDetail.version!![0].majorVersion)
                     .setCover(musicDetail.cover!![0].url)
                     .playWithUrl(url)
