@@ -66,23 +66,25 @@ public class HifiveMusicSheetListAdapter extends BaseRecyclerViewAdapter{
                 }
             }
         }
-        if(model.getAuthor() != null && model.getAuthor().size() >0){
-            for(Author authorModel:model.getAuthor()){
-                if(stringBuffer.length() >0){
-                    stringBuffer.append("-");
-                }
-                stringBuffer.append(authorModel.getName());
-            }
-        }
+//        if(model.getAuthor() != null && model.getAuthor().size() >0){
+//            for(Author authorModel:model.getAuthor()){
+//                if(stringBuffer.length() >0){
+//                    stringBuffer.append("-");
+//                }
+//                stringBuffer.append(authorModel.getName());
+//            }
+//        }
+//
+//        if(model.getArranger()!= null &&  model.getArranger().size() >0){
+//            for(Desc authorModel:model.getArranger()){
+//                if(stringBuffer.length() >0){
+//                    stringBuffer.append("-");
+//                }
+//                stringBuffer.append(authorModel.getName());
+//            }
+//        }
 
-        if(model.getArranger()!= null &&  model.getArranger().size() >0){
-            for(Desc authorModel:model.getArranger()){
-                if(stringBuffer.length() >0){
-                    stringBuffer.append("-");
-                }
-                stringBuffer.append(authorModel.getName());
-            }
-        }
+        stringBuffer.append(" - ").append(model.getAlbumName());
         holder.setText(R.id.tv_detail,stringBuffer.toString());
 
 
