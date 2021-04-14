@@ -28,6 +28,7 @@
             android:id="@+id/iv_sheet"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:scaleType="fitXY"
             android:src="@mipmap/hifivesdk_icon_dialog_sheet"/>
         <ImageView
             android:id="@+id/iv_search"
