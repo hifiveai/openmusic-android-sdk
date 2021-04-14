@@ -115,6 +115,10 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
                 }
                 Addkaraoke -> {
                 }
+                UPDATE_CURRENT_SONG -> {
+                    val hifiveMusicModel = msg.obj as MusicRecord
+                    HFOpenMusic.getInstance().addCurrentSingle(hifiveMusicModel)
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -190,7 +194,12 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
     private fun ininReclyView() {
         adapter = HifiveMusicSheetListAdapter(context, ArrayList())
         adapter!!.setOnRecyclerViewContentClick { position: Int ->
-            HFOpenMusic.getInstance().addCurrentSingle(adapter!!.datas[position] as MusicRecord?)
+            mHandler!!.removeMessages(HifiveMusicPalyListFragment.UPDATE_CURRENT_SONG)
+            val hifiveMusicModel = adapter!!.datas[position] as MusicRecord
+            val message = mHandler!!.obtainMessage()
+            message.obj = hifiveMusicModel
+            message.what = HifiveMusicPalyListFragment.UPDATE_CURRENT_SONG
+            mHandler!!.sendMessageDelayed(message, 200)
         }
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向
@@ -203,7 +212,13 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
 
         hotAdapter = HifiveHotMusicAdapter(context, ArrayList())
         hotAdapter!!.setOnRecyclerViewContentClick { position: Int ->
-            HFOpenMusic.getInstance().addCurrentSingle(hotAdapter!!.datas[position] as MusicRecord?)}
+            mHandler!!.removeMessages(HifiveMusicPalyListFragment.UPDATE_CURRENT_SONG)
+            val hifiveMusicModel = hotAdapter!!.datas[position] as MusicRecord
+            val message = mHandler!!.obtainMessage()
+            message.obj = hifiveMusicModel
+            message.what = HifiveMusicPalyListFragment.UPDATE_CURRENT_SONG
+            mHandler!!.sendMessageDelayed(message, 200)
+        }
         mHotRv!!.adapter = hotAdapter
         mHotRv!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向
     }
@@ -485,5 +500,6 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
         val Refresh = 13 //刷新
         val AddLike = 14 //添加喜欢的回调
         val Addkaraoke = 15 //添加K歌的回调
+        val UPDATE_CURRENT_SONG = 99 //切歌
     }
 }

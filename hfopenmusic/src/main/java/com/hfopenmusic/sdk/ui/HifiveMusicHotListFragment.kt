@@ -33,6 +33,7 @@ class HifiveMusicHotListFragment : Fragment() {
         val RequstFail = 11 //请求失败
         val LoadMore = 12 //加载
         val Refresh = 13 //刷新
+        val UPDATE_CURRENT_SONG = 99 //切歌
     }
 
     var isRefresh = false
@@ -69,6 +70,10 @@ class HifiveMusicHotListFragment : Fragment() {
                     } else {
                         refreshLayout!!.finishLoadMoreWithNoMoreData()
                     }
+                }
+                UPDATE_CURRENT_SONG -> {
+                    val hifiveMusicModel = msg.obj as MusicRecord
+                    HFOpenMusic.getInstance().addCurrentSingle(hifiveMusicModel)
                 }
 
 
@@ -107,7 +112,12 @@ class HifiveMusicHotListFragment : Fragment() {
     private fun initRecyclerView() {
         adapter = HifiveMusicSheetListAdapter(activity, ArrayList())
         adapter!!.setOnRecyclerViewContentClick { position ->
-            HFOpenMusic.getInstance().addCurrentSingle( adapter!!.datas[position] as MusicRecord?)
+            mHandler!!.removeMessages(HifiveMusicPalyListFragment.UPDATE_CURRENT_SONG)
+            val hifiveMusicModel = adapter!!.datas[position] as MusicRecord
+            val message = mHandler!!.obtainMessage()
+            message.obj = hifiveMusicModel
+            message.what = HifiveMusicPalyListFragment.UPDATE_CURRENT_SONG
+            mHandler!!.sendMessageDelayed(message, 200)
         }
         adapter!!.setOnRecyclerViewHeaderClick {
             HFOpenMusic.getInstance().updateCurrentList(adapter!!.datas as List<MusicRecord?>) }

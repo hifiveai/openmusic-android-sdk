@@ -80,6 +80,10 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
                         refreshLayout.finishLoadMoreWithNoMoreData()
                     }
                 }
+                UPDATE_CURRENT_SONG -> {
+                    val hifiveMusicModel = msg.obj as MusicRecord
+                    HFOpenMusic.getInstance().addCurrentSingle(hifiveMusicModel)
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -150,7 +154,14 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
     //初始化ReclyView
     private fun ininReclyView() {
         adapter = HifiveMusicSheetListAdapter(context, ArrayList())
-        adapter!!.setOnRecyclerViewContentClick { position: Int -> HFOpenMusic.getInstance().addCurrentSingle( adapter!!.datas[position] as MusicRecord?) }
+        adapter!!.setOnRecyclerViewContentClick { position: Int ->
+            mHandler!!.removeMessages(HifiveMusicPalyListFragment.UPDATE_CURRENT_SONG)
+            val hifiveMusicModel = adapter!!.datas[position] as MusicRecord
+            val message = mHandler!!.obtainMessage()
+            message.obj = hifiveMusicModel
+            message.what = HifiveMusicPalyListFragment.UPDATE_CURRENT_SONG
+            mHandler!!.sendMessageDelayed(message, 200)
+        }
         adapter!!.setOnRecyclerViewHeaderClick {
                             HFOpenMusic.getInstance().updateCurrentList( adapter!!.datas as List<MusicRecord>)
         }
@@ -283,5 +294,6 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
         const val RequstFail = 15 //请求失败
         const val AddLike = 16 //添加喜欢的回调
         const val Addkaraoke = 17 //添加K歌的回调
+        val UPDATE_CURRENT_SONG = 99 //切歌
     }
 }
