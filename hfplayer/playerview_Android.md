@@ -93,7 +93,16 @@ HFPlayer.playWithUrl(String url)
 ```
 HFPlayer.setListener(HFPlayerViewListener listener)
 ```
-#### 2.7 停止播放音乐
+#### 2.8 收缩播放器
+```
+HFPlayer.getInstance().foldPlayer();
+```
+#### 2.9 展开播放器
+```
+HFPlayer.getInstance().expandedPlayer();
+```
+
+#### 2.9 停止播放音乐
 ```
 HFPlayer.stopPlay()
 ```

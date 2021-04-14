@@ -22,6 +22,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginEnd="30dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -142,15 +143,16 @@
                     android:layout_height="30dp"
                     android:src="@drawable/hifivesdk_icon_player_next" />
 
-                <ImageView
-                    android:id="@+id/iv_back"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:src="@drawable/hifivesdk_icon_player_back" />
-
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_gravity="end|center_vertical"
+                android:src="@drawable/hifivesdk_icon_player_back" />
 
             <SeekBar
                 android:id="@+id/pb_play"

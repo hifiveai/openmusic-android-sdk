@@ -129,8 +129,6 @@ public class HFPlayer {
     public HFPlayer stopPlay(){
         if(mPlayerView != null){
             mPlayerView.stopPlay();
-            mPlayerView.animationOFF();
-            mPlayerView.clear();
         }
         return this;
     }
@@ -138,14 +136,22 @@ public class HFPlayer {
     /**
      * 收起播放器
      */
-    public HFPlayer hidePlayer(){
+    public HFPlayer foldPlayer(){
         if(mPlayerView != null){
             mPlayerView.animationOFF();
         }
         return this;
     }
 
-
+    /**
+     * 展开播放器
+     */
+    public HFPlayer expandedPlayer(){
+        if(mPlayerView != null){
+            mPlayerView.animationOpen();
+        }
+        return this;
+    }
 
 
     //移除播放器view,清除缓存数据

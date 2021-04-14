@@ -61,6 +61,8 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
     var hfPlayer: IjkPlayback? = null
     private var onTrackingTouch //是否在拖拽进度条
             = false
+    private var isExpanded //判断是否展开
+            = false
 
     constructor(context: FragmentActivity) : this(context, null, 0) {
     }
@@ -95,25 +97,33 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
     @SuppressLint("ClickableViewAccessibility")
     private fun initEvent() {
         dragLayout!!.setDragView(ivMusic) {
-            animationOpen()
-            HFPlayer.getInstance().mListener.onClick()
+            if (!playUrl.isNullOrEmpty()) {
+                animationOpen()
+            }
+            HFPlayer.getInstance().mListener?.onClick()
         }
         tvAccompany!!.setOnClickListener(object : NoDoubleClickListener() {
             public override fun onNoDoubleClick(v: View) {}
         })
         cbLyric!!.setOnCheckedChangeListener { buttonView, isChecked -> }
-        ivLast!!.setOnClickListener { HFPlayer.getInstance().mListener.onPre() }
-        ivNext!!.setOnClickListener { HFPlayer.getInstance().mListener.onNext() }
+        ivLast!!.setOnClickListener { HFPlayer.getInstance().mListener?.onPre() }
+        ivNext!!.setOnClickListener { HFPlayer.getInstance().mListener?.onNext() }
         ivPlay!!.setOnClickListener {
             if (playUrl == null) return@setOnClickListener
-            HFPlayer.getInstance().mListener.onPlayPause(isPlay)
+            HFPlayer.getInstance().mListener?.onPlayPause(isPlay)
             if (isPlay) { //正在播放，点击就是暂停播放
-                stopPlay()
+                pausePlay()
             } else { //暂停点击就是播放
                 startPlay()
             }
         }
-        ivBack!!.setOnClickListener { animationOFF() }
+        ivBack!!.setOnClickListener {
+            if (isExpanded) {
+                animationOFF()
+            } else {
+                animationOpen()
+            }
+        }
         pbPlay!!.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -147,6 +157,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
      * @param url
      */
     fun playWithUrl(url: String) {
+        animationOpen()
         startPlayMusic(url, true)
     }
 
@@ -254,6 +265,8 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
     @SuppressLint("ObjectAnimatorBinding")
     private fun startAnimationPlay() {
         //构造ObjectAnimator对象的方法
+        ivMusic!!.clearAnimation()
+        rotateAnim?.cancel()
         rotateAnim = ObjectAnimator.ofFloat(ivMusic, "rotation", 0.0f, 360.0f)
         rotateAnim!!.repeatCount = ValueAnimator.INFINITE
         rotateAnim!!.duration = 4000
@@ -263,7 +276,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
     }
 
     //暂停播放
-    fun stopPlay() {
+    fun pausePlay() {
         ivPlay!!.setImageResource(R.drawable.hifivesdk_icon_player_suspend)
         isPlay = false
         if (hfPlayer != null && hfPlayer!!.isPlaying) {
@@ -271,23 +284,46 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
         }
         if (rotateAnim != null) {
             rotateAnimPlayTime = rotateAnim!!.currentPlayTime
-            rotateAnim!!.cancel()
+            rotateAnim?.cancel()
+            ivMusic?.clearAnimation()
         }
     }
 
+    //停止播放
+    fun stopPlay() {
+        ivPlay!!.setImageResource(R.drawable.hifivesdk_icon_player_suspend)
+        isPlay = false
+        if (hfPlayer != null) {
+            hfPlayer!!.stop()
+        }
+        if (rotateAnim != null) {
+            rotateAnimPlayTime = rotateAnim!!.currentPlayTime
+            rotateAnim?.cancel()
+            ivMusic?.clearAnimation()
+        }
+        animationOFF()
+        clear()
+    }
+
     //播放器展开动画
-    private fun animationOpen() {
+    fun animationOpen() {
         val animation: Animation = HifiveViewChangeAnimation(llPlayer, DisplayUtils.getScreenWidth(mContext)
                 - DisplayUtils.dip2px(mContext, 40f))
         animation.duration = 500
         llPlayer!!.startAnimation(animation)
+        isExpanded = true
+        ivBack?.rotation = 0f
+        HFPlayer.getInstance().mListener?.onExpanded()
     }
 
     //播放器收起动画
-    public fun animationOFF() {
-        val animation: Animation = HifiveViewChangeAnimation(llPlayer, DisplayUtils.dip2px(mContext, 50f))
+    fun animationOFF() {
+        val animation: Animation = HifiveViewChangeAnimation(llPlayer, DisplayUtils.dip2px(mContext, if (playUrl.isNullOrEmpty()) 50f else 80f))
         animation.duration = 500
         llPlayer!!.startAnimation(animation)
+        isExpanded = false
+        ivBack?.rotation = 180f
+        HFPlayer.getInstance().mListener?.onFold()
     }
 
     //收到被观察者发出的更新通知
@@ -311,6 +347,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
         //清空动画
         if (rotateAnim != null) {
             rotateAnimPlayTime = 0
+            ivMusic!!.clearAnimation()
             rotateAnim!!.cancel()
         }
     }
@@ -324,13 +361,13 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
                     MusicPlayAction.STATE_IDLE -> {
                     }
                     MusicPlayAction.STATE_PAUSE -> if (hfPlayer != null && hfPlayer!!.isPlaying) {
-                        stopPlay()
+                        pausePlay()
                     }
                     MusicPlayAction.STATE_ERROR -> {
                         isError = true
-                        stopPlay()
+                        pausePlay()
                         clear()
-                        HFPlayer.getInstance().mListener.onError()
+                        HFPlayer.getInstance().mListener?.onError()
                     }
                     MusicPlayAction.STATE_PREPARING -> pbPlay!!.max = hfPlayer!!.duration.toInt()
                     MusicPlayAction.STATE_PLAYING -> {
@@ -339,9 +376,9 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
                     }
                     MusicPlayAction.STATE_BUFFERING -> showLoadView()
                     MusicPlayAction.STATE_COMPLETE -> {
-                        stopPlay()
+                        pausePlay()
                         clear()
-                        HFPlayer.getInstance().mListener.onComplete()
+                        HFPlayer.getInstance().mListener?.onComplete()
                     }
                 }
             }

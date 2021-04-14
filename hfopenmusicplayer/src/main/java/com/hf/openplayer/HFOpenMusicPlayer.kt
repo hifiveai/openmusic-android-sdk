@@ -93,6 +93,12 @@ class HFOpenMusicPlayer private constructor() {
                         }
                     }
 
+                    override fun onExpanded() {
+                    }
+
+                    override fun onFold() {
+                    }
+
                     override fun onPre() {
                         report()
                         HFOpenMusic.getInstance().playLastMusic()
@@ -153,6 +159,7 @@ class HFOpenMusicPlayer private constructor() {
                     }
 
                     override fun onCloseOpenMusic() {
+                        HFPlayer.getInstance().foldPlayer()
                         HFPlayer.getInstance().setMarginBottom(0)
                         flag = false
                     }
