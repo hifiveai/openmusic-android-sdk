@@ -139,7 +139,7 @@ data class MusicRecord(
         val tag: List<Tag>?,
         val version: List<Version>?,
         val intro: String
-) {
+) : Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -191,7 +191,7 @@ data class MusicRecord(
 data class Cover(
         val size: String,
         val url: String
-)
+): Serializable
 
 //data class Music(
 //        val albumId: String,
@@ -234,7 +234,7 @@ data class Tag(
         val child: List<Tag>,
         val tagId: Int,
         val tagName: String
-)
+): Serializable
 
 data class Version(
         val auditionBegin: Int,
