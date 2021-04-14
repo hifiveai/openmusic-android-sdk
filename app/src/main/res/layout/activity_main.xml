@@ -13,6 +13,16 @@
         android:scaleType="centerCrop"
         android:src="@mipmap/ssl" />
 
+    <ImageView
+        android:id="@+id/iv_music"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginStart="15dp"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        android:src="@drawable/hifivesdk_icon_music_player_defaut" />
+
 <!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->

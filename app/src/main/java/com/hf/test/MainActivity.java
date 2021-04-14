@@ -6,6 +6,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.hf.openplayer.HFOpenMusicPlayer;
@@ -97,12 +98,19 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         } else if (type == 2) {
-            if (flag) {
-                HFOpenMusic.getInstance().closeOpenMusic();
-                flag = false;
-            } else {
-                showMusic();
-            }
+            View iv_music = findViewById(R.id.iv_music);
+            iv_music.setVisibility(View.VISIBLE);
+            iv_music.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (flag) {
+                        HFOpenMusic.getInstance().closeOpenMusic();
+                        flag = false;
+                    } else {
+                        showMusic();
+                    }
+                }
+            });
         } else if (type == 3) {
             //Log.d(ConsData.TAG, "type 3");
 
