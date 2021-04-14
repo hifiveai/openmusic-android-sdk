@@ -3,13 +3,7 @@ package com.hf.playerkernel.model;
 import java.io.Serializable;
 
 /**
- * <pre>
- *     @author yangchong
- *     blog  : www.pedaily.cn
- *     time  : 2018/03/22
- *     desc  : 音频单曲信息
- *     revise:
- * </pre>
+ * 音频单曲信息
  */
 public class AudioBean implements Serializable {
 
