@@ -103,7 +103,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
             HFPlayer.getInstance().mListener?.onClick()
         }
         tvAccompany!!.setOnClickListener(object : NoDoubleClickListener() {
-            public override fun onNoDoubleClick(v: View) {}
+            override fun onNoDoubleClick(v: View?) {}
         })
         cbLyric!!.setOnCheckedChangeListener { buttonView, isChecked -> }
         ivLast!!.setOnClickListener { HFPlayer.getInstance().mListener?.onPre() }
