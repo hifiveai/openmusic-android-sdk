@@ -58,7 +58,16 @@ HFPlayer.playWithUrl(String url)
 ```java
 HFPlayer.setListener(HFPlayerViewListener listener)
 ```
-## 停止播放音乐
+## 收缩播放器
+```java
+HFPlayer.getInstance().foldPlayer();
 ```
+## 展开播放器
+```java
+HFPlayer.getInstance().expandedPlayer();
+```
+
+## 停止播放音乐
+```java
 HFPlayer.stopPlay()
 ```
