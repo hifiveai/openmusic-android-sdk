@@ -74,7 +74,8 @@ public class LoginActivity extends AppCompatActivity {
             }
 
 //,"https://gateway.open.hifiveai.com"
-            HFOpenApi.registerApp(getApplication(), memberId);
+//            HFOpenApi.registerApp(getApplication(), memberId);
+            HFOpenApi.registerApp(getApplication(),appId,secretKey, memberId);
 //        HFOpenMusic.getInstance().showToast(this, "初始化SDK成功");
             HFOpenApi.configCallBack(new HFOpenCallback() {
                 @Override

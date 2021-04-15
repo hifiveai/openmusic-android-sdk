@@ -350,12 +350,12 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
     private fun getHot() {
         try {
             if (mContext == null) return
-            HFOpenApi.getInstance().baseHot(System.currentTimeMillis(), 365, 1, 20, object : DataResponse<BaseHot> {
+            HFOpenApi.getInstance().baseHot(System.currentTimeMillis(), 365, 1, 20, object : DataResponse<MusicList> {
                 override fun onError(exception: BaseException) {
                     HFOpenMusic.getInstance().showToast(activity, exception.msg)
                 }
 
-                override fun onSuccess(data: BaseHot, taskId: String) {
+                override fun onSuccess(data: MusicList, taskId: String) {
                     ll_hot!!.visibility = View.VISIBLE
                     hotModels = data.record
                     hotAdapter!!.updateDatas(hotModels)
@@ -389,7 +389,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
             }
 
             HFOpenApi.getInstance().searchMusic(null, null, null, null, null, null, null,
-                    content, null,1,null, page, 100, object : DataResponse<SearchMusic> {
+                    content, null,1,null, page, 100, object : DataResponse<MusicList> {
                 override fun onError(exception: BaseException) {
                     if (ty != Refresh) { //上拉加载请求失败后，还原页卡
                         page--
@@ -400,7 +400,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
                     mHandler.sendEmptyMessage(RequstFail)
                 }
 
-                override fun onSuccess(data: SearchMusic, taskId: String) {
+                override fun onSuccess(data: MusicList, taskId: String) {
                     musicModels = data.record
                     totalCount = data.meta.totalCount
                     if (ty == Refresh && (totalCount == 0 || musicModels == null || musicModels!!.isEmpty())) {
@@ -436,13 +436,13 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
     private fun getFavorite() {
         try {
             if (mContext == null) return
-            HFOpenApi.getInstance().baseFavorite(page, 100, object : DataResponse<BaseFavorite> {
+            HFOpenApi.getInstance().baseFavorite(page, 100, object : DataResponse<MusicList> {
                 override fun onError(exception: BaseException) {
                     HFOpenMusic.getInstance().showToast(activity, exception.msg)
                     mHandler.sendEmptyMessage(RequstFail)
                 }
 
-                override fun onSuccess(data: BaseFavorite, taskId: String) {
+                override fun onSuccess(data: MusicList, taskId: String) {
                     musicModels = data.record
                     totalCount = data.meta.totalCount
                     mHandler.sendEmptyMessage(Refresh)

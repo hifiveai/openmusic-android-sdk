@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hfopen.sdk.entity.BaseHot
+import com.hfopen.sdk.entity.MusicList
 import com.hfopen.sdk.entity.MusicRecord
 import com.hfopen.sdk.hInterface.DataResponse
 import com.hfopen.sdk.manager.HFOpenApi
@@ -120,7 +120,9 @@ class HifiveMusicHotListFragment : Fragment() {
             mHandler!!.sendMessageDelayed(message, 200)
         }
         adapter!!.setOnRecyclerViewHeaderClick {
-            HFOpenMusic.getInstance().updateCurrentList(adapter!!.datas as List<MusicRecord?>) }
+            HFOpenMusic.getInstance().updateCurrentList(adapter!!.datas as List<MusicRecord?>)
+            //加入播放列表成功
+            HFOpenMusic.getInstance().showToast(activity,"加入播放列表成功")}
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context) //调整RecyclerView的排列方向
         refreshLayout!!.setOnRefreshListener {
@@ -142,7 +144,7 @@ class HifiveMusicHotListFragment : Fragment() {
     private fun getData(ty: Int) {
         try {
             if (mContext == null) return
-                    HFOpenApi.getInstance().baseHot(System.currentTimeMillis(), 365, page, 20, object : DataResponse<BaseHot> {
+                    HFOpenApi.getInstance().baseHot(System.currentTimeMillis(), 365, page, 20, object : DataResponse<MusicList> {
                         override fun onError(exception: BaseException) {
                             if (ty != Refresh) { //上拉加载请求失败后，还原页卡
                                 page--
@@ -151,7 +153,7 @@ class HifiveMusicHotListFragment : Fragment() {
                             mHandler!!.sendEmptyMessage(RequstFail)
                         }
 
-                        override fun onSuccess(data: BaseHot, taskId: String) {
+                        override fun onSuccess(data: MusicList, taskId: String) {
                             hotModels = data.record
                             totalCount = data.meta.totalCount
                             if (mHandler == null) return

@@ -17,9 +17,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
+import com.hfopen.sdk.entity.MusicList
 import com.hfopen.sdk.entity.MusicRecord
 import com.hfopen.sdk.entity.Record
-import com.hfopen.sdk.entity.SheetMusic
 import com.hfopen.sdk.entity.Tag
 import com.hfopen.sdk.hInterface.DataResponse
 import com.hfopen.sdk.manager.HFOpenApi
@@ -52,7 +52,7 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
     private var tvIntroduce: TextView? = null
     private var tvTips: TextView? = null
     private var mRecyclerView: RecyclerView? = null
-    private  lateinit var refreshLayout: SmartRefreshLayout
+    private lateinit var refreshLayout: SmartRefreshLayout
     private var adapter: HifiveMusicSheetListAdapter? = null
     private var musicModels: List<MusicRecord>? = null
     private var mContext: Context? = null
@@ -140,7 +140,7 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
             HFOpenMusic.getInstance().removeDialog(2)
         }
         ivImage = view.findViewById(R.id.iv_image)
-        rootImage =  view.findViewById(R.id.root_image)
+        rootImage = view.findViewById(R.id.root_image)
         tvName = view.findViewById(R.id.tv_name)
         tvIntroduce = view.findViewById(R.id.tv_introduce)
         tvTips = view.findViewById(R.id.tv_tips)
@@ -163,7 +163,9 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
             mHandler!!.sendMessageDelayed(message, 200)
         }
         adapter!!.setOnRecyclerViewHeaderClick {
-                            HFOpenMusic.getInstance().updateCurrentList( adapter!!.datas as List<MusicRecord>)
+            HFOpenMusic.getInstance().updateCurrentList(adapter!!.datas as List<MusicRecord>)
+            //加入播放列表成功
+            HFOpenMusic.getInstance().showToast(activity, "加入播放列表成功")
         }
         mRecyclerView!!.adapter = adapter
         mRecyclerView!!.layoutManager = LinearLayoutManager(context)
@@ -261,7 +263,7 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
     private fun getData(ty: Int) {
         try {
             if (mContext == null) return
-            HFOpenApi.getInstance().sheetMusic(sheetId, 0, page, 20, object : DataResponse<SheetMusic> {
+            HFOpenApi.getInstance().sheetMusic(sheetId, 0, page, 20, object : DataResponse<MusicList> {
                 override fun onError(exception: BaseException) {
                     if (ty != Refresh) { //上拉加载请求失败后，还原页卡
                         page--
@@ -270,7 +272,7 @@ class HifiveMusicChannelSheetDetailFragment : DialogFragment() {
                     mHandler!!.sendEmptyMessage(RequstFail)
                 }
 
-                override fun onSuccess(data: SheetMusic, taskId: String) {
+                override fun onSuccess(data: MusicList, taskId: String) {
                     musicModels = data.record
                     totalCount = data.meta.totalCount
                     if (mHandler == null) return

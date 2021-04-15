@@ -197,6 +197,7 @@ public class HFOpenMusic {
         if(musicModel == null ){
             return;
         }
+
         if(playMusic != null && playMusic.getMusicId().equals(musicModel.getMusicId())){//播放的同一首=歌
             return;
         }
@@ -241,13 +242,13 @@ public class HFOpenMusic {
         playMusic = musicModel;
         updateObservable.postNewPublication(UPDATEPALY);
         if(currentList != null && currentList.size() >0){
-            if(!currentList.contains(playMusic)){
-                currentList.add(0,playMusic);
+            if(!currentList.contains(musicModel)){
+                currentList.add(0,musicModel);
                 updateObservable.postNewPublication(UPDATEPALYLIST);
             }
         }else{
             currentList = new ArrayList<>();
-            currentList.add(playMusic);
+            currentList.add(musicModel);
             updateObservable.postNewPublication(UPDATEPALYLIST);
         }
     }
