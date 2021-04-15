@@ -131,19 +131,12 @@ data class MusicRecord(
 
         if (albumId != other.albumId) return false
         if (albumName != other.albumName) return false
-        if (arranger != other.arranger) return false
-        if (artist != other.artist) return false
         if (auditionBegin != other.auditionBegin) return false
         if (auditionEnd != other.auditionEnd) return false
-        if (author != other.author) return false
         if (bpm != other.bpm) return false
-        if (composer != other.composer) return false
-        if (cover != other.cover) return false
         if (duration != other.duration) return false
         if (musicId != other.musicId) return false
         if (musicName != other.musicName) return false
-        if (tag != other.tag) return false
-        if (version != other.version) return false
         if (intro != other.intro) return false
         return true
     }
@@ -151,19 +144,12 @@ data class MusicRecord(
     override fun hashCode(): Int {
         var result = albumId.hashCode()
         result = 31 * result + albumName.hashCode()
-        result = 31 * result + (arranger?.hashCode() ?: 0)
-        result = 31 * result + (artist?.hashCode() ?: 0)
         result = 31 * result + auditionBegin
         result = 31 * result + auditionEnd
-        result = 31 * result + (author?.hashCode() ?: 0)
         result = 31 * result + bpm
-        result = 31 * result + (composer?.hashCode() ?: 0)
-        result = 31 * result + (cover?.hashCode() ?: 0)
         result = 31 * result + duration
         result = 31 * result + musicId.hashCode()
         result = 31 * result + musicName.hashCode()
-        result = 31 * result + (tag?.hashCode() ?: 0)
-        result = 31 * result + (version?.hashCode() ?: 0)
         result = 31 * result + intro.hashCode()
         return result
     }
