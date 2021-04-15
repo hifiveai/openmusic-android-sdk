@@ -186,7 +186,7 @@ class HFOpenMusicPlayer private constructor() {
             //初始化播放器UI
             HFPlayer.getInstance()
                     .setTitle(title)
-                    .setMajorVersion(musicDetail.version!![0].majorVersion)
+                    .setMajorVersion(false)
                     .setCover(musicDetail.cover!![0].url)
                     .playWithUrl(url)
         }
