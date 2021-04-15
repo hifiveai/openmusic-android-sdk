@@ -161,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(ConsData.TAG, "musicType:" + ConsData.musicType.toString());
 
         HFOpenMusicPlayer.getInstance()
-                .registerApp(getApplication(), memberId)
+                .registerApp(getApplication(),appId,secretKey, memberId)
                 .setDebug(true)
                 .setMaxBufferSize(ConsData.MaxBufferSize)
                 .setUseCache(ConsData.UseCache)

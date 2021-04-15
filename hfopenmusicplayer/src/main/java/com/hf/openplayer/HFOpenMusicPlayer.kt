@@ -33,6 +33,13 @@ class HFOpenMusicPlayer private constructor() {
         HFPlayerApi.init(app)
     }
 
+    @Deprecated(message = "debug")
+    fun registerApp(app: Application,appid : String,code : String, clientId: String) = apply {
+        globalContext = app
+        HFOpenApi.registerApp(app,appid ,code,clientId)
+        HFPlayerApi.init(app)
+    }
+
     fun setMaxBufferSize(size: Long) = apply {
         HFPlayerApi.setMaxBufferSize(size)
     }
