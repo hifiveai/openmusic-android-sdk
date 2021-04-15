@@ -45,7 +45,7 @@ class DataRepository constructor() {
             Language: Int?,
             Page: Int?,
             PageSize: Int?
-    ): Flowable<SheetMusic> {
+    ): Flowable<MusicList> {
         return LiveRetrofitFactory.api().sheetMusic(SheetId, Language, Page, PageSize, "SheetMusic").convert()
     }
 
@@ -63,7 +63,7 @@ class DataRepository constructor() {
                     Language: Int?,
                     Page: Int?,
                     PageSize: Int?
-    ): Flowable<SearchMusic> {
+    ): Flowable<MusicList> {
         return LiveRetrofitFactory.api().searchMusic(TagIds, PriceFromCent, PriceToCent, BpmFrom, BpmTo, DurationFrom, DurationTo, Keyword, SearchFiled,SearchSmart, Language, Page, PageSize, "SearchMusic").convert()
     }
 
@@ -75,7 +75,7 @@ class DataRepository constructor() {
 
     fun baseFavorite(Page: Int?,
                      PageSize: Int?
-    ): Flowable<BaseFavorite> {
+    ): Flowable<MusicList> {
         return LiveRetrofitFactory.api().baseFavorite(Page, PageSize, "BaseFavorite").convert()
     }
 
@@ -83,7 +83,7 @@ class DataRepository constructor() {
                 Duration: Int?,
                 Page: Int?,
                 PageSize: Int?
-    ): Flowable<BaseHot> {
+    ): Flowable<MusicList> {
         return LiveRetrofitFactory.api().baseHot(StartTime, Duration, Page, PageSize, "BaseHot").convert()
     }
 

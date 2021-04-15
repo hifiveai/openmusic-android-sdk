@@ -43,7 +43,7 @@ data class TrafficListenMixed(
 )
 
 
-data class SearchMusic(
+data class MusicList(
         val meta: Meta,
         val record: List<MusicRecord>
 )
@@ -52,18 +52,6 @@ data class MusicConfig(
         val prices: List<Int>,
         val tagList: List<Tag>
 )
-
-
-data class BaseFavorite(
-        val meta: Meta,
-        val record: List<MusicRecord>
-)
-
-data class BaseHot(
-        val meta: Meta,
-        val record: List<MusicRecord>
-)
-
 
 data class OrderMusic(
         val HForderId: String,
@@ -96,11 +84,6 @@ data class OrderPublish(
 data class ChannelSheet(
         val meta: Meta,
         val record: List<Record>
-)
-
-data class SheetMusic(
-        val meta: Meta,
-        val record: List<MusicRecord>
 )
 
 

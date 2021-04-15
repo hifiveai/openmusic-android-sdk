@@ -1,5 +1,7 @@
 package com.hfopen.sdk.net;
 
+import android.util.Log;
+
 import com.hfopen.sdk.common.BaseConstance;
 
 import org.jetbrains.annotations.NotNull;

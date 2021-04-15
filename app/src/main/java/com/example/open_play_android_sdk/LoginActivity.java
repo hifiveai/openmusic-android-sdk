@@ -10,17 +10,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.hfopen.sdk.entity.BaseFavorite;
-import com.hfopen.sdk.entity.BaseHot;
 import com.hfopen.sdk.entity.ChannelItem;
 import com.hfopen.sdk.entity.ChannelSheet;
 import com.hfopen.sdk.entity.LoginBean;
 import com.hfopen.sdk.entity.MusicConfig;
+import com.hfopen.sdk.entity.MusicList;
 import com.hfopen.sdk.entity.OrderAuthorization;
 import com.hfopen.sdk.entity.OrderMusic;
 import com.hfopen.sdk.entity.OrderPublish;
-import com.hfopen.sdk.entity.SearchMusic;
-import com.hfopen.sdk.entity.SheetMusic;
 import com.hfopen.sdk.entity.HQListen;
 import com.hfopen.sdk.entity.TrafficListenMixed;
 import com.hfopen.sdk.entity.TrialMusic;
@@ -197,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
                 showResult("请输入歌单ID");
                 return;
             }
-            HFOpenApi.getInstance().sheetMusic(sheetID, Language, Page, PageSize, new DataResponse<SheetMusic>() {
+            HFOpenApi.getInstance().sheetMusic(sheetID, Language, Page, PageSize, new DataResponse<MusicList>() {
                 @Override
                 public void onError(@NotNull BaseException exception) {
                     Log.e("TAG", "errorMsg==" + exception.getCode());
@@ -205,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onSuccess(@NotNull SheetMusic any, String taskId) {
+                public void onSuccess(@NotNull MusicList any, String taskId) {
                     Log.e("TAG", "data==" + any);
                     if(any.getRecord() != null && any.getRecord().size()>0){
                         musicID = any.getRecord().get(0).getMusicId();
@@ -243,7 +240,7 @@ public class LoginActivity extends AppCompatActivity {
             Integer PageSize = pageSize == null ? 20: Integer.parseInt(pageSize);
 
             HFOpenApi.getInstance().searchMusic(TagIds, priceFromCent, priceToCent, BpmFrom, BpmTo, DurationFrom, DurationTo, Keyword,
-                    "tagName",0, Language, Page, PageSize, new DataResponse<SearchMusic>() {
+                    null,1, Language, Page, PageSize, new DataResponse<MusicList>() {
                         @Override
                         public void onError(@NotNull BaseException exception) {
                             Log.e("TAG", "errorMsg==" + exception.getCode());
@@ -251,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onSuccess(@NotNull SearchMusic any, String taskId) {
+                        public void onSuccess(@NotNull MusicList any, String taskId) {
                             Log.e("TAG", "data==" + any);
                             showResult(any.toString());
                         }
@@ -313,7 +310,7 @@ public class LoginActivity extends AppCompatActivity {
             String pageSize = getValue(json, "PageSize");
             Integer PageSize = pageSize == null ? 20: Integer.parseInt(pageSize);
 
-            HFOpenApi.getInstance().baseFavorite(Page, PageSize, new DataResponse<BaseFavorite>() {
+            HFOpenApi.getInstance().baseFavorite(Page, PageSize, new DataResponse<MusicList>() {
                 @Override
                 public void onError(@NotNull BaseException exception) {
                     Log.e("TAG", "errorMsg==" + exception.getCode());
@@ -321,7 +318,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onSuccess(@NotNull BaseFavorite any, String taskId) {
+                public void onSuccess(@NotNull MusicList any, String taskId) {
                     Log.e("TAG", "data==" + any);
                     showResult(any.toString());
                 }
@@ -347,7 +344,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            HFOpenApi.getInstance().baseHot(StartTime, Duration, Page, PageSize, new DataResponse<BaseHot>() {
+            HFOpenApi.getInstance().baseHot(StartTime, Duration, Page, PageSize, new DataResponse<MusicList>() {
                 @Override
                 public void onError(@NotNull BaseException exception) {
                     Log.e("TAG", "errorMsg==" + exception.getCode());
@@ -355,7 +352,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onSuccess(@NotNull BaseHot any, String taskId) {
+                public void onSuccess(@NotNull MusicList any, String taskId) {
                     Log.e("TAG", "data==" + any);
                     showResult(any.toString());
                 }

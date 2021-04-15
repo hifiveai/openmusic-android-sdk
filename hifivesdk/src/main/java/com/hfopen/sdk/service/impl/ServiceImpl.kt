@@ -49,7 +49,7 @@ class ServiceImpl constructor() : Service {
             Language: Int?,
             Page: Int?,
             PageSize: Int?
-    ): Flowable<SheetMusic> {
+    ): Flowable<MusicList> {
         return dataRepository.sheetMusic(SheetId, Language, Page, PageSize)
     }
 
@@ -68,7 +68,7 @@ class ServiceImpl constructor() : Service {
             Language: Int?,
             Page: Int?,
             PageSize: Int?
-    ): Flowable<SearchMusic> {
+    ): Flowable<MusicList> {
         return dataRepository.searchMusic(TagIds, PriceFromCent, PriceToCent, BpmFrom, BpmTo, DurationFrom, DurationTo, Keyword, SearchFiled,SearchSmart, Language, Page, PageSize)
     }
 
@@ -79,7 +79,7 @@ class ServiceImpl constructor() : Service {
 
     fun baseFavorite(Page: Int?,
                      PageSize: Int?
-    ): Flowable<BaseFavorite> {
+    ): Flowable<MusicList> {
         return dataRepository.baseFavorite(Page, PageSize)
     }
 
@@ -87,7 +87,7 @@ class ServiceImpl constructor() : Service {
                  Duration: Int?,
                  Page: Int?,
                  PageSize: Int?
-    ): Flowable<BaseHot> {
+    ): Flowable<MusicList> {
         return dataRepository.baseHot(StartTime,Duration,Page, PageSize)
     }
 

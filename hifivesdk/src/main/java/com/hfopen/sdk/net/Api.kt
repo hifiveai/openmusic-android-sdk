@@ -43,7 +43,7 @@ interface Api {
                    @Query("Page") Page: Int?,
                    @Query("PageSize") PageSize: Int?,
                    @Query("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<SheetMusic>>
+    ): Flowable<BaseResp<MusicList>>
 
 
     /**                        音乐搜索                           */
@@ -67,7 +67,7 @@ interface Api {
                     @Field("Page") Page: Int?,
                     @Field("PageSize") PageSize: Int?,
                     @Field("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<SearchMusic>>
+    ): Flowable<BaseResp<MusicList>>
 
 
     /**
@@ -86,7 +86,7 @@ interface Api {
     fun baseFavorite(@Query("Page") Page: Int?,
                      @Query("PageSize") PageSize: Int?,
                      @Query("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<BaseFavorite>>
+    ): Flowable<BaseResp<MusicList>>
 
     /**
      * 热门推荐
@@ -97,7 +97,7 @@ interface Api {
                 @Query("Page") Page: Int?,
                 @Query("PageSize") PageSize: Int?,
                 @Query("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<BaseHot>>
+    ): Flowable<BaseResp<MusicList>>
 
 
     /**                        音乐播放                             */

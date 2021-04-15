@@ -176,7 +176,7 @@ HFOpenApi.getInstance().sheetMusic( SheetId: Long?,
                        Language: Int?,
                        Page: Int?,
                        PageSize: Int?,
-                        response: DataResponse<SheetMusic>)
+                        response: DataResponse<MusicList>)
 ```
 
 参数  | 必填  |描述| 可选值|
@@ -203,7 +203,7 @@ HFOpenApi.getInstance().searchMusic(TagIds: String?,
                     Language: Int?,
                     Page: Int?,
                     PageSize: Int?,
-                    response: DataResponse<SearchMusic>
+                    response: DataResponse<MusicList>
     )
 ```
 参数  | 必填  |描述| 可选值|
@@ -362,7 +362,7 @@ to	 | Int|用于变化的操作，该值代表进度变化后的值(秒)|
 ```
 HFOpenApi.getInstance().baseFavorite(Page: Int?,
                      PageSize: Int?,
-                     response: DataResponse<BaseFavorite>
+                     response: DataResponse<MusicList>
     )
 ```
 参数  | 必填  |描述| 可选值|
@@ -378,7 +378,7 @@ HFOpenApi.getInstance().baseHot(StartTime: Long?,
                 Duration: Int?,
                 Page: Int?,
                 PageSize: Int?,
-                response: DataResponse<BaseHot>
+                response: DataResponse<MusicList>
     )
 ```
 
