@@ -246,6 +246,7 @@ public class HFOpenMusic {
                 currentList.add(0,musicModel);
                 updateObservable.postNewPublication(UPDATEPALYLIST);
             }
+//            Collections.swap(currentList, currentList.indexOf(musicModel), 0);
         }else{
             currentList = new ArrayList<>();
             currentList.add(musicModel);
