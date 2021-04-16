@@ -107,23 +107,23 @@ class HFOpenMusicPlayer private constructor() {
                     }
 
                     override fun onPre() {
-                        report()
+//                        report()
                         HFOpenMusic.getInstance().playLastMusic()
                     }
 
                     override fun onPlayPause(isPlaying: Boolean) {}
                     override fun onNext() {
-                        report()
+//                        report()
                         HFOpenMusic.getInstance().playNextMusic()
                     }
 
                     override fun onComplete() {
-                        report()
+//                        report()
                         HFOpenMusic.getInstance().playNextMusic()
                     }
 
                     override fun onError() {
-                        report()
+//                        report()
                         HFOpenMusic.getInstance().playNextMusic()
                     }
                 })
@@ -155,6 +155,7 @@ class HFOpenMusicPlayer private constructor() {
         HFOpenMusic.getInstance()
                 .setPlayListen(object : HFPlayMusicListener {
                     override fun onPlayMusic(musicDetail: MusicRecord, url: String) {
+                        report()
                         play(musicDetail, url)
                     }
 

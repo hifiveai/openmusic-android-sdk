@@ -106,8 +106,19 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
             override fun onNoDoubleClick(v: View?) {}
         })
         cbLyric!!.setOnCheckedChangeListener { buttonView, isChecked -> }
-        ivLast!!.setOnClickListener { HFPlayer.getInstance().mListener?.onPre() }
-        ivNext!!.setOnClickListener { HFPlayer.getInstance().mListener?.onNext() }
+
+        ivLast!!.setOnClickListener(object : NoDoubleClickListener(){
+            override fun onNoDoubleClick(v: View?) {
+                HFPlayer.getInstance().mListener?.onPre()
+            }
+        })
+        ivNext!!.setOnClickListener(object : NoDoubleClickListener(){
+            override fun onNoDoubleClick(v: View?) {
+                HFPlayer.getInstance().mListener?.onNext()
+            }
+        })
+//        ivLast!!.setOnClickListener { HFPlayer.getInstance().mListener?.onPre() }
+//        ivNext!!.setOnClickListener { HFPlayer.getInstance().mListener?.onNext() }
         ivPlay!!.setOnClickListener {
             if (playUrl == null) return@setOnClickListener
             HFPlayer.getInstance().mListener?.onPlayPause(isPlay)
@@ -132,6 +143,10 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 onTrackingTouch = false
+                if(seekBar.progress + 1000 >= seekBar.max){
+                    HFPlayer.getInstance().mListener?.onComplete()
+                    return
+                }
                 val seekTo = hfPlayer!!.seekTo(seekBar.progress)
                 if (!seekTo) {
                     hfPlayer!!.pause()
