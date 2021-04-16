@@ -375,7 +375,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
                 when (state) {
                     MusicPlayAction.STATE_IDLE -> {
                     }
-                    MusicPlayAction.STATE_PAUSE -> if (hfPlayer != null && hfPlayer!!.isPlaying) {
+                    MusicPlayAction.STATE_PAUSE -> if (hfPlayer != null) {
                         pausePlay()
                     }
                     MusicPlayAction.STATE_ERROR -> {

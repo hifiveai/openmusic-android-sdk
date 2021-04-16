@@ -154,6 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                 .setDebug(true)
                 .setMaxBufferSize(ConsData.MaxBufferSize)
                 .setUseCache(ConsData.UseCache)
+                .setReconnect(ConsData.Reconnect)
                 .apply();
     }
 
@@ -165,6 +166,7 @@ public class LoginActivity extends AppCompatActivity {
                 .setDebug(true)
                 .setMaxBufferSize(ConsData.MaxBufferSize)
                 .setUseCache(ConsData.UseCache)
+                .setReconnect(ConsData.Reconnect)
                 .setListenType(ConsData.musicType.toString())
                 .apply();
     }
