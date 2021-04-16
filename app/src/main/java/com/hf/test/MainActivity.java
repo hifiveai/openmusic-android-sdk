@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         } else if (type == 2) {
+            HFOpenMusic.getInstance().closeOpenMusic();
             View iv_music = findViewById(R.id.iv_music);
             iv_music.setVisibility(View.VISIBLE);
             iv_music.setOnClickListener(new View.OnClickListener() {

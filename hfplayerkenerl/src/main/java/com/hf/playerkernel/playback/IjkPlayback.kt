@@ -27,6 +27,7 @@ import com.hf.playerkernel.utils.MusicSpUtils
 import com.hf.playerkernel.utils.NotificationHelper
 import tv.danmaku.ijk.media.player.IMediaPlayer
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
+import java.io.File
 import java.io.IOException
 import java.util.*
 
@@ -48,6 +49,11 @@ class IjkPlayback(private val mPlayService: PlayService) {
      * 正在播放的歌曲[本地|网络]
      */
     var playingMusic: AudioBean? = null
+        private set
+    /**
+     * 正在播放的歌曲url
+     */
+    var playingUrl: String? = null
         private set
 
     /**
@@ -182,9 +188,14 @@ class IjkPlayback(private val mPlayService: PlayService) {
             pause()
         } else if (isPausing) {
             start()
-        } else {
-            release()
-            //            play(getPlayingPosition());
+        } else if (isBuffering) {
+            start()
+        }else {
+            if(playingUrl!= null){
+                playWhitUrl(playingUrl!!)
+            }else{
+                release()
+            }
         }
     }
 
@@ -275,7 +286,7 @@ class IjkPlayback(private val mPlayService: PlayService) {
      */
     fun start() {
         if (!mNetAvailable) return
-        if (!isPreparing && !isPausing) {
+        if (!isPreparing && !isPausing && !isBuffering) {
             return
         }
         if (mPlayService.mAudioFocusManager.requestAudioFocus()) {
@@ -432,17 +443,16 @@ class IjkPlayback(private val mPlayService: PlayService) {
      */
     fun playWhitUrl(url: String) {
         if (!mNetAvailable) return
+        playingUrl = url
         createIjkMediaPlayer()
         try {
             mPlayer!!.reset()
             if (getIsUseCache()) {
-                val index = url.lastIndexOf(".")
-                val startIndex = if (index > 15) index - 15 else index - 8
-                val fileName = url.substring(startIndex, index).replace("/","")
+                val fileName = getFileName(url)
                 mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "auto_save_map", 1)
                 mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "parse_cache_map", 1)
-                mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_file_path", "${mPlayService.cacheDir}/$fileName.tmp")
-                mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_map_path", "${mPlayService.cacheDir}/${fileName}path.tmp")
+                mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_file_path", "$fileName.tmp")
+                mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_map_path", "${fileName}path.tmp")
             } else {
                 mPlayer!!.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_file_path", "${mPlayService.cacheDir}/tmp.tmp")
             }
@@ -477,6 +487,17 @@ class IjkPlayback(private val mPlayService: PlayService) {
     }
 
     /**
+     * 获取文件路径
+     */
+    private fun getFileName(url: String): String {
+        val index = url.lastIndexOf(".")
+        val startIndex = if (index > 15) index - 15 else index - 8
+        val fileName = url.substring(startIndex, index).replace("/", "")
+        return "${mPlayService.cacheDir}/$fileName"
+    }
+
+
+    /**
      * 更新播放进度的显示，时间的显示
      */
     private fun updatePlayProgressShow() {
@@ -489,7 +510,7 @@ class IjkPlayback(private val mPlayService: PlayService) {
                 pause()
             }
         }
-        MusicLogUtils.e("updatePlayProgressShow" + mPlayer!!.currentPosition)
+//        MusicLogUtils.e("updatePlayProgressShow" + mPlayer!!.fileSize)
         // 每30毫秒更新一下显示的内容，注意这里时间不要太短，因为这个是一个循环
         // 经过测试，60毫秒更新一次有点卡，30毫秒最为顺畅
         handler!!.sendEmptyMessageDelayed(UPDATE_PLAY_PROGRESS_SHOW, 300)
@@ -583,7 +604,13 @@ class IjkPlayback(private val mPlayService: PlayService) {
         MusicLogUtils.e("MediaPlayer.onInfo$i")
         when (i) {
             701 -> mPlayState = MusicPlayAction.STATE_BUFFERING
-            702, 10002 -> mPlayState = MusicPlayAction.STATE_PLAYING
+            702, 10002 -> {
+                if(!isPlaying) {
+                    start()
+                } else{
+                    mPlayState = MusicPlayAction.STATE_PLAYING
+                }
+            }
             10009 -> if (isPlaying) {
                 mPlayState = MusicPlayAction.STATE_PLAYING
             }
@@ -619,6 +646,14 @@ class IjkPlayback(private val mPlayService: PlayService) {
      */
     val isPreparing: Boolean
         get() = mPlayState == MusicPlayAction.STATE_PREPARING
+
+    /**
+     * 是否正在缓冲
+     *
+     * @return true表示正在播放
+     */
+    val isBuffering: Boolean
+        get() = mPlayState == MusicPlayAction.STATE_BUFFERING
 
     /**
      * 是否正在准备中

@@ -239,11 +239,6 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
      * @param isStart true表示切歌播放新歌曲，false表示暂停后继续播放
      */
     private fun startPlayMusic(path: String, isStart: Boolean) {
-        playProgress = 0 //重置播放进度
-        playUrl = "" //重置播放链接
-        pbPlay!!.progress = 0
-        pbPlay!!.secondaryProgress = 0
-
         if(!hfPlayer?.mNetAvailable!!) {
             Toast.makeText(mContext,"无网络",Toast.LENGTH_SHORT).show()
             return
@@ -310,8 +305,8 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
         if (rotateAnim != null) {
             rotateAnimPlayTime = rotateAnim!!.currentPlayTime
             rotateAnim?.cancel()
-            ivMusic?.clearAnimation()
         }
+        ivMusic?.clearAnimation()
     }
 
     //停止播放
@@ -363,6 +358,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
     fun clear() {
         setTitle("")
         setCover("")
+        isPlay = false
         playProgress = 0 //重置播放进度
         playUrl = "" //重置播放链接
         pbPlay!!.progress = 0
@@ -385,19 +381,21 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
                 when (state) {
                     MusicPlayAction.STATE_IDLE -> {
                     }
-                    MusicPlayAction.STATE_PAUSE -> if (hfPlayer != null) {
+                    MusicPlayAction.STATE_PAUSE -> if (hfPlayer != null && hfPlayer!!.isPlaying) {
                         pausePlay()
                     }
                     MusicPlayAction.STATE_ERROR -> {
                         isError = true
-                        pausePlay()
+                        hfPlayer!!.stop()
                         clear()
                         HFPlayer.getInstance().mListener?.onError()
                     }
                     MusicPlayAction.STATE_PREPARING -> pbPlay!!.max = hfPlayer!!.duration.toInt()
                     MusicPlayAction.STATE_PLAYING -> {
+                        isPlay = true
                         ivPlay!!.setImageResource(R.drawable.hifivesdk_icon_player_play)
                         showPlayView()
+                        startAnimationPlay()
                     }
                     MusicPlayAction.STATE_BUFFERING -> showLoadView()
                     MusicPlayAction.STATE_COMPLETE -> {
