@@ -201,7 +201,11 @@ public class HFOpenMusic {
         if(playMusic != null && playMusic.getMusicId().equals(musicModel.getMusicId())){//播放的同一首=歌
             return;
         }
-        getMusicDetail(musicModel);
+        // 添加一个IdleHandler
+        Looper.myQueue().addIdleHandler(() -> {
+            getMusicDetail(musicModel);
+            return false;
+        });
     }
 
     //获取歌曲详情

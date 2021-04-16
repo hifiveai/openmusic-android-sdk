@@ -55,7 +55,7 @@ HFPlayer.init(this).apply()
  HFPlayer.init(this)
         .setDebug(..)         //是否打印log,默认关闭
         .setReconnect(..)     //配置是否断线重连,默认开启
-        .setMaxBufferSize(..) //配置最大缓冲大小，默认200 * 1024 b
+        .setMaxBufferSize(..) //配置最大缓冲大小，默认270 * 1024 b
         .serUseCache(..)      //配置是否开启缓存，默认关闭
         .apply();
 ```

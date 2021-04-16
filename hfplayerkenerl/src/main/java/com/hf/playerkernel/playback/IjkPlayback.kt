@@ -32,16 +32,18 @@ import java.util.*
 
 class IjkPlayback(private val mPlayService: PlayService) {
     /**
-     * 获取正在播放的本地歌曲的序号
+     * 当前缓冲进度
      */
+    var mBufferedProgress = 0
+    /**
+     * 断网时缓冲进度
+     */
+    var mTargetProgress = 0
     /**
      * 正在播放的歌曲的序号
      */
     var playingPosition = -1
         private set
-    /**
-     * 获取正在播放的歌曲[本地|网络]
-     */
     /**
      * 正在播放的歌曲[本地|网络]
      */
@@ -76,7 +78,8 @@ class IjkPlayback(private val mPlayService: PlayService) {
     /**
      * 是否又网络
      */
-    private var mNetAvailable = true
+    var mNetAvailable = true
+        get
 
     /**
      * 广播接受者标识，避免多次注册广播
@@ -96,7 +99,8 @@ class IjkPlayback(private val mPlayService: PlayService) {
                 UPDATE_PLAY_PROGRESS_SHOW -> updatePlayProgressShow()
                 MusicPlayAction.STATE_PAUSE -> {
                     mNetAvailable = false
-                    pause()
+                    mTargetProgress = (mBufferedProgress * mPlayer!!.duration /100).toInt()
+//                    pause()
                 }
                 MusicPlayAction.STATE_PLAYING -> {
                     mNetAvailable = true
@@ -481,6 +485,9 @@ class IjkPlayback(private val mPlayService: PlayService) {
             if (mListener != null) {
                 mListener!!.onProgressUpdate(currentPosition, duration.toInt())
             }
+            if(!mNetAvailable && currentPosition + 100 >= mTargetProgress){
+                pause()
+            }
         }
         MusicLogUtils.e("updatePlayProgressShow" + mPlayer!!.currentPosition)
         // 每30毫秒更新一下显示的内容，注意这里时间不要太短，因为这个是一个循环
@@ -518,10 +525,10 @@ class IjkPlayback(private val mPlayService: PlayService) {
      * 当音频缓冲的监听器
      */
     private val mOnBufferingUpdateListener = IMediaPlayer.OnBufferingUpdateListener { _, i ->
-        var progress = i
-        if (mListener != null) {
-            if (i >= 99) progress = 100
-            mListener!!.onBufferingUpdate(progress)
+        mBufferedProgress = i
+        if (mListener != null && mNetAvailable) {
+            if (i >= 99) mBufferedProgress = 100
+            mListener!!.onBufferingUpdate(mBufferedProgress)
         }
         MusicLogUtils.e("updateBuffering$i")
     }

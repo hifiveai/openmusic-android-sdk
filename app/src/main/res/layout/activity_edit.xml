@@ -100,7 +100,7 @@
                     android:layout_width="@dimen/text_width"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="最大缓冲（200-1000KB）" />
+                    android:text="最大缓冲（270kb-）" />
 
                 <EditText
                     android:id="@+id/et_maxbuff"

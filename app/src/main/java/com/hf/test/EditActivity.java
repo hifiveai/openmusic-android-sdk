@@ -79,14 +79,14 @@ public class EditActivity extends AppCompatActivity {
                     return;
                 }
                 int iBuff = Integer.parseInt(maxBuff);
-                if (iBuff < 200){
-                    Toast.makeText(EditActivity.this, "缓冲不能小于200", Toast.LENGTH_SHORT).show();
+                if (iBuff < 270){
+                    Toast.makeText(EditActivity.this, "缓冲不能小于270", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (iBuff > 1000){
-                    Toast.makeText(EditActivity.this, "缓冲不能大于1000", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+//                if (iBuff > 1000){
+//                    Toast.makeText(EditActivity.this, "缓冲不能大于1000", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
                 int iTop = Integer.parseInt(top);
                 int iBottom = Integer.parseInt(bottom);
 

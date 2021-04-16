@@ -14,6 +14,6 @@ abstract class NoDoubleClickListener : View.OnClickListener {
     }
 
     companion object {
-        const val MIN_CLICK_DELAY_TIME = 500 //这里设置不能超过多长时间
+        const val MIN_CLICK_DELAY_TIME = 1000 //这里设置不能超过多长时间
     }
 }

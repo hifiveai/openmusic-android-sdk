@@ -18,6 +18,7 @@ import com.hf.player.utils.NoDoubleClickListener
 import com.hf.player.utils.RoundedCornersTransform
 import com.hf.playerkernel.config.MusicPlayAction
 import com.hf.playerkernel.inter.HFPlayerEventListener
+import com.hf.playerkernel.manager.HFPlayerApi
 import com.hf.playerkernel.manager.HFPlayerApi.with
 import com.hf.playerkernel.model.AudioBean
 import com.hf.playerkernel.playback.IjkPlayback
@@ -238,6 +239,15 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
      * @param isStart true表示切歌播放新歌曲，false表示暂停后继续播放
      */
     private fun startPlayMusic(path: String, isStart: Boolean) {
+        playProgress = 0 //重置播放进度
+        playUrl = "" //重置播放链接
+        pbPlay!!.progress = 0
+        pbPlay!!.secondaryProgress = 0
+
+        if(!hfPlayer?.mNetAvailable!!) {
+            Toast.makeText(mContext,"无网络",Toast.LENGTH_SHORT).show()
+            return
+        }
         ivPlay!!.setImageResource(R.drawable.hifivesdk_icon_player_play)
         playUrl = path
         isPlay = true

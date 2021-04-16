@@ -41,7 +41,7 @@ object HFPlayerApi {
     private var isOpenNotification: Boolean = false
 
     //最大缓冲
-    private var maxBufferSize = 200 * 1024L
+    private var maxBufferSize = 270 * 1024L
 
     //是否缓存
     private var useCache = false
@@ -59,7 +59,7 @@ object HFPlayerApi {
 
     fun setMaxBufferSize(size: Long) = apply {
         var tmp = size / 1024
-        if (tmp in 200..1000){
+        if (tmp > 270){
             this.maxBufferSize = size
         }
     }
