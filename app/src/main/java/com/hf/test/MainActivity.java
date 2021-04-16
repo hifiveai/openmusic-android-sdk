@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 .setTitle("测试测试测试测试测试测试测试测试")
                 .setMajorVersion(false)
                 .setCover("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20190521%2F17%2F1558430156-SBswiePxFE.jpg&refer=http%3A%2F%2Fimage.biaobaiju.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619162218&t=409c6be07cf495ccc4dcf3bc23f94028")
-                .playWithUrl("https://sharefs.yun.kugou.com/202104150933/944ab0e3d61eb18cca31d47b4ab85c89/G197/M04/0E/18/ZYcBAF5x5-2AbFgmADaApn6O6Fw014.mp3");
+                .playWithUrl("https://sharefs.yun.kugou.com/202104161948/5b0fa28f6b2bee6cd8872e1fca085ea5/KGTX/CLTX001/68340873eaee877abf36e16969518653.mp3");
 
     }
 

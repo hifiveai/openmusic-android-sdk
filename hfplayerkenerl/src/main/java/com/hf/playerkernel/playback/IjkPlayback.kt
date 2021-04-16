@@ -41,6 +41,10 @@ class IjkPlayback(private val mPlayService: PlayService) {
      */
     var mTargetProgress = 0
     /**
+     * 是否暂停
+     */
+    var paused = false
+    /**
      * 正在播放的歌曲的序号
      */
     var playingPosition = -1
@@ -292,6 +296,7 @@ class IjkPlayback(private val mPlayService: PlayService) {
         if (mPlayService.mAudioFocusManager.requestAudioFocus()) {
             if (mPlayer != null) {
                 mPlayer!!.start()
+                paused = false
                 // 启用wifi锁
                 wifiLock!!.acquire()
                 //同步播放状态
@@ -323,6 +328,7 @@ class IjkPlayback(private val mPlayService: PlayService) {
         if (mPlayer != null) {
             //暂停
             mPlayer!!.pause()
+            paused = true
             // 关闭wifi锁
             if (wifiLock!!.isHeld) {
                 wifiLock!!.release()
@@ -605,13 +611,15 @@ class IjkPlayback(private val mPlayService: PlayService) {
         when (i) {
             701 -> mPlayState = MusicPlayAction.STATE_BUFFERING
             702, 10002 -> {
-                if(!isPlaying) {
+                mPlayState = if(!paused) {
                     start()
-                } else{
-                    mPlayState = MusicPlayAction.STATE_PLAYING
+                    MusicPlayAction.STATE_PLAYING
+                }else{
+                    MusicPlayAction.STATE_PAUSE
                 }
             }
             10009 -> if (isPlaying) {
+                paused = false
                 mPlayState = MusicPlayAction.STATE_PLAYING
             }
             else -> {
