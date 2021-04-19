@@ -21,17 +21,17 @@ public class MediaSessionManager {
             | PlaybackStateCompat.ACTION_SEEK_TO;
 
     private PlayService mPlayService;
-    private boolean isOpenNotification;
+    private boolean isOpenMediaSession;
     private MediaSessionCompat mMediaSession;
 
     /**
      * 音乐的控制逻辑都在PlayService服务中，将service实例传递过来，与MediaSessionManager进行交互
      * @param playService
-     * @param isOpenNotification
+     * @param isOpenMediaSession
      */
-    public MediaSessionManager(PlayService playService, boolean isOpenNotification) {
+    public MediaSessionManager(PlayService playService, boolean isOpenMediaSession) {
         mPlayService = playService;
-        this.isOpenNotification = isOpenNotification;
+        this.isOpenMediaSession = isOpenMediaSession;
         setupMediaSession();
     }
 
@@ -44,14 +44,14 @@ public class MediaSessionManager {
         mMediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS | MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS);
         mMediaSession.setCallback(callback);
         //MediaSession必须激活才能去使用，当你不希望使用MediaSession的是，可以设置false
-        mMediaSession.setActive(isOpenNotification);
+        mMediaSession.setActive(isOpenMediaSession);
     }
 
     /**
      * 更新播放状态，播放/暂停/拖动进度条时调用
      */
     public void updatePlaybackState() {
-        if(!isOpenNotification) return;
+        if(!isOpenMediaSession) return;
         int state = (mPlayService.playback.isPlaying() ||
                 mPlayService.playback.isPreparing()) ? PlaybackStateCompat.STATE_PLAYING :
                 PlaybackStateCompat.STATE_PAUSED;
@@ -69,7 +69,7 @@ public class MediaSessionManager {
      * @param music     歌曲信息
      */
     public void updateMetaData(AudioBean music) {
-        if(!isOpenNotification) return;
+        if(!isOpenMediaSession) return;
         if (music == null ) {
             mMediaSession.setMetadata(null);
             return;
@@ -81,7 +81,9 @@ public class MediaSessionManager {
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, music.getAlbum())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST, music.getArtist())
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, music.getDuration());
-                //.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, CoverLoader.getInstance().loadThumbnail(music));
+        if(music.getCover() != null){
+            metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, music.getCover());
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             metaData.putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS,
                     HFPlayerApi.getMusicList().size());

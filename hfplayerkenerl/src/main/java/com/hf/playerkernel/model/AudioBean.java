@@ -1,5 +1,7 @@
 package com.hf.playerkernel.model;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 /**
@@ -9,7 +11,7 @@ public class AudioBean implements Serializable {
 
     // 歌曲类型:本地/网络
     private Type type;
-    // [本地歌曲]歌曲id
+    // 歌曲id
     private String id;
     // 音乐标题
     private String title;
@@ -17,10 +19,8 @@ public class AudioBean implements Serializable {
     private String artist;
     // 专辑
     private String album;
-    // [本地歌曲]专辑ID
-    private long albumId;
-    // [在线歌曲]专辑封面路径
-    private String coverPath;
+    // 封面
+    private Bitmap cover;
     // 持续时间
     private long duration;
     // 音乐路径
@@ -75,20 +75,12 @@ public class AudioBean implements Serializable {
         this.album = album;
     }
 
-    public long getAlbumId() {
-        return albumId;
+    public Bitmap getCover() {
+        return cover;
     }
 
-    public void setAlbumId(long albumId) {
-        this.albumId = albumId;
-    }
-
-    public String getCoverPath() {
-        return coverPath;
-    }
-
-    public void setCoverPath(String coverPath) {
-        this.coverPath = coverPath;
+    public void setCoverPath(Bitmap cover) {
+        this.cover = cover;
     }
 
     public long getDuration() {

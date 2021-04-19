@@ -55,7 +55,7 @@ public class NotificationHelper {
         if (music == null || !isOpenNotification) {
             return;
         }
-        playService.startForeground(NOTIFICATION_ID, buildNotification(playService, music,token , true));
+        playService.startForeground(NOTIFICATION_ID, buildNotification(playService, music, token, true));
         //这个方法是启动Notification到前台
     }
 

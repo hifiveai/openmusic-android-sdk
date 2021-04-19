@@ -53,8 +53,7 @@ object HFPlayerApi {
     }
 
     fun setNotificationSwitch(isOpenNotification: Boolean) = apply {
-        this.isOpenNotification = false
-//        this.isOpenNotification  =isOpenNotification
+        this.isOpenNotification  = isOpenNotification
     }
 
     fun setMaxBufferSize(size: Long) = apply {
