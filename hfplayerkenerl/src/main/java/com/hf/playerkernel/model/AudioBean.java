@@ -20,7 +20,9 @@ public class AudioBean implements Serializable {
     // 专辑
     private String album;
     // 封面
-    private Bitmap cover;
+    private String cover;
+    // 封面
+    private Bitmap coverBitmap;
     // 持续时间
     private long duration;
     // 音乐路径
@@ -75,12 +77,20 @@ public class AudioBean implements Serializable {
         this.album = album;
     }
 
-    public Bitmap getCover() {
+    public String getCover() {
         return cover;
     }
 
-    public void setCoverPath(Bitmap cover) {
+    public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    public Bitmap getCoverBitmap() {
+        return coverBitmap;
+    }
+
+    public void setCoverBitmap(Bitmap coverBitmap) {
+        this.coverBitmap = coverBitmap;
     }
 
     public long getDuration() {

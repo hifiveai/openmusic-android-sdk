@@ -1,6 +1,5 @@
 package com.hf.player.view;
 
-import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -9,8 +8,9 @@ import android.widget.RelativeLayout;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentActivity;
 
-
+import com.hf.player.utils.GlideUtil;
 import com.hf.playerkernel.manager.HFPlayerApi;
+import com.hf.playerkernel.model.AudioBean;
 import com.hf.playerkernel.utils.DisplayUtils;
 
 import java.lang.ref.WeakReference;
@@ -24,10 +24,12 @@ public class HFPlayer {
     private WeakReference<FrameLayout> mContainer;
     public static boolean isAttached;
     public HFPlayerViewListener mListener;
+    public AudioBean playMusic;
 
     private HFPlayer() {
-
+        playMusic = new AudioBean();
     }
+
     public static HFPlayer getInstance() {
         if (mInstance == null) {
             synchronized (HFPlayer.class) {
@@ -41,8 +43,9 @@ public class HFPlayer {
 
     //添加播放器view
     public HFPlayer showPlayer(FragmentActivity activity) {
-        return showPlayer(activity,0,0);
+        return showPlayer(activity, 0, 0);
     }
+
     public HFPlayer showPlayer(FragmentActivity activity, int marginTop, int marginBottom) {
         LifeFragmentManager.Companion.getInstances().addLifeListener(activity, "HFPlayer", null);
         synchronized (this) {
@@ -55,7 +58,7 @@ public class HFPlayer {
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.START | Gravity.BOTTOM;
-            params.setMargins(0, params.topMargin, params.rightMargin, DisplayUtils.getScreenHeight(activity)/24 + DisplayUtils.getPlayerHeight(activity));
+            params.setMargins(0, params.topMargin, params.rightMargin, DisplayUtils.getScreenHeight(activity) / 24 + DisplayUtils.getPlayerHeight(activity));
             mPlayerView.setLayoutParams(params);
             if (getContainer() != null) {
                 getContainer().addView(mPlayerView);
@@ -66,50 +69,72 @@ public class HFPlayer {
 
     /**
      * 设置监听
+     *
      * @param listener
      * @return
      */
-    public HFPlayer setListener(HFPlayerViewListener listener){
+    public HFPlayer setListener(HFPlayerViewListener listener) {
         mListener = listener;
         return this;
     }
 
     /**
      * 播放歌曲
+     *
+     * @param musicInfo
+     */
+    public HFPlayer setMusic(AudioBean musicInfo) {
+        playMusic = musicInfo;
+        if (mPlayerView != null)
+            playMusic.setCoverBitmap(GlideUtil.getBitmap(mPlayerView.getContext(), playMusic.getCover()));
+        return this;
+    }
+
+    /**
+     * 播放歌曲
+     *
      * @param url
      */
-    public HFPlayer playWithUrl(String url){
-        if(mPlayerView != null)
-        mPlayerView.playWithUrl(url);
+    public HFPlayer playWithUrl(String url) {
+        if (mPlayerView != null) {
+            mPlayerView.playWithUrl(url);
+            if (playMusic.getCover() != null) {
+                playMusic.setCoverBitmap(GlideUtil.getBitmap(mPlayerView.getContext(), playMusic.getCover()));
+            }
+        }
         return this;
     }
 
     /**
      * 设置标题
+     *
      * @param title
      */
-    public HFPlayer setTitle(String title){
-        if(mPlayerView != null)
+    public HFPlayer setTitle(String title) {
+        if (mPlayerView != null)
             mPlayerView.setTitle(title);
         return this;
     }
 
     /**
      * 设置封面图
+     *
      * @param coverUrl
      */
-    public HFPlayer setCover(String coverUrl){
-        if(mPlayerView != null)
+    public HFPlayer setCover(String coverUrl) {
+        if (mPlayerView != null) {
             mPlayerView.setCover(coverUrl);
+        }
         return this;
     }
 
     /**
      * 设置版本信息
+     *
      * @param isMajor
      */
-    public HFPlayer setMajorVersion(Boolean isMajor){
-        if(mPlayerView != null)
+    public HFPlayer setMajorVersion(Boolean isMajor) {
+        if (mPlayerView != null)
             mPlayerView.setMajorVersion(isMajor);
         return this;
     }
@@ -117,8 +142,8 @@ public class HFPlayer {
     /**
      * 移动播放器位置
      */
-    public HFPlayer setMarginBottom(int marginBottom){
-        if(mPlayerView != null)
+    public HFPlayer setMarginBottom(int marginBottom) {
+        if (mPlayerView != null)
             mPlayerView.setMarginBottom(marginBottom);
         return this;
     }
@@ -126,8 +151,8 @@ public class HFPlayer {
     /**
      * 停止播放
      */
-    public HFPlayer stopPlay(){
-        if(mPlayerView != null){
+    public HFPlayer stopPlay() {
+        if (mPlayerView != null) {
             mPlayerView.stopPlay();
         }
         return this;
@@ -136,8 +161,8 @@ public class HFPlayer {
     /**
      * 收起播放器
      */
-    public HFPlayer foldPlayer(){
-        if(mPlayerView != null){
+    public HFPlayer foldPlayer() {
+        if (mPlayerView != null) {
             mPlayerView.animationOFF();
         }
         return this;
@@ -146,18 +171,18 @@ public class HFPlayer {
     /**
      * 展开播放器
      */
-    public HFPlayer expandedPlayer(){
-        if(mPlayerView != null){
+    public HFPlayer expandedPlayer() {
+        if (mPlayerView != null) {
             mPlayerView.animationOpen();
         }
         return this;
     }
 
-
     //移除播放器view,清除缓存数据
     public void destory() {
         removePlayer();
     }
+
     //移除播放器view
     public void removePlayer() {
         try {
@@ -176,11 +201,13 @@ public class HFPlayer {
             e.printStackTrace();
         }
     }
+
     //播放器资源回收
     private void recyclePlayer() {
         HFPlayerApi.with().stop();
         HFPlayerApi.relese();
     }
+
     //初始化一个container容器装载播放器view
     private FrameLayout getActivityRoot(FragmentActivity activity) {
         if (activity == null) {
@@ -193,6 +220,7 @@ public class HFPlayer {
         }
         return null;
     }
+
     /**
      * 呼应activity生命周期中onStart方法
      * activity启动时重新添加播放器，实现播放器与activity绑定
@@ -216,6 +244,7 @@ public class HFPlayer {
         mContainer = new WeakReference<>(container);
         container.addView(mPlayerView);
     }
+
     /**
      * 呼应activity生命周期中onStop方法
      * activity停止是暂时移除播放器，实现播放器与activity绑定
@@ -233,6 +262,7 @@ public class HFPlayer {
             mContainer = null;
         }
     }
+
     //获取容器对象
     private FrameLayout getContainer() {
         if (mContainer == null) {
