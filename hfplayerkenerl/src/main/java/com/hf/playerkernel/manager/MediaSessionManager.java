@@ -91,7 +91,7 @@ public class MediaSessionManager {
         if(music.getCoverBitmap() != null){
             metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, music.getCoverBitmap());
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && HFPlayerApi.getMusicList()!= null) {
             metaData.putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS,
                     HFPlayerApi.getMusicList().size());
         }

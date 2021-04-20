@@ -250,6 +250,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
             playProgress = 0 //重置播放进度
             pbPlay!!.progress = 0
             pbPlay!!.secondaryProgress = 0
+            showLoadView()
             hfPlayer!!.playWhitUrl(path)
         } else {
             //是否是播放错误后导致的暂停，播放出错暂停播放后需要重新prepare（）
