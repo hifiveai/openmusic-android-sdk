@@ -111,12 +111,12 @@ class IjkPlayback(private val mPlayService: PlayService) {
             super.handleMessage(msg)
             when (msg.what) {
                 UPDATE_PLAY_PROGRESS_SHOW -> updatePlayProgressShow()
-                MusicPlayAction.STATE_PAUSE -> {
+                ON_NET_LOST -> {
                     mNetAvailable = false
                     mTargetProgress = (mBufferedProgress * mPlayer!!.duration / 100).toInt()
 //                    pause()
                 }
-                MusicPlayAction.STATE_PLAYING -> {
+                ON_NET_AVAILABLE -> {
                     mNetAvailable = true
                     if (getIsReconnect() && isPausing) {
                         playPause()
@@ -778,7 +778,7 @@ class IjkPlayback(private val mPlayService: PlayService) {
             mPlayer!!.duration
         } else 0
 
-    fun sendMessage(what: Int) {
+    fun sendNetMessage(what: Int) {
         handler!!.sendEmptyMessage(what)
     }// 如果不是第一首，则还有上一首
 
@@ -890,6 +890,8 @@ class IjkPlayback(private val mPlayService: PlayService) {
          * 更新播放进度的显示，时间的显示
          */
         private const val UPDATE_PLAY_PROGRESS_SHOW = 0
+        const val ON_NET_AVAILABLE = 100005
+        const val ON_NET_LOST = 100006
     }
 
     init {

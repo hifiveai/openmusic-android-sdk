@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 
 import com.hf.playerkernel.config.MusicPlayAction;
 import com.hf.playerkernel.manager.HFPlayerApi;
+import com.hf.playerkernel.playback.IjkPlayback;
 import com.hf.playerkernel.utils.MusicLogUtils;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -18,7 +19,7 @@ public class NetworkCallbackImpl extends ConnectivityManager.NetworkCallback {
         super.onAvailable(network);
         MusicLogUtils.i("网络已连接");
         if(HFPlayerApi.with() != null){
-            HFPlayerApi.with().sendMessage(MusicPlayAction.STATE_PLAYING);
+            HFPlayerApi.with().sendNetMessage(IjkPlayback.ON_NET_AVAILABLE);
         }
 
     }
@@ -28,7 +29,7 @@ public class NetworkCallbackImpl extends ConnectivityManager.NetworkCallback {
         super.onLost(network);
         MusicLogUtils.i("网络已断开");
         if(HFPlayerApi.with() != null){
-            HFPlayerApi.with().sendMessage(MusicPlayAction.STATE_PAUSE);
+            HFPlayerApi.with().sendNetMessage(IjkPlayback.ON_NET_LOST);
         }
     }
 
@@ -36,9 +37,9 @@ public class NetworkCallbackImpl extends ConnectivityManager.NetworkCallback {
     public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
         super.onCapabilitiesChanged(network, networkCapabilities);
         if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
-            if(HFPlayerApi.with() != null){
-                HFPlayerApi.with().sendMessage(MusicPlayAction.STATE_PLAYING);
-            }
+//            if(HFPlayerApi.with() != null){
+//                HFPlayerApi.with().sendMessage(MusicPlayAction.STATE_PLAYING);
+//            }
             if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
                 MusicLogUtils.i("wifi已连接");
             } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {

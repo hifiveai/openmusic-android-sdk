@@ -164,7 +164,7 @@ public class PlayService extends Service {
                     break;
                 //当屏幕灭了，添加锁屏页面
                 case Intent.ACTION_SCREEN_OFF:
-                    startLockAudioActivity();
+//                    startLockAudioActivity();
                     MusicLogUtils.e("PlayService" + "---当屏幕灭了");
                     break;
                 case Intent.ACTION_SCREEN_ON:
