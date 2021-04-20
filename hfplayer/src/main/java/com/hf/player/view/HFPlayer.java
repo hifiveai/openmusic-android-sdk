@@ -1,5 +1,7 @@
 package com.hf.player.view;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -9,9 +11,12 @@ import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.hf.player.utils.GlideUtil;
+import com.hf.playerkernel.inter.HFPlayerMediaCallback;
 import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hf.playerkernel.model.AudioBean;
 import com.hf.playerkernel.utils.DisplayUtils;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 
@@ -24,10 +29,8 @@ public class HFPlayer {
     private WeakReference<FrameLayout> mContainer;
     public static boolean isAttached;
     public HFPlayerViewListener mListener;
-    public AudioBean playMusic;
 
     private HFPlayer() {
-        playMusic = new AudioBean();
     }
 
     public static HFPlayer getInstance() {
@@ -79,14 +82,25 @@ public class HFPlayer {
     }
 
     /**
+     * 设置媒体监听
+     *
+     * @param callback
+     * @return
+     */
+    public HFPlayer setMediaCallback(HFPlayerMediaCallback callback) {
+        HFPlayerApi.setMediaCallback(callback);
+        return this;
+    }
+
+    /**
      * 播放歌曲
      *
      * @param musicInfo
      */
     public HFPlayer setMusic(AudioBean musicInfo) {
-        playMusic = musicInfo;
-        if (mPlayerView != null)
-            playMusic.setCoverBitmap(GlideUtil.getBitmap(mPlayerView.getContext(), playMusic.getCover()));
+        if (mPlayerView != null){
+            HFPlayerApi.with().setPlayingMusic(musicInfo);
+        }
         return this;
     }
 
@@ -98,9 +112,6 @@ public class HFPlayer {
     public HFPlayer playWithUrl(String url) {
         if (mPlayerView != null) {
             mPlayerView.playWithUrl(url);
-            if (playMusic.getCover() != null) {
-                playMusic.setCoverBitmap(GlideUtil.getBitmap(mPlayerView.getContext(), playMusic.getCover()));
-            }
         }
         return this;
     }

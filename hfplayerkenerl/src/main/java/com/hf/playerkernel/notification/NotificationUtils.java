@@ -1,4 +1,4 @@
-package com.hf.playerkernel.utils;
+package com.hf.playerkernel.notification;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -10,6 +10,7 @@ import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -18,6 +19,11 @@ import androidx.core.app.NotificationCompat;
 import androidx.media.session.MediaButtonReceiver;
 
 import com.hf.playerkernel.R;
+import com.hf.playerkernel.manager.HFPlayerApi;
+import com.hf.playerkernel.model.AudioBean;
+import com.hf.playerkernel.notification.imageloader.ImageLoaderCallBack;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import static androidx.core.app.NotificationCompat.VISIBILITY_SECRET;
@@ -86,11 +92,10 @@ public class NotificationUtils extends ContextWrapper {
     /**
      * 获取Notification
      *
-     * @param title   title
-     * @param content content
+     * @param musicInfo   music
      */
-    public Notification getNotification(String title, String content, int icon) {
-        return  getNotificationCompat(title, content, icon).build();
+    public Notification getNotification(AudioBean musicInfo) {
+        return  getNotificationCompat(musicInfo).build();
     }
 
 
@@ -98,16 +103,15 @@ public class NotificationUtils extends ContextWrapper {
      * 调用该方法可以发送通知
      *
      * @param notifyId notifyId
-     * @param title    title
-     * @param content  content
+     * @param musicInfo    music
      */
-    public void sendNotification(int notifyId, String title, String content, int icon) {
-        Notification build = getNotificationCompat(title, content, icon).build();
+    public void sendNotification(int notifyId, AudioBean musicInfo) {
+        Notification build = getNotificationCompat(musicInfo).build();
         getManager().notify(notifyId, build);
     }
 
 
-    private NotificationCompat.Builder getNotificationCompat(String title, String content, int icon) {
+    private NotificationCompat.Builder getNotificationCompat(AudioBean musicInfo) {
         NotificationCompat.Builder builder;
         builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
         builder.setStyle(new  androidx.media.app.NotificationCompat.MediaStyle()
@@ -115,10 +119,11 @@ public class NotificationUtils extends ContextWrapper {
                         .setShowCancelButton(true)
                         .setShowActionsInCompactView(0, 1, 2)
                 )
-                .setSmallIcon(icon)
+                .setSmallIcon(R.drawable.ic_music_player_small_icon)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setContentTitle(title)
-                .setContentText(content)
+                .setContentTitle(musicInfo.getTitle())
+                .setTicker(musicInfo.getTitle())
+                .setContentText(musicInfo.getAlbum())
                 .setPriority(priority)
                 .setOnlyAlertOnce(onlyAlertOnce)
                 .setDeleteIntent(MediaButtonReceiver.buildMediaButtonPendingIntent(
@@ -129,16 +134,16 @@ public class NotificationUtils extends ContextWrapper {
                 builder.addAction(mActions.get(i));
             }
         }
-        if (mLargeIcon != null) {
-            builder.setLargeIcon(mLargeIcon);
-        }else{
+
+        //设置封面图
+        if(musicInfo.getCoverBitmap() == null && musicInfo.getCover() == null){
             builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.default_cover));
+        }else{
+            builder.setLargeIcon(musicInfo.getCoverBitmap());
         }
+
         if (intent != null) {
             builder.setContentIntent(intent);
-        }
-        if (ticker != null && ticker.length() > 0) {
-            builder.setTicker(ticker);
         }
         if (when != 0) {
             builder.setWhen(when);
@@ -154,10 +159,8 @@ public class NotificationUtils extends ContextWrapper {
         return builder;
     }
 
-
     private boolean ongoing = false;
     private PendingIntent intent = null;
-    private String ticker = "";
     private int priority = Notification.PRIORITY_DEFAULT;
     private boolean onlyAlertOnce = false;
     private long when = 0;
@@ -165,7 +168,6 @@ public class NotificationUtils extends ContextWrapper {
     private int defaults = 0;
     private long[] pattern = null;
     private ArrayList<NotificationCompat.Action> mActions = new ArrayList<>();
-    private Bitmap mLargeIcon;
     private MediaSessionCompat.Token token;
 
     /**
@@ -187,17 +189,6 @@ public class NotificationUtils extends ContextWrapper {
      */
     public NotificationUtils setContentIntent(PendingIntent intent) {
         this.intent = intent;
-        return this;
-    }
-
-    /**
-     * 设置状态栏的标题
-     *
-     * @param ticker 状态栏的标题
-     * @return
-     */
-    public NotificationUtils setTicker(String ticker) {
-        this.ticker = ticker;
         return this;
     }
 
@@ -286,18 +277,7 @@ public class NotificationUtils extends ContextWrapper {
     }
 
     /**
-     * 设置大图
-     *
-     * @param icon
-     * @return
-     */
-    public NotificationUtils setLargeIcon(Bitmap icon) {
-        mLargeIcon = icon;
-        return this;
-    }
-
-    /**
-     * 设置大图
+     * 设置Token
      *
      * @param token
      * @return

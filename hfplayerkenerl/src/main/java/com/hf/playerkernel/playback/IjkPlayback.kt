@@ -3,6 +3,8 @@ package com.hf.playerkernel.playback
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.IntentFilter
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.media.AudioManager
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiManager.WifiLock
@@ -15,19 +17,21 @@ import com.hf.playerkernel.config.PlayModeEnum
 import com.hf.playerkernel.inter.EventCallback
 import com.hf.playerkernel.inter.HFPlayerEventListener
 import com.hf.playerkernel.manager.AudioSoundManager
+import com.hf.playerkernel.manager.HFPlayerApi.getCallback
+import com.hf.playerkernel.manager.HFPlayerApi.getImageLoader
 import com.hf.playerkernel.manager.HFPlayerApi.getIsReconnect
 import com.hf.playerkernel.manager.HFPlayerApi.getIsUseCache
 import com.hf.playerkernel.manager.HFPlayerApi.getMaxBufferSize
 import com.hf.playerkernel.manager.HFPlayerApi.getMusicList
 import com.hf.playerkernel.model.AudioBean
+import com.hf.playerkernel.notification.NotificationHelper
+import com.hf.playerkernel.notification.imageloader.ImageLoaderCallBack
 import com.hf.playerkernel.service.PlayService
 import com.hf.playerkernel.tool.QuitTimerHelper
 import com.hf.playerkernel.utils.MusicLogUtils
 import com.hf.playerkernel.utils.MusicSpUtils
-import com.hf.playerkernel.utils.NotificationHelper
 import tv.danmaku.ijk.media.player.IMediaPlayer
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
-import java.io.File
 import java.io.IOException
 import java.util.*
 
@@ -53,7 +57,7 @@ class IjkPlayback(private val mPlayService: PlayService) {
      * 正在播放的歌曲[本地|网络]
      */
     var playingMusic: AudioBean? = null
-        private set
+
     /**
      * 正在播放的歌曲url
      */
@@ -109,7 +113,7 @@ class IjkPlayback(private val mPlayService: PlayService) {
                 UPDATE_PLAY_PROGRESS_SHOW -> updatePlayProgressShow()
                 MusicPlayAction.STATE_PAUSE -> {
                     mNetAvailable = false
-                    mTargetProgress = (mBufferedProgress * mPlayer!!.duration /100).toInt()
+                    mTargetProgress = (mBufferedProgress * mPlayer!!.duration / 100).toInt()
 //                    pause()
                 }
                 MusicPlayAction.STATE_PLAYING -> {
@@ -201,6 +205,9 @@ class IjkPlayback(private val mPlayService: PlayService) {
                 release()
             }
         }
+        if (getCallback() != null) {
+            getCallback()!!.playPause()
+        }
     }
 
     /**
@@ -209,6 +216,9 @@ class IjkPlayback(private val mPlayService: PlayService) {
      * 逻辑：如果不是第一首，则还有上一首；如果没有上一首，则切换到最后一首
      */
     fun prev() {
+        if (getCallback() != null) {
+            getCallback()!!.onPre()
+        }
         //建议都添加这个判断
         if (null == audioMusics || audioMusics!!.isEmpty()) {
             return
@@ -249,6 +259,9 @@ class IjkPlayback(private val mPlayService: PlayService) {
      * 逻辑：如果不是最后一首，则还有下一首；如果是最后一首，则切换回第一首
      */
     operator fun next() {
+        if (getCallback() != null) {
+            getCallback()!!.onNext()
+        }
         //建议都添加这个判断
         if (null == audioMusics || audioMusics!!.isEmpty()) {
             return
@@ -433,13 +446,6 @@ class IjkPlayback(private val mPlayService: PlayService) {
         if (mListener != null) {
             mListener!!.onChange(playingMusic)
         }
-        if (playingMusic != null) {
-            //更新通知栏
-            NotificationHelper.get().showPlay(playingMusic, mPlayService.mMediaSessionManager.mediaSession)
-            //更新
-            mPlayService.mMediaSessionManager.updateMetaData(playingMusic)
-            mPlayService.mMediaSessionManager.updatePlaybackState()
-        }
     }
 
     /**
@@ -490,6 +496,21 @@ class IjkPlayback(private val mPlayService: PlayService) {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+
+        if (playingMusic != null) {
+            //设置封面图
+            if (playingMusic!!.coverBitmap == null) {
+                if (playingMusic!!.cover != null) {
+                    fetchBitmapFromURLAsync()
+                }
+            }else{
+                //更新通知栏
+                NotificationHelper.get().showPlay(playingMusic, mPlayService.mMediaSessionManager.mediaSession)
+                //更新
+                mPlayService.mMediaSessionManager.updateMetaData(playingMusic)
+                mPlayService.mMediaSessionManager.updatePlaybackState()
+            }
+        }
     }
 
     /**
@@ -500,6 +521,24 @@ class IjkPlayback(private val mPlayService: PlayService) {
         val startIndex = if (index > 15) index - 15 else index - 8
         val fileName = url.substring(startIndex, index).replace("/", "")
         return "${mPlayService.cacheDir}/$fileName"
+    }
+
+    /**
+     * 封面加载
+     */
+    private fun fetchBitmapFromURLAsync() {
+        getImageLoader()!!.load(playingMusic!!.cover, object : ImageLoaderCallBack {
+            override fun onBitmapLoaded(bitmap: Bitmap?) {
+                playingMusic!!.coverBitmap = bitmap
+                //更新通知栏
+                NotificationHelper.get().showPlay(playingMusic, mPlayService.mMediaSessionManager.mediaSession)
+                //更新
+                mPlayService.mMediaSessionManager.updateMetaData(playingMusic)
+                mPlayService.mMediaSessionManager.updatePlaybackState()
+            }
+
+            override fun onBitmapFailed(errorDrawable: Drawable?) {}
+        })
     }
 
 
@@ -611,10 +650,10 @@ class IjkPlayback(private val mPlayService: PlayService) {
         when (i) {
             701 -> mPlayState = MusicPlayAction.STATE_BUFFERING
             702, 10002 -> {
-                mPlayState = if(!paused) {
+                mPlayState = if (!paused) {
                     start()
                     MusicPlayAction.STATE_PLAYING
-                }else{
+                } else {
                     MusicPlayAction.STATE_PAUSE
                 }
             }

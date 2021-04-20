@@ -3,10 +3,13 @@ package com.hf.playerkernel.manager
 import android.app.Application
 import android.content.*
 import android.os.IBinder
-import android.util.Log
 import com.hf.playerkernel.config.MusicConstant
 import com.hf.playerkernel.config.PlayModeEnum
+import com.hf.playerkernel.inter.HFPlayerMediaCallback
 import com.hf.playerkernel.model.AudioBean
+import com.hf.playerkernel.notification.imageloader.DefaultImageLoader
+import com.hf.playerkernel.notification.imageloader.ImageLoader
+import com.hf.playerkernel.notification.imageloader.ImageLoaderStrategy
 import com.hf.playerkernel.playback.IjkPlayback
 import com.hf.playerkernel.service.PlayService
 import com.hf.playerkernel.service.PlayService.PlayBinder
@@ -23,7 +26,7 @@ object HFPlayerApi {
     /**
      * 播放音乐service
      */
-    private var mPlayService: PlayService? = null
+    var mPlayService: PlayService? = null
     private var serviceToken: ServiceToken? = null
     private val mConnectionMap = WeakHashMap<Context, ServiceConnection>()
 
@@ -40,11 +43,21 @@ object HFPlayerApi {
     //通知栏相关
     private var isOpenNotification: Boolean = false
 
+    //锁屏控制
+    private var isOpenMediaSession: Boolean = false
+
     //最大缓冲
     private var maxBufferSize = 270 * 1024L
 
     //是否缓存
     private var useCache = false
+
+    //图片加载相关
+    private var imageStrategy: ImageLoaderStrategy? = null
+    private var imageLoader: ImageLoader? = null
+
+
+    private var mCallback : HFPlayerMediaCallback ?= null
 
 
     @JvmStatic
@@ -54,6 +67,10 @@ object HFPlayerApi {
 
     fun setNotificationSwitch(isOpenNotification: Boolean) = apply {
         this.isOpenNotification  = isOpenNotification
+    }
+
+    fun setMediaSessionSwitch(isOpenMediaSession: Boolean) = apply {
+        this.isOpenMediaSession  = isOpenMediaSession
     }
 
     fun setMaxBufferSize(size: Long) = apply {
@@ -74,6 +91,14 @@ object HFPlayerApi {
         this.isReconnect = reconnect
     }
 
+
+    /**
+     * 自定义图片加载
+     */
+    fun setImageLoader(loader: ImageLoaderStrategy) = apply {
+        this.imageStrategy = loader
+    }
+
     /**
      * 是否debug，区别就是是否打印一些内部 log
      */
@@ -82,11 +107,28 @@ object HFPlayerApi {
     }
 
     /**
+     * 设置媒体监听
+     *
+     * @param listener
+     * @return
+     */
+    @JvmStatic
+    fun setMediaCallback(callback : HFPlayerMediaCallback?)= apply {
+        mCallback = callback
+    }
+
+    /**
      * 初始化
      */
     fun apply() {
         if (globalContext == null) {
             throw NullPointerException("context is null")
+        }
+        imageLoader = ImageLoader(globalContext)
+        if (imageStrategy == null) {
+            imageLoader?.init(DefaultImageLoader())
+        } else {
+            imageLoader?.init(imageStrategy!!)
         }
         bindService()
     }
@@ -145,22 +187,34 @@ object HFPlayerApi {
      * 获取
      */
     @JvmStatic
-    fun getMusicList(): MutableList<AudioBean>? = mMusicList
+    fun getMusicList() = mMusicList
 
     /**
      * 获取
      */
     @JvmStatic
-    fun getIsReconnect(): Boolean = this.isReconnect
+    fun getIsReconnect() = this.isReconnect
 
     @JvmStatic
-    fun getIsOpenNotification(): Boolean = this.isOpenNotification
+    fun getIsOpenNotification() = this.isOpenNotification
 
     @JvmStatic
-    fun getMaxBufferSize(): Long = this.maxBufferSize
+    fun getIsOpenMediaSession() = this.isOpenMediaSession
 
     @JvmStatic
-    fun getIsUseCache(): Boolean = this.useCache
+    fun getMaxBufferSize() = this.maxBufferSize
+
+    @JvmStatic
+    fun getIsUseCache() = this.useCache
+
+    @JvmStatic
+    fun getCallback() = this.mCallback
+
+    /**
+     * 获取图片加载器
+     */
+    @JvmStatic
+    fun getImageLoader() = this.imageLoader
 
     @JvmStatic
     val playMode: Int

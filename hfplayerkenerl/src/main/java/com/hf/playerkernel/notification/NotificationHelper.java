@@ -1,4 +1,4 @@
-package com.hf.playerkernel.utils;
+package com.hf.playerkernel.notification;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -94,8 +94,8 @@ public class NotificationHelper {
         NotificationUtils notificationUtils = new NotificationUtils(context);
         notificationUtils
 //                .setContentIntent(pendingIntent)
+                .setToken(token)
                 .setPriority(Notification.PRIORITY_DEFAULT)
-                .setTicker(music.getTitle())
                 .addAction(R.drawable.ic_music_player_prev,
                         "Previous",
                         getReceiverPendingIntent(context, MusicPlayAction.TYPE_PRE,1))
@@ -107,9 +107,8 @@ public class NotificationHelper {
                 .setOngoing(isPlaying);
 
 
-        return notificationUtils.getNotification(music.getTitle(), "测试测试", R.drawable.ic_music_player_small_icon);
+        return notificationUtils.getNotification(music);
     }
-
 
     /**
      * 设置自定义通知栏布局

@@ -1,12 +1,19 @@
 package com.hf.playerkernel.manager;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
+import androidx.core.app.NotificationCompat;
+
 import com.hf.playerkernel.model.AudioBean;
+import com.hf.playerkernel.notification.imageloader.ImageLoaderCallBack;
 import com.hf.playerkernel.service.PlayService;
+
+import org.jetbrains.annotations.Nullable;
 
 
 public class MediaSessionManager {
@@ -81,8 +88,8 @@ public class MediaSessionManager {
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, music.getAlbum())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST, music.getArtist())
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, music.getDuration());
-        if(music.getCover() != null){
-            metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, music.getCover());
+        if(music.getCoverBitmap() != null){
+            metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, music.getCoverBitmap());
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             metaData.putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS,
@@ -100,6 +107,7 @@ public class MediaSessionManager {
         mMediaSession.setActive(false);
         mMediaSession.release();
     }
+
 
     /**
      * 初始化回调，用于监听锁屏界面上的按钮事件

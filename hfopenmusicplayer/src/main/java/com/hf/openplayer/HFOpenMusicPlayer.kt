@@ -5,7 +5,9 @@ import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import com.hf.player.view.HFPlayer
 import com.hf.player.view.HFPlayerViewListener
+import com.hf.playerkernel.inter.HFPlayerMediaCallback
 import com.hf.playerkernel.manager.HFPlayerApi
+import com.hf.playerkernel.model.AudioBean
 import com.hf.playerkernel.utils.MusicLogUtils
 import com.hfopen.sdk.entity.MusicRecord
 import com.hfopen.sdk.manager.HFOpenApi
@@ -47,12 +49,27 @@ class HFOpenMusicPlayer private constructor() {
     fun setUseCache(useCache: Boolean) = apply {
         HFPlayerApi.setUseCache(useCache)
     }
+            .setNotificationSwitch(true)
 
     /**
      * 是否断线重连
      */
     fun setReconnect(reconnect: Boolean) = apply {
         HFPlayerApi.setReconnect(reconnect)
+    }
+
+    /**
+     * 通知栏相关
+     */
+    fun setNotificationSwitch(switch: Boolean) = apply {
+        HFPlayerApi.setNotificationSwitch(switch)
+    }
+
+    /**
+     * 锁屏控制
+     */
+    fun setMediaSessionSwitch(switch: Boolean) = apply {
+        HFPlayerApi.setMediaSessionSwitch(switch)
     }
 
     /**
@@ -185,18 +202,44 @@ class HFOpenMusicPlayer private constructor() {
         if (musicDetail != null) {
             musicId = musicDetail.musicId
 
+            val musicInfo = AudioBean()
+            musicInfo.id = musicDetail.musicId
+            musicInfo.title = musicDetail.musicName
+            musicInfo.album = musicDetail.albumName
+            musicInfo.cover = musicDetail.cover!![0].url
+
             var title = ""
             if(musicDetail.artist != null && musicDetail.artist!!.isNotEmpty()){
+                musicInfo.artist = musicDetail.artist?.get(0)?.name
                 title = musicDetail.musicName +" - "+ musicDetail.artist?.get(0)?.name
             }else if(musicDetail.composer != null && musicDetail.composer!!.isNotEmpty()){
+                musicInfo.artist = musicDetail.composer?.get(0)?.name
                 title =  musicDetail.musicName +" - "+ musicDetail.composer?.get(0)?.name
             }
+
+
             //初始化播放器UI
             HFPlayer.getInstance()
                     .setTitle(title)
                     .setMajorVersion(false)
                     .setCover(musicDetail.cover!![0].url)
+                    .setMusic(musicInfo)
                     .playWithUrl(url)
+                    .setMediaCallback(object : HFPlayerMediaCallback{
+                        override fun onPre() {
+                            HFOpenMusic.getInstance().playLastMusic()
+                        }
+
+                        override fun playPause() {
+
+                        }
+
+                        override fun onNext() {
+                            HFOpenMusic.getInstance().playNextMusic()
+                        }
+
+                    })
+
         }
     }
 
