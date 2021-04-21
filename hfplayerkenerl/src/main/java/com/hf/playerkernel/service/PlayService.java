@@ -191,7 +191,7 @@ public class PlayService extends Service {
      * 播放器除了播放了音乐之外什么都没做，就可以分别在任务管理、锁屏、负一屏控制我的播放器
      */
     private void initMediaSessionManager() {
-        mMediaSessionManager = new MediaSessionManager(this, HFPlayerApi.getIsOpenMediaSession());
+        mMediaSessionManager = new MediaSessionManager(this, HFPlayerApi.getIsOpenNotification());
     }
 
     /**

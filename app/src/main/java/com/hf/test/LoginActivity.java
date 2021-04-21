@@ -168,8 +168,7 @@ public class LoginActivity extends AppCompatActivity {
                 .setMaxBufferSize(ConsData.MaxBufferSize)
                 .setUseCache(ConsData.UseCache)
                 .setReconnect(ConsData.Reconnect)
-                .setNotificationSwitch(false)
-                .setMediaSessionSwitch(true)
+                .setNotificationSwitch(true)
                 .setListenType(ConsData.musicType.toString())
                 .apply();
     }

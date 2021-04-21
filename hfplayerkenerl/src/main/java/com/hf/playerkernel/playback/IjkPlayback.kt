@@ -322,7 +322,9 @@ class IjkPlayback(private val mPlayService: PlayService) {
                 if (playingMusic != null) {
                     //当点击播放按钮时(播放详情页面或者底部控制栏)，同步通知栏中播放按钮状态
                     NotificationHelper.get().showPlay(playingMusic, mPlayService.mMediaSessionManager.mediaSession)
-                    playingMusic!!.duration = mPlayer!!.duration
+                    if(playingMusic!!.duration == 0L){
+                        playingMusic!!.duration = mPlayer!!.duration
+                    }
                     mPlayService.mMediaSessionManager.updatePlaybackState()
                 }
                 //注册监听来电/耳机拔出时暂停播放广播

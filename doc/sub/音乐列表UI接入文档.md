@@ -81,3 +81,15 @@ interface HFPlayMusicListener {
     void onCloseOpenMusic();
 }
 ```
+
+MusicRecord说明
+| 字段        | 类型    |   说明   |
+| -----------| ------- | ---- |
+| musicId    | String  |  音乐ID    |
+| musicName  | String  |    音乐名  |
+| albumId    | String  |   专辑ID   |
+| albumName  | String  |   专辑名   |
+| artist     | List    |   表演者   |
+| composer   | List    |  作曲者    |
+| cover      | List    |     封面图 |
+| duration   | Int     |   时长   |

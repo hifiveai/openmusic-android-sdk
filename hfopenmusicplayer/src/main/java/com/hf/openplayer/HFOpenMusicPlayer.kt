@@ -66,13 +66,6 @@ class HFOpenMusicPlayer private constructor() {
     }
 
     /**
-     * 锁屏控制
-     */
-    fun setMediaSessionSwitch(switch: Boolean) = apply {
-        HFPlayerApi.setMediaSessionSwitch(switch)
-    }
-
-    /**
      * 是否debug，区别就是是否打印一些内部 log
      */
     fun setDebug(debug: Boolean) = apply {
@@ -136,7 +129,9 @@ class HFOpenMusicPlayer private constructor() {
 
                     override fun onComplete() {
 //                        report()
-                        HFOpenMusic.getInstance().playNextMusic()
+                        if(!HFPlayerApi.getIsOpenNotification()) {
+                            HFOpenMusic.getInstance().playNextMusic()
+                        }
                     }
 
                     override fun onError() {
@@ -212,7 +207,7 @@ class HFOpenMusicPlayer private constructor() {
 
             //初始化播放器UI
             HFPlayer.getInstance()
-                    .playMusic(musicId,title,url,musicDetail.cover!![0].url,musicDetail.albumName,artist)
+                    .playMusic(musicId,title,url,musicDetail.cover!![0].url,musicDetail.duration,musicDetail.albumName,artist)
 //                    .playMusic(title,url,musicDetail.cover!![0].url)
                     .setMajorVersion(false)
                     .setMediaCallback(object : HFPlayerMediaCallback{

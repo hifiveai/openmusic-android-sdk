@@ -115,17 +115,19 @@ public class HFPlayer {
      * @param title    音乐标题
      * @param url      音乐链接
      * @param coverUrl 音乐封面
+     * @param duration 音乐时长
      * @param album    音乐专辑
      * @param artist   音乐作者
      * @return
      */
-    public HFPlayer playMusic(String musicID, String title, String url, String coverUrl, String album, String artist) {
+    public HFPlayer playMusic(String musicID, String title, String url, String coverUrl, int duration, String album, String artist) {
         if (mPlayerView != null) {
             AudioBean musicInfo = new AudioBean();
             musicInfo.setId(musicID);
             musicInfo.setTitle(title);
             musicInfo.setPath(url);
             musicInfo.setCover(coverUrl);
+            musicInfo.setDuration(duration*1000);
             musicInfo.setAlbum(album);
             musicInfo.setArtist(artist);
             HFPlayerApi.with().setPlayingMusic(musicInfo);

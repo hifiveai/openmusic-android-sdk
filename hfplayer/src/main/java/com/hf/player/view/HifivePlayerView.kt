@@ -145,9 +145,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 onTrackingTouch = false
                 if(seekBar.progress + 1000 >= seekBar.max){
-                    if(!HFPlayerApi.getIsOpenMediaSession() && !HFPlayerApi.getIsOpenNotification()){
-                        HFPlayer.getInstance().mListener?.onComplete()
-                    }
+                    HFPlayer.getInstance().mListener?.onComplete()
                     return
                 }
                 val seekTo = hfPlayer!!.seekTo(seekBar.progress)
@@ -406,9 +404,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
                     MusicPlayAction.STATE_COMPLETE -> {
                         pausePlay()
                         clear()
-                        if(!HFPlayerApi.getIsOpenMediaSession() && !HFPlayerApi.getIsOpenNotification()) {
-                            HFPlayer.getInstance().mListener?.onComplete()
-                        }
+                        HFPlayer.getInstance().mListener?.onComplete()
                     }
                 }
             }

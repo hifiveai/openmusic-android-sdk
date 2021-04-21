@@ -43,9 +43,6 @@ object HFPlayerApi {
     //通知栏相关
     private var isOpenNotification: Boolean = false
 
-    //锁屏控制
-    private var isOpenMediaSession: Boolean = false
-
     //最大缓冲
     private var maxBufferSize = 270 * 1024L
 
@@ -67,10 +64,6 @@ object HFPlayerApi {
 
     fun setNotificationSwitch(isOpenNotification: Boolean) = apply {
         this.isOpenNotification  = isOpenNotification
-    }
-
-    fun setMediaSessionSwitch(isOpenMediaSession: Boolean) = apply {
-        this.isOpenMediaSession  = isOpenMediaSession
     }
 
     fun setMaxBufferSize(size: Long) = apply {
@@ -197,9 +190,6 @@ object HFPlayerApi {
 
     @JvmStatic
     fun getIsOpenNotification() = this.isOpenNotification
-
-    @JvmStatic
-    fun getIsOpenMediaSession() = this.isOpenMediaSession
 
     @JvmStatic
     fun getMaxBufferSize() = this.maxBufferSize
