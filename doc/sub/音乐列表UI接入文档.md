@@ -1,6 +1,6 @@
 # 《音乐列表UI》接口文档
 [TOC]
-## SDK初始化
+## 初始化SDK
 >  注意：初始化需要clientId，建议在用户登录之后进行初始化
 
 ```java
@@ -29,7 +29,7 @@ HFOpenMusic.getInstance().showOpenMusic(FragmentActivity activity);
 | -------- | ---- | ------ | ---- |
 | activity | 是   | 上下文 |      |
 
-## 关闭列表方法
+## 隐藏音乐列表
 ```java
 HFOpenMusic.getInstance().closeOpenMusic();
 ```

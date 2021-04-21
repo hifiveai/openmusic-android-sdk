@@ -1,6 +1,6 @@
 # 《播放器UI》接口文档
 [TOC]
-## 初始化
+## 初始化SDK
 建议在Application中调用
 ```java
 HFPlayer.init(this).apply()
@@ -15,7 +15,7 @@ HFPlayer.init(this).apply()
         .serUseCache(..)      //配置是否开启缓存，默认关闭
         .apply();
 ```
-## 初始化播放器
+## 显示播放器
 
 <font color='#FF0000'>由于列表UI基于DialogFragment开发，需要使用UI的Activity务必继承FragmentActivity或FragmentActivity的子类，在需要播放器的界面使用。</font>
 
@@ -37,37 +37,31 @@ HFOpenMusicPlayer.getInstance().showPlayer(FragmentActivity activity,int marginT
 ```java
 HFPlayer.getInstance().removePlayer();
 ```
-## 设置歌曲标题
-
+## 播放歌曲
+<font color='#FF0000'>新加接口，可以设置url、标题、封面</font>
 ```java
  HFPlayer.setTitle(String title)
+```
+## 停止播放音乐
+```java
+HFPlayer.stopPlay()
 ```
 ## 设置版本信息（true 主版本  false 伴奏）
 ```java
 HFPlayer.setMajorVersion(Boolean isMajor)
 ```
-## 设置封面图
-```java
-HFPlayer.setCover(String coverUrl)
-```
-## 播放歌曲
-```java
-HFPlayer.playWithUrl(String url)
-```
-## 设置状态监听
-```java
-HFPlayer.setListener(HFPlayerViewListener listener)
-```
-## 收缩播放器
-```java
-HFPlayer.getInstance().foldPlayer();
-```
 ## 展开播放器
 ```java
 HFPlayer.getInstance().expandedPlayer();
 ```
-
-## 停止播放音乐
+## 折叠播放器
 ```java
-HFPlayer.stopPlay()
+HFPlayer.getInstance().foldPlayer();
 ```
+## 设置状态监听
+<font color='#FF0000'>回调实现代码加上，直接在代码里注释说明好每个回调方法</font>
+
+```java
+HFPlayer.setListener(HFPlayerViewListener listener)
+```
+
