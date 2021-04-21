@@ -144,7 +144,7 @@ class HifiveMusicHotListFragment : Fragment() {
     private fun getData(ty: Int) {
         try {
             if (mContext == null) return
-                    HFOpenApi.getInstance().baseHot(System.currentTimeMillis()-60*1000*60*24*365,  365, page, 20, object : DataResponse<MusicList> {
+                    HFOpenApi.getInstance().baseHot(System.currentTimeMillis()/1000-60*60*24*365,  365, page, 20, object : DataResponse<MusicList> {
                         override fun onError(exception: BaseException) {
                             if (ty != Refresh) { //上拉加载请求失败后，还原页卡
                                 page--

@@ -205,9 +205,7 @@ class IjkPlayback(private val mPlayService: PlayService) {
                 release()
             }
         }
-        if (getCallback() != null) {
-            getCallback()!!.playPause()
-        }
+        getCallback()?.playPause()
     }
 
     /**
@@ -216,9 +214,7 @@ class IjkPlayback(private val mPlayService: PlayService) {
      * 逻辑：如果不是第一首，则还有上一首；如果没有上一首，则切换到最后一首
      */
     fun prev() {
-        if (getCallback() != null) {
-            getCallback()!!.onPre()
-        }
+        getCallback()?.onPre()
         //建议都添加这个判断
         if (null == audioMusics || audioMusics!!.isEmpty()) {
             return
@@ -259,9 +255,7 @@ class IjkPlayback(private val mPlayService: PlayService) {
      * 逻辑：如果不是最后一首，则还有下一首；如果是最后一首，则切换回第一首
      */
     operator fun next() {
-        if (getCallback() != null) {
-            getCallback()!!.onNext()
-        }
+        getCallback()?.onNext()
         //建议都添加这个判断
         if (null == audioMusics || audioMusics!!.isEmpty()) {
             return

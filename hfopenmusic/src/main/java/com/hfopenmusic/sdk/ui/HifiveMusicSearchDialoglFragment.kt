@@ -84,7 +84,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
                         ll_empty!!.visibility = View.GONE
                     }
                     if (musicModels != null) adapter!!.updateDatas(musicModels)
-                    refreshLayout!!.setEnableLoadMore(adapter!!.datas.size < totalCount)
+                    refreshLayout!!.setEnableLoadMore(!isRecommand && adapter!!.datas.size < totalCount)
 
                     //保存搜索记录
                     if (searchHistory.isEmpty()) {
@@ -350,7 +350,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
     private fun getHot() {
         try {
             if (mContext == null) return
-            HFOpenApi.getInstance().baseHot(System.currentTimeMillis()-60*1000*60*24*365, 365, 1, 20, object : DataResponse<MusicList> {
+            HFOpenApi.getInstance().baseHot(System.currentTimeMillis()/1000-60*60*24*365, 365, 1, 20, object : DataResponse<MusicList> {
                 override fun onError(exception: BaseException) {
                     HFOpenMusic.getInstance().showToast(activity, exception.msg)
                 }
@@ -389,7 +389,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
             }
 
             HFOpenApi.getInstance().searchMusic(null, null, null, null, null, null, null,
-                    content, null,1,null, page, 100, object : DataResponse<MusicList> {
+                    content, null,1,null, page, 20, object : DataResponse<MusicList> {
                 override fun onError(exception: BaseException) {
                     if (ty != Refresh) { //上拉加载请求失败后，还原页卡
                         page--
@@ -405,6 +405,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
                     totalCount = data.meta.totalCount
                     if (ty == Refresh && (totalCount == 0 || musicModels == null || musicModels!!.isEmpty())) {
                         isRecommand = true
+                        page = 1
                         login()
                     } else {
                         isRecommand = false
@@ -436,7 +437,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
     private fun getFavorite() {
         try {
             if (mContext == null) return
-            HFOpenApi.getInstance().baseFavorite(page, 100, object : DataResponse<MusicList> {
+            HFOpenApi.getInstance().baseFavorite(page, 50, object : DataResponse<MusicList> {
                 override fun onError(exception: BaseException) {
                     HFOpenMusic.getInstance().showToast(activity, exception.msg)
                     mHandler.sendEmptyMessage(RequstFail)
