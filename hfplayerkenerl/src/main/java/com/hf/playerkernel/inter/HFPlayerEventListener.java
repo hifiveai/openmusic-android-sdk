@@ -8,11 +8,11 @@ import com.hf.playerkernel.model.AudioBean;
  */
 public interface HFPlayerEventListener {
 
-    /**
-     * 切换歌曲
-     * 主要是切换歌曲的时候需要及时刷新界面信息
-     */
-    void onChange(AudioBean music);
+//    /**
+//     * 切换歌曲
+//     * 主要是切换歌曲的时候需要及时刷新界面信息
+//     */
+//    void onChange(AudioBean music);
 
     /**
      * 播放状态改变
@@ -30,9 +30,9 @@ public interface HFPlayerEventListener {
      */
     void onBufferingUpdate(int percent);
 
-    /**
-     * 更新定时停止播放时间
-     */
-    void onTimer(long remain);
+//    /**
+//     * 更新定时停止播放时间
+//     */
+//    void onTimer(long remain);
 
 }

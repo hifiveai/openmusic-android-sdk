@@ -171,13 +171,13 @@ class IjkPlayback(private val mPlayService: PlayService) {
      * 初始化计时器
      */
     private fun initQuitTimer() {
-        QuitTimerHelper.getInstance().init(mPlayService, handler!!, object : EventCallback<Long> {
-            override fun onEvent(aLong: Long) {
-                if (mListener != null) {
-                    mListener!!.onTimer(aLong)
-                }
-            }
-        })
+//        QuitTimerHelper.getInstance().init(mPlayService, handler!!, object : EventCallback<Long> {
+//            override fun onEvent(aLong: Long) {
+//                if (mListener != null) {
+//                    mListener!!.onTimer(aLong)
+//                }
+//            }
+//        })
     }
     /**---------------------播放或暂停，上一首，下一首----------------------------------------- */
     /**
@@ -443,10 +443,10 @@ class IjkPlayback(private val mPlayService: PlayService) {
         if (!mNetAvailable) return
         playingMusic = music
         playWhitUrl(playingMusic!!.path)
-        //当播放的时候，需要刷新界面信息
-        if (mListener != null) {
-            mListener!!.onChange(playingMusic)
-        }
+//        //当播放的时候，需要刷新界面信息
+//        if (mListener != null) {
+//            mListener!!.onChange(playingMusic)
+//        }
     }
 
     /**

@@ -1,7 +1,7 @@
 # 《播放器UI》接口文档
 [TOC]
 ## 初始化SDK
-建议在Application中调用
+>建议在Application中调用
 ```java
 HFPlayer.init(this).apply()
 ```
@@ -37,19 +37,20 @@ HFOpenMusicPlayer.getInstance().showPlayer(FragmentActivity activity,int marginT
 ```java
 HFPlayer.getInstance().removePlayer();
 ```
-## 播放歌曲
-<font color='#FF0000'>新加接口，可以设置url、标题、封面</font>
+## 设置版本信息（true 主版本  false 伴奏）
 ```java
- HFPlayer.setTitle(String title)
+HFPlayer.setMajorVersion(Boolean isMajor)
+```
+
+## 播放歌曲
+```java
+ HFPlayer.playMusic(String title,String url,String coverUrl)
 ```
 ## 停止播放音乐
 ```java
 HFPlayer.stopPlay()
 ```
-## 设置版本信息（true 主版本  false 伴奏）
-```java
-HFPlayer.setMajorVersion(Boolean isMajor)
-```
+
 ## 展开播放器
 ```java
 HFPlayer.getInstance().expandedPlayer();
@@ -59,9 +60,49 @@ HFPlayer.getInstance().expandedPlayer();
 HFPlayer.getInstance().foldPlayer();
 ```
 ## 设置状态监听
-<font color='#FF0000'>回调实现代码加上，直接在代码里注释说明好每个回调方法</font>
 
 ```java
-HFPlayer.setListener(HFPlayerViewListener listener)
+HFPlayer.getInstance().setListener(new HFPlayerViewListener() {
+                                @Override
+                                public void onFold() {
+                                    //播放器收起
+                                }
+      
+                                @Override
+                                public void onExpanded() {
+                                    //播放器展开
+                                }
+       
+                                @Override 
+                                public void onClick() {
+                                    //点击图片  
+                                }
+        
+                                @Override
+                                public void onPre() {
+                                    //点击上一首
+                                }
+        
+                                @Override
+                                public void onPlayPause(boolean isPlaying) {
+                                    //点击播放/暂停
+                                }
+        
+                                @Override
+                                public void onNext() {
+                                    //点击下一首
+                                }
+        
+                                @Override
+                                public void onComplete() {
+                                    //播放完成
+                                }
+       
+                                @Override
+                                public void onError() {
+                                    //播放错误
+                                }
+                            });
 ```
+
 

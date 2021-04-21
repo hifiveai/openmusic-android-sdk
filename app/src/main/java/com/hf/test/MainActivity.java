@@ -122,13 +122,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void play() {
+        String cover = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20190521%2F17%2F1558430156-SBswiePxFE.jpg&refer=http%3A%2F%2Fimage.biaobaiju.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619162218&t=409c6be07cf495ccc4dcf3bc23f94028";
+        String url  = "http://img.zhugexuetang.com/lleXB2SNF5UFp1LfNpPI0hsyQjNs";
+
         //初始化播放器UI
         if(HFPlayerApi.with().isPlaying()) return;
         HFPlayer.getInstance()
-                .setTitle("测试测试测试测试测试测试测试测试")
                 .setMajorVersion(false)
-                .setCover("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20190521%2F17%2F1558430156-SBswiePxFE.jpg&refer=http%3A%2F%2Fimage.biaobaiju.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619162218&t=409c6be07cf495ccc4dcf3bc23f94028")
-                .playWithUrl("http://img.zhugexuetang.com/lleXB2SNF5UFp1LfNpPI0hsyQjNs");
+                .playMusic("测试测试测试测试测试测试测试测试",url,cover);
 
     }
 

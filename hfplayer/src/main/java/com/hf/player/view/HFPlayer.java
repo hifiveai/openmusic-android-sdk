@@ -92,52 +92,51 @@ public class HFPlayer {
         return this;
     }
 
-    /**
-     * 播放歌曲
-     *
-     * @param musicInfo
-     */
-    public HFPlayer setMusic(AudioBean musicInfo) {
-        if (mPlayerView != null){
-            HFPlayerApi.with().setPlayingMusic(musicInfo);
-        }
-        return this;
-    }
 
     /**
      * 播放歌曲
      *
-     * @param url
+     * @param title    音乐标题
+     * @param url      音乐链接
+     * @param coverUrl 音乐封面
      */
-    public HFPlayer playWithUrl(String url) {
-        if (mPlayerView != null) {
-            mPlayerView.playWithUrl(url);
-        }
-        return this;
-    }
-
-    /**
-     * 设置标题
-     *
-     * @param title
-     */
-    public HFPlayer setTitle(String title) {
+    public HFPlayer playMusic(String title, String url, String coverUrl) {
         if (mPlayerView != null)
-            mPlayerView.setTitle(title);
+            mPlayerView.setTitle(title)
+                    .setCover(coverUrl)
+                    .playWithUrl(url);
         return this;
     }
 
     /**
-     * 设置封面图
+     * 播放歌曲
      *
-     * @param coverUrl
+     * @param musicID  音乐id
+     * @param title    音乐标题
+     * @param url      音乐链接
+     * @param coverUrl 音乐封面
+     * @param album    音乐专辑
+     * @param artist   音乐作者
+     * @return
      */
-    public HFPlayer setCover(String coverUrl) {
+    public HFPlayer playMusic(String musicID, String title, String url, String coverUrl, String album, String artist) {
         if (mPlayerView != null) {
-            mPlayerView.setCover(coverUrl);
+            AudioBean musicInfo = new AudioBean();
+            musicInfo.setId(musicID);
+            musicInfo.setTitle(title);
+            musicInfo.setPath(url);
+            musicInfo.setCover(coverUrl);
+            musicInfo.setAlbum(album);
+            musicInfo.setArtist(artist);
+            HFPlayerApi.with().setPlayingMusic(musicInfo);
+
+            mPlayerView.setTitle(title)
+                    .setCover(coverUrl)
+                    .playWithUrl(url);
         }
         return this;
     }
+
 
     /**
      * 设置版本信息

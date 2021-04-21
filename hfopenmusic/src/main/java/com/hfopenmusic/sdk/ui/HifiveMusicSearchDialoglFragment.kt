@@ -350,7 +350,7 @@ class HifiveMusicSearchDialoglFragment() : DialogFragment() {
     private fun getHot() {
         try {
             if (mContext == null) return
-            HFOpenApi.getInstance().baseHot(System.currentTimeMillis(), 365, 1, 20, object : DataResponse<MusicList> {
+            HFOpenApi.getInstance().baseHot(System.currentTimeMillis()-60*1000*60*24*365, 365, 1, 20, object : DataResponse<MusicList> {
                 override fun onError(exception: BaseException) {
                     HFOpenMusic.getInstance().showToast(activity, exception.msg)
                 }

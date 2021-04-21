@@ -202,29 +202,19 @@ class HFOpenMusicPlayer private constructor() {
         if (musicDetail != null) {
             musicId = musicDetail.musicId
 
-            val musicInfo = AudioBean()
-            musicInfo.id = musicDetail.musicId
-            musicInfo.title = musicDetail.musicName
-            musicInfo.album = musicDetail.albumName
-            musicInfo.cover = musicDetail.cover!![0].url
-
-            var title = ""
+            var artist = ""
             if(musicDetail.artist != null && musicDetail.artist!!.isNotEmpty()){
-                musicInfo.artist = musicDetail.artist?.get(0)?.name
-                title = musicDetail.musicName +" - "+ musicDetail.artist?.get(0)?.name
+                artist = musicDetail.artist?.get(0)?.name!!
             }else if(musicDetail.composer != null && musicDetail.composer!!.isNotEmpty()){
-                musicInfo.artist = musicDetail.composer?.get(0)?.name
-                title =  musicDetail.musicName +" - "+ musicDetail.composer?.get(0)?.name
+                artist = musicDetail.composer?.get(0)?.name!!
             }
-
+            val title = musicDetail.musicName +" - "+ artist
 
             //初始化播放器UI
             HFPlayer.getInstance()
-                    .setTitle(title)
+                    .playMusic(musicId,title,url,musicDetail.cover!![0].url,musicDetail.albumName,artist)
+//                    .playMusic(title,url,musicDetail.cover!![0].url)
                     .setMajorVersion(false)
-                    .setCover(musicDetail.cover!![0].url)
-                    .setMusic(musicInfo)
-                    .playWithUrl(url)
                     .setMediaCallback(object : HFPlayerMediaCallback{
                         override fun onPre() {
                             HFOpenMusic.getInstance().playLastMusic()

@@ -145,7 +145,9 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 onTrackingTouch = false
                 if(seekBar.progress + 1000 >= seekBar.max){
-                    HFPlayer.getInstance().mListener?.onComplete()
+                    if(!HFPlayerApi.getIsOpenMediaSession() && !HFPlayerApi.getIsOpenNotification()){
+                        HFPlayer.getInstance().mListener?.onComplete()
+                    }
                     return
                 }
                 val seekTo = hfPlayer!!.seekTo(seekBar.progress)
@@ -181,7 +183,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
      * 设置标题
      * @param title
      */
-    fun setTitle(title: String?) {
+    fun setTitle(title: String?) = apply {
         if (tvMusicInfo != null) {
             tvMusicInfo!!.text = title
         }
@@ -190,7 +192,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
     /**
      * 设置图片
      */
-    fun setCover(coverUrl: String?) {
+    fun setCover(coverUrl: String?)  = apply {
         try {
             if (mContext != null) {
                 val transform = RoundedCornersTransform(mContext, DisplayUtils.dip2px(mContext, 25f).toFloat())
@@ -216,7 +218,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
      * 设置版本信息
      * @param isMajor
      */
-    fun setMajorVersion(isMajor: Boolean) {
+    fun setMajorVersion(isMajor: Boolean)  = apply {
         if (tvAccompany != null) {
             tvAccompany!!.alpha = if (isMajor) 1.0f else 0.45f
             tvAccompany!!.setText(if (isMajor) R.string.hifivesdk_music_player_sound else R.string.hifivesdk_music_player_accompany)
@@ -226,7 +228,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
     /**
      * 移动播放器位置
      */
-    fun setMarginBottom(marginBottom: Int) {
+    fun setMarginBottom(marginBottom: Int) = apply  {
         if (dragLayout != null) {
             dragLayout!!.updateViewY(marginBottom)
         }
@@ -380,7 +382,6 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
     private fun initPlayListener() {
         hfPlayer = with()
         hfPlayer!!.setOnPlayEventListener(object : HFPlayerEventListener {
-            override fun onChange(music: AudioBean) {}
             override fun onPlayStateChanged(state: Int) {
                 when (state) {
                     MusicPlayAction.STATE_IDLE -> {
@@ -405,7 +406,9 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
                     MusicPlayAction.STATE_COMPLETE -> {
                         pausePlay()
                         clear()
-                        HFPlayer.getInstance().mListener?.onComplete()
+                        if(!HFPlayerApi.getIsOpenMediaSession() && !HFPlayerApi.getIsOpenNotification()) {
+                            HFPlayer.getInstance().mListener?.onComplete()
+                        }
                     }
                 }
             }
@@ -421,8 +424,6 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
                     pbPlay!!.secondaryProgress = pbPlay!!.max * percent / 100
                 }
             }
-
-            override fun onTimer(remain: Long) {}
         })
     }
 
