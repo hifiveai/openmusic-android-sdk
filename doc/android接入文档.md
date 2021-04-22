@@ -50,21 +50,18 @@ targetSdkVersion : 30
 ```java
 api "io.reactivex.rxjava2:rxjava:2.2.10"
 api "io.reactivex.rxjava2:rxandroid:2.1.1"
-api "com.squareup.retrofit2:retrofit:2.6.0"
-api "com.squareup.retrofit2:adapter-rxjava2:2.6.0"
-api "com.squareup.okhttp3:okhttp:4.0.0"
+api "com.squareup.retrofit2:retrofit:2.9.0"
+api "com.squareup.retrofit2:converter-gson:2.9.0"
+api "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
+api "com.squareup.okhttp3:okhttp:3.9.0"
 api "com.squareup.okhttp3:logging-interceptor:4.0.0"
-api "com.squareup.okhttp3:okhttp:4.9.0"
-api "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
-//使用以下第三方UI依赖库
-api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
-api 'com.github.bumptech.glide:glide:4.8.0'
-api "com.android.support:recyclerview-v7:28.0.0"
-//AndroidX适配使用以下第三方UI依赖库
-api 'com.github.bumptech.glide:glide:4.11.0'
+api group: 'com.github.bumptech.glide', name: 'glide', version: '4.11.0'
 api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
 api 'androidx.recyclerview:recyclerview:1.1.0'
+
+api 'androidx.media:media:1.2.1'
+api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
 ```
 
 
@@ -83,6 +80,15 @@ api 'androidx.recyclerview:recyclerview:1.1.0'
 
 - 请避免混淆，在Proguard混淆文件中增加以下配置：
 ```java
+-dontwarn com.hf.openplayer.**
+-keep public class com.hf.openplayer.**{*;}
+
+-dontwarn com.hf.player.**
+-keep public class com.hf.player.**{*;}
+
+-dontwarn com.hf.playerkernel.**
+-keep public class com.hf.playerkernel.**{*;}
+
 -dontwarn com.hfopen.sdk.**
 -keep public class com.hfopen.sdk.**{*;}
 
