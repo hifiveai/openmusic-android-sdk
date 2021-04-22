@@ -73,11 +73,23 @@ api "com.squareup.okhttp3:logging-interceptor:4.9.0"
 ```
 HFOpenApi.registerApp(Application context,String clientId);
 ```
+参数  | 必填  |描述|
+---|---|---
+context | 是| 上下文|
+clientId | 是| 用户唯一标识（公司自有的用户ID）。|
+
+
+如有需要自定义服务器地址，初始化调用以下接口:
+```
+HFOpenApi.registerApp(Application context,String clientId, String domain);
+```
 
 参数  | 必填  |描述|
 ---|---|---
 context | 是| 上下文|
 clientId | 是| 用户唯一标识（公司自有的用户ID）。|
+domain | 否| 域名（测试时可配置）|
+
 
 ##### 2.3 设置SDK版本
 

@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
      * 测试 25861e5063284e38a40bc960070b34ab   7a4e2914d1b647b98a
      */
     private void initView() {
-        HFOpenApi.registerApp(getApplication(),"300a44d050c942eebeae8765a878b0ee","0e31fe11b31247fca8", Encryption.Companion.requestDeviceId(this));
+        HFOpenApi.setVersion("V4.1.1").registerApp(getApplication(),"300a44d050c942eebeae8765a878b0ee","0e31fe11b31247fca8", Encryption.Companion.requestDeviceId(this));
 
 //        HFOpenApi.setVersion("V4.0.1").registerApp(getApplication(), Encryption.Companion.requestDeviceId(this),"https://hifive-openapi-qa.hifiveai.com");
 
