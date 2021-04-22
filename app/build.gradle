@@ -52,6 +52,11 @@ android {
     packagingOptions {
         exclude 'META-INF/*.kotlin_module'
     }
+
+    sourceSets {
+        main.jni.srcDirs = []
+        main.jniLibs.srcDirs = ['libs']
+    }
 }
 
 
@@ -60,6 +65,8 @@ repositories {
         url 'http://172.16.52.62:8081/repository/hifive_repository'
     }
 }
+
+
 
 dependencies {
 //    api fileTree(include: ['*.jar','*.aar'], dir: 'libs')
