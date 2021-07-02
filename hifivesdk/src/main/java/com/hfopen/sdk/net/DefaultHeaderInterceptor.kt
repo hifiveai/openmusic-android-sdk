@@ -18,10 +18,8 @@ import kotlin.collections.HashMap
  */
 class DefaultHeaderInterceptor : Interceptor {
 
-    private val headers = hashMapOf<String, Any>()
-    private val commonParams: Map<String, String>? = null
-
     override fun intercept(chain: Interceptor.Chain): Response {
+        val headers = hashMapOf<String, Any>()
 
         val time = System.currentTimeMillis().toString()
         headers["X-HF-Version"] = BaseConstance.verison
@@ -32,18 +30,18 @@ class DefaultHeaderInterceptor : Interceptor {
         headers["Authorization"] = "HF3-HMAC-SHA1"
 
         val request = chain.request()
-        return chain.proceed(rebuildRequest(request))
+        return chain.proceed(rebuildRequest(request,headers))
     }
 
     @Throws(IOException::class)
-    private fun rebuildRequest(request: Request): Request {
+    private fun rebuildRequest(request: Request,headers: HashMap<String,Any>): Request {
         headers["X-HF-Method"] = request.method
         val newRequest = when (request.method) {
             "POST" -> {
-                rebuildPostRequest(request)
+                rebuildPostRequest(request,headers)
             }
             "GET" -> {
-                rebuildGetRequest(request)
+                rebuildGetRequest(request,headers)
             }
             else -> {
                 request
@@ -57,7 +55,7 @@ class DefaultHeaderInterceptor : Interceptor {
     /**
      * 对post请求添加统一参数
      */
-    private fun rebuildPostRequest(request: Request): Request {
+    private fun rebuildPostRequest(request: Request,headers: HashMap<String,Any>): Request {
         val builder = request.newBuilder()
         when (request.body!! ){
             is FormBody -> { // 传统表单
@@ -75,7 +73,7 @@ class DefaultHeaderInterceptor : Interceptor {
                 //移除不必要的X-HF-Action
                 signParams.remove("X-HF-Action")
                 //获取sign
-                sign(signParams)
+                sign(signParams,headers)
 
                 builder.method(request.method, newFormBody.build()).build()
             }
@@ -88,7 +86,7 @@ class DefaultHeaderInterceptor : Interceptor {
         }
 
         //添加header
-        addHeader(builder)
+        addHeader(builder,headers)
 
         return builder.build()
     }
@@ -97,7 +95,7 @@ class DefaultHeaderInterceptor : Interceptor {
     /**
      * 对get请求做统一参数处理
      */
-    private fun rebuildGetRequest(request: Request): Request {
+    private fun rebuildGetRequest(request: Request,headers: HashMap<String,Any>): Request {
         val builder = request.newBuilder()
         val url = request.url
         var encodedQuery = url.encodedQuery
@@ -115,9 +113,9 @@ class DefaultHeaderInterceptor : Interceptor {
         //移除不必要的X-HF-Action
         signParams.remove("X-HF-Action")
         //获取sign
-        sign(signParams)
+        sign(signParams,headers)
         //添加header
-        addHeader(builder)
+        addHeader(builder,headers)
         //还原Url
         encodedQuery = HiFiveUtils.buildParam(signParams)
         val finalUrl = "$path?$encodedQuery"
@@ -128,7 +126,7 @@ class DefaultHeaderInterceptor : Interceptor {
     /**
      * 添加公共参数
      */
-    private fun addHeader(builder: Request.Builder) {
+    private fun addHeader(builder: Request.Builder,headers: HashMap<String,Any>) {
         builder
                 .addHeader("X-HF-Action", headers["X-HF-Action"].toString())
                 .addHeader("X-HF-Version", headers["X-HF-Version"].toString())
@@ -143,7 +141,7 @@ class DefaultHeaderInterceptor : Interceptor {
     /**
      * 获取公共参数
      */
-    private fun sign(signParams: HashMap<String, Any>) {
+     private  fun sign(signParams: HashMap<String, Any>,headers: HashMap<String,Any>) {
         /**1.使用请求参数构造规范化的请求字符串。**/
         var param = HiFiveUtils.buildParam(signParams)
 
@@ -152,6 +150,7 @@ class DefaultHeaderInterceptor : Interceptor {
          *  //3.进行base64编码
          **/
         val headerBase64 = HiFiveUtils.headersBase64(headers)
+
         /**4.将步骤 1 中构造的规范化字符串拼接步骤 3 得到的base64编码，即得到待签名的字符串**/
         param = if (param.isEmpty()) headerBase64 else "$param&$headerBase64"
         /**5.得到签名值（Signature）**/
