@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
      * 测试 25861e5063284e38a40bc960070b34ab   7a4e2914d1b647b98a
      */
     private void initView() {
-        HFOpenApi.setVersion("V4.1.1").registerApp(getApplication(),"300a44d050c942eebeae8765a878b0ee","0e31fe11b31247fca8", Encryption.Companion.requestDeviceId(this));
+        HFOpenApi.setVersion("V4.1.1").registerApp(getApplication(),"99e617f2476c49e5b00642ebd6869537","3df871d008bf4eadb4", Encryption.Companion.requestDeviceId(this));
 
 //        HFOpenApi.setVersion("V4.0.1").registerApp(getApplication(), Encryption.Companion.requestDeviceId(this),"https://hifive-openapi-qa.hifiveai.com");
 
@@ -153,10 +153,27 @@ public class LoginActivity extends AppCompatActivity {
             String pageSize = getValue(json, "PageSize");
             Integer PageSize = pageSize == null ? 20: Integer.parseInt(pageSize);
 
-            if (groupID == null) {
-                showResult("请输入电台ID");
-                return;
-            }
+//            if (groupID == null) {
+//                showResult("请输入电台ID");
+//                return;
+//            }
+
+            HFOpenApi.getInstance().channelSheet(groupID, Language, RecoNum, Page, PageSize, new DataResponse<ChannelSheet>() {
+                @Override
+                public void onError(@NotNull BaseException exception) {
+                    Log.e("TAG", "errorMsg==" + exception.getCode());
+                    showResult(exception.getMsg());
+                }
+
+                @Override
+                public void onSuccess(@NotNull ChannelSheet any, String taskId) {
+                    Log.e("TAG", "data==" + any);
+                    if(any.getRecord().size()>0){
+                        sheetID = any.getRecord().get(0).getSheetId();
+                    }
+                    showResult(any.toString());
+                }
+            });
 
             HFOpenApi.getInstance().channelSheet(groupID, Language, RecoNum, Page, PageSize, new DataResponse<ChannelSheet>() {
                 @Override

@@ -15,7 +15,7 @@ class HiFiveUtils {
         }
 
 
-        fun base64(str: String): String {
+        @Synchronized fun base64(str: String): String {
             return Base64.encodeToString(str.toByteArray(), Base64.DEFAULT)
         }
 
@@ -24,7 +24,7 @@ class HiFiveUtils {
          * //2.按照规定顺序用空格拼接请求类型和公共参数构造字符串
          * //3.进行base64编码
          */
-        fun headersBase64(headers: Map<String, Any>): String {
+        fun  headersBase64(headers: Map<String, Any>): String {
             val buffer = StringBuffer()
             buffer.append(headers["X-HF-Method"]).append(" ")
             buffer.append(headers["X-HF-Action"]).append(" ")
@@ -60,7 +60,7 @@ class HiFiveUtils {
         }
 
 
-        fun hmacSha1(input: String, key: String): ByteArray {
+        @Synchronized fun hmacSha1(input: String, key: String): ByteArray {
             try {
                 val mac: Mac = Mac.getInstance("HmacSHA1")
                 val signingKey = SecretKeySpec(key.toByteArray(), "HmacSHA1")
