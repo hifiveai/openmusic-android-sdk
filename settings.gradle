@@ -1,3 +1,4 @@
+include ':hifivesdk'
 include ':hfopenmusicplayer'
 include ':hfopenmusic'
 include ':hfplayerkenerl'

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,145 +7,17 @@
     android:orientation="vertical"
     tools:ignore="MissingDefaultResource">
 
-<!--    <ImageView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"/>-->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:paddingStart="20dp"
-        android:layout_marginTop="30dp"
-        android:paddingEnd="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#FF282828"
-            android:text="appId:"/>
-
-        <EditText
-            android:id="@+id/et_appid"
-            android:layout_width="match_parent"
-            android:layout_height="69dp"
-            android:maxLines="1"
-            android:background="@null"
-            android:digits="@string/filter_vcode"
-            android:gravity="center_vertical"
-            android:hint="请输入appId"
-            android:inputType="textVisiblePassword"
-            android:maxLength="50"
-            android:textColor="#FF282828"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#FF282828"
-            android:text="secretKey:"/>
-
-        <EditText
-            android:id="@+id/et_secretkey"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:textSize="14sp"
-            android:textColor="#FF282828"
-            android:maxLines="1"
-            android:hint="请输入secretKey"
-            android:inputType="textVisiblePassword"
-            android:maxLength="50"
-            android:digits="@string/filter_vcode"
-            android:background="@null"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#FF282828"
-            android:text="用户ID:"/>
-
-        <EditText
-            android:id="@+id/et_member_id"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:textSize="14sp"
-            android:maxLength="50"
-            android:maxLines="1"
-            android:textColor="#FF282828"
-            android:hint="请输入用户ID"
-            android:background="@null"/>
-    </LinearLayout>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_initialize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:text="初始化SDK"/>
-
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/play"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:text="播放器UI" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/play2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="OpenApi UI列表" />
+        android:text="进入app" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/play3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:text="OpenMusicPlayer" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/play4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:text="参数配置" />
-
-</LinearLayout>
+</RelativeLayout>

@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/hfopenmusicplayer" />
             <option value="$PROJECT_DIR$/hfplayer" />
             <option value="$PROJECT_DIR$/hfplayerkenerl" />
+            <option value="$PROJECT_DIR$/hifivesdk" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

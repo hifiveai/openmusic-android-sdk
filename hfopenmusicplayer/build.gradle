@@ -37,14 +37,7 @@ repositories {
 }
 
 dependencies {
-//    api fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.2.0'
-
     api project(path: ':hfopenmusic')
     api project(path: ':hfplayer')
-
-//    embed project(path: ':hfopenmusic', configuration: 'default')
-//    embed project(path: ':hfplayer', configuration: 'default')
-//    embed project(path: ':hfplayerkenerl', configuration: 'default')
-
 }

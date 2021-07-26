@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.open_play_android_sdk.R;
+
 import java.util.regex.Pattern;
 
 public class EditActivity extends AppCompatActivity {

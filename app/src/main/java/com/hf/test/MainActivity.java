@@ -1,7 +1,5 @@
 package com.hf.test;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -9,6 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.open_play_android_sdk.R;
 import com.hf.openplayer.HFOpenMusicPlayer;
 import com.hf.player.view.HFPlayer;
 import com.hf.player.view.HFPlayerViewListener;
