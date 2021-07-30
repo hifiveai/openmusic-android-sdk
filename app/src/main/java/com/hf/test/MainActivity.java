@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (flag) {
-                        HFOpenMusic.getInstance().closeOpenMusic();
-                        flag = false;
+//                        HFOpenMusic.getInstance().closeOpenMusic();
+//                        flag = false;
                     } else {
                         showMusic();
                     }

@@ -20,12 +20,13 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        tools:targetApi="n">
+        tools:targetApi="n"
+        tools:ignore="HardcodedDebugMode">
 
 
         <meta-data
             android:name="HIFIVE_APPID"
-            android:value="3faeec81030444e98acf6af9ba32752a"></meta-data>
+            android:value="3faeec81030444e98acf6af9ba32752a" />
         <meta-data
             android:name="HIFIVE_SECRET"
             android:value="59b1aff189b3474398" />

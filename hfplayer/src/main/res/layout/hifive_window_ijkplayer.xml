@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.hf.player.view.DraggableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -41,6 +40,7 @@
                         android:marqueeRepeatLimit="marquee_forever"
                         android:singleLine="true"
                         android:textColor="#ffffff"
+                        android:text="sssss"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -55,6 +55,7 @@
                         android:background="@drawable/hifive_player_accompany_bg"
                         android:enabled="false"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:text="@string/hifivesdk_music_player_sound"
                         android:textColor="#ffffff"
                         android:textSize="10sp"
@@ -73,6 +74,7 @@
                         android:button="@null"
                         android:checked="false"
                         android:enabled="false"
+                        android:visibility="gone"
                         android:gravity="center"
                         android:text="@string/hifivesdk_music_player_lyric"
                         android:textColor="@drawable/hifive_music_player_lyric_checkbox_textcolor"
