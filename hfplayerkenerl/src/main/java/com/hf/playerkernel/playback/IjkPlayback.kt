@@ -14,7 +14,6 @@ import android.os.PowerManager
 import com.hf.playerkernel.config.MusicConstant
 import com.hf.playerkernel.config.MusicPlayAction
 import com.hf.playerkernel.config.PlayModeEnum
-import com.hf.playerkernel.inter.EventCallback
 import com.hf.playerkernel.inter.HFPlayerEventListener
 import com.hf.playerkernel.manager.AudioSoundManager
 import com.hf.playerkernel.manager.HFPlayerApi.getCallback
@@ -27,7 +26,6 @@ import com.hf.playerkernel.model.AudioBean
 import com.hf.playerkernel.notification.NotificationHelper
 import com.hf.playerkernel.notification.imageloader.ImageLoaderCallBack
 import com.hf.playerkernel.service.PlayService
-import com.hf.playerkernel.tool.QuitTimerHelper
 import com.hf.playerkernel.utils.MusicLogUtils
 import com.hf.playerkernel.utils.MusicSpUtils
 import tv.danmaku.ijk.media.player.IMediaPlayer
@@ -677,7 +675,7 @@ class IjkPlayback(private val mPlayService: PlayService) {
      * @return true表示正在播放
      */
     val isPlaying: Boolean
-        get() = mPlayer!!.isPlaying
+        get() = mPlayer?.isPlaying == true
 
     /**
      * 是否暂停

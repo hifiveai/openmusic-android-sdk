@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
@@ -18,9 +17,7 @@ import com.hf.player.utils.NoDoubleClickListener
 import com.hf.player.utils.RoundedCornersTransform
 import com.hf.playerkernel.config.MusicPlayAction
 import com.hf.playerkernel.inter.HFPlayerEventListener
-import com.hf.playerkernel.manager.HFPlayerApi
 import com.hf.playerkernel.manager.HFPlayerApi.with
-import com.hf.playerkernel.model.AudioBean
 import com.hf.playerkernel.playback.IjkPlayback
 import com.hf.playerkernel.utils.DisplayUtils
 import java.util.*
@@ -379,7 +376,7 @@ open class HifivePlayerView(context: FragmentActivity, attrs: AttributeSet?, def
 
     private fun initPlayListener() {
         hfPlayer = with()
-        hfPlayer!!.setOnPlayEventListener(object : HFPlayerEventListener {
+        hfPlayer?.setOnPlayEventListener(object : HFPlayerEventListener {
             override fun onPlayStateChanged(state: Int) {
                 when (state) {
                     MusicPlayAction.STATE_IDLE -> {

@@ -33,7 +33,7 @@
 
 
         <activity
-            android:name="com.hf.test.LoginActivity"
+            android:name="com.hf.test.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,11 +41,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.hf.test.MainActivity"
-            android:launchMode="singleTask"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:screenOrientation="portrait" />
+        <!--        <activity-->
+        <!--            android:name="com.hf.test.MainActivity"-->
+        <!--            android:launchMode="singleTask"-->
+        <!--            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"-->
+        <!--            android:screenOrientation="portrait" />-->
     </application>
 
 </manifest>

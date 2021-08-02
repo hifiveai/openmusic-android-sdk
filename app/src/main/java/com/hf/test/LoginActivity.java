@@ -2,7 +2,6 @@ package com.hf.test;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +9,6 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.example.open_play_android_sdk.R;
 import com.hf.openplayer.HFOpenMusicPlayer;
-import com.hf.playerkernel.manager.HFPlayerApi;
 import com.hfopen.sdk.common.HFOpenCallback;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopen.sdk.rx.BaseException;
@@ -56,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         SPUtils.put(this, SPUtils.secretKey, secretKey);
         flag = true;
         Toast.makeText(LoginActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
-
+        initOpenPlayer();
     }
 
     private void initView() {
@@ -74,19 +72,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void initPlayer() {
-        HFPlayerApi.init(getApplication())
-                .setDebug(true)
-                .setMaxBufferSize(ConsData.MaxBufferSize)
-                .setUseCache(ConsData.UseCache)
-                .setReconnect(ConsData.Reconnect)
-                .setNotificationSwitch(true)
-                .apply();
-    }
 
     private void initOpenPlayer() {
-        Log.d(ConsData.TAG, "musicType:" + ConsData.musicType.toString());
-
         HFOpenMusicPlayer.getInstance()
                 .registerApp(getApplication(), appId, secretKey, memberId)
                 .setDebug(true)

@@ -17,7 +17,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="点击进入app" />
+        android:text="初始化" />
 
 
 </RelativeLayout>

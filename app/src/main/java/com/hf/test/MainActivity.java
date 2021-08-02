@@ -14,7 +14,10 @@ import com.hf.openplayer.HFOpenMusicPlayer;
 import com.hf.player.view.HFPlayer;
 import com.hf.player.view.HFPlayerViewListener;
 import com.hf.playerkernel.manager.HFPlayerApi;
+import com.hfopen.sdk.common.HFOpenCallback;
 import com.hfopen.sdk.entity.MusicRecord;
+import com.hfopen.sdk.manager.HFOpenApi;
+import com.hfopen.sdk.rx.BaseException;
 import com.hfopenmusic.sdk.HFOpenMusic;
 import com.hfopenmusic.sdk.listener.HFPlayMusicListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -22,6 +25,10 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 public class MainActivity extends AppCompatActivity {
     private boolean flag;
+
+    private final String secretKey = "59b1aff189b3474398";
+    private final String appId = "3faeec81030444e98acf6af9ba32752a";
+    private final String memberId = "hifivetest";
 
     /**
      * 权限组
@@ -35,9 +42,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        HFOpenApi.registerApp(getApplication(), appId, secretKey, memberId);
+        HFOpenApi.configCallBack(new HFOpenCallback() {
+            @Override
+            public void onError(BaseException exception) {
+                HFOpenMusic.getInstance().showToast(MainActivity.this, exception.getMsg());
+            }
+
+            @Override
+            public void onSuccess() {
+
+            }
+        });
+        SPUtils.put(this, SPUtils.appId, appId);
+        SPUtils.put(this, SPUtils.secretKey, secretKey);
+        flag = true;
+        Toast.makeText(MainActivity.this, "初始化成功", Toast.LENGTH_SHORT).show();
+        initOpenPlayer();
 
         requestPermission();
-        initView();
+
     }
 
     @SuppressLint("CheckResult")
@@ -45,12 +69,12 @@ public class MainActivity extends AppCompatActivity {
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions.request(permissionsGroup)
                 .subscribe(aBoolean -> {
-
+                    initView();
                 });
     }
 
     private void initView() {
-        int type = getIntent().getIntExtra("type", 1);
+        int type = getIntent().getIntExtra("type", 3);
         if (type == 1) {
             //            HFPlayer.getInstance().removePlayer();
             HFOpenMusic.getInstance().closeOpenMusic();
@@ -106,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (flag) {
-//                        HFOpenMusic.getInstance().closeOpenMusic();
-//                        flag = false;
+                        HFOpenMusic.getInstance().closeOpenMusic();
+                        flag = false;
                     } else {
                         showMusic();
                     }
@@ -124,13 +148,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void play() {
         String cover = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20190521%2F17%2F1558430156-SBswiePxFE.jpg&refer=http%3A%2F%2Fimage.biaobaiju.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619162218&t=409c6be07cf495ccc4dcf3bc23f94028";
-        String url  = "http://img.zhugexuetang.com/lleXB2SNF5UFp1LfNpPI0hsyQjNs";
+        String url = "http://img.zhugexuetang.com/lleXB2SNF5UFp1LfNpPI0hsyQjNs";
 
         //初始化播放器UI
-        if(HFPlayerApi.with().isPlaying()) return;
+        if (HFPlayerApi.with().isPlaying()) return;
         HFPlayer.getInstance()
                 .setMajorVersion(false)
-                .playMusic("测试测试测试测试测试测试测试测试",url,cover);
+                .playMusic("测试测试测试测试测试测试测试测试", url, cover);
 
     }
 
@@ -156,6 +180,18 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .showOpenMusic(MainActivity.this);
+    }
+
+    private void initOpenPlayer() {
+        HFOpenMusicPlayer.getInstance()
+                .registerApp(getApplication(), appId, secretKey, memberId)
+                .setDebug(true)
+                .setMaxBufferSize(ConsData.MaxBufferSize)
+                .setUseCache(ConsData.UseCache)
+                .setReconnect(ConsData.Reconnect)
+                .setNotificationSwitch(true)
+                .setListenType(ConsData.musicType.toString())
+                .apply();
     }
 
 
