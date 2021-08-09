@@ -1,0 +1,96 @@
+apply plugin: 'com.android.library'
+apply from: "config.gradle"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+apply from: 'aar-upload.gradle'
+apply from: 'auto-pack.gradle'
+
+android {
+    compileSdkVersion HiFiveVersion.compileSdkVersion
+    defaultConfig {
+        minSdkVersion HiFiveVersion.minSdkVersion
+        targetSdkVersion HiFiveVersion.targetSdkVersion
+        versionCode HiFiveVersion.versionCode
+        versionName HiFiveVersion.versionName
+        consumerProguardFiles "proguard-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+//            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    task makeJar(type: Copy) {
+        //删除存在的
+        delete 'build/libs/open_api_android_sdk.jar'
+        //设置拷贝的文件
+        from('build/intermediates/aar_main_jar/release/')
+        //打进jar包后的文件目录
+        into('build/libs/')
+        //将classes.jar放入build/libs/目录下
+        //include ,exclude参数来设置过滤
+        //（我们只关心classes.jar这个文件）
+        include('classes.jar')
+        //重命名
+        rename ('classes.jar', 'open_api_android_sdk.jar')
+    }
+
+    makeJar.dependsOn(build)
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+
+    //开发者必须导入的包
+    api HifiveDependencies["rxjava"]
+    api HifiveDependencies["rxandroid"]
+    api HifiveDependencies["retrofit"]
+    api HifiveDependencies["retrofit-converter-gson"]
+    api HifiveDependencies["retrofit-adapter-rxjava2"]
+    api HifiveDependencies["okhttp"]
+    api HifiveDependencies["okhttp-logging-interceptor"]
+
+
+}
+
+
+////  对打成的包进行混淆
+//task proguardJar(type: ProGuardTask, dependsOn: "build") {
+//    //删除已有的jar包
+//    delete 'build/intermediates/aar_main_jar/release/confuse.jar'
+//    // 未混淆的jar路径
+//    injars 'build/intermediates/aar_main_jar/release/classes.jar'
+//    // 混淆后的jar输出路径
+//    outjars 'build/intermediates/aar_main_jar/release/confuse.jar'
+//    // 混淆协议
+//    configuration 'proguard-rules.pro'
+//}
+//// 拷贝jar包
+//task copyJar(type: Copy, dependsOn: build) {
+//    //删除存在的
+//    delete 'build/libs/open_api_android_sdk.jar'
+//    //设置拷贝的文件
+//    from('build/intermediates/aar_main_jar/release/')
+//    //打进jar包后的文件目录
+//    into('build/libs/')
+//    //将classes.jar放入build/libs/目录下
+//    //include ,exclude参数来设置过滤
+//    //（我们只关心classes.jar这个文件）
+//    include('confuse.jar')
+//    //重命名
+//    rename ('confuse.jar', 'open_api_android_sdk.jar')
+//}
+//
+//// 流程的主要Task，执行其即可
+//task makeJar() {
+//
+//}
+////顺序执行Task，先混淆，后拷贝
+//makeJar.dependsOn proguardJar
+//makeJar.dependsOn copyJar
+//copyJar.mustRunAfter proguardJar
+
