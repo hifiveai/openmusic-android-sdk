@@ -2,6 +2,7 @@ package com.hfopen.sdk.repository
 
 import com.hfopen.sdk.entity.*
 import com.hfopen.sdk.ext.convert
+import com.hfopen.sdk.manager.HFOpenApi
 import com.hfopen.sdk.net.LiveRetrofitFactory
 import io.reactivex.Flowable
 
@@ -13,7 +14,7 @@ import io.reactivex.Flowable
 class DataRepository constructor() {
 
     fun baseLogin(
-            Nickname: String?,
+            Nickname: String,
             Gender: Int?,
             Birthday: Long?,
             Location: String?,
@@ -22,9 +23,11 @@ class DataRepository constructor() {
             IsOrganization: Boolean?,
             Reserve: String?,
             FavoriteSinger: String?,
-            FavoriteGenre: String?
+            FavoriteGenre: String?,
+            Timestamp: String
     ): Flowable<LoginBean> {
-        return LiveRetrofitFactory.api().baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre, "BaseLogin").convert()
+        return LiveRetrofitFactory.api().baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre, "BaseLogin", HFOpenApi.APP_ID
+                ?: "", Timestamp).convert()
     }
 
     fun channel(): Flowable<ArrayList<ChannelItem>> {
@@ -64,7 +67,7 @@ class DataRepository constructor() {
                     Page: Int?,
                     PageSize: Int?
     ): Flowable<MusicList> {
-        return LiveRetrofitFactory.api().searchMusic(TagIds, PriceFromCent, PriceToCent, BpmFrom, BpmTo, DurationFrom, DurationTo, Keyword, SearchFiled,SearchSmart, Language, Page, PageSize, "SearchMusic").convert()
+        return LiveRetrofitFactory.api().searchMusic(TagIds, PriceFromCent, PriceToCent, BpmFrom, BpmTo, DurationFrom, DurationTo, Keyword, SearchFiled, SearchSmart, Language, Page, PageSize, "SearchMusic").convert()
     }
 
 
@@ -90,17 +93,16 @@ class DataRepository constructor() {
 
     fun trial(
             MusicId: String?,
-            Action :String?
+            Action: String?
     ): Flowable<TrialMusic> {
         return LiveRetrofitFactory.api().trial(MusicId, Action).convert()
     }
 
 
-
     fun trafficHQListen(MusicId: String?,
                         AudioFormat: String?,
                         AudioRate: String?,
-                        Action :String?
+                        Action: String?
     ): Flowable<HQListen> {
         return LiveRetrofitFactory.api().trafficHQListen(MusicId, AudioFormat, AudioRate, Action).convert()
     }
@@ -131,6 +133,42 @@ class DataRepository constructor() {
     ): Flowable<OrderMusic> {
         return LiveRetrofitFactory.api().orderDetail(OrderId, "OrderDetail").convert()
     }
+
+
+    fun createMemberSheet(SheetName: String?): Flowable<Any> {
+        return LiveRetrofitFactory.api().createMemberSheet(SheetName, "CreateMemberSheet").convert()
+    }
+
+
+    fun deleteMemberSheet(SheetId: String?): Flowable<Any> {
+        return LiveRetrofitFactory.api().deleteMemberSheet(SheetId, "DeleteMemberSheet").convert()
+    }
+
+
+    fun memberSheet(MemberOutId: String?, Page: Int?,
+                    PageSize: Int?): Flowable<VipSheet> {
+        return LiveRetrofitFactory.api().memberSheet(MemberOutId, Page, PageSize, "MemberSheet").convert()
+    }
+
+
+    fun memberSheetMusic(SheetId: String?, Page: Int?,
+                         PageSize: Int?): Flowable<Any> {
+        return LiveRetrofitFactory.api().memberSheetMusic(SheetId, Page, PageSize, "MemberSheetMusic").convert()
+    }
+
+
+    fun addMemberSheetMusic(SheetId: String?, MusicId: String?): Flowable<Any> {
+        return LiveRetrofitFactory.api().addMemberSheetMusic(SheetId, MusicId, "AddMemberSheetMusic").convert()
+    }
+
+    fun removeMemberSheetMusic(SheetId: String?, MusicId: String?): Flowable<Any> {
+        return LiveRetrofitFactory.api().removeMemberSheetMusic(SheetId, MusicId, "RemoveMemberSheetMusic").convert()
+    }
+
+    fun clearMemberSheetMusic(SheetId: String?): Flowable<Any> {
+        return LiveRetrofitFactory.api().clearMemberSheetMusic(SheetId, "ClearMemberSheetMusic").convert()
+    }
+
 
     fun orderAuthorization(CompanyName: String?,
                            ProjectName: String?,
@@ -164,9 +202,9 @@ class DataRepository constructor() {
                Timestamp: Long,
                AudioFormat: String,
                AudioRate: String,
-               Action :String?
+               Action: String?
     ): Flowable<Any> {
-        return LiveRetrofitFactory.api().report(MusicId, Duration, Timestamp,AudioFormat,AudioRate, Action).convert()
+        return LiveRetrofitFactory.api().report(MusicId, Duration, Timestamp, AudioFormat, AudioRate, Action).convert()
     }
 
 }

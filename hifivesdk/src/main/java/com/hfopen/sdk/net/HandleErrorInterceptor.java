@@ -29,7 +29,7 @@ public class HandleErrorInterceptor extends ResponseBodyInterceptor {
         }
         if (jsonObject != null) {
             try {
-                if (jsonObject.getInt("code") != BaseConstance.SUCCEED) {
+                if (jsonObject.getInt("code") != BaseConstance.SUCCEED_200 && jsonObject.getInt("code") != BaseConstance.SUCCEED_10200) {
                     BaseConstance.taskId = "";
                     if (response.body() != null) {
                         String json = response.body().string().replace("\"data\":\"\"", "\"data\":{}");

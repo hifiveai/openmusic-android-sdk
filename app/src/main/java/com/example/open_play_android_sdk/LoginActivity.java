@@ -19,8 +19,8 @@ import com.hfopen.sdk.entity.OrderAuthorization;
 import com.hfopen.sdk.entity.OrderMusic;
 import com.hfopen.sdk.entity.OrderPublish;
 import com.hfopen.sdk.entity.HQListen;
-import com.hfopen.sdk.entity.TrafficListenMixed;
 import com.hfopen.sdk.entity.TrialMusic;
+import com.hfopen.sdk.entity.VipSheet;
 import com.hfopen.sdk.hInterface.DataResponse;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopen.sdk.net.Encryption;
@@ -36,8 +36,11 @@ import java.util.ArrayList;
 public class LoginActivity extends AppCompatActivity {
     private EditText editText;
     private String json = "{}";
-    private String groupID,musicID,orderId;
+    private String groupID, musicID, orderId;
     private Long sheetID;
+    private String sheetName="kobeMemberSheet";
+    private int sheetId=38071;
+    private String musicId="2F0864DEC7";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
      * 测试 25861e5063284e38a40bc960070b34ab   7a4e2914d1b647b98a
      */
     private void initView() {
-        HFOpenApi.setVersion("V4.1.1").registerApp(getApplication(),"99e617f2476c49e5b00642ebd6869537","3df871d008bf4eadb4", Encryption.Companion.requestDeviceId(this));
+        HFOpenApi.setVersion("V4.1.2").registerApp(getApplication(), "3faeec81030444e98acf6af9ba32752a", "59b1aff189b3474398", "test_hifive_kobe");
 
 //        HFOpenApi.setVersion("V4.0.1").registerApp(getApplication(), Encryption.Companion.requestDeviceId(this),"https://hifive-openapi-qa.hifiveai.com");
 
@@ -81,30 +84,172 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.btn_report3).setOnClickListener(v -> report3());
         findViewById(R.id.btn_report4).setOnClickListener(v -> report4());
 
+
+        findViewById(R.id.CreateMemberSheet).setOnClickListener(v -> testOne());
+        findViewById(R.id.DeleteMemberSheet).setOnClickListener(v -> testTwo());
+        findViewById(R.id.MemberSheet).setOnClickListener(v -> testThree());
+        findViewById(R.id.MemberSheetMusic).setOnClickListener(v -> testFour());
+        findViewById(R.id.AddMemberSheetMusic).setOnClickListener(v -> testFive());
+        findViewById(R.id.RemoveMemberSheetMusic).setOnClickListener(v -> testSix());
+        findViewById(R.id.ClearMemberSheetMusic).setOnClickListener(v -> testSeven());
+
     }
 
+    private void testSeven() {
+        int sheetId = this.sheetId;
+        HFOpenApi.getInstance().clearMemberSheetMusic(sheetId, new DataResponse<Object>() {
+            @Override
+            public void onError(@NotNull BaseException exception) {
+                Toast.makeText(LoginActivity.this, exception.getMsg(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onSuccess(Object data, @NotNull String taskId) {
+                Toast.makeText(LoginActivity.this, "成功", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    private void testSix() {
+        int sheetId = this.sheetId;
+        String musicId = this.musicId;
+        HFOpenApi.getInstance().removeMemberSheetMusic(sheetId, musicId, new DataResponse<Object>() {
+            @Override
+            public void onError(@NotNull BaseException exception) {
+                Toast.makeText(LoginActivity.this, exception.getMsg(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onSuccess(Object data, @NotNull String taskId) {
+                Toast.makeText(LoginActivity.this, "成功", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
+    private void testFive() {
+        int sheetId = this.sheetId;
+        String musicId = this.musicId;
+        HFOpenApi.getInstance().addMemberSheetMusic(sheetId, musicId, new DataResponse<Object>() {
+
+            @Override
+            public void onError(@NotNull BaseException exception) {
+                Toast.makeText(LoginActivity.this, exception.getMsg(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onSuccess(Object data, @NotNull String taskId) {
+                Toast.makeText(LoginActivity.this, "成功", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    private void testFour() {
+        int sheetId = this.sheetId;
+        HFOpenApi.getInstance().memberSheetMusic(sheetId, 1, 10, new DataResponse<Object>() {
+            @Override
+            public void onError(@NotNull BaseException exception) {
+                Toast.makeText(LoginActivity.this, exception.getMsg(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onSuccess(Object data, @NotNull String taskId) {
+                Toast.makeText(LoginActivity.this, "成功", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    private void testThree() {
+        String memberOutId = "19838";
+        HFOpenApi.getInstance().memberSheet(memberOutId, 1, 10, new DataResponse<VipSheet>() {
+            @Override
+            public void onError(@NotNull BaseException exception) {
+                Toast.makeText(LoginActivity.this, exception.getMsg(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onSuccess(VipSheet data, @NotNull String taskId) {
+                Toast.makeText(LoginActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+    private void testTwo() {
+        int sheetId = this.sheetId;
+        HFOpenApi.getInstance().deleteMemberSheet(sheetId, new DataResponse<Object>() {
+
+            @Override
+            public void onError(@NotNull BaseException exception) {
+                Toast.makeText(LoginActivity.this, exception.getMsg(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object data, @NotNull String taskId) {
+                Toast.makeText(LoginActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void testOne() {
+        sheetName= sheetName+System.currentTimeMillis();
+        HFOpenApi.getInstance().createMemberSheet(sheetName, new DataResponse<Object>() {
+
+            @Override
+            public void onError(@NotNull BaseException exception) {
+                Toast.makeText(LoginActivity.this, exception.getMsg(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object data, @NotNull String taskId) {
+                Toast.makeText(LoginActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
     private void Login() {
-        json ="{}";
+        json = "{}";
         showDialog((dialog, which) -> {
-            json = editText.getText().toString();
-            String Nickname = getValue(json,"Nickname");
+
+            JSONObject object = new JSONObject();
+            try {
+                object.put("Nickname", "kobe");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            json = object.toString();
+//            json = editText.getText().toString();
+            String Nickname = getValue(json, "Nickname");
 
             String gender = getValue(json, "Gender");
             Integer Gender = gender == null ? 1 : Integer.parseInt(gender);
 
             String birthday = getValue(json, "Birthday");
-            Long Birthday = birthday== null ? null : Long.parseLong(birthday);
-            String Location =  getValue(json,"Location");
+            Long Birthday = birthday == null ? null : Long.parseLong(birthday);
+            String Location = getValue(json, "Location");
             String education = getValue(json, "Education");
             Integer Education = education == null ? null : Integer.parseInt(education);
             String profession = getValue(json, "Profession");
             Integer Profession = profession == null ? null : Integer.parseInt(profession);
-            boolean IsOrganization = Boolean.parseBoolean(getValue(json,"IsOrganization"));
-            String Reserve =  getValue(json,"Reserve");
-            String FavoriteSinger =  getValue(json,"FavoriteSinger");
-            String FavoriteGenre =  getValue(json,"FavoriteGenre");
+            boolean IsOrganization = Boolean.parseBoolean(getValue(json, "IsOrganization"));
+            String Reserve = getValue(json, "Reserve");
+            String FavoriteSinger = getValue(json, "FavoriteSinger");
+            String FavoriteGenre = getValue(json, "FavoriteGenre");
             HFOpenApi.getInstance().baseLogin(Nickname, Gender, Birthday, Location, Education,
-                    Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre, new DataResponse<LoginBean>() {
+                    Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre, String.valueOf(System.currentTimeMillis()), new DataResponse<LoginBean>() {
                         @Override
                         public void onError(@NotNull BaseException exception) {
                             Log.e("TAG", "errorMsg==" + exception.getCode());
@@ -140,18 +285,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void channelSheet() { //测试 kbm4wsfn33  正式 rO0B29leSyS
-        json ="{\"GroupID\":\""+groupID+"\",\"RecoNum\":\"10\",\"Language\":\"0\",\"Page\":\"1\",\"PageSize\":\"20\"}";
+        json = "{\"GroupID\":\"" + groupID + "\",\"RecoNum\":\"10\",\"Language\":\"0\",\"Page\":\"1\",\"PageSize\":\"20\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             groupID = getValue(json, "GroupID");
             String language = getValue(json, "Language");
-            Integer Language = language== null ? 0 : Integer.parseInt(language);
+            Integer Language = language == null ? 0 : Integer.parseInt(language);
             String recoNum = getValue(json, "RecoNum");
             Integer RecoNum = recoNum == null ? 10 : Integer.parseInt(recoNum);
             String page = getValue(json, "Page");
             Integer Page = page == null ? 1 : Integer.parseInt(page);
             String pageSize = getValue(json, "PageSize");
-            Integer PageSize = pageSize == null ? 20: Integer.parseInt(pageSize);
+            Integer PageSize = pageSize == null ? 20 : Integer.parseInt(pageSize);
 
 //            if (groupID == null) {
 //                showResult("请输入电台ID");
@@ -168,7 +313,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(@NotNull ChannelSheet any, String taskId) {
                     Log.e("TAG", "data==" + any);
-                    if(any.getRecord().size()>0){
+                    if (any.getRecord().size() > 0) {
                         sheetID = any.getRecord().get(0).getSheetId();
                     }
                     showResult(any.toString());
@@ -185,7 +330,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(@NotNull ChannelSheet any, String taskId) {
                     Log.e("TAG", "data==" + any);
-                    if(any.getRecord().size()>0){
+                    if (any.getRecord().size() > 0) {
                         sheetID = any.getRecord().get(0).getSheetId();
                     }
                     showResult(any.toString());
@@ -195,17 +340,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sheetMusic() { //2689  2657
-        json ="{\"SheetID\":\""+sheetID+"\",\"Language\":\"0\",\"Page\":\"1\",\"PageSize\":\"20\"}";
+        json = "{\"SheetID\":\"" + sheetID + "\",\"Language\":\"0\",\"Page\":\"1\",\"PageSize\":\"20\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String SheetID = getValue(json, "SheetID");
             sheetID = SheetID == null ? null : Long.parseLong(SheetID);
             String language = getValue(json, "Language");
-            Integer Language = language== null ? 0 : Integer.parseInt(language);
+            Integer Language = language == null ? 0 : Integer.parseInt(language);
             String page = getValue(json, "Page");
             Integer Page = page == null ? 1 : Integer.parseInt(page);
             String pageSize = getValue(json, "PageSize");
-            Integer PageSize = pageSize == null ? 20: Integer.parseInt(pageSize);
+            Integer PageSize = pageSize == null ? 20 : Integer.parseInt(pageSize);
 
             if (sheetID == null) {
                 showResult("请输入歌单ID");
@@ -221,7 +366,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(@NotNull MusicList any, String taskId) {
                     Log.e("TAG", "data==" + any);
-                    if(any.getRecord() != null && any.getRecord().size()>0){
+                    if (any.getRecord() != null && any.getRecord().size() > 0) {
                         musicID = any.getRecord().get(0).getMusicId();
                     }
                     showResult(any.toString());
@@ -232,16 +377,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void search() {
-        json ="{\"Keyword\":\"测试\",\"Language\":\"0\",\"Page\":\"1\",\"PageSize\":\"20\"}";
+        json = "{\"Keyword\":\"测试\",\"Language\":\"0\",\"Page\":\"1\",\"PageSize\":\"20\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String TagIds = getValue(json, "TagIds");
             String priceCent = getValue(json, "priceFromCent");
-            Long priceFromCent = priceCent== null ? null : Long.parseLong(priceCent);
+            Long priceFromCent = priceCent == null ? null : Long.parseLong(priceCent);
             String priceCent2 = getValue(json, "priceToCent");
-            Long priceToCent = priceCent2== null ? null : Long.parseLong(priceCent2);
+            Long priceToCent = priceCent2 == null ? null : Long.parseLong(priceCent2);
             String bpmFrom = getValue(json, "BpmFrom");
-            Integer BpmFrom = bpmFrom== null ? null : Integer.parseInt(bpmFrom);
+            Integer BpmFrom = bpmFrom == null ? null : Integer.parseInt(bpmFrom);
             String bpmTo = getValue(json, "BpmTo");
             Integer BpmTo = bpmTo == null ? null : Integer.parseInt(bpmTo);
             String durationFrom = getValue(json, "DurationFrom");
@@ -250,14 +395,14 @@ public class LoginActivity extends AppCompatActivity {
             Integer DurationTo = durationTo == null ? null : Integer.parseInt(durationTo);
             String Keyword = getValue(json, "Keyword");
             String language = getValue(json, "Language");
-            Integer Language = language== null ? 0 : Integer.parseInt(language);
+            Integer Language = language == null ? 0 : Integer.parseInt(language);
             String page = getValue(json, "Page");
             Integer Page = page == null ? 1 : Integer.parseInt(page);
             String pageSize = getValue(json, "PageSize");
-            Integer PageSize = pageSize == null ? 20: Integer.parseInt(pageSize);
+            Integer PageSize = pageSize == null ? 20 : Integer.parseInt(pageSize);
 
             HFOpenApi.getInstance().searchMusic(TagIds, priceFromCent, priceToCent, BpmFrom, BpmTo, DurationFrom, DurationTo, Keyword,
-                    null,1, Language, Page, PageSize, new DataResponse<MusicList>() {
+                    null, 1, Language, Page, PageSize, new DataResponse<MusicList>() {
                         @Override
                         public void onError(@NotNull BaseException exception) {
                             Log.e("TAG", "errorMsg==" + exception.getCode());
@@ -291,13 +436,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void report() {
-//        musicID = "2F084491A5";
-        json ="{\"Action\":\"1001\",\"TargetId\":\""+musicID+"\"," +
-                "\"Content\":\"{\\\"point\\\":\\\"15\\\",\\\"duration\\\":\\\"52\\\",\\\"musicId\\\":\\\""+musicID+"\\\"}\"}";
+        musicID = "2F0864DEC7";
+        json = "{\"Action\":\"1001\",\"TargetId\":\"" + musicID + "\"," +
+                "\"Content\":\"{\\\"point\\\":\\\"15\\\",\\\"duration\\\":\\\"52\\\",\\\"musicId\\\":\\\"" + musicID + "\\\"}\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String action = getValue(json, "Action");
-            Integer Action = action== null ? null : Integer.parseInt(action);
+            Integer Action = action == null ? null : Integer.parseInt(action);
             String TargetID = getValue(json, "TargetId");
             String Content = getValue(json, "Content");
             String Location = getValue(json, "Location");
@@ -319,13 +464,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void baseFavorite() {
-        json ="{\"Page\":\"1\",\"PageSize\":\"20\"}";
+        json = "{\"Page\":\"1\",\"PageSize\":\"20\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String page = getValue(json, "Page");
             Integer Page = page == null ? 1 : Integer.parseInt(page);
             String pageSize = getValue(json, "PageSize");
-            Integer PageSize = pageSize == null ? 20: Integer.parseInt(pageSize);
+            Integer PageSize = pageSize == null ? 20 : Integer.parseInt(pageSize);
 
             HFOpenApi.getInstance().baseFavorite(Page, PageSize, new DataResponse<MusicList>() {
                 @Override
@@ -344,7 +489,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void baseHot() {
-        json ="{\"StartTime\":\"1591696315\",\"Duration\":\"365\",\"Page\":\"1\",\"PageSize\":\"20\"}";
+        json = "{\"StartTime\":\"1591696315\",\"Duration\":\"365\",\"Page\":\"1\",\"PageSize\":\"20\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String startTime = getValue(json, "StartTime");
@@ -354,9 +499,9 @@ public class LoginActivity extends AppCompatActivity {
             String page = getValue(json, "Page");
             Integer Page = page == null ? 1 : Integer.parseInt(page);
             String pageSize = getValue(json, "PageSize");
-            Integer PageSize = pageSize == null ? 20: Integer.parseInt(pageSize);
+            Integer PageSize = pageSize == null ? 20 : Integer.parseInt(pageSize);
 
-            if(StartTime == null){
+            if (StartTime == null) {
                 showResult("StartTime为空");
                 return;
             }
@@ -378,7 +523,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void test() {
-        json ="{\"MusicID\":\""+musicID+"\"}";
+        json = "{\"MusicID\":\"" + musicID + "\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String MusicID = getValue(json, "MusicID");
@@ -400,7 +545,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void TrafficHQListen() {
-        json ="{\"MusicID\":\""+musicID+"\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\"}";
+        json = "{\"MusicID\":\"" + musicID + "\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String MusicID = getValue(json, "MusicID");
@@ -447,7 +592,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void test3() {
-        json ="{\"MusicID\":\""+musicID+"\"}";
+        json = "{\"MusicID\":\"" + musicID + "\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String MusicID = getValue(json, "MusicID");
@@ -470,7 +615,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void test4() {
-        json ="{\"MusicID\":\""+musicID+"\"}";
+        json = "{\"MusicID\":\"" + musicID + "\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String MusicID = getValue(json, "MusicID");
@@ -492,7 +637,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void test5() {
-        json ="{\"MusicID\":\""+musicID+"\"}";
+        json = "{\"MusicID\":\"" + musicID + "\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String MusicID = getValue(json, "MusicID");
@@ -514,7 +659,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void test6() {
-        json ="{\"MusicID\":\""+musicID+"\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\"}";
+        json = "{\"MusicID\":\"" + musicID + "\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String MusicID = getValue(json, "MusicID");
@@ -538,7 +683,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void test7() { // CFE6475822DF 2F084491A5
-        json ="{\"MusicID\":\""+musicID+"\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\"}";
+        json = "{\"MusicID\":\"" + musicID + "\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String MusicID = getValue(json, "MusicID");
@@ -562,7 +707,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void report2() {
-        json ="{\"MusicID\":\""+musicID+"\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\",\"Duration\":\"10000\"}";
+        json = "{\"MusicID\":\"" + musicID + "\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\",\"Duration\":\"10000\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String MusicID = getValue(json, "MusicID");
@@ -574,13 +719,13 @@ public class LoginActivity extends AppCompatActivity {
             String timestamp = getValue(json, "Timestamp");
             Long Timestamp = timestamp == null ? null : Long.parseLong(timestamp);
 
-            if(MusicID == null || AudioFormat  == null || AudioRate== null || Duration== null ||Timestamp == null ){
+            if (MusicID == null || AudioFormat == null || AudioRate == null || Duration == null || Timestamp == null) {
                 showResult("必填参数为空");
                 return;
             }
 
 //            Long time = System.currentTimeMillis();
-            HFOpenApi.getInstance().trafficReportListen(MusicID, Duration,Timestamp, AudioFormat, AudioRate,  new DataResponse<Object>() {
+            HFOpenApi.getInstance().trafficReportListen(MusicID, Duration, Timestamp, AudioFormat, AudioRate, new DataResponse<Object>() {
                 @Override
                 public void onError(@NotNull BaseException exception) {
                     Log.e("TAG", "errorMsg==" + exception.getCode());
@@ -598,7 +743,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void report3() {
-        json ="{\"MusicID\":\""+musicID+"\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\",\"Duration\":\"10000\"}";
+        json = "{\"MusicID\":\"" + musicID + "\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\",\"Duration\":\"10000\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String MusicID = getValue(json, "MusicID");
@@ -610,28 +755,28 @@ public class LoginActivity extends AppCompatActivity {
             String timestamp = getValue(json, "Timestamp");
             Long Timestamp = timestamp == null ? null : Long.parseLong(timestamp);
 
-            if(MusicID == null || AudioFormat  == null || AudioRate== null || Duration== null ||Timestamp == null ){
+            if (MusicID == null || AudioFormat == null || AudioRate == null || Duration == null || Timestamp == null) {
                 showResult("必填参数为空");
                 return;
             }
-            HFOpenApi.getInstance().ugcReportListen(MusicID, Duration,Timestamp, AudioFormat, AudioRate,  new DataResponse<Object>() {
-                        @Override
-                        public void onError(@NotNull BaseException exception) {
-                            Log.e("TAG", "errorMsg==" + exception.getCode());
-                            showResult(exception.getMsg());
-                        }
+            HFOpenApi.getInstance().ugcReportListen(MusicID, Duration, Timestamp, AudioFormat, AudioRate, new DataResponse<Object>() {
+                @Override
+                public void onError(@NotNull BaseException exception) {
+                    Log.e("TAG", "errorMsg==" + exception.getCode());
+                    showResult(exception.getMsg());
+                }
 
-                        @Override
-                        public void onSuccess(@NotNull Object any, String taskId) {
-                            Log.e("TAG", "data==" + any);
-                            showResult("上报成功");
-                        }
-                    });
+                @Override
+                public void onSuccess(@NotNull Object any, String taskId) {
+                    Log.e("TAG", "data==" + any);
+                    showResult("上报成功");
+                }
+            });
         });
     }
 
     private void report4() {
-        json ="{\"MusicID\":\""+musicID+"\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\",\"Duration\":\"10000\"}";
+        json = "{\"MusicID\":\"" + musicID + "\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\",\"Duration\":\"10000\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String MusicID = getValue(json, "MusicID");
@@ -643,30 +788,30 @@ public class LoginActivity extends AppCompatActivity {
             String timestamp = getValue(json, "Timestamp");
             Long Timestamp = timestamp == null ? null : Long.parseLong(timestamp);
 
-            if(MusicID == null || AudioFormat  == null || AudioRate== null || Duration== null ||Timestamp == null ){
+            if (MusicID == null || AudioFormat == null || AudioRate == null || Duration == null || Timestamp == null) {
                 showResult("必填参数为空");
                 return;
             }
 
-            HFOpenApi.getInstance().kReportListen(MusicID, Duration,Timestamp, AudioFormat, AudioRate,  new DataResponse<Object>() {
-                        @Override
-                        public void onError(@NotNull BaseException exception) {
-                            Log.e("TAG", "errorMsg==" + exception.getCode());
-                            showResult(exception.getMsg());
-                        }
+            HFOpenApi.getInstance().kReportListen(MusicID, Duration, Timestamp, AudioFormat, AudioRate, new DataResponse<Object>() {
+                @Override
+                public void onError(@NotNull BaseException exception) {
+                    Log.e("TAG", "errorMsg==" + exception.getCode());
+                    showResult(exception.getMsg());
+                }
 
-                        @Override
-                        public void onSuccess(@NotNull Object any, String taskId) {
-                            Log.e("TAG", "data==" + any);
-                            showResult("上报成功");
-                        }
-                    });
+                @Override
+                public void onSuccess(@NotNull Object any, String taskId) {
+                    Log.e("TAG", "data==" + any);
+                    showResult("上报成功");
+                }
+            });
         });
     }
 
     // "[{\"musicId\":\"2F084491A5\",\"price\":2900,\"num\":1}]"
     private void order() {
-        json ="{\"Subject\":\"购买单曲\",\"OrderId\":\"143456789056569145\",\"Deadline\":\"365\",\"Music\":\"[{\\\"musicId\\\":\\\""+musicID+"\\\",\\\"price\\\":\\\"2900\\\",\\\"num\\\":\\\"1\\\"}]\"," +
+        json = "{\"Subject\":\"购买单曲\",\"OrderId\":\"143456789056569145\",\"Deadline\":\"365\",\"Music\":\"[{\\\"musicId\\\":\\\"" + musicID + "\\\",\\\"price\\\":\\\"2900\\\",\\\"num\\\":\\\"1\\\"}]\"," +
                 "\"Language\":\"0\",\"AudioFormat\":\"mp3\",\"AudioRate\":\"320\",\"TotalFee\":\"2900\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
@@ -677,7 +822,7 @@ public class LoginActivity extends AppCompatActivity {
             Integer Deadline = deadline == null ? 365 : Integer.parseInt(deadline);
             String Music = getValue(json, "Music");
             String language = getValue(json, "Language");
-            Integer Language = language== null ? 0 : Integer.parseInt(language);
+            Integer Language = language == null ? 0 : Integer.parseInt(language);
             String AudioFormat = getValue(json, "AudioFormat");
             String AudioRate = getValue(json, "AudioRate");
             String totalFee = getValue(json, "TotalFee");
@@ -704,7 +849,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void order2() {
-        json ="{\"OrderId\":\""+orderId+"\"}";
+        json = "{\"OrderId\":\"" + orderId + "\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String OrderId = getValue(json, "OrderId");
@@ -729,18 +874,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void order3() {
-        json ="{\"CompanyName\":\"嗨翻屋\",\"ProjectName\":\"宝马汽车2020品牌广告\",\"Brand\":\"HIFIVE音乐开放平台\",\"Period\":\"0\",\"Area\":\"0\",\"OrderIds\":\""+orderId+"\"}";
+        json = "{\"CompanyName\":\"嗨翻屋\",\"ProjectName\":\"宝马汽车2020品牌广告\",\"Brand\":\"HIFIVE音乐开放平台\",\"Period\":\"0\",\"Area\":\"0\",\"OrderIds\":\"" + orderId + "\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String CompanyName = getValue(json, "CompanyName");
             String ProjectName = getValue(json, "ProjectName");
             String Brand = getValue(json, "Brand");
             String period = getValue(json, "Period");
-            Integer Period = period== null ? null : Integer.parseInt(period);
+            Integer Period = period == null ? null : Integer.parseInt(period);
             String Area = getValue(json, "Area");
             String OrderIds = getValue(json, "OrderIds");
 
-            if (OrderIds== null) {
+            if (OrderIds == null) {
                 showResult("请输入订单ID");
                 return;
             }
@@ -763,7 +908,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void publish() {
-        json ="{\"OrderId\":\""+orderId+"\",\"WorkId\":\"dd72629-03f3-4eb8-8a19-247a6\"}";
+        json = "{\"OrderId\":\"" + orderId + "\",\"WorkId\":\"dd72629-03f3-4eb8-8a19-247a6\"}";
         showDialog((dialog, which) -> {
             json = editText.getText().toString();
             String OrderId = getValue(json, "OrderId");
@@ -808,7 +953,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void showDialog(DialogInterface.OnClickListener listener){
+    private void showDialog(DialogInterface.OnClickListener listener) {
         editText = new EditText(this);
         editText.setLines(5);
         editText.setText(json);
@@ -822,15 +967,15 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private String getValue(String json,String key){
+    private String getValue(String json, String key) {
         try {
             JSONObject jsonObject = new JSONObject(json);
             String value = jsonObject.getString(key);
-            if(value.equals("") || value.equals("null")) value = null;
+            if (value.equals("") || value.equals("null")) value = null;
             return value;
         } catch (JSONException e) {
-            if(e.getMessage() != null && e.getMessage().contains("No value for")){
-            }else{
+            if (e.getMessage() != null && e.getMessage().contains("No value for")) {
+            } else {
                 showResult("请输入json格式的对应参数");
             }
             e.printStackTrace();

@@ -146,12 +146,96 @@ interface Api {
                    @Field("X-HF-Action") Action: String?
     ): Flowable<BaseResp<OrderMusic>>
 
+
+    /**
+     * 创建歌单
+     */
+    @FormUrlEncoded
+    @POST("/")
+    fun createMemberSheet(
+            @Field("SheetName") SheetName: String?,
+            @Field("X-HF-Action") Action: String?
+    ): Flowable<BaseResp<Any>>
+
+
+    /**
+     * 获取会员歌单
+     */
+    @GET("/")
+    fun memberSheet(
+            @Query("MemberOutId") MemberOutId: String?,
+            @Query("Page") Page: Int?,
+            @Query("PageSize") PageSize: Int?,
+            @Query("X-HF-Action") Action: String?
+    ): Flowable<BaseResp<VipSheet>>
+
+
+    /**
+     * 会员歌单音乐列表
+     */
+    @GET("/")
+    fun memberSheetMusic(
+            @Query("SheetId") SheetId: String?,
+            @Query("Page") Page: Int?,
+            @Query("PageSize") PageSize: Int?,
+            @Query("X-HF-Action") Action: String?
+    ): Flowable<BaseResp<Any>>
+
+    /**
+     * 音乐加入歌单
+     */
+    @FormUrlEncoded
+    @POST("/")
+    fun addMemberSheetMusic(
+            @Field("SheetId") SheetId: String?,
+            @Field("MusicId") MusicId: String?,
+            @Field("X-HF-Action") Action: String?
+    ): Flowable<BaseResp<Any>>
+
+
+    /**
+     * 清空会员歌单下音乐列表
+
+     */
+    @FormUrlEncoded
+    @POST("/")
+    fun clearMemberSheetMusic(
+            @Field("SheetId") SheetId: String?,
+            @Field("X-HF-Action") Action: String?
+    ): Flowable<BaseResp<Any>>
+
+
+    /**
+     * 音乐移出歌单
+
+     */
+    @FormUrlEncoded
+    @POST("/")
+    fun removeMemberSheetMusic(
+            @Field("SheetId") SheetId: String?,
+            @Field("MusicId") MusicId: String?,
+            @Field("X-HF-Action") Action: String?
+    ): Flowable<BaseResp<Any>>
+
+
+    /**
+     * 删除会员歌单
+     */
+    @FormUrlEncoded
+    @POST("/")
+    fun deleteMemberSheet(
+            @Field("SheetId") SheetName: String?,
+            @Field("X-HF-Action") Action: String?
+    ): Flowable<BaseResp<Any>>
+
+
     /**
      * 查询订单
      */
     @GET("/")
     fun orderDetail(@Query("OrderId") OrderId: String?,
                     @Query("X-HF-Action") Action: String?): Flowable<BaseResp<OrderMusic>>
+
 
     /**
      * 下载授权书
@@ -173,17 +257,20 @@ interface Api {
      */
     @FormUrlEncoded
     @POST("/")
-    fun baseLogin(@Field("Nickname") Nickname: String?,
-                  @Field("Gender") Gender: Int?,
-                  @Field("Birthday") Birthday: Long?,
-                  @Field("Location") Location: String?,
-                  @Field("Education") Education: Int?,
-                  @Field("Profession") Profession: Int?,
-                  @Field("IsOrganization") IsOrganization: Boolean?,
-                  @Field("Reserve") Reserve: String?,
-                  @Field("FavoriteSinger") FavoriteSinger: String?,
-                  @Field("FavoriteGenre") FavoriteGenre: String?,
-                  @Field("X-HF-Action") Action: String?
+    fun baseLogin(
+            @Field("Nickname") Nickname: String,
+            @Field("Gender") Gender: Int?,
+            @Field("Birthday") Birthday: Long?,
+            @Field("Location") Location: String?,
+            @Field("Education") Education: Int?,
+            @Field("Profession") Profession: Int?,
+            @Field("IsOrganization") IsOrganization: Boolean?,
+            @Field("Reserve") Reserve: String?,
+            @Field("FavoriteSinger") FavoriteSinger: String?,
+            @Field("FavoriteGenre") FavoriteGenre: String?,
+            @Field("X-HF-Action") Action: String?,
+            @Field("AppId") AppId: String?,
+            @Field("Timestamp") Timestamp: String?
     ): Flowable<BaseResp<LoginBean>>
 
     /**

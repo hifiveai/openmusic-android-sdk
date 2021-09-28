@@ -14,46 +14,46 @@
         android:orientation="vertical"
         android:paddingHorizontal="20dp"
         tools:ignore="MissingDefaultResource">
-        
+
         <TextView
             android:layout_width="match_parent"
-            android:text="电台获取音乐列表"
-            android:textSize="14sp"
-            android:textColor="#000000"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:layout_height="wrap_content"/>
+            android:text="电台获取音乐列表"
+            android:textColor="#000000"
+            android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_channel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="Channel(电台列表)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_channelsheet"
             android:layout_width="match_parent"
-            android:paddingVertical="10dp"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="ChannelSheet(电台获取歌单列表)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_sheetmusic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="SheetMusic(歌单获取音乐列表)" />
 
         <TextView
             android:layout_width="match_parent"
-            android:text="搜索获取音乐列表"
-            android:textSize="14sp"
-            android:textColor="#000000"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:layout_height="wrap_content"/>
+            android:text="搜索获取音乐列表"
+            android:textColor="#000000"
+            android:textSize="14sp" />
 
 
         <LinearLayout
@@ -64,21 +64,21 @@
             <EditText
                 android:id="@+id/et_keyword"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
                 android:hint="关键词"
                 android:maxLines="1"
+                android:text=""
                 android:textSize="12sp"
-                android:layout_height="wrap_content"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/btn_search"
                 android:layout_width="0dp"
-                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:paddingVertical="10dp"
+                android:layout_weight="2"
                 android:gravity="center"
+                android:paddingVertical="10dp"
                 android:text="SearchMusic(组合搜索)" />
 
         </LinearLayout>
@@ -88,32 +88,32 @@
             android:id="@+id/btn_config"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-           android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="MusicConfig(音乐配置信息)" />
 
         <TextView
             android:layout_width="match_parent"
-            android:text="音乐推荐"
-            android:textSize="14sp"
-            android:textColor="#000000"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:layout_height="wrap_content"/>
+            android:text="音乐推荐"
+            android:textColor="#000000"
+            android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="BaseLogin(获取token)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_report"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="BaseReport(行为采集)" />
 
 
@@ -121,50 +121,49 @@
             android:id="@+id/btn_favorite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="BaseFavorite(猜你喜欢)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_hot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="BaseHot(热门推荐)" />
 
         <TextView
             android:layout_width="match_parent"
-            android:text="音乐播放"
-            android:textSize="14sp"
-            android:textColor="#000000"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:layout_height="wrap_content"/>
+            android:text="音乐播放"
+            android:textColor="#000000"
+            android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="TrafficTrial(歌曲试听)" />
-
 
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_TrafficHQListen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="TrafficHQListen(获取音乐HQ播放信息)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_TrafficListenMixed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="TrafficListenMixed(获取音乐混音播放信息)" />
 
 
@@ -172,91 +171,91 @@
             android:id="@+id/btn_test3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="UGCTrial(歌曲试听)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_test6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="UGCHQListen(获取音乐HQ播放信息)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_test4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="KTrial(歌曲试听)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_test7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="KHQListen(获取音乐HQ播放信息)" />
 
         <TextView
             android:layout_width="match_parent"
-            android:text="音乐售卖"
-            android:textSize="14sp"
-            android:textColor="#000000"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:layout_height="wrap_content"/>
+            android:text="音乐售卖"
+            android:textColor="#000000"
+            android:textSize="14sp" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_test5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="OrderTrial(歌曲试听)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_order"
             android:layout_width="match_parent"
-            android:paddingVertical="10dp"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="OrderMusic(购买音乐)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_order2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="OrderDetail(查询订单)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_order3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="OrderAuthorization(下载授权书)" />
 
 
         <TextView
             android:layout_width="match_parent"
-            android:text="数据上报"
-            android:textSize="14sp"
-            android:textColor="#000000"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:layout_height="wrap_content"/>
+            android:text="数据上报"
+            android:textColor="#000000"
+            android:textSize="14sp" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_report2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="TrafficReport(BGM音乐数据上报)" />
 
 
@@ -264,25 +263,96 @@
             android:id="@+id/btn_report3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="UGCReport(音视频音乐数据上报)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_report4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="KReport(K歌音乐数据上报)" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_publish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:gravity="center"
+            android:paddingVertical="10dp"
             android:text="OrderPublish(发布作品)" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:text="4.1.2新增接口"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/CreateMemberSheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="CreateMemberSheet(创建会员歌单)" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/DeleteMemberSheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="DeleteMemberSheet(删除会员歌单)" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/MemberSheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="MemberSheet(会员歌单列表)" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/MemberSheetMusic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="MemberSheetMusic(会员歌单音乐列表)" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/AddMemberSheetMusic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="AddMemberSheetMusic(音乐加入歌单)" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/RemoveMemberSheetMusic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="RemoveMemberSheetMusic(音乐移出歌单)" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/ClearMemberSheetMusic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="ClearMemberSheetMusic(清空会员歌单下音乐列表)" />
 
 
     </LinearLayout>

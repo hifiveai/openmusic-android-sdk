@@ -14,12 +14,14 @@ class BaseConstance {
 //        预发
 //        var BASE_URL_MUSIC: String = "https://hifive-gateway-pre.hifiveai.com"
         //正式
-        var BASE_URL_MUSIC: String = "https://gateway.open.hifiveai.com"
-        var verison : String = "V4.1.1"
+//        var BASE_URL_MUSIC: String = "https://gateway.open.hifiveai.com"
+        var BASE_URL_MUSIC: String = "https://hifive-gateway-pre.hifiveai.com"
+        var verison : String = "V4.1.2"
         var token: String = ""
         @JvmField
         var taskId: String = ""
-        const val SUCCEED = 10200
+        const val SUCCEED_200 = 200
+        const val SUCCEED_10200 = 10200
 
 //        fun getSign(secret: String, message: String): String? {
 //            var sign = ""

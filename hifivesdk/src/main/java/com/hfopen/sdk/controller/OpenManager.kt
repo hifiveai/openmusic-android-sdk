@@ -14,6 +14,7 @@ import com.hfopen.sdk.service.impl.ServiceImpl
 import com.hfopen.sdk.utils.NetWorkUtils
 import com.tsy.sdk.myokhttp.MyOkHttp
 import com.tsy.sdk.myokhttp.response.DownloadResponseHandler
+import io.reactivex.Flowable
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import java.io.File
@@ -35,7 +36,7 @@ class OpenManager() {
     private val mService by lazy { ServiceImpl() }
 
     fun baseLogin(
-            Nickname: String?,
+            Nickname: String,
             Gender: Int?,
             Birthday: Long?,
             Location: String?,
@@ -45,12 +46,13 @@ class OpenManager() {
             Reserve: String?,
             FavoriteSinger: String?,
             FavoriteGenre: String?,
+            Timestamp: String,
             response: DataResponse<LoginBean>?
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
-        mService.baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre)
+        mService.baseLogin(Nickname, Gender, Birthday, Location, Education, Profession, IsOrganization, Reserve, FavoriteSinger, FavoriteGenre, Timestamp)
                 .request(object : BaseSubscribe<LoginBean>(response) {
                     override fun _onNext(t: LoginBean) {
                         response?.onSuccess(t, BaseConstance.taskId)
@@ -124,7 +126,7 @@ class OpenManager() {
             return
         }
 
-        mService.searchMusic(TagIds, PriceFromCent, PriceToCent, BpmFrom, BpmTo, DurationFrom, DurationTo, Keyword, SearchFiled,SearchSmart,Language, Page, PageSize)
+        mService.searchMusic(TagIds, PriceFromCent, PriceToCent, BpmFrom, BpmTo, DurationFrom, DurationTo, Keyword, SearchFiled, SearchSmart, Language, Page, PageSize)
                 .request(object : BaseSubscribe<MusicList>(response) {
                     override fun _onNext(t: MusicList) {
                         response.onSuccess(t, BaseConstance.taskId)
@@ -387,6 +389,114 @@ class OpenManager() {
                     }
                 })
     }
+
+
+    fun createMemberSheet(SheetName: String?,
+                          response: DataResponse<Any>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.createMemberSheet(SheetName)
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
+                        response.onSuccess(t, BaseConstance.taskId)
+                    }
+                })
+    }
+
+
+    fun deleteMemberSheet(SheetId: Int?,
+                          response: DataResponse<Any>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.deleteMemberSheet(SheetId.toString())
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
+                        response.onSuccess(t, BaseConstance.taskId)
+                    }
+                })
+    }
+
+    fun memberSheet(memberOutId: String?, Page: Int?,
+                    PageSize: Int?,
+                    response: DataResponse<VipSheet>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.memberSheet(memberOutId, Page, PageSize)
+                .request(object : BaseSubscribe<VipSheet>(response) {
+                    override fun _onNext(t: VipSheet) {
+                        response.onSuccess(t, BaseConstance.taskId)
+                    }
+                })
+    }
+
+
+    fun memberSheetMusic(SheetId: Int?, Page: Int?,
+                         PageSize: Int?,
+                         response: DataResponse<Any>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.memberSheetMusic(SheetId.toString(), Page, PageSize)
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
+                        response.onSuccess(t, BaseConstance.taskId)
+                    }
+                })
+    }
+
+    fun addMemberSheetMusic(SheetId: Int?,
+                            MusicId: String?,
+                            response: DataResponse<Any>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.addMemberSheetMusic(SheetId.toString(), MusicId)
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
+                        response.onSuccess(t, BaseConstance.taskId)
+                    }
+                })
+    }
+
+
+    fun removeMemberSheetMusic(SheetId: Int?,
+                               MusicId: String?,
+                               response: DataResponse<Any>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.removeMemberSheetMusic(SheetId.toString(), MusicId)
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
+                        response.onSuccess(t, BaseConstance.taskId)
+                    }
+                })
+    }
+
+
+    fun clearMemberSheetMusic(SheetId: Int?,
+                              response: DataResponse<Any>
+    ) {
+        if (!checkNetWork(mContext)) {
+            return
+        }
+        return mService.clearMemberSheetMusic(SheetId.toString())
+                .request(object : BaseSubscribe<Any>(response) {
+                    override fun _onNext(t: Any) {
+                        response.onSuccess(t, BaseConstance.taskId)
+                    }
+                })
+    }
+
 
     fun baseReport(Action: Int?,
                    TargetId: String?,

@@ -31,7 +31,18 @@ data class HQListen(
         val expires: Long?,
         val fileSize: Int?,
         val fileUrl: String?,
-        val musicId: String?
+        val musicId: String?,
+        val dynamicLyricUrl: String?,
+        val staticLyricUrl: String?,
+        val subVersions: Hq?
+)
+
+data class Hq(
+        val path: String?,
+        val wavePath: String?,
+        val startTime: String?,
+        val endTime: String?,
+        val versionName: String?
 )
 
 data class TrafficListenMixed(
@@ -60,7 +71,9 @@ data class OrderMusic(
         val music: List<OrderDetail>,
         val orderId: String,
         val subject: String,
-        val totalFee: Int
+        val totalFee: Int,
+        val dynamicLyricUrl :String?,
+        val staticLyricUrl :String?
 )
 
 data class OrderDetail(
@@ -70,6 +83,35 @@ data class OrderDetail(
         val fileSize: Int
 
 )
+
+
+
+
+
+
+
+
+
+data class VipSheet(
+    val meta: MetaInfo,
+    val records: List<RecordInfo>
+)
+
+data class MetaInfo(
+    val currentPage: Int,
+    val totalCount: Int
+)
+
+data class RecordInfo(
+    val createTime: String,
+    val sheetId: Int,
+    val sheetName: String,
+    val type: Int
+)
+
+
+
+
 
 data class OrderAuthorization(
         val fileUrl: List<String>
@@ -160,7 +202,7 @@ data class MusicRecord(
 data class Cover(
         val size: String,
         val url: String
-): Serializable
+) : Serializable
 
 //data class Music(
 //        val albumId: String,
@@ -203,7 +245,7 @@ data class Tag(
         val child: List<Tag>,
         val tagId: Int,
         val tagName: String
-): Serializable
+) : Serializable
 
 data class Version(
         val auditionBegin: Int,
