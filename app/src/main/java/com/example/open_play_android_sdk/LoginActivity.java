@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private String groupID, musicID, orderId;
     private Long sheetID;
     private String sheetName="kobeMemberSheet";
-    private int sheetId=38071;
+    private int sheetId=38737;
     private String musicId="2F0864DEC7";
 
     @Override
@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
      * 测试 25861e5063284e38a40bc960070b34ab   7a4e2914d1b647b98a
      */
     private void initView() {
-        HFOpenApi.setVersion("V4.1.2").registerApp(getApplication(), "3faeec81030444e98acf6af9ba32752a", "59b1aff189b3474398", "test_hifive_kobe");
+        HFOpenApi.setVersion("V4.1.2").registerApp(getApplication(), "3faeec81030444e98acf6af9ba32752a", "59b1aff189b3474398", "test_hifive_kobe2");
 
 //        HFOpenApi.setVersion("V4.0.1").registerApp(getApplication(), Encryption.Companion.requestDeviceId(this),"https://hifive-openapi-qa.hifiveai.com");
 
@@ -161,14 +161,14 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(Object data, @NotNull String taskId) {
-                Toast.makeText(LoginActivity.this, "成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
 
             }
         });
     }
 
     private void testThree() {
-        String memberOutId = "19838";
+        String memberOutId = "test_hifive_kobe2";
         HFOpenApi.getInstance().memberSheet(memberOutId, 1, 10, new DataResponse<VipSheet>() {
             @Override
             public void onError(@NotNull BaseException exception) {

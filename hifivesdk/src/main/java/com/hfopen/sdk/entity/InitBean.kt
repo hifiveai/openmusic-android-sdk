@@ -94,7 +94,7 @@ data class OrderDetail(
 
 data class VipSheet(
     val meta: MetaInfo,
-    val records: List<RecordInfo>
+    val record: List<RecordInfo>
 )
 
 data class MetaInfo(
