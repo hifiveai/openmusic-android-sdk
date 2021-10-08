@@ -164,7 +164,7 @@ class ServiceImpl constructor() : Service {
 
 
     fun memberSheetMusic(SheetId: String?, Page: Int?,
-                         PageSize: Int?): Flowable<Any> {
+                         PageSize: Int?): Flowable<VipSheetMusic> {
         return dataRepository.memberSheetMusic(SheetId, Page, PageSize)
     }
 

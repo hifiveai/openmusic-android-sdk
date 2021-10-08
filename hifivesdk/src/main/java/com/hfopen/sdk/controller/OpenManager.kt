@@ -438,14 +438,14 @@ class OpenManager() {
 
     fun memberSheetMusic(SheetId: Int?, Page: Int?,
                          PageSize: Int?,
-                         response: DataResponse<Any>
+                         response: DataResponse<VipSheetMusic>
     ) {
         if (!checkNetWork(mContext)) {
             return
         }
         return mService.memberSheetMusic(SheetId.toString(), Page, PageSize)
-                .request(object : BaseSubscribe<Any>(response) {
-                    override fun _onNext(t: Any) {
+                .request(object : BaseSubscribe<VipSheetMusic>(response) {
+                    override fun _onNext(t: VipSheetMusic) {
                         response.onSuccess(t, BaseConstance.taskId)
                     }
                 })

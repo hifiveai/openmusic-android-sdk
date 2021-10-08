@@ -37,10 +37,13 @@ public class HandleErrorInterceptor extends ResponseBodyInterceptor {
                         return response.newBuilder().body(boy).build();
                     }
                 }else{
+                    if(jsonObject.isNull("taskId")){
+                        return response;
+                    }
+
                     String taskId = jsonObject.getString("taskId");
                     if(!taskId.isEmpty()){
                         BaseConstance.taskId = taskId;
-
                     }
 //                        String json = response.body().string();
 //                        json.replace("\"data\":null", "\"data\":{}");

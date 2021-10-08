@@ -152,7 +152,7 @@ class DataRepository constructor() {
 
 
     fun memberSheetMusic(SheetId: String?, Page: Int?,
-                         PageSize: Int?): Flowable<Any> {
+                         PageSize: Int?): Flowable<VipSheetMusic> {
         return LiveRetrofitFactory.api().memberSheetMusic(SheetId, Page, PageSize, "MemberSheetMusic").convert()
     }
 

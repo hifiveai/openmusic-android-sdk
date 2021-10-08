@@ -179,7 +179,7 @@ interface Api {
             @Query("Page") Page: Int?,
             @Query("PageSize") PageSize: Int?,
             @Query("X-HF-Action") Action: String?
-    ): Flowable<BaseResp<Any>>
+    ): Flowable<BaseResp<VipSheetMusic>>
 
     /**
      * 音乐加入歌单

@@ -21,6 +21,7 @@ import com.hfopen.sdk.entity.OrderPublish;
 import com.hfopen.sdk.entity.HQListen;
 import com.hfopen.sdk.entity.TrialMusic;
 import com.hfopen.sdk.entity.VipSheet;
+import com.hfopen.sdk.entity.VipSheetMusic;
 import com.hfopen.sdk.hInterface.DataResponse;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopen.sdk.net.Encryption;
@@ -39,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private String groupID, musicID, orderId;
     private Long sheetID;
     private String sheetName="kobeMemberSheet";
-    private int sheetId=38737;
+    private int sheetId=38736;
     private String musicId="2F0864DEC7";
 
     @Override
@@ -152,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void testFour() {
         int sheetId = this.sheetId;
-        HFOpenApi.getInstance().memberSheetMusic(sheetId, 1, 10, new DataResponse<Object>() {
+        HFOpenApi.getInstance().memberSheetMusic(sheetId, 1, 10, new DataResponse<VipSheetMusic>() {
             @Override
             public void onError(@NotNull BaseException exception) {
                 Toast.makeText(LoginActivity.this, exception.getMsg(), Toast.LENGTH_SHORT).show();
@@ -160,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSuccess(Object data, @NotNull String taskId) {
+            public void onSuccess(@NotNull VipSheetMusic data, @NotNull String taskId) {
                 Toast.makeText(LoginActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
 
             }
