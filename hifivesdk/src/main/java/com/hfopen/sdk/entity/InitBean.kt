@@ -71,30 +71,28 @@ data class OrderMusic(
         val music: List<OrderDetail>,
         val orderId: String,
         val subject: String,
-        val totalFee: Int,
-        val dynamicLyricUrl :String?,
-        val staticLyricUrl :String?
+        val totalFee: Int
 )
 
 data class OrderDetail(
         val musicId: String,
         val fileUrl: String,
         val expires: Long,
-        val fileSize: Int
-
+        val fileSize: Int,
+        val dynamicLyricUrl :String?,
+        val staticLyricUrl :String?
 )
 
 
 
-
-
-
-
-
+data class VipSheetMusic(
+        val meta: MetaInfo,
+        val record: List<MusicRecord>
+)
 
 data class VipSheet(
     val meta: MetaInfo,
-    val records: List<RecordInfo>
+    val record: List<RecordInfo>
 )
 
 data class MetaInfo(

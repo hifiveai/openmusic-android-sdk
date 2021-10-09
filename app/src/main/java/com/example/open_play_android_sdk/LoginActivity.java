@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private String groupID, musicID, orderId;
     private Long sheetID;
     private String sheetName="kobeMemberSheet";
-    private int sheetId=38072;
+    private int sheetId=38736;
     private String musicId="2F0864DEC7";
 
     @Override
@@ -160,15 +160,15 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSuccess(Object data, @NotNull String taskId) {
-                Toast.makeText(LoginActivity.this, "成功", Toast.LENGTH_SHORT).show();
+            public void onSuccess(@NotNull VipSheetMusic data, @NotNull String taskId) {
+                Toast.makeText(LoginActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
 
             }
         });
     }
 
     private void testThree() {
-        String memberOutId = "19838";
+        String memberOutId = "test_hifive_kobe2";
         HFOpenApi.getInstance().memberSheet(memberOutId, 1, 10, new DataResponse<VipSheet>() {
             @Override
             public void onError(@NotNull BaseException exception) {
