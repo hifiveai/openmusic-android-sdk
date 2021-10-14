@@ -21,7 +21,6 @@ import com.hfopen.sdk.entity.OrderPublish;
 import com.hfopen.sdk.entity.HQListen;
 import com.hfopen.sdk.entity.TrialMusic;
 import com.hfopen.sdk.entity.VipSheet;
-import com.hfopen.sdk.entity.VipSheetMusic;
 import com.hfopen.sdk.hInterface.DataResponse;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopen.sdk.net.Encryption;
@@ -56,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
      * 测试 25861e5063284e38a40bc960070b34ab   7a4e2914d1b647b98a
      */
     private void initView() {
-        HFOpenApi.setVersion("V4.1.2").registerApp(getApplication(), "3faeec81030444e98acf6af9ba32752a", "59b1aff189b3474398", "test_hifive_kobe2");
+        HFOpenApi.setVersion("V4.1.2").registerApp(getApplication(), "3faeec81030444e98acf6af9ba32752a", "59b1aff189b3474398", "test_hifive_kobe");
 
 //        HFOpenApi.setVersion("V4.0.1").registerApp(getApplication(), Encryption.Companion.requestDeviceId(this),"https://hifive-openapi-qa.hifiveai.com");
 
@@ -153,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void testFour() {
         int sheetId = this.sheetId;
-        HFOpenApi.getInstance().memberSheetMusic(sheetId, 1, 10, new DataResponse<VipSheetMusic>() {
+        HFOpenApi.getInstance().memberSheetMusic(sheetId, 1, 10, new DataResponse<Object>() {
             @Override
             public void onError(@NotNull BaseException exception) {
                 Toast.makeText(LoginActivity.this, exception.getMsg(), Toast.LENGTH_SHORT).show();
