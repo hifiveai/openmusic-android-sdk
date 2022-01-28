@@ -34,7 +34,7 @@ data class HQListen(
         val musicId: String?,
         val dynamicLyricUrl: String?,
         val staticLyricUrl: String?,
-        val subVersions: Hq?
+        val subVersions: List<Hq>?
 )
 
 data class Hq(
