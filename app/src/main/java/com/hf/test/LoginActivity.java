@@ -43,11 +43,11 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void initView() {
         et_appid = findViewById(R.id.et_appid);
-        appId = (String) SPUtils.get(this, SPUtils.appId, "300a44d050c942eebeae8765a878b0ee");
+        appId = (String) SPUtils.get(this, SPUtils.appId, "");
         et_appid.setText(appId);
 
         et_secretkey = findViewById(R.id.et_secretkey);
-        secretKey = (String) SPUtils.get(this, SPUtils.secretKey, "0e31fe11b31247fca8");
+        secretKey = (String) SPUtils.get(this, SPUtils.secretKey, "");
         et_secretkey.setText(secretKey);
 
 
