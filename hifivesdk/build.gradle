@@ -53,6 +53,7 @@ dependencies {
     api HifiveDependencies["retrofit-adapter-rxjava2"]
     api HifiveDependencies["okhttp"]
     api HifiveDependencies["okhttp-logging-interceptor"]
+    implementation 'androidx.annotation:annotation:1.4.0'
 
 
 }

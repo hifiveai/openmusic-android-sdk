@@ -17,56 +17,13 @@ import javax.net.ssl.X509ExtendedTrustManager;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * @author Dsh  imkobedroid@gmail.com
- * @date 2020/11/2
+ * @author Dsh
+ * @e-mail dongshihong@dragonest.com
+ * @date 2022/6/27 20:16
  */
-public class RxUtils {
-
-    @SuppressLint("TrulyRandom")
-    public static SSLSocketFactory createSSLSocketFactory() {
-        SSLSocketFactory sSLSocketFactory = null;
-        try {
-            SSLContext sc = SSLContext.getInstance("TLS");
-            sc.init(null, new TrustManager[]{new TrustAllManager()},
-                    new SecureRandom());
-            sSLSocketFactory = sc.getSocketFactory();
-        } catch (Exception ignored) {
-        }
-        return sSLSocketFactory;
-    }
-
-    public static class TrustAllManager implements X509TrustManager {
-        @SuppressLint("TrustAllX509TrustManager")
-        @Override
-        public void checkClientTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
-        }
-
-        @SuppressLint("TrustAllX509TrustManager")
-        @Override
-        public void checkServerTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {
-        }
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[0];
-        }
-    }
-
-    public static class TrustAllHostnameVerifier implements HostnameVerifier {
-        @SuppressLint("BadHostnameVerifier")
-        @Override
-        public boolean verify(String hostname, SSLSession session) {
-            return true;
-        }
-    }
 
 
-
-
-
-    //获取TrustManager
+public class MySSLSocketClient {
     @SuppressLint("NewApi")
     public static X509ExtendedTrustManager X509 = new X509ExtendedTrustManager() {
         @Override
@@ -105,6 +62,26 @@ public class RxUtils {
         }
     };
 
+    //获取这个SSLSocketFactory
+    public static SSLSocketFactory getSSLSocketFactory() {
+        try {
+            SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, new TrustManager[]{X509}, new SecureRandom());
+            return sslContext.getSocketFactory();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
+    //获取HostnameVerifier
+    public static HostnameVerifier getHostnameVerifier() {
+        HostnameVerifier hostnameVerifier = new HostnameVerifier() {
+            @Override
+            public boolean verify(String s, SSLSession sslSession) {
+                return true;
+            }
+        };
+        return hostnameVerifier;
+    }
 }
