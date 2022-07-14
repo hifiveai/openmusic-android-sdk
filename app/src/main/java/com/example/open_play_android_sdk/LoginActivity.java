@@ -38,7 +38,7 @@ import java.util.ArrayList;
 public class LoginActivity extends AppCompatActivity {
     private EditText editText;
     private String json = "{}";
-    private String groupID, musicID, orderId;
+    private String groupID, musicID="0006311FD9B340", orderId;
     private Long sheetID;
     private String sheetName="kobeMemberSheet";
     private int sheetId=38736;
@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
      * 测试 25861e5063284e38a40bc960070b34ab   7a4e2914d1b647b98a
      */
     private void initView() {
-        HFOpenApi.setVersion("V4.1.2").registerApp(getApplication(), "3faeec81030444e98acf6af9ba32752a", "59b1aff189b3474398", "test_hifive_kobe");
+        HFOpenApi.setVersion("V4.1.4").registerApp(getApplication(), "3faeec81030444e98acf6af9ba32752a", "59b1aff189b3474398", "test_hifive_kobe");
 
 //        HFOpenApi.setVersion("V4.0.1").registerApp(getApplication(), Encryption.Companion.requestDeviceId(this),"https://hifive-openapi-qa.hifiveai.com");
 
