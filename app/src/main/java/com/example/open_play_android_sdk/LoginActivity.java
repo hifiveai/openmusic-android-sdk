@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hfopen.sdk.entity.ChannelItem;
@@ -39,8 +40,7 @@ import okhttp3.internal.tls.CertificateChainCleaner;
 public class LoginActivity extends AppCompatActivity {
     private EditText editText;
     private String json = "{}";
-    private String groupID, orderId;
-    private String musicID = "4EEFDB4E1D3E40";
+    private String groupID, musicID="0006311FD9B340", orderId;
     private Long sheetID;
     private String sheetName="kobeMemberSheet";
     private int sheetId=38736;
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
      * 测试 25861e5063284e38a40bc960070b34ab   7a4e2914d1b647b98a
      */
     private void initView() {
-        HFOpenApi.setVersion("V4.1.2").registerApp(getApplication(), "3faeec81030444e98acf6af9ba32752a", "59b1aff189b3474398", "test_hifive_kobe");
+        HFOpenApi.setVersion("V4.1.4").registerApp(getApplication(), "3faeec81030444e98acf6af9ba32752a", "59b1aff189b3474398", "test_hifive_kobe");
 
 //        HFOpenApi.setVersion("V4.0.1").registerApp(getApplication(), Encryption.Companion.requestDeviceId(this),"https://hifive-openapi-qa.hifiveai.com");
 
@@ -158,15 +158,13 @@ public class LoginActivity extends AppCompatActivity {
         int sheetId = this.sheetId;
         HFOpenApi.getInstance().memberSheetMusic(sheetId, 1, 10, new DataResponse<VipSheetMusic>() {
             @Override
-            public void onError(@NotNull BaseException exception) {
-                Toast.makeText(LoginActivity.this, exception.getMsg(), Toast.LENGTH_SHORT).show();
-
+            public void onSuccess(VipSheetMusic data, @NonNull String taskId) {
+                Toast.makeText(LoginActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onSuccess(@NotNull VipSheetMusic data, @NotNull String taskId) {
-                Toast.makeText(LoginActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
-
+            public void onError(@NotNull BaseException exception) {
+                Toast.makeText(LoginActivity.this, exception.getMsg(), Toast.LENGTH_SHORT).show();
             }
         });
     }

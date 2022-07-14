@@ -21,7 +21,7 @@ ext {
             rxjava          : "2.2.10",
             rxandroid       : "2.1.1",
             gson            : "2.8.5",
-            okhttp          : "4.0.0",
+            okhttp          : "4.9.0",
             dagger2         : "2.23.2",
             rxlifecycle     : "2.2.1",
             javax           : "1",

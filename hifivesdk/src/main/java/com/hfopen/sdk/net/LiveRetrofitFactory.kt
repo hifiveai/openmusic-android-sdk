@@ -1,8 +1,11 @@
 package com.hfopen.sdk.net
 
+import android.os.Build
 import com.hfopen.sdk.common.BaseConstance
+import com.hfopen.sdk.utils.MySSLSocketClient
 import com.hfopen.sdk.utils.RxUtils
 import com.hfopen.sdk.utils.TrustAllCerts
+import com.tsy.sdk.myokhttp.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -39,8 +42,8 @@ class LiveRetrofitFactory private constructor() {
 
             override fun intercept(chain: Interceptor.Chain): Response {
                 val request = chain.request().newBuilder()
-                        .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                        .build()
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .build()
                 return chain.proceed(request)
             }
 
@@ -48,28 +51,31 @@ class LiveRetrofitFactory private constructor() {
 
 
         retrofit = Retrofit
-                .Builder()
-                .baseUrl(BaseConstance.BASE_URL_MUSIC)
-                .client(initClient())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
+            .Builder()
+            .baseUrl(BaseConstance.BASE_URL_MUSIC)
+            .client(initClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
     }
 
     private fun initClient(): OkHttpClient {
         return OkHttpClient
-                .Builder()
-                .addInterceptor(HandleErrorInterceptor())
-                .addInterceptor(DefaultHeaderInterceptor())
-                .addInterceptor(encryptionInterceptor)
-                .addInterceptor(initLogInterceptor())
-                .retryOnConnectionFailure(true)
-                .connectTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
-                .writeTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
-                .readTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
-                .hostnameVerifier(RxUtils.TrustAllHostnameVerifier())
-                .sslSocketFactory(RxUtils.createSSLSocketFactory(), TrustAllCerts())
-                .build()
+            .Builder()
+            .addInterceptor(HandleErrorInterceptor())
+            .addInterceptor(DefaultHeaderInterceptor())
+            .addInterceptor(encryptionInterceptor)
+            .addInterceptor(initLogInterceptor())
+            .retryOnConnectionFailure(true)
+            .connectTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
+            .writeTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
+            .readTimeout(BaseConstance.TIME_OUT, TimeUnit.SECONDS)
+            .hostnameVerifier(MySSLSocketClient.getHostnameVerifier())
+            .sslSocketFactory(
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) RxUtils.createSSLSocketFactory() else MySSLSocketClient.getSSLSocketFactory(),
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) TrustAllCerts() else MySSLSocketClient.X509
+            )
+            .build()
     }
 
 
