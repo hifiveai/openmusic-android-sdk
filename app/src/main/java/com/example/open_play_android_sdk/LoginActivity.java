@@ -21,6 +21,7 @@ import com.hfopen.sdk.entity.OrderPublish;
 import com.hfopen.sdk.entity.HQListen;
 import com.hfopen.sdk.entity.TrialMusic;
 import com.hfopen.sdk.entity.VipSheet;
+import com.hfopen.sdk.entity.VipSheetMusic;
 import com.hfopen.sdk.hInterface.DataResponse;
 import com.hfopen.sdk.manager.HFOpenApi;
 import com.hfopen.sdk.net.Encryption;
@@ -32,11 +33,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import okhttp3.internal.tls.CertificateChainCleaner;
+
 
 public class LoginActivity extends AppCompatActivity {
     private EditText editText;
     private String json = "{}";
-    private String groupID, musicID, orderId;
+    private String groupID, orderId;
+    private String musicID = "4EEFDB4E1D3E40";
     private Long sheetID;
     private String sheetName="kobeMemberSheet";
     private int sheetId=38736;
@@ -152,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void testFour() {
         int sheetId = this.sheetId;
-        HFOpenApi.getInstance().memberSheetMusic(sheetId, 1, 10, new DataResponse<Object>() {
+        HFOpenApi.getInstance().memberSheetMusic(sheetId, 1, 10, new DataResponse<VipSheetMusic>() {
             @Override
             public void onError(@NotNull BaseException exception) {
                 Toast.makeText(LoginActivity.this, exception.getMsg(), Toast.LENGTH_SHORT).show();
